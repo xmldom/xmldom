@@ -19,6 +19,6 @@ before_install:
   # - npm install istanbul coveralls
 
 # FUTURE TBD coveralls.io (???):
-env:
-  global:
-  - secure: "BxUHTsa1WVANLQoimilbZwa1MCWSdM9hOmPWBE/rsYb7uT/iiqkRXXwnWhKtN5CLvTvIQbiAzq4iyPID0S8UHrnxClYQrOuA6QkrtwgIEuDAmijao/bgxobPOremvkwXcpMGIwzYKyYQQtSEaEIQbqf6gSSKW9dBh/GZ/vfTsqo="
+#env:
+#  global:
+#  - secure: "BxUHTsa1WVANLQoimilbZwa1MCWSdM9hOmPWBE/rsYb7uT/iiqkRXXwnWhKtN5CLvTvIQbiAzq4iyPID0S8UHrnxClYQrOuA6QkrtwgIEuDAmijao/bgxobPOremvkwXcpMGIwzYKyYQQtSEaEIQbqf6gSSKW9dBh/GZ/vfTsqo="
