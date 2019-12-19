@@ -1,10 +1,10 @@
 {
   "name": "xmldom",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "description": "A W3C Standard XML DOM(Level2 CORE) implementation and parser(DOMParser/XMLSerializer).",
   "keywords": ["w3c","dom","xml","parser","javascript","DOMParser","XMLSerializer"],
   "author": "jindw <jindw@xidea.org> (http://www.xidea.org)",
-  "homepage": "https://github.com/jindw/xmldom",
+  "homepage": "https://github.com/xmldom/xmldom",
   "repository": {"type": "git","url": "git://github.com/xmldom/xmldom.git"},
   "main": "./dom-parser.js",
   "scripts" : { "test": "proof platform win32 && proof test */*/*.t.js || t/test" },
