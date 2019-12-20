@@ -12,10 +12,10 @@
     "XMLSerializer"
   ],
   "author": "jindw <jindw@xidea.org> (http://www.xidea.org)",
-  "homepage": "https://github.com/jindw/xmldom",
+  "homepage": "https://github.com/xmldom/xmldom",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jindw/xmldom.git"
+    "url": "git://github.com/xmldom/xmldom.git"
   },
   "main": "./dom-parser.js",
   "scripts": {
@@ -54,7 +54,7 @@
   ],
   "bugs": {
     "email": "jindw@xidea.org",
-    "url": "http://github.com/jindw/xmldom/issues"
+    "url": "http://github.com/xmldom/xmldom/issues"
   },
   "license": "(LGPL-2.0 or MIT)"
 }
