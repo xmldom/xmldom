@@ -12,3 +12,4 @@ branches:
     - proof
     - travis-ci
 
+script: npm test
