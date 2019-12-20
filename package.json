@@ -1,6 +1,6 @@
 {
   "name": "xmldom",
-  "version": "0.2.0-dev",
+  "version": "0.2.0",
   "description": "A W3C Standard XML DOM(Level2 CORE) implementation and parser(DOMParser/XMLSerializer).",
   "keywords": [
     "w3c",
