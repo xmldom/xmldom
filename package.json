@@ -1,7 +1,7 @@
 {
   "name": "xmldom",
   "version": "0.2.2-dev",
-  "description": "A W3C Standard XML DOM(Level2 CORE) implementation and parser(DOMParser/XMLSerializer).",
+  "description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
   "keywords": [
     "w3c",
     "dom",
@@ -30,12 +30,17 @@
   },
   "maintainers": [
     {
-      "name": "jindw",
-      "email": "jindw@xidea.org",
-      "url": "http://www.xidea.org"
+      "name": "brodybits",
+      "email": "chris@brody.consulting",
+      "url": "https://github.com/brodybits"
     }
   ],
   "contributors": [
+    {
+      "name": "jindw",
+      "email": "jindw@xidea.org",
+      "url": "http://www.xidea.org"
+    },
     {
       "name": "Yaron Naveh",
       "email": "yaronn01@gmail.com",
@@ -50,11 +55,15 @@
       "name": "Alan Gutierrez",
       "email": "alan@prettyrobots.com",
       "web": "http://www.prettyrobots.com/"
+    },
+    {
+      "name": "Eric Newport",
+      "email": "kethinov@gmail.com",
+      "web": "https://github.com/kethinov"
     }
   ],
   "bugs": {
-    "email": "jindw@xidea.org",
-    "url": "http://github.com/xmldom/xmldom/issues"
+    "url": "https://github.com/xmldom/xmldom/issues"
   },
-  "license": "(LGPL-2.0 or MIT)"
+  "license": "(LGPL-2.0 OR MIT)"
 }
