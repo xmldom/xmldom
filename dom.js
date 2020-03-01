@@ -1235,6 +1235,7 @@ try{
 }
 
 //if(typeof require == 'function'){
+	exports.Node = Node;
 	exports.DOMImplementation = DOMImplementation;
 	exports.XMLSerializer = XMLSerializer;
 //}
