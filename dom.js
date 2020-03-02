@@ -608,6 +608,21 @@ Document.prototype = {
 		return rtv;
 	},
 	
+	getElementsByClassName: function(className) {
+		const pattern = new RegExp(`(^|\\s)${className}(\\s|$)`);
+		return new LiveNodeList(this, base => {
+			var ls = [];
+			_visitNode(base.documentElement, node => {
+				if(node !== base && node.nodeType == ELEMENT_NODE) {
+					if(pattern.test(node.getAttribute('class'))) {
+						ls.push(node);
+					}
+				}
+			});
+			return ls;
+		});
+	},
+	
 	//document factory method:
 	createElement :	function(tagName){
 		var node = new Element();
@@ -1235,6 +1250,7 @@ try{
 }
 
 //if(typeof require == 'function'){
+	exports.Node = Node;
 	exports.DOMImplementation = DOMImplementation;
 	exports.XMLSerializer = XMLSerializer;
 //}
