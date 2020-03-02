@@ -17,9 +17,9 @@
     "type": "git",
     "url": "git://github.com/xmldom/xmldom.git"
   },
-  "main": "./domParser.js",
+  "main": "dom-parser.js",
   "files": [
-    "domParser.js",
+    "dom-parser.js",
     "dom.js",
     "entities.js",
     "sax.js"
