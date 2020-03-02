@@ -1,4 +1,4 @@
-## 0.2.2
+## 0.3.0
 
 - Node >=10.x now required.
 - Added Node to the list of exports
