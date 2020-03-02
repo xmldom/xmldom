@@ -1,6 +1,7 @@
 ## 0.3.0
 
 - Node >=10.x now required.
+- Added getElementsByClassName method.
 - Added Node to the list of exports
 - Added lowercase of åäö in entityMap.
 - More package.json refactoring.
