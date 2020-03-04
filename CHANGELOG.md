@@ -4,7 +4,7 @@
 - Added getElementsByClassName method.
 - Added Node to the list of exports
 - Added lowercase of åäö in entityMap.
-- Move existing sources into `lib` subdirectory.
+- Moved existing sources into `lib` subdirectory.
 - Removed `.npmignore` in favor of `files` entry in package.json.
 - More `package.json` refactoring.
 - Replaced CHANGELOG with more rigorous file.
