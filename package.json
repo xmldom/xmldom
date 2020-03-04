@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git://github.com/xmldom/xmldom.git"
   },
-  "main": "lib/dom-parser.js",
+  "main": "index.js",
   "files": [
     "index.js",
     "lib"
