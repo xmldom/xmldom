@@ -1,6 +1,6 @@
 {
   "name": "xmldom",
-  "version": "0.2.2-dev",
+  "version": "0.3.0-dev",
   "description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
   "keywords": [
     "w3c",
@@ -17,16 +17,19 @@
     "type": "git",
     "url": "git://github.com/xmldom/xmldom.git"
   },
-  "main": "./dom-parser.js",
+  "main": "lib/dom-parser.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "proof platform win32 && proof test */*/*.t.js || t/test"
   },
   "engines": {
-    "node": ">=0.1"
+    "node": ">=10.0.0"
   },
   "dependencies": {},
   "devDependencies": {
-    "proof": "0.0.28"
+    "proof": "~7.0.9"
   },
   "maintainers": [
     {
