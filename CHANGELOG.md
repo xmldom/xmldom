@@ -4,8 +4,9 @@
 - Added getElementsByClassName method.
 - Added Node to the list of exports
 - Added lowercase of åäö in entityMap.
-- More package.json refactoring.
-- Removed .npmignore in favor of `files` entry in package.json.
+- Move existing sources into `lib` subdirectory.
+- Removed `.npmignore` in favor of `files` entry in package.json.
+- More `package.json` refactoring.
 - Replaced CHANGELOG with more rigorous file.
 - Replaced LICENSE with more rigorous file.
 - Removed component.json (deprecated package manager https://github.com/componentjs/guide)
