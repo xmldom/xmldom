@@ -17,12 +17,9 @@
     "type": "git",
     "url": "git://github.com/xmldom/xmldom.git"
   },
-  "main": "dom-parser.js",
+  "main": "lib/dom-parser.js",
   "files": [
-    "dom-parser.js",
-    "dom.js",
-    "entities.js",
-    "sax.js"
+    "lib"
   ],
   "scripts": {
     "test": "proof platform win32 && proof test */*/*.t.js || t/test"
