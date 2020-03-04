@@ -6,7 +6,6 @@
 - Added lowercase of åäö in entityMap.
 - More package.json refactoring.
 - Removed .npmignore in favor of `files` entry in package.json.
-- Renamed dom-parser.js to domParser.js.
 - Replaced CHANGELOG with more rigorous file.
 - Replaced LICENSE with more rigorous file.
 - Removed component.json (deprecated package manager https://github.com/componentjs/guide)
