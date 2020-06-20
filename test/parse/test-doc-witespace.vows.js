@@ -6,7 +6,7 @@ var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
 
 wows.describe('errorHandle').addBatch({
 	'unclosed tag':function(){
-		console.log(new DOMParser().parseFromString('<foo')+'');
+		assert.equal(new DOMParser().parseFromString('<foo')+'', '<foo>');
 	},
 	'document source':function(){
 		var testSource = '<?xml version="1.0"?>\n<!--test-->\n<xml/>'
@@ -16,7 +16,7 @@ wows.describe('errorHandle').addBatch({
 	'test':function(){
 		var description = "<p>populaciji (< 0.1%), te se</p>";
 		var doc = new DOMParser().parseFromString(description, 'text/html');
-		console.log(doc.toString())
+		assert.equal(doc.toString(), '<p xmlns="http://www.w3.org/1999/xhtml">populaciji (&lt; 0.1%), te se</p>')
 	}
 }).export(module)
 

@@ -1,10 +1,7 @@
+var assert = require('assert')
 var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
-var assert = require('assert')
 
-
-
-		
 var inc = 0;
 var domErrorHandler = function(level, str) { 
 	//console.log("x",level,str); 
@@ -17,26 +14,20 @@ wows.describe('errorHandle').addBatch({
 	var parser = new DOMParser();
 	var s = '<html><body title="1<2"></body></html>';
 	var doc = parser.parseFromString(s, 'text/html');
-	console.assert(doc==s.replace('<2','&lt;2'),doc+'');
+	assert.equal(doc+'','<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"></body></html>');
   },
   unclosedFix:function(){
   	var parser = new DOMParser();
 		var fileContents = '<r><Page><Label /></Page  <Page></Page></r>';
 		var expected =     '<r><Page><Label/></Page>  <Page/></r>'
-		var inc = 0;
 		var dom = parser.parseFromString(fileContents, "text/xml");
-		//console.log(dom+'');
-		//console.log(expected)
-		assert.equal(expected,dom+'');
+		assert.equal(dom+'',expected);
   },
   'test':function(){
 		var parser = new DOMParser();
 		var fileContents = '<Page><Label class="title"/></Page  1';
-		var inc = 0;
 		var dom = parser.parseFromString(fileContents, "text/xml");
-		//console.error('#$$$$$'+dom+'%%')
 		assert.equal(dom+'$',fileContents.replace(/\s+1$/,'')+'>  1$' , dom+'')
-		//console.log('dom-result:'+dom)
   },
   'svg test':function(){
 	  	var svgCase = [

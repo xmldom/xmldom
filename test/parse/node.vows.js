@@ -96,8 +96,8 @@ wows.describe('XML Node Parse').addBatch({
 			}
 		});
 	    var doc = parser.parseFromString('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html/>', 'text/html');
-		console.log(doc+'')
-		
+		assert.equal(doc+'', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"></html>')
+
 	}
 }).export(module); // Run it
 //var ELEMENT_NODE                = NodeType.ELEMENT_NODE                = 1;
