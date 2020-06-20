@@ -33,6 +33,7 @@
     "@stryker-mutator/core": "^3.3.0",
     "@stryker-mutator/javascript-mutator": "^3.3.0",
     "dom-js": "0.0.9",
+    "libxmljs": "^0.19.7",
     "vows": "^0.8.3"
   },
   "maintainers": [

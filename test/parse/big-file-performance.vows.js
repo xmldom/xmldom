@@ -77,7 +77,6 @@ wows.describe('XML Node Parse').addBatch({
 		var path = require('path')
 		var data = fs.readFileSync(path.resolve(__dirname,'./file-test1.xml'), 'ascii');
 		//data = "<?xml version=\"1.0\"?><xml><child> ![CDATA[v]] d &amp;</child>\n</xml>"
-		console.log('test simple xml')
 		var t1 = new Date();
 		var doc1 = xmldom(data);
 		var t2 = new Date();
@@ -87,14 +86,12 @@ wows.describe('XML Node Parse').addBatch({
 		var t4 = new Date();
 		var xmldomTime = t2-t1;
 		var domjsTime = t3-t2;
-		console.assert(domjsTime>xmldomTime,'xmldom performance must more height!!')
-		
-		
+		assert.greater(domjsTime, xmldomTime, 'simple xml');
+
 		doc1 = doc1.cloneNode(true);
 		addAttributes(doc1.documentElement);
 		
 		data = doc1.toString();
-		console.log('test more attribute xml')
 		var t1 = new Date();
 		var doc1 = xmldom(data);
 		var t2 = new Date();
@@ -104,7 +101,8 @@ wows.describe('XML Node Parse').addBatch({
 		var t4 = new Date();
 		var xmldomTime = t2-t1;
 		var domjsTime = t3-t2;
-		console.assert(domjsTime>xmldomTime,'xmldom performance must more height!!')
+		assert.greater(domjsTime, xmldomTime, 'more attribute xml');
+
 		function xmlReplace(a,v){
 			switch(v){
 			case '&':
@@ -119,10 +117,10 @@ wows.describe('XML Node Parse').addBatch({
 		}
 		xmldomresult = (domjs(doc1+'')+'').replace(/^<\?.*?\?>\s*|<!\[CDATA\[([\s\S]*?)\]\]>/g,xmlReplace)
 		domjsresult = (doc2+'').replace(/^<\?.*?\?>\s*|<!\[CDATA\[([\s\S]*?)\]\]>/g,xmlReplace)
+		assert.equal(xmldomresult, domjsresult);
 		data = xmldomresult;
 		//console.log(data.substring(100,200))
 		
-		console.log('test more attribute xml without cdata')
 		var t1 = new Date();
 		var doc1 = xmldom(data);
 		var t2 = new Date();
@@ -132,28 +130,26 @@ wows.describe('XML Node Parse').addBatch({
 		var t4 = new Date();
 		var xmldomTime = t2-t1;
 		var domjsTime = t3-t2;
-		console.assert(domjsTime>xmldomTime,'xmldom performance must more height!!')
+		assert.greater(domjsTime, xmldomTime, 'more attribute xml without cdata')
 		
-		//console.log(xmldomresult,domjsresult)
-		
-		//assert.equal(xmldomresult,domjsresult);
-		//,xmldomresult,domjsresult)
-		if(xmldomresult !== domjsresult){
-			for(var i=0;i<xmldomresult.length;i++){
-				if(xmldomresult.charAt(i)!=domjsresult.charAt(i)){
-					console.log(xmldomresult.charAt(i))
-					var begin = i-50;
-					var len = 100;
-					xmldomresult = xmldomresult.substr(begin,len)
-					domjsresult = domjsresult.substr(begin,len)
-					//console.log(xmldomresult.length,domjsresult.length)
-					console.log('pos'+i,'\n',xmldomresult,'\n\n\n\n',domjsresult)
-					console.assert(xmldomresult == domjsresult)
-					break;
-				}
-			} 
-			
-		}
+		// assert.equal(xmldomresult, domjsresult);
+		// assert.equal(xmldomresult, domjsresult);
+		// if(xmldomresult !== domjsresult){
+		// 	for(var i=0;i<xmldomresult.length;i++){
+		// 		if(xmldomresult.charAt(i)!=domjsresult.charAt(i)){
+		// 			console.log(xmldomresult.charAt(i))
+		// 			var begin = i-50;
+		// 			var len = 100;
+		// 			xmldomresult = xmldomresult.substr(begin,len)
+		// 			domjsresult = domjsresult.substr(begin,len)
+		// 			console.log(xmldomresult.length,domjsresult.length)
+		// 			console.log('pos'+i,'\n',xmldomresult,'\n\n\n\n',domjsresult)
+		// 			console.assert(xmldomresult == domjsresult)
+		// 			break;
+		// 		}
+		// 	}
+		//
+		// }
 		//console.assert(xmldomresult == domjsresult,xmldomresult.length,i)
     }
 }).export(module); // Run it
