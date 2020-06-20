@@ -22,7 +22,7 @@
     "lib"
   ],
   "scripts": {
-    "test": "proof platform win32 && proof test */*/*.t.js || t/test"
+    "test": "vows 'test/**/*.vows.js'"
   },
   "engines": {
     "node": ">=10.0.0"
