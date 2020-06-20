@@ -1,8 +1,6 @@
+var assert = require('assert');
 var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
-
-
-
 
 var xml = '<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0"\n\
        profile="ecmascript" id="scxmlRoot" initial="start">\n\
@@ -31,7 +29,7 @@ var error = []
 	var doc = parser.parseFromString(xml, 'text/html');
 	//console.log(doc.toString())
 var doc = parser.parseFromString('<html><body title="1<2"><table>&lt;;test</body></body></html', 'text/html');
-console.log(doc.toString())
+// console.log(doc.toString())
 
 wows.describe('errorHandle').addBatch({
   'only function two args': function() {
@@ -43,7 +41,7 @@ wows.describe('errorHandle').addBatch({
     	var doc = parser.parseFromString('<html disabled><1 1="2"/></body></html>', 'text/xml');
     	
     	error.map(function(e){error[e.replace(/\:[\s\S]*/,'')]=e})
-    	console.log(error)
+    	// console.log(error)
 		console.assert(error.warning!=null ,'error.error:'+error.warning);
 		console.assert(error.error!=null ,'error.error:'+error.error);
 		console.assert(error.fatalError!=null ,'error.error:'+error.fatalError);
@@ -81,7 +79,7 @@ wows.describe('errorHandle').addBatch({
     var error2 = [];
     for(var n in errorMap){
     	error2 = error2.concat(errorMap[n])
-    	//console.assert(error.length == errorMap[n].length)
+    	assert.isTrue(error.length == errorMap[n].length)
     }
    
     console.assert( error2.sort().join(',')==error.sort().join(','))
@@ -102,7 +100,7 @@ wows.describe('errorHandle').addBatch({
     	var doc = parser.parseFromString('<html><body title="1<2"><table>&lt;;test</body></body></html>', 'text/html');
 	}catch(e){
 		//console.log(e,doc+'');
-		console.assert(/\n@#\[line\:\d+,col\:\d+\]/.test(error.join(' ')),'line,col must record:'+error)
+		assert.isTrue(/\n@#\[line\:\d+,col\:\d+\]/.test(error.join(' ')),'line,col must record:'+error)
 		return;
 	}
 	//console.assert(false,doc+' should be null');

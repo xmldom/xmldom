@@ -1,6 +1,6 @@
+var assert = require('assert');
 var vows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
-var assert = require('assert');
 
 
 vows.describe('errorHandle').addBatch({
@@ -34,7 +34,7 @@ vows.describe('errorHandle').addBatch({
 	});
 	var dom = p.parseFromString('<img>', 'text/html');
 	//console.log(errors)
-	console.assert(errors.length==0,"unclosed html tag not need report!!")
+	assert.isTrue(errors.length==0,"unclosed html tag not need report!!")
   },
   "invalid xml node":function(){
 		var errors = [];
@@ -53,7 +53,7 @@ vows.describe('errorHandle').addBatch({
 		//console.log(dom.documentElement)
 		assert.equal(dom.documentElement+'' , '<r/>')
   },
-  'invalid xml attribute(miss qute)': function() {
+  'invalid xml attribute(miss quote)': function() {
   	var errors = [];
 	var p = new DOMParser({
 		errorHandler: function(key,msg){
