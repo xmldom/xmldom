@@ -22,13 +22,16 @@
     "lib"
   ],
   "scripts": {
-    "test": "vows test/**/*.vows.js"
+    "test": "vows test/**/*.vows.js",
+    "start": "stryker run"
   },
   "engines": {
     "node": ">=10.0.0"
   },
   "dependencies": {},
   "devDependencies": {
+    "@stryker-mutator/core": "^3.3.0",
+    "@stryker-mutator/javascript-mutator": "^3.3.0",
     "dom-js": "0.0.9",
     "vows": "^0.8.3"
   },
