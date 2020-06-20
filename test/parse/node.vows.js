@@ -7,58 +7,58 @@ var parser = new DOMParser();
 wows.describe('XML Node Parse').addBatch({
     'element': function () { 
     	var dom = new DOMParser().parseFromString('<xml><child/></xml>');
-    	assert.isTrue (dom.childNodes.length== 1,dom.childNodes.length, 1);
-    	assert.isTrue (dom.documentElement.childNodes.length== 1);
-    	assert.isTrue (dom.documentElement.tagName== 'xml');
-    	assert.isTrue (dom.documentElement.firstChild.tagName== 'child');
+    	assert.equal(dom.childNodes.length, 1);
+    	assert.equal(dom.documentElement.childNodes.length, 1);
+    	assert.equal(dom.documentElement.tagName, 'xml');
+    	assert.equal(dom.documentElement.firstChild.tagName, 'child');
     },
     'text':function(){
     	var dom = new DOMParser().parseFromString('<xml>start center end</xml>');
     	var root = dom.documentElement;
-    	assert.isTrue( root.firstChild.data =='start center end');
-    	assert.isTrue( root.firstChild.nextSibling ==null);
+    	assert.equal( root.firstChild.data, 'start center end');
+    	assert.equal( root.firstChild.nextSibling, null);
     },
     'cdata': function () {
     	var dom = new DOMParser().parseFromString('<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>');
     	var root = dom.documentElement;
-    	assert.isTrue ( root.firstChild.data =='start ');
-    	assert.isTrue ( root.firstChild.nextSibling.data =='<encoded>');
-    	assert.isTrue ( root.firstChild.nextSibling.nextSibling.nextSibling.data =='[[[[[[[[]]]]]]]]');
+    	assert.equal(root.firstChild.data, 'start ');
+    	assert.equal(root.firstChild.nextSibling.data, '<encoded>');
+    	assert.equal(root.firstChild.nextSibling.nextSibling.nextSibling.data, '[[[[[[[[]]]]]]]]');
     },
     'cdata empty': function () {
     	var dom = new DOMParser().parseFromString('<xml><![CDATA[]]>start <![CDATA[]]> end</xml>');
     	var root = dom.documentElement;
-    	assert.isTrue ( root.textContent =='start  end');
+    	assert.equal(root.textContent, 'start  end');
     },
     'comment': function(){
     	var dom = new DOMParser().parseFromString('<xml><!-- comment&>< --></xml>');
     	var root = dom.documentElement;
-    	assert.isTrue ( root.firstChild.nodeValue ==' comment&>< ');
+    	assert.equal(root.firstChild.nodeValue, ' comment&>< ');
     },
     'cdata comment': function(){
     	var dom = new DOMParser().parseFromString('<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>');
     	var root = dom.documentElement;
-    	assert.isTrue ( root.firstChild.nodeValue =='start ');
-    	assert.isTrue ( root.firstChild.nextSibling.nodeValue =='<encoded>');
-    	assert.isTrue ( root.firstChild.nextSibling.nextSibling.nextSibling.nodeValue ==' comment ');
-    	assert.isTrue ( root.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nodeValue =='end');
+    	assert.equal(root.firstChild.nodeValue, 'start ');
+    	assert.equal(root.firstChild.nextSibling.nodeValue, '<encoded>');
+    	assert.equal(root.firstChild.nextSibling.nextSibling.nextSibling.nodeValue, ' comment ');
+    	assert.equal(root.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nodeValue, 'end');
     },
     'append node': function () {
     	var dom = new DOMParser().parseFromString('<xml/>');
     	var child = dom.createElement("child");
-    	assert.isTrue ( child == dom.documentElement.appendChild(child));
-    	assert.isTrue ( child == dom.documentElement.firstChild);
+    	assert.equal(child, dom.documentElement.appendChild(child));
+    	assert.equal(child, dom.documentElement.firstChild);
     	var fragment = new dom.createDocumentFragment();
-    	assert.isTrue ( child == fragment.appendChild(child));
+    	assert.equal(child, fragment.appendChild(child));
     },
     'insert node': function () {
     	var dom = new DOMParser().parseFromString('<xml><child/></xml>');
     	var node = dom.createElement("sibling");
     	var child = dom.documentElement.firstChild;
     	child.parentNode.insertBefore(node, child);
-    	assert.isTrue ( node == child.previousSibling);
-    	assert.isTrue ( node.nextSibling == child);
-    	assert.isTrue ( node.parentNode == child.parentNode);
+    	assert.equal(node, child.previousSibling);
+    	assert.equal(node.nextSibling, child);
+    	assert.equal(node.parentNode, child.parentNode);
     },
     'insert fragment': function () {
     	var dom = new DOMParser().parseFromString('<xml><child/></xml>');
@@ -66,26 +66,26 @@ wows.describe('XML Node Parse').addBatch({
     	assert(fragment.nodeType === 11);
     	var first = fragment.appendChild(dom.createElement("first"));
     	var last = fragment.appendChild(dom.createElement("last"));
-    	assert.isTrue ( fragment.firstChild == first);
-    	assert.isTrue ( fragment.lastChild == last);
-    	assert.isTrue ( last.previousSibling == first);
-    	assert.isTrue ( first.nextSibling == last);
+    	assert.equal(fragment.firstChild, first);
+    	assert.equal(fragment.lastChild, last);
+    	assert.equal(last.previousSibling, first);
+    	assert.equal(first.nextSibling, last);
     	var child = dom.documentElement.firstChild;
     	child.parentNode.insertBefore(fragment, child);
-    	assert.isTrue ( last.previousSibling == first);
-    	assert.isTrue ( first.nextSibling == last);
-    	assert.isTrue ( child.parentNode.firstChild == first);
-    	assert.isTrue ( last == child.previousSibling);
-    	assert.isTrue ( last.nextSibling == child);
-    	assert.isTrue ( first.parentNode == child.parentNode);
-    	assert.isTrue ( last.parentNode == child.parentNode);
+    	assert.equal(last.previousSibling, first);
+    	assert.equal(first.nextSibling, last);
+    	assert.equal(child.parentNode.firstChild, first);
+    	assert.equal(last, child.previousSibling);
+    	assert.equal(last.nextSibling, child);
+    	assert.equal(first.parentNode, child.parentNode);
+    	assert.equal(last.parentNode, child.parentNode);
     }
 }).addBatch({
 	"instruction":function(){
 		var source = '<?xml version="1.0"?><root><child>&amp;<!-- &amp; --></child></root>';
 		var doc = new DOMParser().parseFromString(source,"text/xml");
     	var source2 = new XMLSerializer().serializeToString(doc);
-    	assert.isTrue(source == source2,source2);
+    	assert.equal(source, source2);
 	},
 	'public id && sysid':function(){
 	  	var error = []

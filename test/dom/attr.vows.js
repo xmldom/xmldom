@@ -7,20 +7,20 @@ wows.describe('XML attrs').addBatch({
     "set attribute":function(){
     	var root = new DOMParser().parseFromString("<xml/>",'text/xml').documentElement;
     	root.setAttribute('a','1');
-    	assert.isTrue(root.attributes[0].localName == 'a');
+    	assert.equal(root.attributes[0].localName, 'a');
     	root.setAttribute('b',2);
     	root.setAttribute('a',1);
     	root.setAttribute('a',1);
     	root.setAttribute('a',1);
-			assert.isTrue(root.attributes.length == 2);
+			assert.equal(root.attributes.length, 2);
     	try {
     		var c = root.ownerDocument.createElement('c');
     		c.setAttributeNode(root.attributes.item(0));
     	} catch (e) {
-    		assert.isTrue(e.code == 10);
+    		assert.equal(e.code, 10);
     		return;
     	}
-    	assert.isTrue(false);
+    	assert.fail();
     },
     "set ns attribute":function(){
     	var root = new DOMParser().parseFromString("<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",'text/xml').documentElement;
@@ -28,23 +28,23 @@ wows.describe('XML attrs').addBatch({
     	child.setAttributeNS('a','a:a','1');
     	child.setAttributeNS('b','b:b','2');
     	child.setAttributeNS('b','b:a','1');
-    	assert.isTrue(child.attributes.length == 3,child.attributes.length,child+'');
+    	assert.equal(child.attributes.length, 3, child+'');
     	child.setAttribute('a',1);
     	child.setAttributeNS('b','b:b','2');
-    	assert.isTrue(child.attributes.length == 4,child.attributes.length);
+    	assert.equal(child.attributes.length, 4);
     	try {
     		var c = root.ownerDocument.createElement('c');
     		c.setAttributeNodeNS(root.attributes.item(0));
     	} catch (e) {
-    		assert.isTrue(e.code == 10);
+    		assert.equal(e.code, 10);
     		return;
     	}
-    	assert.isTrue(false);
+    	assert.fail();
     },
     "override attribute":function(){
     	var root = new DOMParser().parseFromString("<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",'text/xml').documentElement;
     	root.setAttributeNS('a','a:a','1');
-    	assert.isTrue(root.attributes.length == 4,root.attributes.length);
+    	assert.equal(root.attributes.length, 4);
 //not standart
 //    	root.firstChild.setAttributeNode(root.attributes[0]);
 //    	assert.isTrue(root.attributes.length == 0);

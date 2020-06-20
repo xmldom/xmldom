@@ -42,9 +42,9 @@ wows.describe('errorHandle').addBatch({
     	
     	error.map(function(e){error[e.replace(/\:[\s\S]*/,'')]=e})
     	// console.log(error)
-		console.assert(error.warning!=null ,'error.error:'+error.warning);
-		console.assert(error.error!=null ,'error.error:'+error.error);
-		console.assert(error.fatalError!=null ,'error.error:'+error.fatalError);
+		console.assert(error.warning!=null, 'error.error:'+error.warning);
+		console.assert(error.error!=null, 'error.error:'+error.error);
+		console.assert(error.fatalError!=null, 'error.error:'+error.fatalError);
 		//console.log(doc+'')
 	}catch(e){
 	}
@@ -57,9 +57,9 @@ wows.describe('errorHandle').addBatch({
 	try{
     	var doc = parser.parseFromString('<html disabled><1 1="2"/></body></html>', 'text/xml');
     	error.map(function(e){error[e.replace(/\:[\s\S]*/,'')]=e})
-		console.assert(error.warning!=null ,'error.error:'+error.warning);
-		console.assert(error.error!=null ,'error.error:'+error.error);
-		console.assert(error.fatalError!=null ,'error.error:'+error.fatalError);
+		console.assert(error.warning!=null, 'error.error:'+error.warning);
+		console.assert(error.error!=null, 'error.error:'+error.error);
+		console.assert(error.fatalError!=null, 'error.error:'+error.fatalError);
 		//console.log(doc+'')
 	}catch(e){
 	}
@@ -79,7 +79,7 @@ wows.describe('errorHandle').addBatch({
     var error2 = [];
     for(var n in errorMap){
     	error2 = error2.concat(errorMap[n])
-    	assert.isTrue(error.length == errorMap[n].length)
+    	assert.equal(error.length, errorMap[n].length);
     }
    
     console.assert( error2.sort().join(',')==error.sort().join(','))

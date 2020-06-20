@@ -34,7 +34,7 @@ vows.describe('errorHandle').addBatch({
 	});
 	var dom = p.parseFromString('<img>', 'text/html');
 	//console.log(errors)
-	assert.isTrue(errors.length==0,"unclosed html tag not need report!!")
+	assert.equal(errors.length, 0, "unclosed html tag not need report!!")
   },
   "invalid xml node":function(){
 		var errors = [];
@@ -48,10 +48,10 @@ vows.describe('errorHandle').addBatch({
 		var dom = new DOMParser().parseFromString('<test><!--', 'text/xml')
 		//var dom = new DOMParser().parseFromString('<div><p><a></a><b></b></p></div>', 'text/html');
 		//console.log(dom+'')
-		assert.equal(dom.documentElement+'' , '<test/>')
+		assert.equal(dom.documentElement+'', '<test/>')
 		var dom = p.parseFromString('<r', 'text/xml');
 		//console.log(dom.documentElement)
-		assert.equal(dom.documentElement+'' , '<r/>')
+		assert.equal(dom.documentElement+'', '<r/>')
   },
   'invalid xml attribute(miss quote)': function() {
   	var errors = [];

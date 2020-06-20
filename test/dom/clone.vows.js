@@ -9,7 +9,7 @@ wows.describe('XML Namespace Parse').addBatch({
 		var doc1 = new DOMParser().parseFromString("<doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1>",'text/xml')
 		var doc1s = new XMLSerializer().serializeToString(doc1);
 		var n =doc1.cloneNode(true)
-		assert.isTrue(n == doc1s,doc1s)
+		assert.equal(n, doc1s)
     },
     'import': function () { 
 		var doc1 = new DOMParser().parseFromString("<doc2 attr='2'/>")
@@ -18,7 +18,7 @@ wows.describe('XML Namespace Parse').addBatch({
 		var doc3 = new DOMParser().parseFromString("<doc2 attr='2'><doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1></doc2>")
 		var n =doc1.importNode(doc2.documentElement, true)
 		doc1.documentElement.appendChild(n)
-		assert.isTrue(doc1 == doc3+'')
+		assert.equal(doc1+'', doc3+'')
 		assert.isTrue(doc2 != doc3+'')
     }
 }).export(module); // Run it

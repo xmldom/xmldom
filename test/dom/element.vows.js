@@ -7,8 +7,8 @@ wows.describe('XML Namespace Parse').addBatch({
     // See: http://jsfiddle.net/bigeasy/ShcXP/1/
     "Document_getElementsByTagName":function () {
     	var doc = new DOMParser().parseFromString('<a><b/></a>');
-    	assert.isTrue(doc.getElementsByTagName('*').length == 2);
-    	assert.isTrue(doc.documentElement.getElementsByTagName('*').length == 1);
+    	assert.equal(doc.getElementsByTagName('*').length, 2);
+    	assert.equal(doc.documentElement.getElementsByTagName('*').length, 1);
     },
     'getElementsByTagName': function () { 
     	
@@ -18,16 +18,16 @@ wows.describe('XML Namespace Parse').addBatch({
        		'<child attr="1"><test><child attr="2"/></test></child>' +
        		'<child attr="3"/></xml>','text/xml');
        var childs = doc.documentElement.getElementsByTagName('child');
-       assert.isTrue(childs.item(0).getAttribute('attr')=="1",childs.item(0)+'');
-       assert.isTrue(childs.item(1).getAttribute('attr')=="2",childs.item(1)+'');
-       assert.isTrue(childs.item(2).getAttribute('attr')=="3",childs.item(2)+'');
-       assert.isTrue(childs.length==3,3,childs.length);
+       assert.equal(childs.item(0).getAttribute('attr'), "1");
+       assert.equal(childs.item(1).getAttribute('attr'), "2");
+       assert.equal(childs.item(2).getAttribute('attr'), "3");
+       assert.equal(childs.length, 3);
        
        var childs = doc.getElementsByTagName('child');
-       assert.isTrue(childs.item(0).getAttribute('attr')=="1",childs.item(0)+'');
-       assert.isTrue(childs.item(1).getAttribute('attr')=="2",childs.item(1)+'');
-       assert.isTrue(childs.item(2).getAttribute('attr')=="3",childs.item(2)+'');
-       assert.isTrue(childs.length==3,3,childs.length);
+       assert.equal(childs.item(0).getAttribute('attr'), "1");
+       assert.equal(childs.item(1).getAttribute('attr'), "2");
+       assert.equal(childs.item(2).getAttribute('attr'), "3");
+       assert.equal(childs.length, 3)
        
        
        
@@ -37,16 +37,16 @@ wows.describe('XML Namespace Parse').addBatch({
        for(var i=0,buf = [];i<childs.length;i++){
        	buf.push(childs[i].tagName)
        }
-       assert.isTrue(childs.length==7,childs.length,buf);
+       assert.equal(childs.length, 7, buf);
        
        
        
        
 		var feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>');
 		var entries = feed.documentElement.getElementsByTagName('entry');
-		assert.equal(entries.length , 1,'assert entry nodelist length ==1');
-		assert.isTrue(entries[0].nodeName=='entry');
-        assert.isTrue(feed.documentElement.childNodes.item(0).nodeName=='entry');
+		assert.equal(entries.length, 1,'assert entry nodelist length ==1');
+		assert.equal(entries[0].nodeName, 'entry');
+        assert.equal(feed.documentElement.childNodes.item(0).nodeName, 'entry');
     },
     'getElementsByTagNameNS': function () { 
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
@@ -56,24 +56,23 @@ wows.describe('XML Namespace Parse').addBatch({
        		
        var childs = doc.documentElement.getElementsByTagNameNS("http://test.com",'*');
        var i=0
-       assert.isTrue(childs.length==6,childs.length);
+       assert.equal(childs.length, 6);
        
        var childs = doc.getElementsByTagNameNS("http://test.com",'*');
-       assert.isTrue(childs.length==7,childs.length);
+       assert.equal(childs.length, 7);
        
        var childs = doc.documentElement.getElementsByTagNameNS("http://test.com",'test');
-       assert.isTrue(childs.length==3,childs.length);
+       assert.equal(childs.length, 3);
        
        var childs = doc.getElementsByTagNameNS("http://test.com",'test');
-       assert.isTrue(childs.length==3,childs.length);
+       assert.equal(childs.length, 3);
 
        var childs = doc.getElementsByTagNameNS("*", "test");
        //console.log([].join.apply(childs,['\n@']))
-       assert.isTrue(childs.length==4,childs.length);
+       assert.equal(childs.length, 4);
 
        var childs = doc.documentElement.getElementsByTagNameNS("*", "test");
-       //console.log(childs.length)
-       assert.isTrue(childs.length==4,childs.length);
+       assert.equal(childs.length, 4);
        
     },
     'getElementById': function () { 
@@ -81,9 +80,9 @@ wows.describe('XML Namespace Parse').addBatch({
        		'<child id="a1" title="1"><child id="a2"  title="2"/></child>' +
        		'<child id="a1"   title="3"/></xml>','text/xml');
        assert.isDefined(doc.getElementById('root'))
-       assert.isTrue(doc.getElementById('a1').getAttribute('title')=="1",doc.getElementById('a1'));
-       assert.isTrue(doc.getElementById('a2').getAttribute('title')=="2",doc.getElementById('a2'));
-       assert.isTrue(doc.getElementById('a2').getAttribute('title2')=="",doc.getElementById('a2'));
+       assert.equal(doc.getElementById('a1').getAttribute('title'), "1");
+       assert.equal(doc.getElementById('a2').getAttribute('title'), "2");
+       assert.equal(doc.getElementById('a2').getAttribute('title2'), "");
     },
     "append exist child":function(){
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +
@@ -115,30 +114,30 @@ wows.describe('XML Namespace Parse').addBatch({
        	var str1=new XMLSerializer().serializeToString(doc);
        	var doc2 = doc1.cloneNode(true);
        	
-       	assert.isTrue(doc2.documentElement.lastChild.childNodes.length == 0);
+       	assert.equal(doc2.documentElement.lastChild.childNodes.length, 0);
        	doc2.documentElement.appendChild(doc2.documentElement.firstChild.firstChild);
        	
        	var str2=new XMLSerializer().serializeToString(doc2);
        	
-       	assert.isTrue(doc2.documentElement.lastChild.childNodes.length == 1);
+       	assert.equal(doc2.documentElement.lastChild.childNodes.length, 1);
        	assert.isTrue(str1 != str2 && str1.length != str2.length,str3);
        	var doc3 = new DOMParser().parseFromString(str2,'text/xml');
        	doc3.documentElement.firstChild.appendChild(doc3.documentElement.lastChild);
        	var str3 = new XMLSerializer().serializeToString(doc3);
-       	assert.isTrue(str1 == str3);
+       	assert.equal(str1, str3);
     },
     "set textContent":function() {
         var doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>');
         var a = doc.documentElement.firstChild;
         var b = a.nextSibling;
         a.textContent = 'hello';
-        assert.isTrue(doc.documentElement.toString() == '<test><a>hello</a><b><c/></b></test>');
+        assert.equal(doc.documentElement.toString(), '<test><a>hello</a><b><c/></b></test>');
         b.textContent = 'there';
-        assert.isTrue(doc.documentElement.toString() == '<test><a>hello</a><b>there</b></test>');
+        assert.equal(doc.documentElement.toString(), '<test><a>hello</a><b>there</b></test>');
         b.textContent = '';
-        assert.isTrue(doc.documentElement.toString() == '<test><a>hello</a><b/></test>');
+        assert.equal(doc.documentElement.toString(), '<test><a>hello</a><b/></test>');
         doc.documentElement.textContent = 'bye';
-        assert.isTrue(doc.documentElement.toString() == '<test>bye</test>');
+        assert.equal(doc.documentElement.toString(), '<test>bye</test>');
     },
     "nested append failed":function(){
     },

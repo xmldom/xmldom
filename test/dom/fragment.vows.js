@@ -11,6 +11,6 @@ wows.describe('DOM DocumentFragment').addBatch({
 		document.getElementById("p").insertBefore(fragment, null);
 		fragment.appendChild(document.createTextNode("a"));
 		document.getElementById("p").insertBefore(fragment, null);
-		assert.isTrue(document.toString() == '<p id="p">a</p>', document.toString());
+		assert.equal(document.toString(), '<p id="p">a</p>');
 	},
 }).export(module);

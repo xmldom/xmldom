@@ -9,8 +9,8 @@ var assert = require('assert')
     //var doc = parser.parseFromString('<root>\n\t<err</root>', 'text/html');
 
 function assertPosition(n, line, col,info) {
-  assert.equal(n.lineNumber , line,'lineNumber:'+n.lineNumber+'/'+line+'\n@'+info);
-  assert.equal(n.columnNumber , col,'columnNumber:'+n.columnNumber+'/'+col+'\n@'+info);
+  assert.equal(n.lineNumber, line,'lineNumber:'+n.lineNumber+'/'+line+'\n@'+info);
+  assert.equal(n.columnNumber, col,'columnNumber:'+n.columnNumber+'/'+col+'\n@'+info);
 }
 
 wows.describe('DOMLocator').addBatch({
@@ -34,7 +34,7 @@ var xml= [
     var doc = parser.parseFromString(xml, 'text/xml');
    	var trans = doc.getElementsByTagName('transition')[0];
    	//console.error(doc+'')
-   	assert.equal(trans.lineNumber , 10)//,''+trans+trans.lineNumber+'/'+trans.parentNode.previousSibling.previousSibling.lineNumber)
+   	assert.equal(trans.lineNumber, 10)//,''+trans+trans.lineNumber+'/'+trans.parentNode.previousSibling.previousSibling.lineNumber)
    	
 	},
   'node positions': function() {
