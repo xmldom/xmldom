@@ -1,3 +1,4 @@
+var assert = require('assert');
 var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
@@ -10,6 +11,6 @@ wows.describe('DOM DocumentFragment').addBatch({
 		document.getElementById("p").insertBefore(fragment, null);
 		fragment.appendChild(document.createTextNode("a"));
 		document.getElementById("p").insertBefore(fragment, null);
-		console.assert(document.toString() == '<p id="p">a</p>', document.toString());
+		assert.isTrue(document.toString() == '<p id="p">a</p>', document.toString());
 	},
 }).export(module);

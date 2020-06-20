@@ -1,7 +1,7 @@
 "use strict";
 var xdom = require('../../lib/dom-parser');
 var wows = require('vows');
-var assert = require('assert');
+var assert = require('assert') || {equal:function(v1,v2){console.assert(v1==v2,v1+'!='+v2)}};
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 
@@ -9,18 +9,16 @@ var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 // Create a Test Suite
 wows.describe('XML Namespace Parse').addBatch({
 	"testlitecns":function(){
-		var assert = assert || {equal:function(v1,v2){console.assert(v1==v2,v1+'!='+v2)}}
 		var doc = new DOMParser({
 			xmlns:{'c':'http://www.xidea.org/lite/core','':'http://www.w3.org/1999/xhtml'}
 		}).parseFromString('<html><body><c:var name="a" value="${1}"/></body></html>', "text/xml");
 		//console.log(String(doc))
 		var el = doc.getElementsByTagName('c:var')[0];
-		console.log(String(el.namespaceURI))
-		console.log(String(doc))
+		// console.log(String(el.namespaceURI))
+		// console.log(String(doc))
 	},
 	//ignore default prefix xml attribute 
 	"test":function(){
-		var assert = assert || {equal:function(v1,v2){console.assert(v1==v2,v1+'!='+v2)}}
 		// Just for debugging
 		var w3 = "http://www.w3.org/1999/xhtml";
 		var n1 = "http://www.frankston.com/public";
