@@ -29,7 +29,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "proof": "~7.0.9"
+    "dom-js": "0.0.9",
+    "vows": "^0.8.3"
   },
   "maintainers": [
     {
