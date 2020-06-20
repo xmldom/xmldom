@@ -1,5 +1,5 @@
 var wows = require('vows');
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 
 wows.describe('XML Serializer').addBatch({
   'text node containing "]]>"': function() {
@@ -12,4 +12,4 @@ wows.describe('XML Serializer').addBatch({
     //console.log(doc.documentElement.firstChild.toString(true))
     console.assert(doc.documentElement.firstChild.toString() == '<script></script>');
   },
-}).run();
+}).export(module);

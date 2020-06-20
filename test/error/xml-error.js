@@ -1,5 +1,5 @@
 var vows = require('vows');
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 var assert = require('assert');
 
 
@@ -72,4 +72,4 @@ vows.describe('errorHandle').addBatch({
 	//console.log(dom+'##'+errors.length)
 	console.assert(dom=='<img attr="&lt;>&amp;"/>',"invalid xml attribute(<)")
   }
-}).run();
+}).export(module);

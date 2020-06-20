@@ -1,6 +1,6 @@
 var wows = require('vows');
-var XMLSerializer = require('xmldom').XMLSerializer;
-var DOMParser = require('xmldom').DOMParser;
+var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 
 // Create a Test Suite
 wows.describe('XML Namespace Parse').addBatch({
@@ -20,4 +20,4 @@ wows.describe('XML Namespace Parse').addBatch({
 		console.assert(doc1 == doc3+'')
 		console.assert(doc2 != doc3+'')
     }
-}).run(); // Run it
+}).export(module); // Run it

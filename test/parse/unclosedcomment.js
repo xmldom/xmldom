@@ -1,6 +1,6 @@
 var wows = require('vows'),
 	assert = require('assert');
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 
 
 wows.describe('errorHandle').addBatch({
@@ -11,4 +11,4 @@ wows.describe('errorHandle').addBatch({
 		console.log(doc+'')
 	}, 'Unclosed comment');
   }
-}).run();
+}).export(module);

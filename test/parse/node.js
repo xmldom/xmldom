@@ -1,7 +1,7 @@
 var wows = require('vows');
 var assert = require('assert');
-var DOMParser = require('xmldom').DOMParser;
-var XMLSerializer = require('xmldom').XMLSerializer;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
+var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 var parser = new DOMParser();
 // Create a Test Suite
 wows.describe('XML Node Parse').addBatch({
@@ -99,7 +99,7 @@ wows.describe('XML Node Parse').addBatch({
 		console.log(doc+'')
 		
 	}
-}).run(); // Run it
+}).export(module); // Run it
 //var ELEMENT_NODE                = NodeType.ELEMENT_NODE                = 1;
 //var ATTRIBUTE_NODE              = NodeType.ATTRIBUTE_NODE              = 2;
 //var TEXT_NODE                   = NodeType.TEXT_NODE                   = 3;

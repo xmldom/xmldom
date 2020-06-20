@@ -1,7 +1,7 @@
 var wows = require('vows');
 var assert = require('assert');
-var DOMParser = require('xmldom').DOMParser;
-var XMLSerializer = require('xmldom').XMLSerializer;
+var DOMParser = require('../lib/dom-parser').DOMParser;
+var XMLSerializer = require('../lib/dom-parser').XMLSerializer;
 
 
 var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +

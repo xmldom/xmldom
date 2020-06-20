@@ -1,5 +1,5 @@
-var XMLSerializer = require('xmldom').XMLSerializer
-var DOMParser = require('xmldom').DOMParser;
+var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 var domParser = new DOMParser({xmlns:{'':'http://www.w3.org/1999/xhtml'}});
 
 var excludeTags = new RegExp('^(?:'+['javascript', 'vbscript', 'expression', 

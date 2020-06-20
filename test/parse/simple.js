@@ -1,5 +1,5 @@
 var wows = require('vows');
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 var assert = require('assert')
 
 
@@ -69,6 +69,6 @@ wows.describe('errorHandle').addBatch({
 		//console.log(Object.keys(node),node.lineNumber)
 		console.assert(node.lineNumber == 7,node.lineNumber );
   }
-}).run();
+}).export(module);
 
 

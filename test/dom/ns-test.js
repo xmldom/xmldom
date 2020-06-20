@@ -1,9 +1,9 @@
 "use strict";
-var xdom = require('xmldom');
+var xdom = require('../../lib/dom-parser');
 var wows = require('vows');
 var assert = require('assert');
-var DOMParser = require('xmldom').DOMParser;
-var XMLSerializer = require('xmldom').XMLSerializer;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
+var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 
 
 // Create a Test Suite
@@ -53,7 +53,7 @@ wows.describe('XML Namespace Parse').addBatch({
 		//console.log("Serialized: " + sr.replace(/>/g, ">\n  "));
 
 	}
-}).run();
+}).export(module);
 
 
 

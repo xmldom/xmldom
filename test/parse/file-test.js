@@ -1,7 +1,7 @@
 var fs = require('fs');
 var wows = require('vows');
-var DOMParser = require('xmldom').DOMParser;
-var XMLSerializer = require('xmldom').XMLSerializer
+var DOMParser = require('../../lib/dom-parser').DOMParser;
+var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
 
 wows.describe('DOMLocator').addBatch({
 	'test.xml':function(){
@@ -12,5 +12,5 @@ wows.describe('DOMLocator').addBatch({
 		//console.assert(result == data.replace(/<\!\[CDATA\[\]\]>/g,'').replace(/><\/\w+>/g,'/>'),result)
 		fs.writeFileSync(__dirname+'/file-test1.result.xml',result)
 	}
-}).run();
+}).export(module);
 

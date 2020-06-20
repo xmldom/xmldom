@@ -1,5 +1,5 @@
 var wows = require('vows');
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 
 // Create a Test Suite
 wows.describe('XML attrs').addBatch({
@@ -61,4 +61,4 @@ wows.describe('XML attrs').addBatch({
     "set document existed attribute":function(){
     	
     }
-}).run(); // Run it
+}).export(module); // Run it

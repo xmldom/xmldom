@@ -1,7 +1,7 @@
 var wows = require('vows');
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 var assert = require('assert')
-var XMLSerializer = require('xmldom').XMLSerializer;
+var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 // Create a Test Suite
 wows.describe('XML Namespace Parse').addBatch({
     // See: http://jsfiddle.net/bigeasy/ShcXP/1/
@@ -144,4 +144,4 @@ wows.describe('XML Namespace Parse').addBatch({
     },
     "self append failed":function(){
     }
-}).run(); // Run it
+}).export(module); // Run it

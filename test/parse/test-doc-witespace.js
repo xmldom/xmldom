@@ -1,7 +1,7 @@
 var wows = require('vows'),
 	assert = require('assert');
-var DOMParser = require('xmldom').DOMParser;
-var XMLSerializer = require('xmldom').XMLSerializer
+var DOMParser = require('../../lib/dom-parser').DOMParser;
+var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
 
 
 wows.describe('errorHandle').addBatch({
@@ -18,7 +18,7 @@ wows.describe('errorHandle').addBatch({
 		var doc = new DOMParser().parseFromString(description, 'text/html');
 		console.log(doc.toString())
 	}
-}).run()
+}).export(module)
 
 
 

@@ -1,5 +1,5 @@
 var wows = require('vows');
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 
 
 
@@ -107,4 +107,4 @@ wows.describe('errorHandle').addBatch({
 	}
 	//console.assert(false,doc+' should be null');
   }
-}).run();
+}).export(module);
