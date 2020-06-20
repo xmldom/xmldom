@@ -11,7 +11,7 @@ wows.describe('errorHandle').addBatch({
 	'document source':function(){
 		var testSource = '<?xml version="1.0"?>\n<!--test-->\n<xml/>'
 		var dom = new DOMParser().parseFromString(testSource,'text/xml')
-		console.assert(new XMLSerializer().serializeToString(dom) == testSource)
+		assert.isTrue(new XMLSerializer().serializeToString(dom) == testSource)
 	},
 	'test':function(){
 		var description = "<p>populaciji (< 0.1%), te se</p>";

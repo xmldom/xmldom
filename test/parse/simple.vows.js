@@ -49,7 +49,7 @@ wows.describe('errorHandle').addBatch({
 			].join('\n')
 		var parser = new DOMParser({ locator:{}, errorHandler: domErrorHandler });
 		var dom = parser.parseFromString(svgCase, "text/xml");
-		console.assert(String(dom)==svgCase.replace(/ \/>/g,'/>'),svgCase+'\n!=\n'+dom)
+		assert.isTrue(String(dom)==svgCase.replace(/ \/>/g,'/>'),svgCase+'\n!=\n'+dom)
   },
   'line error':function(){
   		var xmlLineError=[
@@ -67,7 +67,7 @@ wows.describe('errorHandle').addBatch({
 		//console.log('xmlLineError-result:'+dom)
 		var node = dom.documentElement.firstChild.nextSibling
 		//console.log(Object.keys(node),node.lineNumber)
-		console.assert(node.lineNumber == 7,node.lineNumber );
+		assert.isTrue(node.lineNumber == 7,node.lineNumber );
   }
 }).export(module);
 

@@ -67,7 +67,7 @@ var xml= [
     var attr = doc.documentElement.firstChild.attributes.item(0);
     //assert.equal()
     assertPosition(attr, 1, 19,'title="1<2 ')
-	//console.assert(/\n@c\:\/test\/1\.xml#\[line\:\d+,col\:\d+\]/.test(error.join(' ')),'line,col must record:'+error)
+	//assert.isTrue(/\n@c\:\/test\/1\.xml#\[line\:\d+,col\:\d+\]/.test(error.join(' ')),'line,col must record:'+error)
   },
   'error positions p':function(){
   	var error = []
@@ -81,7 +81,7 @@ var xml= [
     var root = doc.documentElement;
     var textNode = root.firstChild;
 	//console.log('!!!!!'+root+'/'+error)
-	console.assert(/\n@#\[line\:2,col\:2\]/.test(error.join(' ')),'line,col must record:'+error);
+	assert.isTrue(/\n@#\[line\:2,col\:2\]/.test(error.join(' ')),'line,col must record:'+error);
 	//console.log(textNode.lineNumber+'/'+textNode.columnNumber)
   }
 }).export(module);

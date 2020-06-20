@@ -9,7 +9,7 @@ wows.describe('DOMLocator').addBatch({
 		fs.writeFileSync(__dirname+'/file-test1.xml',data)
 		var dom = new DOMParser().parseFromString(data);
 		var result= new XMLSerializer().serializeToString(dom)
-		//console.assert(result == data.replace(/<\!\[CDATA\[\]\]>/g,'').replace(/><\/\w+>/g,'/>'),result)
+		//assert.isTrue(result == data.replace(/<\!\[CDATA\[\]\]>/g,'').replace(/><\/\w+>/g,'/>'),result)
 		fs.writeFileSync(__dirname+'/file-test1.result.xml',result)
 	}
 }).export(module);
