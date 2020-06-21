@@ -11,8 +11,7 @@ wows.describe('html normalizer').addBatch({
 			assert.equal(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml">&lt;123e>&amp;&lt;a<br/></div>')
     	
     	var dom = new DOMParser().parseFromString('<div>&nbsp;&copy;&nbsp&copy</div>','text/html');
-			// the no break space was correctly set to \u00a0 in the test before, but it failed
-			assert.equal(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml"> \u00a9&amp;nbsp&amp;copy</div>')
+			assert.equal(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml">\u00a0\u00a9&amp;nbsp&amp;copy</div>')
     	
     	
     	var dom = new DOMParser().parseFromString('<html xmlns:x="1"><body/></html>','text/html');
