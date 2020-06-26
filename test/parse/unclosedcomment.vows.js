@@ -1,5 +1,5 @@
 var wows = require('vows'),
-	assert = require('assert');
+	assert = require('../assert');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 
 
