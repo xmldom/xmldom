@@ -1,14 +1,14 @@
 var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
-var assert = require('assert')
+var assert = require('../assert')
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 // Create a Test Suite
 wows.describe('XML Namespace Parse').addBatch({
     // See: http://jsfiddle.net/bigeasy/ShcXP/1/
     "Document_getElementsByTagName":function () {
     	var doc = new DOMParser().parseFromString('<a><b/></a>');
-    	console.assert(doc.getElementsByTagName('*').length == 2);
-    	console.assert(doc.documentElement.getElementsByTagName('*').length == 1);
+    	assert(doc.getElementsByTagName('*').length, 2, 'on doc');
+    	assert(doc.documentElement.getElementsByTagName('*').length, 1, 'on doc.documentElement');
     },
     'getElementsByTagName': function () { 
     	
@@ -18,16 +18,16 @@ wows.describe('XML Namespace Parse').addBatch({
        		'<child attr="1"><test><child attr="2"/></test></child>' +
        		'<child attr="3"/></xml>','text/xml');
        var childs = doc.documentElement.getElementsByTagName('child');
-       console.assert(childs.item(0).getAttribute('attr')=="1",childs.item(0)+'');
-       console.assert(childs.item(1).getAttribute('attr')=="2",childs.item(1)+'');
-       console.assert(childs.item(2).getAttribute('attr')=="3",childs.item(2)+'');
-       console.assert(childs.length==3,3,childs.length);
+       assert(childs.item(0).getAttribute('attr'), "1",childs.item(0)+'');
+       assert(childs.item(1).getAttribute('attr'), "2",childs.item(1)+'');
+       assert(childs.item(2).getAttribute('attr'), "3",childs.item(2)+'');
+       assert(childs.length, 3, 'documentElement children length');
        
        var childs = doc.getElementsByTagName('child');
-       console.assert(childs.item(0).getAttribute('attr')=="1",childs.item(0)+'');
-       console.assert(childs.item(1).getAttribute('attr')=="2",childs.item(1)+'');
-       console.assert(childs.item(2).getAttribute('attr')=="3",childs.item(2)+'');
-       console.assert(childs.length==3,3,childs.length);
+       assert(childs.item(0).getAttribute('attr'), "1",childs.item(0)+'');
+       assert(childs.item(1).getAttribute('attr'), "2",childs.item(1)+'');
+       assert(childs.item(2).getAttribute('attr'), "3",childs.item(2)+'');
+       assert(childs.length, 3, 'doc children length');
        
        
        
@@ -37,7 +37,7 @@ wows.describe('XML Namespace Parse').addBatch({
        for(var i=0,buf = [];i<childs.length;i++){
        	buf.push(childs[i].tagName)
        }
-       console.assert(childs.length==7,childs.length,buf);
+       assert(childs.length, 7, buf);
        
        
        
@@ -45,8 +45,8 @@ wows.describe('XML Namespace Parse').addBatch({
 		var feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>');
 		var entries = feed.documentElement.getElementsByTagName('entry');
 		assert.equal(entries.length , 1,'assert entry nodelist length ==1');
-		console.assert(entries[0].nodeName=='entry');
-        console.assert(feed.documentElement.childNodes.item(0).nodeName=='entry');
+		assert(entries[0].nodeName, 'entry');
+        assert(feed.documentElement.childNodes.item(0).nodeName, 'entry');
     },
     'getElementsByTagNameNS': function () { 
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
@@ -56,34 +56,32 @@ wows.describe('XML Namespace Parse').addBatch({
        		
        var childs = doc.documentElement.getElementsByTagNameNS("http://test.com",'*');
        var i=0
-       console.assert(childs.length==6,childs.length);
+       assert(childs.length, 6);
        
        var childs = doc.getElementsByTagNameNS("http://test.com",'*');
-       console.assert(childs.length==7,childs.length);
+       assert(childs.length, 7);
        
        var childs = doc.documentElement.getElementsByTagNameNS("http://test.com",'test');
-       console.assert(childs.length==3,childs.length);
+       assert(childs.length, 3);
        
        var childs = doc.getElementsByTagNameNS("http://test.com",'test');
-       console.assert(childs.length==3,childs.length);
+       assert(childs.length, 3);
 
        var childs = doc.getElementsByTagNameNS("*", "test");
-       //console.log([].join.apply(childs,['\n@']))
-       console.assert(childs.length==4,childs.length);
+       assert(childs.length, 4);
 
        var childs = doc.documentElement.getElementsByTagNameNS("*", "test");
-       //console.log(childs.length)
-       console.assert(childs.length==4,childs.length);
+       assert(childs.length, 4);
        
     },
     'getElementById': function () { 
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +
        		'<child id="a1" title="1"><child id="a2"  title="2"/></child>' +
        		'<child id="a1"   title="3"/></xml>','text/xml');
-       console.assert(doc.getElementById('root'))
-       console.assert(doc.getElementById('a1').getAttribute('title')=="1",doc.getElementById('a1'));
-       console.assert(doc.getElementById('a2').getAttribute('title')=="2",doc.getElementById('a2'));
-       console.assert(doc.getElementById('a2').getAttribute('title2')=="",doc.getElementById('a2'));
+       assert.isTrue(doc.getElementById('root') != null, 'root')
+       assert(doc.getElementById('a1').getAttribute('title'), "1", "first");
+       assert(doc.getElementById('a2').getAttribute('title'), "2", "second");
+       assert(doc.getElementById('a2').getAttribute('title2'), "", "empty");
     },
     "append exist child":function(){
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +
@@ -102,9 +100,11 @@ wows.describe('XML Namespace Parse').addBatch({
        	var str2=new XMLSerializer().serializeToString(doc2);
        	var str3=new XMLSerializer().serializeToString(doc3);
        	var str4=new XMLSerializer().serializeToString(doc4);
-       	console.assert(str1 == str2 && str2 == str3,str3,str1);
-       	console.assert(str3 != str4 && str3.length == str4.length,str3);
-       	
+       	assert(str1, str2, 'str1 == str2')
+        assert(str2, str3, 'str2 == str3');
+       	assert.isTrue(str3 != str4, 'str4 != str3:' + str3);
+       	assert(str3.length, str4.length, 'str3 and str4 have same length');
+
     },
     "append exist other child":function(){
     	var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +
@@ -115,30 +115,31 @@ wows.describe('XML Namespace Parse').addBatch({
        	var str1=new XMLSerializer().serializeToString(doc);
        	var doc2 = doc1.cloneNode(true);
        	
-       	console.assert(doc2.documentElement.lastChild.childNodes.length == 0);
+       	assert(doc2.documentElement.lastChild.childNodes.length, 0, 'initially 0');
        	doc2.documentElement.appendChild(doc2.documentElement.firstChild.firstChild);
        	
        	var str2=new XMLSerializer().serializeToString(doc2);
        	
-       	console.assert(doc2.documentElement.lastChild.childNodes.length == 1);
-       	console.assert(str1 != str2 && str1.length != str2.length,str3);
+       	assert(doc2.documentElement.lastChild.childNodes.length, 1, '1 after adding');
+       	assert.isTrue(str1 != str2, 'str1 != str2');
+       	assert.isTrue(str1.length != str2.length, 'str1/length != str2.length');
        	var doc3 = new DOMParser().parseFromString(str2,'text/xml');
        	doc3.documentElement.firstChild.appendChild(doc3.documentElement.lastChild);
        	var str3 = new XMLSerializer().serializeToString(doc3);
-       	console.assert(str1 == str3);
+       	assert(str1, str3, 'final assertion');
     },
     "set textContent":function() {
         var doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>');
         var a = doc.documentElement.firstChild;
         var b = a.nextSibling;
         a.textContent = 'hello';
-        console.assert(doc.documentElement.toString() == '<test><a>hello</a><b><c/></b></test>');
+        assert(doc.documentElement.toString(), '<test><a>hello</a><b><c/></b></test>');
         b.textContent = 'there';
-        console.assert(doc.documentElement.toString() == '<test><a>hello</a><b>there</b></test>');
+        assert(doc.documentElement.toString(), '<test><a>hello</a><b>there</b></test>');
         b.textContent = '';
-        console.assert(doc.documentElement.toString() == '<test><a>hello</a><b/></test>');
+        assert(doc.documentElement.toString(), '<test><a>hello</a><b/></test>');
         doc.documentElement.textContent = 'bye';
-        console.assert(doc.documentElement.toString() == '<test>bye</test>');
+        assert(doc.documentElement.toString(), '<test>bye</test>');
     },
     "nested append failed":function(){
     },
