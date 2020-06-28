@@ -10,8 +10,8 @@ function isAssertionError (error) {
  * @param {Error} error
  */
 function locateAssertion (error) {
-  return error && error.stack
-    && error.stack.split('\n').find(
+  return error && error.stack &&
+    error.stack.split('\n').find(
       l => l.includes(__dirname) && !l.includes(__filename)
     )
     || '[No stacktrace available]'
