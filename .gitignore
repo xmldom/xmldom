@@ -1,2 +1,5 @@
 /node_modules
 /.proof.out
+
+# stryker temp files
+.stryker-tmp
