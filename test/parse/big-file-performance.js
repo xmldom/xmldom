@@ -1,7 +1,7 @@
 var wows = require('vows');
 var assert = require('assert');
-var XMLSerializer = require('xmldom').XMLSerializer;
-var DOMParser = require('xmldom').DOMParser;
+var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 var DomJS = require("dom-js").DomJS;
 try{
 	var Libxml = require('libxmljs');
@@ -156,4 +156,4 @@ wows.describe('XML Node Parse').addBatch({
 		}
 		//console.assert(xmldomresult == domjsresult,xmldomresult.length,i)
     }
-}).run(); // Run it
+}).export(module); // Run it
