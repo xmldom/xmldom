@@ -32,6 +32,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@stryker-mutator/core": "^3.3.0",
     "dom-js": "0.0.9",
     "nodemon": "^2.0.4",
     "vows": "^0.8.3"
