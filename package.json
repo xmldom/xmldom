@@ -25,7 +25,8 @@
     "pretest": "XMLDOM_ASSERT_STRICT=1 npm run test:assert",
     "test": "vows 'test/**/*.vows.js'",
     "test:assert": "vows test/assert.vows.js",
-    "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test'"
+    "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test'",
+    "stryker": "stryker run"
   },
   "engines": {
     "node": ">=10.0.0"
