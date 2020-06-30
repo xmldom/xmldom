@@ -1,5 +1,5 @@
-var XMLSerializer = require('xmldom').XMLSerializer;
-var DOMParser = require('xmldom').DOMParser;
+var XMLSerializer = require('../lib/dom-parser').XMLSerializer;
+var DOMParser = require('../lib/dom-parser').DOMParser;
 try{
 	var libxml = require('libxmljs');
 }catch(e){

@@ -22,14 +22,19 @@
     "lib"
   ],
   "scripts": {
-    "test": "proof platform win32 && proof test */*/*.t.js || t/test"
+    "pretest": "XMLDOM_ASSERT_STRICT=1 npm run test:assert",
+    "test": "vows 'test/**/*.vows.js'",
+    "test:assert": "vows test/assert.vows.js",
+    "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test'"
   },
   "engines": {
     "node": ">=10.0.0"
   },
   "dependencies": {},
   "devDependencies": {
-    "proof": "~7.0.9"
+    "dom-js": "0.0.9",
+    "nodemon": "^2.0.4",
+    "vows": "^0.8.3"
   },
   "maintainers": [
     {

@@ -1,4 +1,4 @@
-var DOMParser = require('xmldom').DOMParser;
+var DOMParser = require('../../lib/dom-parser').DOMParser;
 require('./mock')
 //Compatibility
 {
