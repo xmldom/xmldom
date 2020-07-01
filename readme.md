@@ -36,6 +36,13 @@ console.info(doc)
 const nsAttr = doc.documentElement.getAttributeNS('./lite', 'x')
 console.info(nsAttr)
 ```
+
+Note: in Typescript and ES6 you can use the import approach, as follows:
+
+```javascript
+import { DOMParser } from 'xmldom'
+```
+
 API Reference
 =====
 
