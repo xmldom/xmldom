@@ -5,7 +5,7 @@ name: run Stryker - Node.js CI
 
 on:
   push:
-    branches: [ master, stryker-* ]
+    branches: [ master ]
 
 jobs:
   build:
