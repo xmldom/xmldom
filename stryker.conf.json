@@ -10,5 +10,9 @@
   ],
   "testRunner": "command",
   "transpilers": [],
+  "dashboard": {
+    "project": "github.com/brodybits/xmldom",
+    "version": "master"
+  },
   "coverageAnalysis": "all"
 }

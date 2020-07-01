@@ -4,6 +4,7 @@
 [![npm](https://img.shields.io/npm/v/xmldom?style=flat-square)](https://www.npmjs.com/package/xmldom)
 [![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 [!["help wanted" issues](https://img.shields.io/github/issues/xmldom/xmldom/help%20wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
+[![Mutation report](https://camo.githubusercontent.com/ee312c4ebce7784ce9f785757eba5d6e33e6d950/68747470733a2f2f696d672e736869656c64732e696f2f656e64706f696e743f7374796c653d666c61742675726c3d687474707325334125324625324662616467652d6170692e737472796b65722d6d757461746f722e696f2532466769746875622e636f6d25324662726f647962697473253246786d6c646f6d2532466d6173746572)](https://dashboard.stryker-mutator.io/reports/github.com/brodybits/xmldom/master)
 
 A JavaScript implementation of W3C DOM for Node.js, Rhino and the browser. Fully
 compatible with `W3C DOM level2`; and some compatible with `level3`. Supports
