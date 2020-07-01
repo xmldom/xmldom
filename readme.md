@@ -1,5 +1,10 @@
 # XMLDOM
 
+[![NPM](https://img.shields.io/npm/l/xmldom?color=blue&style=flat-square)](./LICENSE.md)
+[![npm](https://img.shields.io/npm/v/xmldom?style=flat-square)](https://www.npmjs.com/package/xmldom)
+[![GitHub issues by-label](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+[![GitHub issues by-label](https://img.shields.io/github/issues/xmldom/xmldom/help%20wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
+
 A JavaScript implementation of W3C DOM for Node.js, Rhino and the browser. Fully
 compatible with `W3C DOM level2`; and some compatible with `level3`. Supports
 `DOMParser` and `XMLSerializer` interface such as in browser.
