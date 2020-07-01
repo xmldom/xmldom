@@ -1,4 +1,9 @@
-# XMLDOM [![Build Status](https://secure.travis-ci.org/xmldom/xmldom.png?branch=master)](http://travis-ci.org/xmldom/xmldom) [![NPM version](https://badge.fury.io/js/xmldom.png)](http://badge.fury.io/js/xmldom)
+# XMLDOM
+
+[![license](https://img.shields.io/npm/l/xmldom?color=blue&style=flat-square)](./LICENSE.md)
+[![npm](https://img.shields.io/npm/v/xmldom?style=flat-square)](https://www.npmjs.com/package/xmldom)
+[![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+[!["help wanted" issues](https://img.shields.io/github/issues/xmldom/xmldom/help%20wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 
 A JavaScript implementation of W3C DOM for Node.js, Rhino and the browser. Fully
 compatible with `W3C DOM level2`; and some compatible with `level3`. Supports
