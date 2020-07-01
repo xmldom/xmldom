@@ -1,4 +1,4 @@
-# XMLDOM [![Build Status](https://secure.travis-ci.org/xmldom/xmldom.png?branch=master)](http://travis-ci.org/xmldom/xmldom) [![NPM version](https://badge.fury.io/js/xmldom.png)](http://badge.fury.io/js/xmldom)
+# XMLDOM
 
 A JavaScript implementation of W3C DOM for Node.js, Rhino and the browser. Fully
 compatible with `W3C DOM level2`; and some compatible with `level3`. Supports
