@@ -88,6 +88,8 @@ wows.describe('html normalizer').addBatch({
 	},
     'Euro characters': function () {
         var dom = new DOMParser().parseFromString('<div>&Auml;&auml;&Aring;&aring;&AElig;&Ouml;&ouml;&Oslash;&euro;</div>','text/html');
+        // For the future, it may be nicer to use \uxxxx in the assert strings
+        // rather than pasting in multi-byte UTF-8 Unicode characters
         assert(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml">ÄäÅåÆÖöØ€</div>');
 	}
 }).export(module);
