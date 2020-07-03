@@ -87,9 +87,9 @@ wows.describe('html normalizer').addBatch({
     	assert(dom+'', '<textarea>alert(a&lt;b&amp;&amp;c?"<br/>":">>");</textarea>');
 	},
     'Euro characters': function () {
-        var dom = new DOMParser().parseFromString('<div>&Auml;&auml;&Aring;&aring;&AElig;&Ouml;&ouml;&Oslash;&euro;</div>','text/html');
+        var dom = new DOMParser().parseFromString('<div>&Auml;&auml;&Aring;&aring;&AElig;&aelig;&Ouml;&ouml;&Oslash;&oslash;&szlig;&Uuml;&uuml;&euro;</div>','text/html');
         // For the future, it may be nicer to use \uxxxx in the assert strings
         // rather than pasting in multi-byte UTF-8 Unicode characters
-        assert(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml">ÄäÅåÆÖöØ€</div>');
+        assert(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml">ÄäÅåÆæÖöØøßÜü€</div>');
 	}
 }).export(module);
