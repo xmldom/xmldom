@@ -85,5 +85,9 @@ wows.describe('html normalizer').addBatch({
     	
     	var dom = new DOMParser().parseFromString('<textarea>alert(a<b&&c?"<br>":">>");</textarea>','text/xml');
     	assert(dom+'', '<textarea>alert(a&lt;b&amp;&amp;c?"<br/>":">>");</textarea>');
+	},
+    'Euro characters': function () {
+        var dom = new DOMParser().parseFromString('<div>&Auml;&auml;&Aring;&aring;&AElig;&Ouml;&ouml;&Oslash;&euro;</div>','text/html');
+        assert(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml">ÄäÅåÆÖöØ€</div>');
 	}
 }).export(module);
