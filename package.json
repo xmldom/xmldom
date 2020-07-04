@@ -22,11 +22,13 @@
     "lib"
   ],
   "scripts": {
-    "pretest": "XMLDOM_ASSERT_STRICT=1 npm run test:assert",
-    "test": "vows 'test/**/*.vows.js'",
-    "test:assert": "vows test/assert.vows.js",
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test'",
-    "stryker": "stryker run"
+    "stryker": "stryker run",
+    "test": "npm-run-all test:assert:strict test:assert test:unit",
+    "test:assert": "vows test/assert.vows.checks.js",
+    "test:assert:strict": "XMLDOM_ASSERT_STRICT=1 npm run test:assert",
+    "test:unit": "npm run test:vows",
+    "test:vows": "vows 'test/**/*.vows.js'"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -37,6 +39,7 @@
     "@stryker-mutator/javascript-mutator": "^3.3.0",
     "dom-js": "0.0.9",
     "nodemon": "^2.0.4",
+    "npm-run-all": "^4.1.5",
     "vows": "^0.8.3"
   },
   "maintainers": [
