@@ -1,12 +1,11 @@
 'use strict';
 
-var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
-var assert = require('../assert')
+var assert = require('assert');
 
 function assertPosition(n, line, col,info) {
-  assert.equal(n.lineNumber , line,'lineNumber:'+n.lineNumber+'/'+line+'\n@'+info);
-  assert.equal(n.columnNumber , col,'columnNumber:'+n.columnNumber+'/'+col+'\n@'+info);
+  assert.strictEqual(n.lineNumber, line, 'lineNumber:'+n.lineNumber+'/'+line+'\n@'+info);
+  assert.strictEqual(n.columnNumber, col, 'columnNumber:'+n.columnNumber+'/'+col+'\n@'+info);
 }
 
 describe('DOMLocator', () => {
@@ -29,7 +28,7 @@ var xml= [
 	var parser = new DOMParser({locator:{}});
     var doc = parser.parseFromString(xml, 'text/xml');
    	var trans = doc.getElementsByTagName('transition')[0];
-   	assert.equal(trans.lineNumber , 10)//,''+trans+trans.lineNumber+'/'+trans.parentNode.previousSibling.previousSibling.lineNumber)
+   	assert.strictEqual(trans.lineNumber, 10);//,''+trans+trans.lineNumber+'/'+trans.parentNode.previousSibling.previousSibling.lineNumber)
    	
 	})
 
@@ -62,7 +61,7 @@ var xml= [
     var doc = parser.parseFromString(xml, 'text/html');
     var attr = doc.documentElement.firstChild.attributes.item(0);
     assertPosition(attr, 1, 19,'title="1<2 ')
-    assert(error.length, 0);
+    assert.strictEqual(error.length, 0);
   })
 
   it('error positions p', () => {
@@ -76,6 +75,6 @@ var xml= [
     var doc = parser.parseFromString('<root>\n\t<err</root>', 'text/html');
     var root = doc.documentElement;
     var textNode = root.firstChild;
-	assert.isTrue(/\n@#\[line\:2,col\:2\]/.test(error.join(' ')),'line,col must record:'+JSON.stringify(error));
+		assert(/\n@#\[line\:2,col\:2\]/.test(error.join(' ')),'line,col must record:'+JSON.stringify(error));
   })
 })

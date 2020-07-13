@@ -1,6 +1,5 @@
 'use strict';
 
-var wows = require('vows');
 var assert = require('assert');
 var DOMParser = require('../lib/dom-parser').DOMParser;
 var XMLSerializer = require('../lib/dom-parser').XMLSerializer;
@@ -22,7 +21,7 @@ doc3.documentElement.appendChild(doc3.documentElement.lastChild);
 var str2=new XMLSerializer().serializeToString(doc2);
 var str3=new XMLSerializer().serializeToString(doc3);
 var str4=new XMLSerializer().serializeToString(doc4);
-console.assert(str1 == str3,str3,str1);
+assert.strictEqual(str1, str3);
 //console.assert(str3 != str4 && str3.length == str4.length,str3);
 
 

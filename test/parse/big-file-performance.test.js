@@ -120,8 +120,8 @@ describe('XML Node Parse', () => {
 			}
 			}
 		}
-		xmldomresult = (domjs(doc1+'')+'').replace(/^<\?.*?\?>\s*|<!\[CDATA\[([\s\S]*?)\]\]>/g,xmlReplace)
-		domjsresult = (doc2+'').replace(/^<\?.*?\?>\s*|<!\[CDATA\[([\s\S]*?)\]\]>/g,xmlReplace)
+		xmldomresult = (domjs(doc1.toString()).toString()).replace(/^<\?.*?\?>\s*|<!\[CDATA\[([\s\S]*?)\]\]>/g,xmlReplace)
+		domjsresult = (doc2.toString()).replace(/^<\?.*?\?>\s*|<!\[CDATA\[([\s\S]*?)\]\]>/g,xmlReplace)
 		data = xmldomresult;
 		//console.log(data.substring(100,200))
 		

@@ -1,26 +1,25 @@
 'use strict';
 
-var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
-var assert = require('../assert')
+var assert = require('assert')
 
 describe('parse', () => {
   it('simple', () => {
 	var parser = new DOMParser();
 	var doc = parser.parseFromString('<html><body title="1<2"></body></html>', 'text/html');
-	assert(doc+'', '<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"></body></html>');
+	assert.strictEqual(doc.toString(), '<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"></body></html>');
   })
 
   it('unclosedFix', () => {
   	var parser = new DOMParser();
 		var dom = parser.parseFromString('<r><Page><Label /></Page  <Page></Page></r>', "text/xml");
-		assert(dom+'', '<r><Page><Label/></Page>  <Page/></r>');
+		assert.strictEqual(dom.toString(), '<r><Page><Label/></Page>  <Page/></r>');
   })
 
   it('test', () => {
 		var parser = new DOMParser();
 		var dom = parser.parseFromString('<Page><Label class="title"/></Page  1', "text/xml");
-		assert.equal(dom+'','<Page><Label class="title"/></Page>  1')
+		assert.equal(dom.toString(),'<Page><Label class="title"/></Page>  1')
   })
 
   it('svg test', () => {
@@ -34,7 +33,7 @@ describe('parse', () => {
 			].join('\n')
 		var parser = new DOMParser({ locator:{}});
 		var dom = parser.parseFromString(svgCase, "text/xml");
-		assert(dom+'', svgCase.replace(/ \/>/g,'/>'))
+		assert.strictEqual(dom.toString(), svgCase.replace(/ \/>/g,'/>'))
   })
 
   it('line error', () => {
@@ -51,7 +50,7 @@ describe('parse', () => {
 		var parser = new DOMParser({ locator:{} });
 		var dom = parser.parseFromString(xmlLineError, "text/xml");
 		var node = dom.documentElement.firstChild.nextSibling
-		assert(node.lineNumber, 7);
+		assert.strictEqual(node.lineNumber, 7);
   })
 
   it('invalid input - falsy string', runParserWith(''))
@@ -67,9 +66,9 @@ function runParserWith (testValue) {
     try {
       parser.parseFromString(testValue);
       // If the above line doesn't throw then fail the test
-      assert.isTrue(false);
+      assert(false);
     } catch (e) {
-      assert.isTrue(isInvalidDocSource(e));
+      assert(isInvalidDocSource(e));
     }
   }
 }

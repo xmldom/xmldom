@@ -1,8 +1,7 @@
 'use strict';
 
-var vows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
-var assert = require('../assert');
+var assert = require('assert');
 
 
 describe('errorHandle', () => {
@@ -14,7 +13,7 @@ describe('errorHandle', () => {
 	}
 	});
 	var dom = p.parseFromString('', 'text/xml');
-	assert(errors.length, 2)
+	assert.strictEqual(errors.length, 2)
   })
 
   it("unclosed document", () => {
@@ -25,7 +24,7 @@ describe('errorHandle', () => {
 	}
 	});
 	var dom = p.parseFromString('<img>', 'text/xml');
-	assert(errors.length, 2)
+	assert.strictEqual(errors.length, 2)
   })
 
   it("unclosed hmtl tags", () => {
@@ -36,7 +35,7 @@ describe('errorHandle', () => {
 	}
 	});
 	var dom = p.parseFromString('<img>', 'text/html');
-	assert(errors.length, 0,"unclosed html tag not need report!!")
+	assert.strictEqual(errors.length, 0,"unclosed html tag not need report!!")
   })
 
   it("invalid xml node", () => {
@@ -46,17 +45,17 @@ describe('errorHandle', () => {
 				errors.push(key, msg)
 			}
 		});
-		assert.equal(
-			p.parseFromString('<test><!--', 'text/xml').documentElement+'',
+		assert.strictEqual(
+			p.parseFromString('<test><!--', 'text/xml').documentElement.toString(),
 			'<test/>'
-		)
-		assert(errors.length, 4)
+		);
+		assert.strictEqual(errors.length, 4);
 		errors = []
-		assert.equal(
-			p.parseFromString('<r', 'text/xml').documentElement+'',
+		assert.strictEqual(
+			p.parseFromString('<r', 'text/xml').documentElement.toString(),
 			'<r/>'
 		)
-		assert(errors.length, 4)
+		assert.strictEqual(errors.length, 4)
   })
 
   it("invalid html attribute (miss quote)", () => {
@@ -67,12 +66,12 @@ describe('errorHandle', () => {
 	}
 	});
 	var dom = p.parseFromString('<img attr=1/>', 'text/html');
-	assert(errors.length, 2,"invalid xml attribute(miss qute)")
-	assert(dom+'', '<img attr="1" xmlns="http://www.w3.org/1999/xhtml"/>')
+	assert.strictEqual(errors.length, 2,"invalid xml attribute(miss qute)")
+	assert.strictEqual(dom.toString(), '<img attr="1" xmlns="http://www.w3.org/1999/xhtml"/>')
   })
 
   it('valid html attribute value (<>&)', () => {
 		var dom = new DOMParser({}).parseFromString('<img attr="<>&"/>', 'text/html');
-		assert(dom+'', '<img attr="&lt;>&amp;" xmlns="http://www.w3.org/1999/xhtml"/>',"invalid xml attribute valus (<)")
+		assert.strictEqual(dom.toString(), '<img attr="&lt;>&amp;" xmlns="http://www.w3.org/1999/xhtml"/>',"invalid xml attribute valus (<)")
   })
 })

@@ -1,7 +1,6 @@
 'use strict';
 
-var wows = require('vows');
-var assert = require('../assert');
+var assert = require('assert');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 
 
@@ -12,8 +11,8 @@ describe('XML Namespace Parse', () => {
 			xmlns:{'c':'http://www.xidea.org/lite/core','':'http://www.w3.org/1999/xhtml'}
 		}).parseFromString('<html><body><c:var name="a" value="${1}"/></body></html>', "text/xml");
 		var el = doc.getElementsByTagName('c:var')[0];
-		assert(el.namespaceURI, 'http://www.xidea.org/lite/core')
-		assert(doc, '<html xmlns="http://www.w3.org/1999/xhtml"><body><c:var name="a" value="${1}" xmlns:c="http://www.xidea.org/lite/core"></c:var></body></html>')
+		assert.strictEqual(el.namespaceURI, 'http://www.xidea.org/lite/core')
+		assert.strictEqual(doc, '<html xmlns="http://www.w3.org/1999/xhtml"><body><c:var name="a" value="${1}" xmlns:c="http://www.xidea.org/lite/core"></c:var></body></html>')
 	})
 
 	//ignore default prefix xml attribute 
@@ -32,15 +31,15 @@ describe('XML Namespace Parse', () => {
 		    te.setAttributeNS(n1, "bar", "valx");
 		    var te = doc.createElementNS(n1, "test");
 		    te.setAttributeNS(n1, "bar", "valx");
-		    assert.equal(String(te),'<test xmlns="'+n1+'" bar="valx"/>', `1. i ${_i}, ${el}`);
+		    assert.strictEqual(String(te),'<test xmlns="'+n1+'" bar="valx"/>', `1. i ${_i}, ${el}`);
 		    el.appendChild(te);
 		    var tx = doc.createElementNS(n2, "test");
 		    tx.setAttributeNS(n2, "bar", "valx");
-		    assert.equal(String(tx),'<test xmlns="'+n2+'" bar="valx"/>', `2. i ${_i}, ${el}`);
+		    assert.strictEqual(String(tx),'<test xmlns="'+n2+'" bar="valx"/>', `2. i ${_i}, ${el}`);
 		    el.appendChild(tx);
 		}
 		var sr = String(doc);
-		assert(sr, '<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" bar="valx"></test><test xmlns="http://rmf.vc/n2" bar="valx"></test></rmf:foo></html>');
+		assert.strictEqual(sr, '<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" bar="valx"></test><test xmlns="http://rmf.vc/n2" bar="valx"></test></rmf:foo></html>');
 
 	})
 })
