@@ -1,3 +1,5 @@
+"use strict";
+
 const vows = require('vows')
 const assert = require('assert').strict
 const a = require('./assert')

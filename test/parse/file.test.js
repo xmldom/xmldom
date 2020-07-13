@@ -1,3 +1,5 @@
+"use strict";
+
 var fs = require('fs');
 var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;

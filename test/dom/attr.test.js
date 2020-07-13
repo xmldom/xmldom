@@ -1,3 +1,5 @@
+"use strict";
+
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 const assert = require('../assert')
 
