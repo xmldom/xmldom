@@ -1,1 +1,1 @@
-require('./test-define')
+require('./test-define');

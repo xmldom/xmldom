@@ -1,7 +1,7 @@
-var node_assert = require('assert')
+var node_assert = require('assert');
 
-function isAssertionError (error) {
-	return error.name.startsWith('AssertionError')
+function isAssertionError(error) {
+	return error.name.startsWith('AssertionError');
 }
 
 /**
@@ -9,12 +9,15 @@ function isAssertionError (error) {
  *
  * @param {Error} error
  */
-function locateAssertion (error) {
-	return error && error.stack &&
-    error.stack.split('\n').find(
-    	l => l.includes(__dirname) && !l.includes(__filename)
-    )
-    || '[No stacktrace available]'
+function locateAssertion(error) {
+	return (
+		(error &&
+			error.stack &&
+			error.stack
+				.split('\n')
+				.find((l) => l.includes(__dirname) && !l.includes(__filename))) ||
+		'[No stacktrace available]'
+	);
 }
 
 /**
@@ -42,32 +45,41 @@ function locateAssertion (error) {
  * @see https://github.com/vowsjs/vows#assertistrueactual-message
  * @see https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
  */
-function assert (actual, expected, ...messages) {
+function assert(actual, expected, ...messages) {
 	// in case console.assert gets converted without changing == to ,: fail
 	// it makes no sense to call this method with only one boolean argument
-	if (typeof actual === 'boolean' && arguments.length === 1) throw new Error('convert equal to ,')
-	let caught
+	if (typeof actual === 'boolean' && arguments.length === 1)
+		throw new Error('convert equal to ,');
+	let caught;
 	// the assertion with the better error message comes first so we can benefit
 	try {
-		node_assert.strict.equal(actual, expected)
+		node_assert.strict.equal(actual, expected);
 	} catch (error) {
-		if (!isAssertionError(error)) throw error
-		caught = error
+		if (!isAssertionError(error)) throw error;
+		caught = error;
 	}
 	// the original assertion comes second, it has to always be executed
-	node_assert(actual == expected, ['(loose ==)', ...messages, actual, locateAssertion(caught)].join(' '))
+	node_assert(
+		actual == expected,
+		['(loose ==)', ...messages, actual, locateAssertion(caught)].join(' ')
+	);
 	if (caught) {
-		const msg = ['(strict ===) ', ...messages, caught.message, locateAssertion(caught)]
+		const msg = [
+			'(strict ===) ',
+			...messages,
+			caught.message,
+			locateAssertion(caught),
+		];
 		if ((this.strictThrows || assert.strictThrows)()) {
-			caught.message = msg.join(' ')
-			throw caught
+			caught.message = msg.join(' ');
+			throw caught;
 		}
-		(this.log || assert.log)(...msg)
+		(this.log || assert.log)(...msg);
 	}
 }
 
-assert.log = console.warn
-assert.strictThrows = () => process.env.XMLDOM_ASSERT_STRICT || false
+assert.log = console.warn;
+assert.strictThrows = () => process.env.XMLDOM_ASSERT_STRICT || false;
 
 /**
  * This is a consistent way of skipping an assertion since it currently fails:
@@ -83,32 +95,34 @@ assert.strictThrows = () => process.env.XMLDOM_ASSERT_STRICT || false
  * @returns {undefined} if the assertion fails
  * @throws {AssertionError} if no assertion fails
  */
-function skip (actual, expected, ...messages) {
+function skip(actual, expected, ...messages) {
 	try {
-		assert.apply(this, arguments)
+		assert.apply(this, arguments);
 	} catch (error) {
 		if (!isAssertionError(error)) {
-			throw error
+			throw error;
 		}
 		(this.log || assert.log)(
 			'Skipped assertion fails as expected:\n  ',
 			error.message,
 			'in',
 			locateAssertion(error)
-		)
-		return
+		);
+		return;
 	}
-	const error = new Error(`Skipped assertion is not failing: '''${messages.join(' ')}'''\n  `)
-	error.message += locateAssertion(error)
-	throw error
+	const error = new Error(
+		`Skipped assertion is not failing: '''${messages.join(' ')}'''\n  `
+	);
+	error.message += locateAssertion(error);
+	throw error;
 }
 
-assert.skip = skip
+assert.skip = skip;
 
 // provide access to used node assertions to avoid cumbersome duplicate imports
 // and avoid forgetting to import .strict methods
-assert.fail = node_assert.strict.fail
-assert.equal = node_assert.strict.equal
-assert.isTrue = node_assert.isTrue
+assert.fail = node_assert.strict.fail;
+assert.equal = node_assert.strict.equal;
+assert.isTrue = node_assert.isTrue;
 
-module.exports = assert
+module.exports = assert;
