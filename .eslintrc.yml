@@ -7,6 +7,9 @@ env:
 parserOptions:
   ecmaVersion: 6
 rules:
+  # FUTURE TBD no-trailing-spaces would be covered by adding
+  # extends: 'eslint:recommended' entry above
+  no-trailing-spaces: error
   indent:
     - error
     - tab
