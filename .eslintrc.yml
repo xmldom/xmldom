@@ -3,23 +3,10 @@ env:
   commonjs: true
   node: true
 # FUTURE TBD:
-# extends: 'eslint:recommended'
+# extends: (...)
 parserOptions:
   ecmaVersion: 6
-rules:
-  # FUTURE TBD no-trailing-spaces would be covered by adding
-  # extends: 'eslint:recommended' entry above
-  no-trailing-spaces: error
-  indent:
-    - error
-    - tab
-  linebreak-style:
-    - error
-    - unix
-  # FUTURE TBD:
-  # quotes:
-  #   - error
-  #   - single
-  # semi:
-  #   - error
-  #   - always
+# FUTURE TBD (...)
+# rules:
+  # FUTURE TBD
+  # (...)
