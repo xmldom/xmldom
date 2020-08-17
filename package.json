@@ -24,7 +24,7 @@
   "scripts": {
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test'",
     "stryker": "stryker run",
-    "test": "npm-run-all test:assert:strict test:assert test:unit",
+    "test": "npm-run-all test:assert:strict test:unit",
     "test:assert": "vows test/assert.vows.checks.js",
     "test:assert:strict": "XMLDOM_ASSERT_STRICT=1 npm run test:assert",
     "test:unit": "npm run test:vows",
