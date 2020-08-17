@@ -22,6 +22,8 @@
     "lib"
   ],
   "scripts": {
+    "lint": "npm-run-all lint:eslint",
+    "lint:eslint": "eslint lib test",
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test'",
     "stryker": "stryker run",
     "test": "npm-run-all test:assert:strict test:unit",
