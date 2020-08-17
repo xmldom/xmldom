@@ -2,7 +2,8 @@ env:
   browser: true
   commonjs: true
   node: true
-extends: 'eslint:recommended'
+# FUTURE TBD:
+# extends: 'eslint:recommended'
 parserOptions:
   ecmaVersion: 6
 rules:
@@ -12,9 +13,10 @@ rules:
   linebreak-style:
     - error
     - unix
-  quotes:
-    - error
-    - single
-  semi:
-    - error
-    - always
+  # FUTURE TBD:
+  # quotes:
+  #   - error
+  #   - single
+  # semi:
+  #   - error
+  #   - always
