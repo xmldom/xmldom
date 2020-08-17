@@ -2,8 +2,8 @@ env:
   browser: true
   commonjs: true
   node: true
-# FUTURE TBD:
-# extends: (...)
+extends:
+  'plugin:prettier/recommended'
 parserOptions:
   ecmaVersion: 6
 # FUTURE TBD (...)
