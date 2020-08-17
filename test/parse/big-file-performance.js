@@ -46,7 +46,7 @@ function domjs(data){
 	    doc = dom;
 	});
 	console.timeEnd('dom-js');
-	
+
 	doc.toString = function(){
 		return doc.toXml();
 	}
@@ -88,11 +88,11 @@ wows.describe('XML Node Parse').addBatch({
 		var xmldomTime = t2-t1;
 		var domjsTime = t3-t2;
 		console.assert(domjsTime>xmldomTime,'xmldom performance must more height!!')
-		
-		
+
+
 		doc1 = doc1.cloneNode(true);
 		addAttributes(doc1.documentElement);
-		
+
 		data = doc1.toString();
 		console.log('test more attribute xml')
 		var t1 = new Date();
@@ -121,7 +121,7 @@ wows.describe('XML Node Parse').addBatch({
 		domjsresult = (doc2+'').replace(/^<\?.*?\?>\s*|<!\[CDATA\[([\s\S]*?)\]\]>/g,xmlReplace)
 		data = xmldomresult;
 		//console.log(data.substring(100,200))
-		
+
 		console.log('test more attribute xml without cdata')
 		var t1 = new Date();
 		var doc1 = xmldom(data);
@@ -133,9 +133,9 @@ wows.describe('XML Node Parse').addBatch({
 		var xmldomTime = t2-t1;
 		var domjsTime = t3-t2;
 		console.assert(domjsTime>xmldomTime,'xmldom performance must more height!!')
-		
+
 		//console.log(xmldomresult,domjsresult)
-		
+
 		//assert.equal(xmldomresult,domjsresult);
 		//,xmldomresult,domjsresult)
 		if(xmldomresult !== domjsresult){
@@ -151,8 +151,8 @@ wows.describe('XML Node Parse').addBatch({
 					console.assert(xmldomresult == domjsresult)
 					break;
 				}
-			} 
-			
+			}
+
 		}
 		//console.assert(xmldomresult == domjsresult,xmldomresult.length,i)
 	}

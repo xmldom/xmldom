@@ -65,7 +65,7 @@ wows.describe('errorHandle').addBatch({
     	error2 = error2.concat(errorMap[n])
     	assert(error.length, errorMap[n].length)
 		}
-   
+
 		assert(error2.sort().join(','), error.sort().join(','), 'expected same messages')
 	},
 	'error function throwing is not caught': function() {

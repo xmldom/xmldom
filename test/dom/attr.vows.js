@@ -54,12 +54,12 @@ wows.describe('XML attrs').addBatch({
     	assert(root.getAttributeNS("a", "b"), "e");
 	},
 	"override ns attribute":function(){
-    	
+
 	},
 	"set existed attribute":function(){
-    	
+
 	},
 	"set document existed attribute":function(){
-    	
+
 	}
 }).export(module); // Run it

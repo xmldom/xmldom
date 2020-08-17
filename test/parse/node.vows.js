@@ -5,7 +5,7 @@ var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 var parser = new DOMParser();
 // Create a Test Suite
 wows.describe('XML Node Parse').addBatch({
-	'element': function () { 
+	'element': function () {
     	var dom = new DOMParser().parseFromString('<xml><child/></xml>');
     	assert(dom.childNodes.length, 1);
     	assert(dom.documentElement.childNodes.length, 1);
@@ -97,7 +97,7 @@ wows.describe('XML Node Parse').addBatch({
 		});
 	    var doc = parser.parseFromString('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html/>', 'text/html');
 		assert(doc+'', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"></html>')
-		
+
 	}
 }).export(module); // Run it
 //var ELEMENT_NODE                = NodeType.ELEMENT_NODE                = 1;

@@ -41,7 +41,7 @@ wows.describe('parse').addBatch({
 			'         packageVersion="1">',
 			'  <co id="0" binds="1">',
 			'</package>'].join('\r\n');
-		
+
 		var parser = new DOMParser({ locator:{} });
 		var dom = parser.parseFromString(xmlLineError, "text/xml");
 		var node = dom.documentElement.firstChild.nextSibling

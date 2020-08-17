@@ -28,7 +28,7 @@ wows.describe('DOMLocator').addBatch({
 		var doc = parser.parseFromString(xml, 'text/xml');
    	var trans = doc.getElementsByTagName('transition')[0];
    	assert.equal(trans.lineNumber , 10)//,''+trans+trans.lineNumber+'/'+trans.parentNode.previousSibling.previousSibling.lineNumber)
-   	
+
 	},
 	'node positions': function() {
 		var parser = new DOMParser({locator:{}});

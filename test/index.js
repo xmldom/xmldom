@@ -33,7 +33,7 @@ function check(data,doc){
 	if(xmldomresult!=domjsresult){
 		assert.equal(format(xmldomresult),domjsresult);
 	}
-	
+
 }
 DOMParser.prototype.parseFromString = function(data,mimeType){
 	var doc = oldParser.apply(this,arguments);
