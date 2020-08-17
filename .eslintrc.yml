@@ -2,19 +2,22 @@ env:
   browser: true
   commonjs: true
   node: true
-extends: 'eslint:recommended'
+# FUTURE TBD:
+# extends: 'eslint:recommended'
 parserOptions:
   ecmaVersion: 6
 rules:
-  indent:
-    - error
-    - tab
+  # FUTURE TBD:
+  # indent:
+  #   - error
+  #   - tab
   linebreak-style:
     - error
     - unix
-  quotes:
-    - error
-    - single
-  semi:
-    - error
-    - always
+  # FUTURE TBD:
+  # quotes:
+  #   - error
+  #   - single
+  # semi:
+  #   - error
+  #   - always
