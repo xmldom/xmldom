@@ -2,5 +2,6 @@
   "extends": [
     "config:js-lib"
   ],
+  "commitMessageExtra": "-> {{#if isMajor}}{{{newMajor}}}{{else}}{{#if isSingleVersion}}{{{toVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}} - {{depType}}",
   "rangeStrategy": "bump"
 }
