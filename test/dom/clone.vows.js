@@ -5,13 +5,13 @@ const assert = require('../assert')
 
 // Create a Test Suite
 wows.describe('XML Namespace Parse').addBatch({
-    'clone': function () { 
+	'clone': function () { 
 		var doc1 = new DOMParser().parseFromString("<doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1>",'text/xml')
 		var doc1s = new XMLSerializer().serializeToString(doc1);
 		var n =doc1.cloneNode(true)
 		assert(n, doc1s)
-    },
-    'import': function () { 
+	},
+	'import': function () { 
 		var doc1 = new DOMParser().parseFromString("<doc2 attr='2'/>")
 		var doc2 = new DOMParser().parseFromString("<doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1>",'text/xml')
 		
@@ -20,5 +20,5 @@ wows.describe('XML Namespace Parse').addBatch({
 		doc1.documentElement.appendChild(n)
 		assert(doc1, doc3+'')
 		assert.isTrue(doc2 != doc3+'')
-    }
+	}
 }).export(module); // Run it

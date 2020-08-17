@@ -4,10 +4,10 @@ var DOMParser = require('../lib/dom-parser').DOMParser;
 var domParser = new DOMParser({xmlns:{'':'http://www.w3.org/1999/xhtml'}});
 
 var excludeTags = new RegExp('^(?:'+['javascript', 'vbscript', 'expression', 
-				'meta', 'xml', 'blink', 'link', 
-				'script', 'applet','embed', 'object',
-				'iframe', 'frame', 'frameset','ilayer', 'layer', 'bgsound', 'base',
-				].join('|')
+	'meta', 'xml', 'blink', 'link', 
+	'script', 'applet','embed', 'object',
+	'iframe', 'frame', 'frameset','ilayer', 'layer', 'bgsound', 'base',
+].join('|')
 				+')$','i');
 var excludeAttrs = /^on|style/i
 var urlAttrs = /(?:href|src)/i

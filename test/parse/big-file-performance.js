@@ -15,9 +15,9 @@ function xmldom(data){
 	var doc = new DOMParser({locator:null,checkLater:true}).parseFromString(data);
 	console.timeEnd('xmldom');
 	if(doc.toString.name !='xxxxx'){
-	doc.toString = function xxxxx(){
-		return new XMLSerializer().serializeToString(doc);
-	}
+		doc.toString = function xxxxx(){
+			return new XMLSerializer().serializeToString(doc);
+		}
 	}
 	return doc;
 }
@@ -28,9 +28,9 @@ function libxml(data){
 		console.timeEnd('libxml');
 		var ToString=doc.toString ;
 		if(ToString.name !='xxxxx'){
-		doc.toString = function xxxxx(){
-			return ToString.apply(this,arguments).replace(/^\s+|\s+$/g,'');
-		}
+			doc.toString = function xxxxx(){
+				return ToString.apply(this,arguments).replace(/^\s+|\s+$/g,'');
+			}
 		}
 		//console.error(doc.toString())
 		return doc;
@@ -72,7 +72,7 @@ function addAttributes(el){
 }
 // Create a Test Suite
 wows.describe('XML Node Parse').addBatch({
-    "big file parse":function(){
+	"big file parse":function(){
 		var fs = require('fs');
 		var path = require('path')
 		var data = fs.readFileSync(path.resolve(__dirname,'./file-test1.xml'), 'ascii');
@@ -108,13 +108,13 @@ wows.describe('XML Node Parse').addBatch({
 		function xmlReplace(a,v){
 			switch(v){
 			case '&':
-			return '&amp;'
+				return '&amp;'
 			case '<':
-			return '&lt;'
+				return '&lt;'
 			default:
-			if(v.length>1){
-				return v.replace(/([&<])/g,xmlReplace)
-			}
+				if(v.length>1){
+					return v.replace(/([&<])/g,xmlReplace)
+				}
 			}
 		}
 		xmldomresult = (domjs(doc1+'')+'').replace(/^<\?.*?\?>\s*|<!\[CDATA\[([\s\S]*?)\]\]>/g,xmlReplace)
@@ -155,5 +155,5 @@ wows.describe('XML Node Parse').addBatch({
 			
 		}
 		//console.assert(xmldomresult == domjsresult,xmldomresult.length,i)
-    }
+	}
 }).export(module); // Run it

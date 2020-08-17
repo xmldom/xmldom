@@ -40,7 +40,7 @@ DOMParser.prototype.parseFromString = function(data,mimeType){
 	function ck(){
 		if(!/\/x?html?\b/.test(mimeType)){
 			try{
-			check(data,doc);
+				check(data,doc);
 			}catch(e){console.dir(e)}
 		}
 	}
@@ -55,11 +55,11 @@ function include(){
 	}
 }
 include('./dom'
-		,'./error'
-		,'./html/normalize'
-		,'./parse'
-		//*/
-		)
+	,'./error'
+	,'./html/normalize'
+	,'./parse'
+	//*/
+)
 
 
 

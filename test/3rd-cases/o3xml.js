@@ -6,7 +6,7 @@ require('./mock')
 	var np = doc.__proto__.__proto__.__proto__;
 	for(var n in np){
 		if(/_NODE$/.test(n)){
-//			console.log(n.replace(/_NODE$/,''),np[n])
+			//			console.log(n.replace(/_NODE$/,''),np[n])
 			np[n.replace(/_NODE$/,'')] = np[n];
 		}
 	}
