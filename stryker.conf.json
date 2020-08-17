@@ -14,5 +14,8 @@
     "project": "github.com/brodybits/xmldom",
     "version": "master"
   },
-  "coverageAnalysis": "all"
+  "coverageAnalysis": "all",
+  "commandRunner": {
+    "command": "npm run test:unit"
+  }
 }
