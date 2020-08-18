@@ -1,11 +1,12 @@
 env:
   browser: true
   commonjs: true
+  es2020: true
   node: true
 # FUTURE TBD:
 # extends: 'eslint:recommended'
 parserOptions:
-  ecmaVersion: 6
+  ecmaVersion: 11
 rules:
   # FUTURE TBD:
   # indent:
