@@ -3,6 +3,8 @@ env:
   commonjs: true
   es2020: true
   node: true
+plugins:
+  - es5
 # FUTURE TBD:
 # extends: 'eslint:recommended'
 parserOptions:
