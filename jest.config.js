@@ -115,9 +115,10 @@ module.exports = {
   // rootDir: undefined,
 
   // A list of paths to directories that Jest should use to search for files in
-  // roots: [
-  //   "<rootDir>"
-  // ],
+  roots: [
+  	// prevents jest from looking for tests in other directories (e.g. leftover `.stryker-tmp`)
+    "test"
+  ],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
@@ -156,8 +157,8 @@ module.exports = {
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   testRegex: [
-  	/\.test\.js?$/
-	],
+    /test\/.*\.test\.js$/
+  ],
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,
