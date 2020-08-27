@@ -44,5 +44,37 @@ describe('DOMParser', () => {
 				new DOMParser().parseFromString(XML).toString()
 			).toEqual(XML)
 		})
+
+		test('should provide access to textContent and attribute values', () => {
+			// provides an executable example for https://github.com/xmldom/xmldom/issues/93
+			const XML = `
+			<pdf2xml producer="poppler" version="0.26.5">
+				<page number="1" position="absolute" top="0" left="0" height="1262" width="892">
+					<fontspec id="0" size="14" family="Times" color="#000000"/>
+					<text top="0" >first</text>
+					<text top="1" >second</text>
+					<text top="2" >last</text>
+				</page>
+			</pdf2xml>
+`;
+			/*
+			 TODO: again this is the "simples and most readable way,
+			  but it also means testing it over and over
+			*/
+			const document = new DOMParser().parseFromString(XML);
+			/*
+			 FIXME: from here we are actually testing the Document/Element/Node API
+			 maybe this should be split?
+			*/
+			const textTags = document.getElementsByTagName('text');
+
+			expect(textTags.length).toEqual(3)
+			const expectedText = ['first', 'second', 'last'];
+			for (let i = 0; i < textTags.length; i++) {
+				const textTag = textTags[i];
+				expect(textTag.textContent).toEqual(expectedText[i]);
+				expect(textTag.getAttribute('top')).toEqual(`${i}`);
+			}
+		})
 	})
 })
