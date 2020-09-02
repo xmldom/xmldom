@@ -4,7 +4,7 @@ env:
   es2020: true
   node: true
 plugins:
-  - es5
+  - es6
 # FUTURE TBD:
 # extends: 'eslint:recommended'
 parserOptions:
