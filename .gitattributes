@@ -1,2 +1,0 @@
-; jest snapshots can and should show in diff, since they are not binary
-*.test.js.snap diff
