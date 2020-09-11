@@ -16,7 +16,6 @@
   },
   "coverageAnalysis": "all",
   "commandRunner": {
-    "command": "jest"
-  },
-  "timeoutMS": 15000
+    "command": "npm run test:unit"
+  }
 }
