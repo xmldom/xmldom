@@ -18,8 +18,5 @@
   "commandRunner": {
     "command": "jest"
   },
-  "files": [
-    "test/**/*.test.js", "test/get-test-parser.js", "lib/*.js", "package.json", "jest.config.js"
-  ],
   "timeoutMS": 15000
 }
