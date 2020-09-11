@@ -1,5 +1,6 @@
 const xmltest = require('xmltest')
 const {getTestParser} = require('../get-test-parser')
+const {minimizeSnapshot} = require('./minimize-snapshot')
 
 describe('xmltest/valid', () => {
 	describe('standalone', () => {
@@ -19,7 +20,7 @@ describe('xmltest/valid', () => {
 
 				const actual = parser.parseFromString(input).toString()
 
-				expect({actual, errors, expected}).toMatchSnapshot()
+				expect(minimizeSnapshot(actual, errors, expected)).toMatchSnapshot()
 			})
 		})
 	})
