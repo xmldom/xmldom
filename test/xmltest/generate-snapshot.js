@@ -10,13 +10,13 @@ const {replaceNonTextChars} = require('xmltest')
  * @returns {{actual?: string} & Partial<Record<ErrorLevel, string[]>>}
  */
 const generateSnapshot = (actual, errors, expected) => {
-	const actualOutput = replaceNonTextChars(actual)
-	const expectedOutput = replaceNonTextChars(expected)
+	const actualForSnapshot = replaceNonTextChars(actual)
+	const expectedForSnapshot = replaceNonTextChars(expected)
 	const partial = {
-		actual: actualOutput
+		actual: actualForSnapshot
 	}
-	if (expectedOutput && actualOutput !== expectedOutput) {
-		partial.expected = expectedOutput
+	if (expectedForSnapshot && actualForSnapshot !== expectedForSnapshot) {
+		partial.expected = expectedForSnapshot
 	}
 	return {...partial, ...errors}
 }
