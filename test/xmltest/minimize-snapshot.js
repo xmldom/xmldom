@@ -1,4 +1,4 @@
-const {replaceNonTextChars} = require('xmltest')
+const {replaceNonTextChars} = require('xmltest');
 /**
  * Provides minimal representation by not adding empty lists to the snapshot.
  * `expected` will only be added if it is provided.
@@ -17,8 +17,8 @@ const minimizeSnapshot = (actualIn, errors, expected) => {
 			: {actual, expected: replaceNonTextChars(expected)};
 	comparable = {...comparable, ...errors};
 	return Object.keys(comparable).length === 0 ? {actual} : comparable;
-}
+};
 
 module.exports = {
 	minimizeSnapshot
-}
+};
