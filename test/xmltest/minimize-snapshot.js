@@ -1,7 +1,7 @@
 const {replaceNonTextChars} = require('xmltest');
 
 /**
- * Provides minimal representation by not adding empty lists to the snapshot.
+ * Provides minimal representation by not adding empty lists to the snapshots.
  * `expected` will only be added if it is provided.
  *
  * @param actualIn {string | undefined | {toString: function(): string}}
