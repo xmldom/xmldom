@@ -1,6 +1,6 @@
 const xmltest = require('xmltest');
 const {getTestParser} = require('../get-test-parser');
-const {minimizeSnapshot} = require('./minimize-snapshot');
+const {generateSnapshot} = require('./generate-snapshot');
 
 describe('xmltest/not-wellformed', () => {
 	describe('standalone', () => {
@@ -21,7 +21,7 @@ describe('xmltest/not-wellformed', () => {
 				// for 050.xml the result is undefined so be careful
 				const actual = parser.parseFromString(input);
 
-				expect(minimizeSnapshot(actual, errors)).toMatchSnapshot();
+				expect(generateSnapshot(actual, errors)).toMatchSnapshot();
 			});
 		});
 	});
