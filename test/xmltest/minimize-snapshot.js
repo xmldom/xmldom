@@ -11,13 +11,13 @@ const {replaceNonTextChars} = require('xmltest');
  */
 const minimizeSnapshot = (actualIn, errors, expected) => {
 	const actual = replaceNonTextChars(actualIn);
-	let comparable = expected && actual === expected
+	const partial = expected && actual === expected
 		? {}
 		: expected === undefined
 			? {actual}
 			: {actual, expected: replaceNonTextChars(expected)};
-	comparable = {...comparable, ...errors};
-	return Object.keys(comparable).length === 0 ? {actual} : comparable;
+	const results = {...partial, ...errors};
+	return Object.keys(results).length === 0 ? {actual} : results;
 };
 
 module.exports = {
