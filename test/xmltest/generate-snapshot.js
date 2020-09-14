@@ -1,4 +1,4 @@
-const {replaceNonTextChars} = require('xmltest');
+const {replaceNonTextChars} = require('xmltest')
 
 /**
  * Generate minimal snapshot representation by not adding empty lists to the
@@ -10,17 +10,17 @@ const {replaceNonTextChars} = require('xmltest');
  * @returns {{actual?: string} & Partial<Record<ErrorLevel, string[]>>}
  */
 const generateSnapshot = (actual, errors, expected) => {
-	const actualOutput = replaceNonTextChars(actual);
-	const expectedOutput = replaceNonTextChars(expected);
+	const actualOutput = replaceNonTextChars(actual)
+	const expectedOutput = replaceNonTextChars(expected)
 	const partial = {
 		actual: actualOutput
-	};
+	}
 	if (expectedOutput && actualOutput !== expectedOutput) {
 		partial.expected = expectedOutput
 	}
-	return {...partial, ...errors};
-};
+	return {...partial, ...errors}
+}
 
 module.exports = {
 	generateSnapshot
-};
+}
