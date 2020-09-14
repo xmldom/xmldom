@@ -36,11 +36,7 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 007.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc> </doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 007.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 008.xml with snapshot 1`] = `
 Object {
@@ -48,11 +44,7 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 009.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc> </doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 009.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 010.xml with snapshot 1`] = `
 Object {
@@ -94,17 +86,9 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 016.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc><?pi ?></doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 016.xml with snapshot 1`] = `Object {}`;
 
-exports[`xmltest/valid standalone should match 017.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc><?pi some data ? > <??></doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 017.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 018.xml with snapshot 1`] = `
 Object {
@@ -268,11 +252,7 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 042.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>A</doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 042.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 043.xml with snapshot 1`] = `
 Object {
@@ -310,11 +290,7 @@ Y</doc>",
 }
 `;
 
-exports[`xmltest/valid standalone should match 048.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>]</doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 048.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 049.xml with snapshot 1`] = `
 Object {
@@ -370,11 +346,7 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 052.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>𐀀􏿽</doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 052.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 053.xml with snapshot 1`] = `
 Object {
@@ -399,11 +371,7 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 056.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>A</doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 056.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 057.xml with snapshot 1`] = `
 Object {
@@ -434,17 +402,9 @@ Y</doc>",
 }
 `;
 
-exports[`xmltest/valid standalone should match 061.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>£</doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 061.xml with snapshot 1`] = `Object {}`;
 
-exports[`xmltest/valid standalone should match 062.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>เจมส์</doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 062.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 063.xml with snapshot 1`] = `
 Object {
@@ -452,11 +412,7 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 064.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>𐀀􏿽</doc>",
-}
-`;
+exports[`xmltest/valid standalone should match 064.xml with snapshot 1`] = `Object {}`;
 
 exports[`xmltest/valid standalone should match 065.xml with snapshot 1`] = `
 Object {
