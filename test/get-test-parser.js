@@ -3,6 +3,7 @@ var { DOMParser } = require('../lib/dom-parser')
 /**
  * @typedef ErrorLevel {'warn' | 'error' | 'fatalError'}
  */
+
 /**
  * Helper method for configuring an instance of DOMParser.
  * Calling it without any arguments allows to assert on `errors` after using the parser.
