@@ -1,4 +1,4 @@
-var {DOMParser} = require('../lib/dom-parser');
+var { DOMParser } = require('../lib/dom-parser')
 
 /**
  * @typedef ErrorLevel {'warn' | 'error' | 'fatalError'}
@@ -23,17 +23,19 @@ var {DOMParser} = require('../lib/dom-parser');
  *				}}
  * @returns {{parser: DOMParser, errors: Partial<Record<ErrorLevel, string[]>>}}
  */
-function getTestParser ({errorHandler, errors = {}, locator = {}} = {}) {
-	errorHandler = errorHandler || ((key, msg) => {
-		if (!errors[key]) errors[key] = [];
-		errors[key].push(msg);
-	});
+function getTestParser({ errorHandler, errors = {}, locator = {} } = {}) {
+	errorHandler =
+		errorHandler ||
+		((key, msg) => {
+			if (!errors[key]) errors[key] = []
+			errors[key].push(msg)
+		})
 	return {
 		errors,
-		parser: new DOMParser({errorHandler, locator})
-	};
+		parser: new DOMParser({ errorHandler, locator })
+	}
 }
 
 module.exports = {
 	getTestParser: getTestParser
-};
+}
