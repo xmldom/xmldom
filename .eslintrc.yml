@@ -1,12 +1,21 @@
 env:
   browser: true
   commonjs: true
+  es2020: true
   node: true
+plugins:
+  - es5
 extends:
   'plugin:prettier/recommended'
 parserOptions:
-  ecmaVersion: 6
-# FUTURE TBD (...)
-# rules:
-  # FUTURE TBD
+  ecmaVersion: 11
+rules:
+  # FUTURE TBD:
+  # indent:
+  #   - error
+  #   - tab
+  linebreak-style:
+    - error
+    - unix
+  # FUTURE TBD:
   # (...)

@@ -30,7 +30,8 @@
     "test": "npm-run-all test:assert:strict test:unit lint",
     "test:assert": "vows test/assert.vows.checks.js",
     "test:assert:strict": "XMLDOM_ASSERT_STRICT=1 npm run test:assert",
-    "test:unit": "npm run test:vows",
+    "test:unit": "npm-run-all test:vows test:jest",
+    "test:jest": "jest",
     "test:vows": "vows 'test/**/*.vows.js'"
   },
   "engines": {
@@ -41,9 +42,11 @@
     "@stryker-mutator/core": "^3.3.1",
     "@stryker-mutator/javascript-mutator": "^3.3.1",
     "dom-js": "0.0.9",
-    "eslint": "^7.7.0",
+    "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-es5": "^1.5.0",
+    "jest": "^26.4.2",
     "nodemon": "^2.0.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
