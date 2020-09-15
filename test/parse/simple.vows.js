@@ -46,39 +46,39 @@ wows.describe('parse').addBatch({
 		var dom = parser.parseFromString(xmlLineError, "text/xml");
 		var node = dom.documentElement.firstChild.nextSibling
 		assert(node.lineNumber, 7);
-  },
-  'invalid input - falsy string': runParserWith(''),
-  'invalid input - not a string': runParserWith({}),
-  'invalid input - number': runParserWith(12345),
-  'invalid input - null': runParserWith(null)
+	},
+	'invalid input - falsy string': runParserWith(''),
+	'invalid input - not a string': runParserWith({}),
+	'invalid input - number': runParserWith(12345),
+	'invalid input - null': runParserWith(null)
 }).export(module);
 
 function runParserWith (testValue) {
-  return function () {
-    var parser = new DOMParser(rethrowErrorHandler());
+	return function () {
+		var parser = new DOMParser(rethrowErrorHandler());
 
-    try {
-      parser.parseFromString(testValue);
-      // If the above line doesn't throw then fail the test
-      assert.isTrue(false);
-    } catch (e) {
-      assert.isTrue(isInvalidDocSource(e));
-    }
-  }
+		try {
+			parser.parseFromString(testValue);
+			// If the above line doesn't throw then fail the test
+			assert.isTrue(false);
+		} catch (e) {
+			assert.isTrue(isInvalidDocSource(e));
+		}
+	}
 }
 
 function rethrowErrorHandler () {
-  return {
-    errorHandler: {
-      error: function (errorMessage) {
-        throw errorMessage;
-      }
-    }
-  }
+	return {
+		errorHandler: {
+			error: function (errorMessage) {
+				throw errorMessage;
+			}
+		}
+	}
 }
 
 function isInvalidDocSource (errorMessage) {
-  // Errors that are thrown are embedded within a string containing locator data. Infer the original
-  // error message via regex
-  return /^\[xmldom error\][\s]*invalid doc source[\s\S]*$/.test(errorMessage);
+	// Errors that are thrown are embedded within a string containing locator data. Infer the original
+	// error message via regex
+	return /^\[xmldom error\][\s]*invalid doc source[\s\S]*$/.test(errorMessage);
 }
