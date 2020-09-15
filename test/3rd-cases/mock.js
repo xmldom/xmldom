@@ -1,1 +1,1 @@
-exports.test = 1;
+exports.test = 1
