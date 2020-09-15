@@ -1,6 +1,6 @@
 const xmltest = require('xmltest')
-const {getTestParser} = require('../get-test-parser')
-const {generateSnapshot} = require('./generate-snapshot')
+const { getTestParser } = require('../get-test-parser')
+const { generateSnapshot } = require('./generate-snapshot')
 
 describe('xmltest/valid', () => {
 	describe('standalone', () => {
@@ -18,7 +18,7 @@ describe('xmltest/valid', () => {
 
 				const expected = await xmltest.getContent(xmltest.RELATED.out(pathInZip))
 
-				const {errors, parser} = getTestParser()
+				const { errors, parser } = getTestParser()
 
 				const actual = parser.parseFromString(input).toString()
 

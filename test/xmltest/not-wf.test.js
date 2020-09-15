@@ -1,6 +1,6 @@
 const xmltest = require('xmltest')
-const {getTestParser} = require('../get-test-parser')
-const {generateSnapshot} = require('./generate-snapshot')
+const { getTestParser } = require('../get-test-parser')
+const { generateSnapshot } = require('./generate-snapshot')
 
 describe('xmltest/not-wellformed', () => {
 	describe('standalone', () => {
@@ -16,7 +16,7 @@ describe('xmltest/not-wellformed', () => {
 					// for now we remove it and any newlines after it so we have reasonable tests
 					.replace(/^<!DOCTYPE doc \[[^\]]+]>[\r\n]*/m, '')
 
-				const {errors, parser} = getTestParser()
+				const { errors, parser } = getTestParser()
 
 				// for 050.xml the result is undefined so be careful
 				const actual = parser.parseFromString(input)
