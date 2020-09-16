@@ -29,9 +29,8 @@
     "test": "npm-run-all test:assert:strict test:unit lint",
     "test:assert": "vows test/assert.vows.checks.js",
     "test:assert:strict": "XMLDOM_ASSERT_STRICT=1 npm run test:assert",
-    "test:unit": "npm-run-all test:vows test:jest",
-    "test:jest": "jest",
-    "test:vows": "vows 'test/**/*.vows.js'"
+    "test:unit": "npm-run-all test:jest",
+    "test:jest": "jest"
   },
   "engines": {
     "node": ">=10.0.0"
