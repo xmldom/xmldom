@@ -12,7 +12,7 @@ const values = [
   [], {},
   () => {}
 ]
-const describe = (...arguments) => arguments
+const describe = (...args) => args
   .map(a => {
     const type = typeof a
     let str = JSON.stringify(a)
