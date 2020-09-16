@@ -5,17 +5,18 @@ var DOMParser = require('../../lib/dom-parser').DOMParser;
 
 
 // Create a Test Suite
-wows.describe('XML Namespace Parse').addBatch({
-	"testlitecns":function(){
+describe('XML Namespace Parse', () => {
+	it("supports testlitecns", () => {
 		var doc = new DOMParser({
 			xmlns:{'c':'http://www.xidea.org/lite/core','':'http://www.w3.org/1999/xhtml'}
 		}).parseFromString('<html><body><c:var name="a" value="${1}"/></body></html>', "text/xml");
 		var el = doc.getElementsByTagName('c:var')[0];
 		assert(el.namespaceURI, 'http://www.xidea.org/lite/core')
 		assert(doc, '<html xmlns="http://www.w3.org/1999/xhtml"><body><c:var name="a" value="${1}" xmlns:c="http://www.xidea.org/lite/core"></c:var></body></html>')
-	},
+	})
+
 	//ignore default prefix xml attribute 
-	"test":function(){
+	it("test", () => {
 		var w3 = "http://www.w3.org/1999/xhtml";
 		var n1 = "http://www.frankston.com/public";
 		var n2 = "http://rmf.vc/n2";
@@ -40,9 +41,5 @@ wows.describe('XML Namespace Parse').addBatch({
 		var sr = String(doc);
 		assert(sr, '<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" bar="valx"></test><test xmlns="http://rmf.vc/n2" bar="valx"></test></rmf:foo></html>');
 
-	}
-}).export(module);
-
-
-
-
+	})
+})

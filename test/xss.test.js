@@ -41,9 +41,9 @@ function xss(html){
 	})
 }
 
-vows.describe('xss-test').addBatch({
-	'documentElement.toString(true, callback)': () => {
+describe('xss test', () => {
+	it('documentElement.toString(true, callback)', () => {
 		var html = '<div onclick="alert(123)" title="32323"><script>alert(123)</script></div>';
 		assert(xss(html), '<div title="32323" xmlns="http://www.w3.org/1999/xhtml"></div>');
-	}
-}).export(module);
+	})
+})

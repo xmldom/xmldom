@@ -7,8 +7,8 @@ function assertPosition(n, line, col,info) {
   assert.equal(n.columnNumber , col,'columnNumber:'+n.columnNumber+'/'+col+'\n@'+info);
 }
 
-wows.describe('DOMLocator').addBatch({
-	"empty line number":function(){
+describe('DOMLocator', () => {
+	it("empty line number", () => {
 var xml= [
 '<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0"',
 '       profile="ecmascript" id="scxmlRoot" initial="start">',
@@ -29,8 +29,9 @@ var xml= [
    	var trans = doc.getElementsByTagName('transition')[0];
    	assert.equal(trans.lineNumber , 10)//,''+trans+trans.lineNumber+'/'+trans.parentNode.previousSibling.previousSibling.lineNumber)
    	
-	},
-  'node positions': function() {
+	})
+
+  it('node positions', () => {
     var parser = new DOMParser({locator:{}});
     var doc = parser.parseFromString('<?xml version="1.0"?><!-- aaa -->\n' +
     		'<test>\n' +
@@ -45,8 +46,9 @@ var xml= [
     assertPosition(a.firstChild, 3, 19,'a.firstchild');
     assertPosition(a.firstChild.nextSibling, 3, 19+'<![CDATA[1]]>'.length,'a.firstchild.nextsibling');
     assertPosition(test.lastChild, 4, 5,'test.lastChild');
-  },
-  'error positions':function(){
+  })
+
+  it('error positions', () => {
   	var error = []
     var parser = new DOMParser({
     	locator:{systemId:'c:/test/1.xml'},
@@ -59,8 +61,9 @@ var xml= [
     var attr = doc.documentElement.firstChild.attributes.item(0);
     assertPosition(attr, 1, 19,'title="1<2 ')
     assert(error.length, 0);
-  },
-  'error positions p':function(){
+  })
+
+  it('error positions p', () => {
   	var error = []
     var parser = new DOMParser({
     	locator:{},
@@ -72,5 +75,5 @@ var xml= [
     var root = doc.documentElement;
     var textNode = root.firstChild;
 	assert.isTrue(/\n@#\[line\:2,col\:2\]/.test(error.join(' ')),'line,col must record:'+JSON.stringify(error));
-  }
-}).export(module);
+  })
+})

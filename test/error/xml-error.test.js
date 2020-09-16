@@ -3,8 +3,8 @@ var DOMParser = require('../../lib/dom-parser').DOMParser;
 var assert = require('../assert');
 
 
-vows.describe('errorHandle').addBatch({
-  'empty document': function() {
+describe('errorHandle', () => {
+  it("empty document", () => {
   	var errors = [];
 	var p = new DOMParser({
 		errorHandler: function(key,msg){
@@ -13,8 +13,9 @@ vows.describe('errorHandle').addBatch({
 	});
 	var dom = p.parseFromString('', 'text/xml');
 	assert(errors.length, 2)
-  },
-  'unclosed document': function() {
+  })
+
+  it("unclosed document", () => {
   	var errors = [];
 	var p = new DOMParser({
 		errorHandler: function(key,msg){
@@ -23,8 +24,9 @@ vows.describe('errorHandle').addBatch({
 	});
 	var dom = p.parseFromString('<img>', 'text/xml');
 	assert(errors.length, 2)
-  },
-  'unclosed hmtl tags': function() {
+  })
+
+  it("unclosed hmtl tags", () => {
   	var errors = [];
 	var p = new DOMParser({
 		errorHandler: function(key,msg){
@@ -33,8 +35,9 @@ vows.describe('errorHandle').addBatch({
 	});
 	var dom = p.parseFromString('<img>', 'text/html');
 	assert(errors.length, 0,"unclosed html tag not need report!!")
-  },
-  "invalid xml node":function(){
+  })
+
+  it("invalid xml node", () => {
 		var errors = [];
 		var p = new DOMParser({
 			errorHandler: function(key,msg){
@@ -52,8 +55,9 @@ vows.describe('errorHandle').addBatch({
 			'<r/>'
 		)
 		assert(errors.length, 4)
-  },
-  'invalid html attribute (miss quote)': function() {
+  })
+
+  it("invalid html attribute (miss quote)", () => {
   	var errors = [];
 	var p = new DOMParser({
 		errorHandler: function(key,msg){
@@ -63,9 +67,10 @@ vows.describe('errorHandle').addBatch({
 	var dom = p.parseFromString('<img attr=1/>', 'text/html');
 	assert(errors.length, 2,"invalid xml attribute(miss qute)")
 	assert(dom+'', '<img attr="1" xmlns="http://www.w3.org/1999/xhtml"/>')
-  },
-  'valid html attribute value (<>&)': function() {
+  })
+
+  it('valid html attribute value (<>&)', () => {
 		var dom = new DOMParser({}).parseFromString('<img attr="<>&"/>', 'text/html');
 		assert(dom+'', '<img attr="&lt;>&amp;" xmlns="http://www.w3.org/1999/xhtml"/>',"invalid xml attribute valus (<)")
-  }
-}).export(module);
+  })
+})

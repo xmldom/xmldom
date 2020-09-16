@@ -27,8 +27,8 @@ var error = []
 	var doc = parser.parseFromString(xml, 'text/html');
 var doc = parser.parseFromString('<html><body title="1<2"><table>&lt;;test</body></body></html', 'text/html');
 
-wows.describe('errorHandle').addBatch({
-  'only single function with two args builds map': function() {
+describe('errorHandle', () => {
+  it("only single function with two args builds map", () => {
   	var error = {}
     var parser = new DOMParser({
     	errorHandler:function(key,msg){error[key] = msg}
@@ -36,8 +36,9 @@ wows.describe('errorHandle').addBatch({
     	var doc = parser.parseFromString('<html disabled><1 1="2"/></body></html>', 'text/xml');
 		assert.isTrue(typeof error.warning === 'string', 'error.warning: '+String(error.warning));
 		assert.isTrue(typeof error.error === 'string', 'error.error: '+String(error.error));
-  },
-  'only one function with one argument builds list': function() {
+  })
+
+  it("only one function with one argument builds list", () => {
   	var error = []
     var parser = new DOMParser({
     	errorHandler:function(msg){error.push(msg)}
@@ -46,8 +47,9 @@ wows.describe('errorHandle').addBatch({
     	error.map(function(e){error[/^\[xmldom (\w+)\]/.exec(e)[1]]=e})
 		assert.isTrue(typeof error.warning === 'string', 'error.warning:'+error.warning);
 		assert.isTrue(typeof error.error === 'string', 'error.error:'+error.error);
-  },
-  'compare one function with only one key': function() {
+  })
+
+  it("compare one function with only one key", () => {
   	var error = []
   	var errorMap = []
 		const faulty = '<html><body title="1<2">test</body></html>';
@@ -67,8 +69,9 @@ wows.describe('errorHandle').addBatch({
     }
    
     assert(error2.sort().join(','), error.sort().join(','), 'expected same messages')
-  },
-  'error function throwing is not caught': function() {
+  })
+
+  it("error function throwing is not caught", () => {
   	var error = []
     var parser = new DOMParser({
     	locator:{},
@@ -91,5 +94,5 @@ wows.describe('errorHandle').addBatch({
 	)
 	assert(doc1, '<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"><table></table>&lt;;test</body></html>');
 	assert(doc2, undefined);
-  }
-}).export(module);
+  })
+})

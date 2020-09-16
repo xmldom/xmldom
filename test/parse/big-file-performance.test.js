@@ -70,9 +70,10 @@ function addAttributes(el){
 		child = child.nextSibling;
 	}
 }
+
 // Create a Test Suite
-wows.describe('XML Node Parse').addBatch({
-    "big file parse":function(){
+describe('XML Node Parse', () => {
+    it("big file parse", () => {
 		var fs = require('fs');
 		var path = require('path')
 		var data = fs.readFileSync(path.resolve(__dirname,'./file-test1.xml'), 'ascii');
@@ -155,5 +156,5 @@ wows.describe('XML Node Parse').addBatch({
 			
 		}
 		//console.assert(xmldomresult == domjsresult,xmldomresult.length,i)
-    }
-}).export(module); // Run it
+    })
+})

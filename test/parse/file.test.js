@@ -4,8 +4,8 @@ var DOMParser = require('../../lib/dom-parser').DOMParser;
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
 const assert = require('../assert')
 
-wows.describe('DOMLocator').addBatch({
-	'test.xml':function(){
+describe('DOMLocator', () => {
+	it('test.xml', () => {
 		var data = fs.readFileSync(__dirname+'/file-test1.xml').toString().replace(/\r\n?/g,'\n');
 		// fs.writeFileSync(__dirname+'/file-test1.xml',data)
 		var expexted = fs.readFileSync(__dirname+'/file-test1.result.xml').toString().replace(/\r\n?/g,'\n');
@@ -13,6 +13,6 @@ wows.describe('DOMLocator').addBatch({
 		var result= new XMLSerializer().serializeToString(dom)
 		assert(result, expexted)
 		// fs.writeFileSync(__dirname+'/file-test1.result.xml',result)
-	}
-}).export(module);
+	})
+})
 

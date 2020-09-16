@@ -2,23 +2,26 @@ var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 var assert = require('../assert')
 
-wows.describe('parse').addBatch({
-'simple': function() {
+describe('parse', () => {
+  it('simple', () => {
 	var parser = new DOMParser();
 	var doc = parser.parseFromString('<html><body title="1<2"></body></html>', 'text/html');
 	assert(doc+'', '<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"></body></html>');
-  },
-  'unclosedFix':function(){
+  })
+
+  it('unclosedFix', () => {
   	var parser = new DOMParser();
 		var dom = parser.parseFromString('<r><Page><Label /></Page  <Page></Page></r>', "text/xml");
 		assert(dom+'', '<r><Page><Label/></Page>  <Page/></r>');
-  },
-  'test':function(){
+  })
+
+  it('test', () => {
 		var parser = new DOMParser();
 		var dom = parser.parseFromString('<Page><Label class="title"/></Page  1', "text/xml");
 		assert.equal(dom+'','<Page><Label class="title"/></Page>  1')
-  },
-  'svg test':function(){
+  })
+
+  it('svg test', () => {
 	  	var svgCase = [
 			'<svg>',
 			'  <metadata>...</metadata>',
@@ -30,8 +33,9 @@ wows.describe('parse').addBatch({
 		var parser = new DOMParser({ locator:{}});
 		var dom = parser.parseFromString(svgCase, "text/xml");
 		assert(dom+'', svgCase.replace(/ \/>/g,'/>'))
-  },
-  'line error':function(){
+  })
+
+  it('line error', () => {
   		var xmlLineError=[
 		'<package xmlns="http://ns.saxonica.com/xslt/export"',
 		'         xmlns:fn="http://www.w3.org/2005/xpath-functions"',
@@ -46,12 +50,13 @@ wows.describe('parse').addBatch({
 		var dom = parser.parseFromString(xmlLineError, "text/xml");
 		var node = dom.documentElement.firstChild.nextSibling
 		assert(node.lineNumber, 7);
-  },
-  'invalid input - falsy string': runParserWith(''),
-  'invalid input - not a string': runParserWith({}),
-  'invalid input - number': runParserWith(12345),
-  'invalid input - null': runParserWith(null)
-}).export(module);
+  })
+
+  it('invalid input - falsy string', runParserWith(''))
+  it('invalid input - not a string', runParserWith({}))
+  it('invalid input - number', runParserWith(12345))
+  it('invalid input - null', runParserWith(null))
+})
 
 function runParserWith (testValue) {
   return function () {
