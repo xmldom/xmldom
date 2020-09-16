@@ -4,8 +4,8 @@ var DOMParser = require('../../lib/dom-parser').DOMParser;
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 var parser = new DOMParser();
 
-wows.describe('html normalizer').addBatch({
-    'text & <': function () { 
+describe('html normalizer', () => {
+    it('text & <', () => {
     	var dom = new DOMParser().parseFromString('<div>&amp;&lt;123&456<789;&&</div>','text/html');
     	assert(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml">&amp;&lt;123&amp;456&lt;789;&amp;&amp;</div>');
     	
@@ -17,8 +17,9 @@ wows.describe('html normalizer').addBatch({
 
     	var dom = new DOMParser().parseFromString('<html xmlns:x="1"><body/></html>','text/html');
     	assert(dom+'', '<html xmlns:x="1" xmlns="http://www.w3.org/1999/xhtml"><body></body></html>');
-	},
-    'attr': function () { 
+    })
+
+    it('attr', () => {
     	var dom = new DOMParser().parseFromString('<html test="a<b && a>b && \'&amp;&&\'"/>','text/html');
     	assert(dom+'', '<html test="a&lt;b &amp;&amp; a>b &amp;&amp; \'&amp;&amp;&amp;\'" xmlns="http://www.w3.org/1999/xhtml"></html>');
 		
@@ -32,8 +33,9 @@ wows.describe('html normalizer').addBatch({
     	
     	var dom = new DOMParser().parseFromString('<div a=& a="&\'\'" b/>','text/html');
     	assert(dom+'', '<div a="&amp;\'\'" b="b" xmlns="http://www.w3.org/1999/xhtml"></div>');
-	},
-    'attrQute': function () { 
+    })
+
+    it('attrQute', () => {
     	var dom = new DOMParser().parseFromString('<html test="123"/>','text/html');
     	assert(dom+'', '<html test="123" xmlns="http://www.w3.org/1999/xhtml"></html>');
     	
@@ -42,8 +44,9 @@ wows.describe('html normalizer').addBatch({
 
 		var dom = new DOMParser().parseFromString('<Label onClick=doClick..">Hello, World</Label>','text/html');
     	assert(dom+'', '<Label onClick="doClick.." xmlns="http://www.w3.org/1999/xhtml">Hello, World</Label>');
-	},
-	"unclosed":function(){
+    })
+
+    it('unclosed', () => {
     	var dom = new DOMParser().parseFromString('<html><meta><link><img><br><hr><input></html>','text/html');
     	assert(dom+'', '<html xmlns="http://www.w3.org/1999/xhtml"><meta/><link/><img/><br/><hr/><input/></html>');
     	
@@ -63,10 +66,9 @@ wows.describe('html normalizer').addBatch({
     	
     	var dom = new DOMParser().parseFromString('<html><meta><link><img><br><hr><input></html>','text/html');
     	assert(dom+'', '<html xmlns="http://www.w3.org/1999/xhtml"><meta/><link/><img/><br/><hr/><input/></html>');
-    	
-    	
-	},
-    'script': function () { 
+    })
+
+    it('script', () => {
     	var dom = new DOMParser().parseFromString('<script>alert(a<b&&c?"<br>":">>");</script>','text/html');
     	assert(dom+'', '<script xmlns="http://www.w3.org/1999/xhtml">alert(a<b&&c?"<br>":">>");</script>');
     	var dom = new DOMParser().parseFromString('<script>alert(a<b&&c?"<br>":">>");</script>','text/xml');
@@ -76,20 +78,21 @@ wows.describe('html normalizer').addBatch({
     	
     	var dom = new DOMParser().parseFromString('<script src="./test.js"/>','text/html');
     	assert(dom+'', '<script src="./test.js" xmlns="http://www.w3.org/1999/xhtml"></script>');
+    })
 
-	},
-    'textarea': function () { 
+    it('textarea', () => {
     	var dom = new DOMParser().parseFromString('<textarea>alert(a<b&&c?"<br>":">>");</textarea>','text/html');
     	assert(dom+'', '<textarea xmlns="http://www.w3.org/1999/xhtml">alert(a&lt;b&amp;&amp;c?"&lt;br>":">>");</textarea>');
     	
     	
     	var dom = new DOMParser().parseFromString('<textarea>alert(a<b&&c?"<br>":">>");</textarea>','text/xml');
     	assert(dom+'', '<textarea>alert(a&lt;b&amp;&amp;c?"<br/>":">>");</textarea>');
-	},
-    'European entities': function () {
+    })
+
+    it('European entities', () => {
         var dom = new DOMParser().parseFromString('<div>&Auml;&auml;&Aring;&aring;&AElig;&aelig;&Ouml;&ouml;&Oslash;&oslash;&szlig;&Uuml;&uuml;&euro;</div>','text/html');
         // For the future, it may be nicer to use \uxxxx in the assert strings
         // rather than pasting in multi-byte UTF-8 Unicode characters
         assert(dom+'', '<div xmlns="http://www.w3.org/1999/xhtml">ÄäÅåÆæÖöØøßÜü€</div>');
-	}
-}).export(module);
+    })
+})

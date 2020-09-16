@@ -3,55 +3,63 @@ var assert = require('../assert');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 var parser = new DOMParser();
+
 // Create a Test Suite
-wows.describe('XML Node Parse').addBatch({
-    'element': function () { 
+describe('XML Node Parse', () => {
+    it('element', () => {
     	var dom = new DOMParser().parseFromString('<xml><child/></xml>');
     	assert(dom.childNodes.length, 1);
     	assert(dom.documentElement.childNodes.length, 1);
     	assert(dom.documentElement.tagName, 'xml');
     	assert(dom.documentElement.firstChild.tagName, 'child');
-    },
-    'text':function(){
+    })
+
+    it('text', () => {
     	var dom = new DOMParser().parseFromString('<xml>start center end</xml>');
     	var root = dom.documentElement;
     	assert(root.firstChild.data, 'start center end');
     	assert(root.firstChild.nextSibling, null);
-    },
-    'cdata': function () {
+    })
+
+    it('cdata', () => {
     	var dom = new DOMParser().parseFromString('<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>');
     	var root = dom.documentElement;
     	assert(root.firstChild.data, 'start ');
     	assert(root.firstChild.nextSibling.data, '<encoded>');
     	assert(root.firstChild.nextSibling.nextSibling.nextSibling.data, '[[[[[[[[]]]]]]]]');
-    },
-    'cdata empty': function () {
+    })
+
+    it('cdata empty', () => {
     	var dom = new DOMParser().parseFromString('<xml><![CDATA[]]>start <![CDATA[]]> end</xml>');
     	var root = dom.documentElement;
     	assert(root.textContent, 'start  end');
-    },
-    'comment': function(){
+    })
+
+    it('comment', () => {
     	var dom = new DOMParser().parseFromString('<xml><!-- comment&>< --></xml>');
     	var root = dom.documentElement;
     	assert(root.firstChild.nodeValue, ' comment&>< ');
-    },
-    'cdata comment': function(){
+    })
+
+    it('cdata comment', () => {
     	var dom = new DOMParser().parseFromString('<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>');
     	var root = dom.documentElement;
     	assert(root.firstChild.nodeValue, 'start ');
     	assert(root.firstChild.nextSibling.nodeValue, '<encoded>');
     	assert(root.firstChild.nextSibling.nextSibling.nextSibling.nodeValue, ' comment ');
     	assert(root.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nodeValue, 'end');
-    },
-    'append node': function () {
+    })
+
+    it('append node', () => {
     	var dom = new DOMParser().parseFromString('<xml/>');
     	var child = dom.createElement("child");
     	assert(child, dom.documentElement.appendChild(child));
     	assert(child, dom.documentElement.firstChild);
     	var fragment = new dom.createDocumentFragment();
     	assert(child, fragment.appendChild(child));
-    },
-    'insert node': function () {
+    })
+
+    it('insert node', () => {
     	var dom = new DOMParser().parseFromString('<xml><child/></xml>');
     	var node = dom.createElement("sibling");
     	var child = dom.documentElement.firstChild;
@@ -59,8 +67,9 @@ wows.describe('XML Node Parse').addBatch({
     	assert(node, child.previousSibling);
     	assert(node.nextSibling, child);
     	assert(node.parentNode, child.parentNode);
-    },
-    'insert fragment': function () {
+    })
+
+    it('insert fragment', () => {
     	var dom = new DOMParser().parseFromString('<xml><child/></xml>');
     	var fragment = dom.createDocumentFragment();
     	assert(fragment.nodeType, 11);
@@ -79,15 +88,16 @@ wows.describe('XML Node Parse').addBatch({
     	assert(last.nextSibling, child);
     	assert(first.parentNode, child.parentNode);
     	assert(last.parentNode, child.parentNode);
-    }
-}).addBatch({
-	"instruction":function(){
+    })
+
+    it("instruction", () => {
 		var source = '<?xml version="1.0"?><root><child>&amp;<!-- &amp; --></child></root>';
 		var doc = new DOMParser().parseFromString(source,"text/xml");
     	var source2 = new XMLSerializer().serializeToString(doc);
     	assert(source2, source);
-	},
-	'public id && sysid':function(){
+    })
+
+	it('public id && sysid', () => {
 	  	var error = []
 	    var parser = new DOMParser({
 	    	locator:{},
@@ -98,8 +108,9 @@ wows.describe('XML Node Parse').addBatch({
 	    var doc = parser.parseFromString('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html/>', 'text/html');
 		assert(doc+'', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"></html>')
 		
-	}
-}).export(module); // Run it
+	})
+})
+
 //var ELEMENT_NODE                = NodeType.ELEMENT_NODE                = 1;
 //var ATTRIBUTE_NODE              = NodeType.ATTRIBUTE_NODE              = 2;
 //var TEXT_NODE                   = NodeType.TEXT_NODE                   = 3;
