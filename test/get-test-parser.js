@@ -33,10 +33,10 @@ function getTestParser({ errorHandler, errors = {}, locator = {} } = {}) {
 		})
 	return {
 		errors,
-		parser: new DOMParser({ errorHandler, locator })
+		parser: new DOMParser({ errorHandler, locator }),
 	}
 }
 
 module.exports = {
-	getTestParser: getTestParser
+	getTestParser: getTestParser,
 }
