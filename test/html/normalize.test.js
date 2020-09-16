@@ -44,8 +44,9 @@ describe('html normalizer', () => {
 
 		var dom = new DOMParser().parseFromString('<Label onClick=doClick..">Hello, World</Label>','text/html');
     	assert(dom+'', '<Label onClick="doClick.." xmlns="http://www.w3.org/1999/xhtml">Hello, World</Label>');
-	},
-	"unclosed", () => {
+    })
+
+    it('unclosed', () => {
     	var dom = new DOMParser().parseFromString('<html><meta><link><img><br><hr><input></html>','text/html');
     	assert(dom+'', '<html xmlns="http://www.w3.org/1999/xhtml"><meta/><link/><img/><br/><hr/><input/></html>');
     	
