@@ -2,17 +2,17 @@ var wows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 var assert = require('../assert')
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
+
 // Create a Test Suite
-wows.describe('XML Namespace Parse').addBatch({
+describe('XML Namespace Parse', () => {
     // See: http://jsfiddle.net/bigeasy/ShcXP/1/
-    "Document_getElementsByTagName":function () {
+    it("supports Document_getElementsByTagName", () => {
     	var doc = new DOMParser().parseFromString('<a><b/></a>');
     	assert(doc.getElementsByTagName('*').length, 2, 'on doc');
     	assert(doc.documentElement.getElementsByTagName('*').length, 1, 'on doc.documentElement');
-    },
-    'getElementsByTagName': function () { 
-    	
+    })
 
+    it("supports getElementsByTagName", () => {
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
        		'<t:test/><test/><t2:test/>'+
        		'<child attr="1"><test><child attr="2"/></test></child>' +
@@ -47,8 +47,9 @@ wows.describe('XML Namespace Parse').addBatch({
 		assert.equal(entries.length , 1,'assert entry nodelist length ==1');
 		assert(entries[0].nodeName, 'entry');
         assert(feed.documentElement.childNodes.item(0).nodeName, 'entry');
-    },
-    'getElementsByTagNameNS': function () { 
+    })
+
+    it("supports getElementsByTagNameNS", () => {
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
        		'<t:test/><test/><t2:test/>'+
        		'<child attr="1"><test><child attr="2"/></test></child>' +
@@ -73,8 +74,9 @@ wows.describe('XML Namespace Parse').addBatch({
        var childs = doc.documentElement.getElementsByTagNameNS("*", "test");
        assert(childs.length, 4);
        
-    },
-    'getElementById': function () { 
+    })
+
+    it("supports getElementById", () => {
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +
        		'<child id="a1" title="1"><child id="a2"  title="2"/></child>' +
        		'<child id="a1"   title="3"/></xml>','text/xml');
@@ -82,8 +84,9 @@ wows.describe('XML Namespace Parse').addBatch({
        assert(doc.getElementById('a1').getAttribute('title'), "1", "first");
        assert(doc.getElementById('a2').getAttribute('title'), "2", "second");
        assert(doc.getElementById('a2').getAttribute('title2'), "", "empty");
-    },
-    "append exist child":function(){
+    })
+
+    it("can properly append exist child", () => {
        var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +
        		'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
        		'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>','text/xml');
@@ -104,9 +107,9 @@ wows.describe('XML Namespace Parse').addBatch({
         assert(str2, str3, 'str2 == str3');
        	assert.isTrue(str3 != str4, 'str4 != str3:' + str3);
        	assert(str3.length, str4.length, 'str3 and str4 have same length');
+    })
 
-    },
-    "append exist other child":function(){
+    it("can properly append exist other child", () => {
     	var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +
        		'<child1 id="a1" title="1"><child11 id="a2"  title="2"><child/></child11></child1>' +
        		'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>','text/xml');
@@ -127,8 +130,9 @@ wows.describe('XML Namespace Parse').addBatch({
        	doc3.documentElement.firstChild.appendChild(doc3.documentElement.lastChild);
        	var str3 = new XMLSerializer().serializeToString(doc3);
        	assert(str1, str3, 'final assertion');
-    },
-    "set textContent":function() {
+    })
+
+    it("can properly set textContent", () => {
         var doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>');
         var a = doc.documentElement.firstChild;
         var b = a.nextSibling;
@@ -140,9 +144,11 @@ wows.describe('XML Namespace Parse').addBatch({
         assert(doc.documentElement.toString(), '<test><a>hello</a><b/></test>');
         doc.documentElement.textContent = 'bye';
         assert(doc.documentElement.toString(), '<test>bye</test>');
-    },
-    "nested append failed":function(){
-    },
-    "self append failed":function(){
-    }
-}).export(module); // Run it
+    })
+
+    xit("nested append failed", () => {
+    })
+
+    xit("self append failed", () => {
+    })
+})
