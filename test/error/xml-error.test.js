@@ -1,4 +1,3 @@
-var vows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 var assert = require('../assert');
 

@@ -1,4 +1,3 @@
-var wows = require('vows');
 var assert = require('assert');
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer;
 var DOMParser = require('../../lib/dom-parser').DOMParser;
