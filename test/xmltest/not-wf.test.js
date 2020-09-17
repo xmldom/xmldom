@@ -1,3 +1,5 @@
+'use strict';
+
 const xmltest = require('xmltest')
 const { getTestParser } = require('../get-test-parser')
 const { generateSnapshot } = require('./generate-snapshot')
