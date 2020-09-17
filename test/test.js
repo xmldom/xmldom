@@ -1,33 +1,35 @@
-'use strict';
+'use strict'
 
-var wows = require('vows');
-var assert = require('assert');
-var DOMParser = require('../lib/dom-parser').DOMParser;
-var XMLSerializer = require('../lib/dom-parser').XMLSerializer;
+var wows = require('vows')
+var assert = require('assert')
+var DOMParser = require('../lib/dom-parser').DOMParser
+var XMLSerializer = require('../lib/dom-parser').XMLSerializer
 
+var doc = new DOMParser().parseFromString(
+	'<xml xmlns="http://test.com" id="root">' +
+		'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
+		'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
+	'text/xml'
+)
 
-var doc = new DOMParser().parseFromString('<xml xmlns="http://test.com" id="root">' +
-	'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
-	'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>','text/xml');
+var doc1 = doc
+var str1 = new XMLSerializer().serializeToString(doc)
+var doc2 = doc1.cloneNode(true)
+var doc3 = doc1.cloneNode(true)
+var doc4 = doc1.cloneNode(true)
 
-var doc1 = doc;
-var str1=new XMLSerializer().serializeToString(doc);
-var doc2 = doc1.cloneNode(true);
-var doc3 = doc1.cloneNode(true);
-var doc4 = doc1.cloneNode(true);
-
-doc3.documentElement.appendChild(doc3.documentElement.lastChild);
+doc3.documentElement.appendChild(doc3.documentElement.lastChild)
 //doc4.documentElement.appendChild(doc4.documentElement.firstChild);
 
-var str2=new XMLSerializer().serializeToString(doc2);
-var str3=new XMLSerializer().serializeToString(doc3);
-var str4=new XMLSerializer().serializeToString(doc4);
-console.assert(str1 == str3,str3,str1);
+var str2 = new XMLSerializer().serializeToString(doc2)
+var str3 = new XMLSerializer().serializeToString(doc3)
+var str4 = new XMLSerializer().serializeToString(doc4)
+console.assert(str1 == str3, str3, str1)
 //console.assert(str3 != str4 && str3.length == str4.length,str3);
 
-
-var xmlString = '<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">\n<ds:SignatureValue/>\n</ds:Signature>';
-var xml = new DOMParser().parseFromString(xmlString, "application/xml");
-var selectedXml = xml.documentElement;//select(xml, "//*[local-name() = 'SignatureValue']")[0];
-xmlString = new XMLSerializer().serializeToString(selectedXml);//.firstChild.nextSibling);
-console.log(xmlString);
+var xmlString =
+	'<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">\n<ds:SignatureValue/>\n</ds:Signature>'
+var xml = new DOMParser().parseFromString(xmlString, 'application/xml')
+var selectedXml = xml.documentElement //select(xml, "//*[local-name() = 'SignatureValue']")[0];
+xmlString = new XMLSerializer().serializeToString(selectedXml) //.firstChild.nextSibling);
+console.log(xmlString)

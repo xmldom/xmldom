@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const { replaceNonTextChars } = require('xmltest')
 
@@ -15,7 +15,7 @@ const generateSnapshot = (actual, errors, expected) => {
 	const actualForSnapshot = replaceNonTextChars(actual)
 	const expectedForSnapshot = replaceNonTextChars(expected)
 	const partial = {
-		actual: actualForSnapshot
+		actual: actualForSnapshot,
 	}
 	if (expectedForSnapshot && actualForSnapshot !== expectedForSnapshot) {
 		partial.expected = expectedForSnapshot
@@ -24,5 +24,5 @@ const generateSnapshot = (actual, errors, expected) => {
 }
 
 module.exports = {
-	generateSnapshot
+	generateSnapshot,
 }

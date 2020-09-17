@@ -1,3 +1,3 @@
-'use strict';
+'use strict'
 
-exports.test = 1;
+exports.test = 1
