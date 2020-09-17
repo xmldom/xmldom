@@ -1,3 +1,5 @@
+'use strict';
+
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 require('./mock')
 //Compatibility
