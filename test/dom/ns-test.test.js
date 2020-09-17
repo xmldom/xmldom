@@ -1,4 +1,5 @@
-"use strict";
+'use strict';
+
 var assert = require('../assert');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 

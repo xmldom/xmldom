@@ -1,3 +1,5 @@
+'use strict';
+
 const {DOMParser} = require('../lib/dom-parser');
 
 describe('DOMParser', () => {

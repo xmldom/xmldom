@@ -1,0 +1,5 @@
+# FUTURE TBD top-level:
+rules:
+  strict:
+    - error
+    - global

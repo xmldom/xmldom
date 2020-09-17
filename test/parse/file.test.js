@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
 var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
