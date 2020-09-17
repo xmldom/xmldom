@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var wows = require('vows');
 var assert = require('../assert');

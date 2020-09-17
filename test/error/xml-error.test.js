@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var vows = require('vows');
 var DOMParser = require('../../lib/dom-parser').DOMParser;
