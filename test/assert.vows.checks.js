@@ -1,3 +1,5 @@
+'use strict';
+
 const vows = require('vows')
 const assert = require('assert').strict
 const a = require('./assert')
@@ -10,7 +12,7 @@ const values = [
   [], {},
   () => {}
 ]
-const describe = (...arguments) => arguments
+const describe = (...args) => args
   .map(a => {
     const type = typeof a
     let str = JSON.stringify(a)

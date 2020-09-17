@@ -1,3 +1,5 @@
+/* eslint strict: off */
+
 var node_assert = require('assert')
 
 function isAssertionError (error) {
