@@ -16,9 +16,7 @@ describe('xmltest/valid', () => {
 					// for now we remove it and any newlines after it so we have reasonable tests
 					.replace(/^<!DOCTYPE doc \[[^\]]+]>[\r\n]*/m, '')
 
-				const expected = await xmltest.getContent(
-					xmltest.RELATED.out(pathInZip)
-				)
+				const expected = await xmltest.getContent(xmltest.RELATED.out(pathInZip))
 
 				const { errors, parser } = getTestParser()
 
