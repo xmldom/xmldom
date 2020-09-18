@@ -1,41 +1,37 @@
 'use strict'
 
-var DOMParser = require('../../lib/dom-parser').DOMParser
-var assert = require('../assert')
+const { getTestParser } = require('../get-test-parser')
 
 describe('parse', () => {
 	it('simple', () => {
-		var parser = new DOMParser()
-		var doc = parser.parseFromString(
-			'<html><body title="1<2"></body></html>',
-			'text/html'
-		)
-		assert(
-			doc + '',
-			'<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"></body></html>'
-		)
+		const { errors, parser } = getTestParser()
+		const actual = parser
+			.parseFromString('<html><body title="1<2"></body></html>', 'text/html')
+			.toString()
+		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 
-	it('unclosedFix', () => {
-		var parser = new DOMParser()
-		var dom = parser.parseFromString(
-			'<r><Page><Label /></Page  <Page></Page></r>',
-			'text/xml'
-		)
-		assert(dom + '', '<r><Page><Label/></Page>  <Page/></r>')
+	it('unclosed inner', () => {
+		const { errors, parser } = getTestParser()
+		const actual = parser
+			.parseFromString(
+				'<r><Page><Label /></Page  <Page></Page></r>',
+				'text/xml'
+			)
+			.toString()
+		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 
-	it('test', () => {
-		var parser = new DOMParser()
-		var dom = parser.parseFromString(
-			'<Page><Label class="title"/></Page  1',
-			'text/xml'
-		)
-		assert.equal(dom + '', '<Page><Label class="title"/></Page>  1')
+	it('unclosed root', () => {
+		const { errors, parser } = getTestParser()
+		const actual = parser
+			.parseFromString('<Page><Label class="title"/></Page  1', 'text/xml')
+			.toString()
+		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 
 	it('svg test', () => {
-		var svgCase = [
+		const svgCase = [
 			'<svg>',
 			'  <metadata>...</metadata>',
 			'  <defs id="defs14">',
@@ -43,13 +39,13 @@ describe('parse', () => {
 			'  <path id="path4" d="M 68.589358,...-6.363961,-6.363964 z" /></defs>',
 			'</svg>',
 		].join('\n')
-		var parser = new DOMParser({ locator: {} })
-		var dom = parser.parseFromString(svgCase, 'text/xml')
-		assert(dom + '', svgCase.replace(/ \/>/g, '/>'))
+		const { errors, parser } = getTestParser({ locator: {} })
+		const actual = parser.parseFromString(svgCase, 'text/xml').toString()
+		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 
 	it('line error', () => {
-		var xmlLineError = [
+		const xmlLineError = [
 			'<package xmlns="http://ns.saxonica.com/xslt/export"',
 			'         xmlns:fn="http://www.w3.org/2005/xpath-functions"',
 			'         xmlns:xs="http://www.w3.org/2001/XMLSchema"',
@@ -60,31 +56,35 @@ describe('parse', () => {
 			'</package>',
 		].join('\r\n')
 
-		var parser = new DOMParser({ locator: {} })
-		var dom = parser.parseFromString(xmlLineError, 'text/xml')
-		var node = dom.documentElement.firstChild.nextSibling
-		assert(node.lineNumber, 7)
+		const { errors, parser } = getTestParser({ locator: {} })
+		const dom = parser.parseFromString(xmlLineError, 'text/xml')
+		const node = dom.documentElement.firstChild.nextSibling
+		expect({ lineNumber: node.lineNumber, ...errors }).toMatchSnapshot()
 	})
 
-	it('invalid input - falsy string', runParserWith(''))
-	it('invalid input - not a string', runParserWith({}))
-	it('invalid input - number', runParserWith(12345))
-	it('invalid input - null', runParserWith(null))
+	it('wrong closing tag', () => {
+		const { errors, parser } = getTestParser({ locator: {} })
+		const actual = parser.parseFromString(
+			'<html><body title="1<2"><table>&lt;;test</body></body></html>',
+			'text/html'
+		).toString()
+		expect({ actual, ...errors }).toMatchSnapshot()
+	})
+
+	describe('invalid input', () => {
+		it.each([
+			['falsy string', ''],
+			['object', {}],
+			['number', 12345],
+			['null', null],
+		])('%s', (msg, testValue) => {
+			const { parser } = getTestParser(rethrowErrorHandler())
+			expect(() => parser.parseFromString(testValue)).toThrow(
+				/^\[xmldom error\][\s]*invalid doc source[\s\S]*$/
+			)
+		})
+	})
 })
-
-function runParserWith(testValue) {
-	return function () {
-		var parser = new DOMParser(rethrowErrorHandler())
-
-		try {
-			parser.parseFromString(testValue)
-			// If the above line doesn't throw then fail the test
-			assert.isTrue(false)
-		} catch (e) {
-			assert.isTrue(isInvalidDocSource(e))
-		}
-	}
-}
 
 function rethrowErrorHandler() {
 	return {
@@ -94,10 +94,4 @@ function rethrowErrorHandler() {
 			},
 		},
 	}
-}
-
-function isInvalidDocSource(errorMessage) {
-	// Errors that are thrown are embedded within a string containing locator data. Infer the original
-	// error message via regex
-	return /^\[xmldom error\][\s]*invalid doc source[\s\S]*$/.test(errorMessage)
 }
