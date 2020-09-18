@@ -1,12 +1,11 @@
 'use strict'
 
-var assert = require('../assert')
-var DOMParser = require('../../lib/dom-parser').DOMParser
+const { getTestParser } = require('../get-test-parser')
 
 describe('errorHandle', () => {
 	it('unclosedcomment', () => {
-		var parser = new DOMParser()
-		var doc = parser.parseFromString('<!--', 'text/xml')
-		assert(doc + '', '!--')
+		const { errors, parser } = getTestParser()
+		const actual = parser.parseFromString('<!--', 'text/xml').toString()
+		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 })
