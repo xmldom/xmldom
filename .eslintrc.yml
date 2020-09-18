@@ -3,11 +3,15 @@ env:
   commonjs: true
   es2020: true
   node: true
+
 plugins:
   - es5
+
 extends: 'plugin:prettier/recommended'
+
 parserOptions:
   ecmaVersion: 11
+
 rules:
   linebreak-style:
     - error
