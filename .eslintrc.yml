@@ -5,8 +5,7 @@ env:
   node: true
 plugins:
   - es5
-# FUTURE TBD:
-# extends: 'eslint:recommended'
+extends: 'plugin:prettier/recommended'
 parserOptions:
   ecmaVersion: 11
 rules:
