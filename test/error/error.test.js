@@ -84,7 +84,7 @@ describe('errorHandle', () => {
 				error.push(msg)
 			},
 		}).parseFromString(faulty, 'text/xml')
-		;['warn', 'warning', 'error', 'fatalError'].forEach(function (k) {
+		Array.from(['warn', 'warning', 'error', 'fatalError']).forEach((k) => {
 			var errorHandler = { [k]: [] }
 			errorHandler[k] = function (msg) {
 				errorMap[k].push(msg)
