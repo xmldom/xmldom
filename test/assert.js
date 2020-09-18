@@ -125,6 +125,6 @@ assert.skip = skip
 // and avoid forgetting to import .strict methods
 assert.fail = node_assert.strict.fail
 assert.equal = node_assert.strict.equal
-assert.isTrue = node_assert.isTrue
+assert.isTrue = (actual) => assert(actual, true)
 
 module.exports = assert

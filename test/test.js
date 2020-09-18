@@ -1,6 +1,5 @@
 'use strict'
 
-var wows = require('vows')
 var assert = require('assert')
 var DOMParser = require('../lib/dom-parser').DOMParser
 var XMLSerializer = require('../lib/dom-parser').XMLSerializer

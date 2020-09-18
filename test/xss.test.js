@@ -1,7 +1,6 @@
 'use strict'
 
 var assert = require('./assert')
-var vows = require('vows')
 var DOMParser = require('../lib/dom-parser').DOMParser
 var domParser = new DOMParser({ xmlns: { '': 'http://www.w3.org/1999/xhtml' } })
 
