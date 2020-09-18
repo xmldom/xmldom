@@ -1,3 +1,6 @@
+# FUTURE TBD: add extends with 'plugin:prettier/recommended'
+# to top-level `.eslintrc.yml` file instead
+extends: 'plugin:prettier/recommended'
 # FUTURE TBD top-level:
 rules:
   strict:
