@@ -64,10 +64,12 @@ describe('parse', () => {
 
 	it('wrong closing tag', () => {
 		const { errors, parser } = getTestParser({ locator: {} })
-		const actual = parser.parseFromString(
-			'<html><body title="1<2"><table>&lt;;test</body></body></html>',
-			'text/html'
-		).toString()
+		const actual = parser
+			.parseFromString(
+				'<html><body title="1<2"><table>&lt;;test</body></body></html>',
+				'text/html'
+			)
+			.toString()
 		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 

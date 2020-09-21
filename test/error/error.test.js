@@ -119,10 +119,6 @@ describe('errorHandle', () => {
 				},
 			},
 		})
-		var doc1 = parser.parseFromString(
-			'<html><body title="1<2"><table>&lt;;test</body></body></html>',
-			'text/html'
-		)
 		try {
 			var doc2 = parser.parseFromString(
 				'<html><body title="1<2"><table&lt;;test</body></body></html>',
@@ -135,10 +131,6 @@ describe('errorHandle', () => {
 			error.length > 0 &&
 				error.every((e) => /\n@#\[line\:\d+,col\:\d+\]/.test(e)),
 			'line,col must record:' + JSON.stringify(error)
-		)
-		assert(
-			doc1,
-			'<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"><table></table>&lt;;test</body></html>'
 		)
 		assert(doc2, undefined)
 	})
