@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`errorHandle html attribute (miss quote) 1`] = `
+Object {
+  "actual": "<img attr=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+  "warning": Array [
+    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!!
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`errorHandle invalid xml node "<r" 1`] = `
+Object {
+  "actual": "<r/>",
+  "error": Array [
+    "[xmldom error]	unexpected end of input
+@#[line:1,col:1]",
+  ],
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`errorHandle invalid xml node "<test><!--" 1`] = `
+Object {
+  "actual": "<test/>",
+  "error": Array [
+    "[xmldom error]	Unclosed comment
+@#[line:1,col:7]",
+  ],
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`errorHandle unclosed document 1`] = `
+Object {
+  "actual": "<img/>",
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`errorHandle unclosed html tag 1`] = `
+Object {
+  "actual": "<img xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+}
+`;
+
+exports[`errorHandle valid html attribute value (<>&) 1`] = `
+Object {
+  "actual": "<img attr=\\"&lt;>&amp;\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+}
+`;
