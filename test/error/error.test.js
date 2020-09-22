@@ -1,137 +1,77 @@
 'use strict'
 
-var DOMParser = require('../../lib/dom-parser').DOMParser
-const assert = require('../assert')
+const { DOMParser } = require('../../lib/dom-parser')
 
-var xml =
-	'<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0"\n\
-       profile="ecmascript" id="scxmlRoot" initial="start">\n\
-\n\
-  <!--\n\
-      some comment (next line is empty)\n\
-\n\
-  -->\n\
-\n\
-  <state id="start" name="start">\n\
-    <transition event"init" name="init" target="main_state" />\n\
-  </state>\n\
-\n\
-  </scxml>'
-var error = []
-var parser = new DOMParser({
-	locator: {},
-	errorHandler: {
-		error: function (msg) {
-			error.push(msg)
-		},
-	},
-})
-var doc = parser.parseFromString(xml, 'text/html')
-var doc = parser.parseFromString(
-	'<html><body title="1<2"><table>&lt;;test</body></body></html',
-	'text/html'
-)
+const XML_ERROR = '<html><body title="1<2"><table&lt;;test</body></body></html>'
+const XML_ERROR_AND_WARNING = '<html disabled><1 1="2"/></body></html>'
 
-describe('errorHandle', () => {
+describe('errorHandler', () => {
 	it('only single function with two args builds map', () => {
-		var error = {}
-		var parser = new DOMParser({
+		const errors = {}
+		const parser = new DOMParser({
 			errorHandler: function (key, msg) {
-				error[key] = msg
+				errors[key] = msg
 			},
 		})
-		var doc = parser.parseFromString(
-			'<html disabled><1 1="2"/></body></html>',
-			'text/xml'
-		)
-		assert.isTrue(
-			typeof error.warning === 'string',
-			'error.warning: ' + String(error.warning)
-		)
-		assert.isTrue(
-			typeof error.error === 'string',
-			'error.error: ' + String(error.error)
-		)
+
+		parser.parseFromString(XML_ERROR_AND_WARNING, 'text/xml')
+
+		expect(errors).toMatchObject({
+			warning: expect.stringMatching(/.*/),
+			error: expect.stringMatching(/.*/),
+		})
 	})
 
 	it('only one function with one argument builds list', () => {
-		var error = []
-		var parser = new DOMParser({
+		const errors = []
+		const parser = new DOMParser({
 			errorHandler: function (msg) {
-				error.push(msg)
+				errors.push(msg)
 			},
 		})
-		var doc = parser.parseFromString(
-			'<html disabled><1 1="2"/></body></html>',
-			'text/xml'
-		)
-		error.map(function (e) {
-			error[/^\[xmldom (\w+)\]/.exec(e)[1]] = e
-		})
-		assert.isTrue(
-			typeof error.warning === 'string',
-			'error.warning:' + error.warning
-		)
-		assert.isTrue(typeof error.error === 'string', 'error.error:' + error.error)
+		parser.parseFromString(XML_ERROR_AND_WARNING, 'text/xml')
+		expect(errors).toMatchObject([/\[xmldom warning]/, /\[xmldom error]/])
 	})
 
-	it('compare one function with only one key', () => {
-		var error = []
-		var errorMap = []
-		const faulty = '<html><body title="1<2">test</body></html>'
-		new DOMParser({
-			errorHandler: function (msg) {
-				error.push(msg)
-			},
-		}).parseFromString(faulty, 'text/xml')
-		Array.from(['warn', 'warning', 'error', 'fatalError']).forEach((k) => {
-			var errorHandler = { [k]: [] }
-			errorHandler[k] = function (msg) {
-				errorMap[k].push(msg)
-			}
-			new DOMParser({ errorHandler: errorHandler }).parseFromString(
-				faulty,
-				'text/xml'
-			)
-			assert.isTrue(errorHandler[k].length > 0, 'expected entries for ' + k)
-		})
-		var error2 = []
-		for (var n in errorMap) {
-			error2 = error2.concat(errorMap[n])
-			assert(error.length, errorMap[n].length)
+	it.each(['warning', 'error'])(
+		'errorHandler for only one level: %s',
+		(level) => {
+			const errors = []
+			const parser = new DOMParser({
+				errorHandler: {
+					[level]: function (msg) {
+						errors.push(msg)
+					},
+				},
+			})
+			parser.parseFromString(XML_ERROR_AND_WARNING, 'text/xml')
+			expect(errors).toHaveLength(1)
 		}
-
-		assert(
-			error2.sort().join(','),
-			error.sort().join(','),
-			'expected same messages'
-		)
-	})
+	)
+	it.todo(
+		'errorHandler for only one level: fatalError'
+		/*
+		I was not able to create a test case for a fatalError.
+		It might need to be removed from the API, since all but one cases are in comments
+		and an error is thrown instead. The one case left I was not able to reproduce.
+		*/
+	)
 
 	it('error function throwing is not caught', () => {
-		var error = []
-		var parser = new DOMParser({
-			locator: {},
+		const errors = []
+		const ERROR_MSG = 'FROM TEST'
+		const parser = new DOMParser({
+			locator: {}, // removing the locator makes the test fail!
 			errorHandler: {
 				error: function (msg) {
-					error.push(msg)
-					throw new Error('from throwing errroHandler.error')
+					errors.push(msg)
+					throw new Error(ERROR_MSG)
 				},
 			},
 		})
-		try {
-			var doc2 = parser.parseFromString(
-				'<html><body title="1<2"><table&lt;;test</body></body></html>',
-				'text/html'
-			)
-		} catch (e) {
-			if (e.message !== 'from throwing errroHandler.error') throw e
-		}
-		assert.isTrue(
-			error.length > 0 &&
-				error.every((e) => /\n@#\[line\:\d+,col\:\d+\]/.test(e)),
-			'line,col must record:' + JSON.stringify(error)
-		)
-		assert(doc2, undefined)
+		expect(() => {
+			parser.parseFromString(XML_ERROR, 'text/html')
+		}).toThrow(ERROR_MSG)
+		expect(errors).toMatchObject([/\n@#\[line\:\d+,col\:\d+\]/])
 	})
 })
