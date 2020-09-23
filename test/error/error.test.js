@@ -29,7 +29,9 @@ describe('errorHandler', () => {
 				errors.push(msg)
 			},
 		})
+
 		parser.parseFromString(XML_ERROR_AND_WARNING, 'text/xml')
+
 		expect(errors).toMatchObject([/\[xmldom warning]/, /\[xmldom error]/])
 	})
 
@@ -44,7 +46,9 @@ describe('errorHandler', () => {
 					},
 				},
 			})
+
 			parser.parseFromString(XML_ERROR_AND_WARNING, 'text/xml')
+
 			expect(errors).toHaveLength(1)
 		}
 	)
@@ -60,6 +64,7 @@ describe('errorHandler', () => {
 	it('error function throwing is not caught', () => {
 		const errors = []
 		const ERROR_MSG = 'FROM TEST'
+
 		const parser = new DOMParser({
 			locator: {}, // removing the locator makes the test fail!
 			errorHandler: {
@@ -69,6 +74,7 @@ describe('errorHandler', () => {
 				},
 			},
 		})
+
 		expect(() => {
 			parser.parseFromString(XML_ERROR, 'text/html')
 		}).toThrow(ERROR_MSG)

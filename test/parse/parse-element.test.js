@@ -6,9 +6,10 @@ const { DOMParser } = require('../../lib/dom-parser')
 describe('XML Node Parse', () => {
 	describe('no attribute', () => {
 		it.each(['<xml ></xml>', '<xml></xml>', '<xml />'])('%s', (input) => {
-			expect(
-				new DOMParser().parseFromString(input, 'text/xml').toString()
-			).toEqual('<xml/>')
+			const actual = new DOMParser()
+				.parseFromString(input, 'text/xml')
+				.toString()
+			expect(actual).toEqual('<xml/>')
 		})
 	})
 
@@ -19,9 +20,11 @@ describe('XML Node Parse', () => {
 				'<xml a="1" b="2" ></xml>',
 				'<xml a="1" b="2" />',
 			])('%s', (input) => {
-				expect(
-					new DOMParser().parseFromString(input, 'text/xml').toString()
-				).toEqual('<xml a="1" b="2"/>')
+				const actual = new DOMParser()
+					.parseFromString(input, 'text/xml')
+					.toString()
+
+				expect(actual).toEqual('<xml a="1" b="2"/>')
 			})
 		})
 		describe('empty b', () => {
@@ -43,6 +46,7 @@ describe('XML Node Parse', () => {
 			const actual = parser
 				.parseFromString('<xml a="1" b="2/">', 'text/xml')
 				.toString()
+
 			expect({ actual, ...errors }).toMatchSnapshot()
 		})
 	})
@@ -53,9 +57,11 @@ describe('XML Node Parse', () => {
 			'<xml xmlns="1" xmlns:a="2" a:test="3" ></xml>',
 			'<xml xmlns="1" xmlns:a="2" a:test="3" />',
 		])('%s', (input) => {
-			expect(
-				new DOMParser().parseFromString(input, 'text/xml').toString()
-			).toEqual('<xml xmlns="1" xmlns:a="2" a:test="3"/>')
+			const actual = new DOMParser()
+				.parseFromString(input, 'text/xml')
+				.toString()
+
+			expect(actual).toEqual('<xml xmlns="1" xmlns:a="2" a:test="3"/>')
 		})
 
 		it('unclosed root tag will be closed', () => {
@@ -64,6 +70,7 @@ describe('XML Node Parse', () => {
 			const actual = parser
 				.parseFromString('<xml xmlns="1" xmlns:a="2" a:test="3/">', 'text/xml')
 				.toString()
+
 			expect({ actual, ...errors }).toMatchSnapshot()
 		})
 	})

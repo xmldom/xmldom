@@ -16,6 +16,7 @@ const expectNeighbours = (first, second, ...nodes) => {
 describe('XML Node Parse', () => {
 	it('element', () => {
 		const dom = new DOMParser().parseFromString('<xml><child/></xml>')
+
 		expect(dom.documentElement.nodeType).toStrictEqual(Node.ELEMENT_NODE)
 		expect(dom.documentElement.firstChild.nodeType).toStrictEqual(
 			Node.ELEMENT_NODE
@@ -39,9 +40,10 @@ describe('XML Node Parse', () => {
 	})
 
 	it('text', () => {
-		const firstChild = new DOMParser().parseFromString(
+		const { firstChild } = new DOMParser().parseFromString(
 			'<xml>start center end</xml>'
-		).documentElement.firstChild
+		).documentElement
+
 		expect(firstChild.nodeType).toStrictEqual(Node.TEXT_NODE)
 		expect(firstChild).toMatchObject({
 			data: 'start center end',
@@ -50,11 +52,10 @@ describe('XML Node Parse', () => {
 	})
 
 	it('cdata', () => {
-		expect(
-			new DOMParser().parseFromString(
-				'<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>'
-			).documentElement.firstChild
-		).toMatchObject({
+		const { documentElement } = new DOMParser().parseFromString(
+			'<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>'
+		)
+		expect(documentElement.firstChild).toMatchObject({
 			data: 'start ',
 			nextSibling: {
 				data: '<encoded>',
@@ -68,30 +69,30 @@ describe('XML Node Parse', () => {
 	})
 
 	it('cdata empty', () => {
-		expect(
-			new DOMParser().parseFromString(
-				'<xml><![CDATA[]]>start <![CDATA[]]> end</xml>'
-			).documentElement
-		).toMatchObject({
+		const { documentElement } = new DOMParser().parseFromString(
+			'<xml><![CDATA[]]>start <![CDATA[]]> end</xml>'
+		)
+		expect(documentElement).toMatchObject({
 			textContent: 'start  end',
 		})
 	})
 
 	it('comment', () => {
-		expect(
-			new DOMParser().parseFromString('<xml><!-- comment&>< --></xml>')
-				.documentElement.firstChild
-		).toMatchObject({
+		const { documentElement } = new DOMParser().parseFromString(
+			'<xml><!-- comment&>< --></xml>'
+		)
+
+		expect(documentElement.firstChild).toMatchObject({
 			nodeValue: ' comment&>< ',
 		})
 	})
 
 	it('cdata comment', () => {
-		expect(
-			new DOMParser().parseFromString(
-				'<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>'
-			).documentElement.firstChild
-		).toMatchObject({
+		const { documentElement } = new DOMParser().parseFromString(
+			'<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>'
+		)
+
+		expect(documentElement.firstChild).toMatchObject({
 			nodeName: '#text', // 0
 			nodeValue: 'start ',
 			nextSibling: {
@@ -116,21 +117,29 @@ describe('XML Node Parse', () => {
 	describe('appendChild', () => {
 		it('returns the argument', () => {
 			const dom = new DOMParser().parseFromString('<xml/>')
+
 			const child = dom.createElement('child')
+
 			expect(dom.documentElement.appendChild(child)).toStrictEqual(child)
 		})
+
 		it('appends as firstChild', () => {
 			const dom = new DOMParser().parseFromString('<xml/>')
 			const child = dom.createElement('child')
+
 			dom.documentElement.appendChild(child)
+
 			expect(dom.documentElement.firstChild).toStrictEqual(child)
 		})
 		it('subsequent calls append in order', () => {
 			const dom = new DOMParser().parseFromString('<xml />')
 			const fragment = dom.createDocumentFragment()
+
 			expect(fragment.nodeType).toStrictEqual(Node.DOCUMENT_FRAGMENT_NODE)
+
 			const first = fragment.appendChild(dom.createElement('first'))
 			const last = fragment.appendChild(dom.createElement('last'))
+
 			expectNeighbours(first, last)
 			expect(fragment.firstChild).toStrictEqual(first)
 			expect(fragment.lastChild).toStrictEqual(last)

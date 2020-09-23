@@ -20,7 +20,9 @@ describe('DOMLocator', () => {
 			'',
 			'  </scxml>',
 		].join('\n')
+
 		const doc = new DOMParser().parseFromString(xml, 'text/xml')
+
 		expect(doc.getElementsByTagName('transition')[0]).toMatchObject({
 			lineNumber: 10,
 		})
@@ -28,6 +30,7 @@ describe('DOMLocator', () => {
 
 	it('node positions', () => {
 		const instruction = '<?xml version="1.0"?>'
+
 		const dom = new DOMParser().parseFromString(
 			`${instruction}<!-- aaa -->\n` +
 				'<test>\n' +
@@ -35,6 +38,7 @@ describe('DOMLocator', () => {
 				'</a>x</test>',
 			'text/xml'
 		)
+
 		expect(dom).toMatchObject({
 			firstChild: {
 				// <?xml version="1.0"?>
@@ -87,9 +91,11 @@ describe('DOMLocator', () => {
 		})
 
 		const doc = parser.parseFromString(xml, 'text/html')
+
 		expect({ actual: doc.toString(), ...errors }).toMatchSnapshot()
 
 		const attr = doc.documentElement.firstChild.attributes.item(0)
+
 		expect(attr).toMatchObject({
 			lineNumber: 1,
 			columnNumber: 19, // position of the starting quote

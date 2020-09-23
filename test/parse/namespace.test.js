@@ -15,6 +15,7 @@ describe('XML Namespace Parse', () => {
 			'<xml xmlns="http://test.com"><child attr="1"/></xml>',
 			'text/xml'
 		)
+
 		expect(
 			uniqArray(
 				documentElement.namespaceURI,
@@ -34,6 +35,7 @@ describe('XML Namespace Parse', () => {
 			'text/xml'
 		)
 		const firstChild = documentElement.firstChild
+
 		expect(
 			uniqArray(
 				documentElement.lookupNamespaceURI('p1'),
@@ -55,6 +57,7 @@ describe('XML Namespace Parse', () => {
 			'<xml xmlns:p="http://test.com"><p:child xmlns:p="http://p.com"/><p:child/></xml>',
 			'text/xml'
 		)
+
 		expect(documentElement.firstChild.namespaceURI).toStrictEqual(
 			'http://p.com'
 		)

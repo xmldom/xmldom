@@ -65,7 +65,10 @@ describe('xss test', () => {
 	it('documentElement.toString(true, callback)', () => {
 		const html =
 			'<div onclick="alert(123)" title="32323"><script>alert(123)</script></div>'
-		expect(xss(html)).toEqual(
+
+		const actual = xss(html)
+
+		expect(actual).toEqual(
 			'<div title="32323" xmlns="http://www.w3.org/1999/xhtml"></div>'
 		)
 	})
