@@ -78,6 +78,7 @@ describe('parse', () => {
 
 		const actual = parser
 			.parseFromString(
+				// TODO: xml not well formed but no warning or error, extract into different test?
 				'<html><body title="1<2"><table>&lt;;test</body></body></html>',
 				'text/html'
 			)

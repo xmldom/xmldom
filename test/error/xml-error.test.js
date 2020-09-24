@@ -2,7 +2,7 @@
 
 const { getTestParser } = require('../get-test-parser')
 
-describe('errorHandle', () => {
+describe('html vs xml:', () => {
 	it.each(['text/html', 'text/xml'])('unclosed document in %s', (mimeType) => {
 		const { errors, parser } = getTestParser()
 
@@ -34,12 +34,26 @@ describe('errorHandle', () => {
 		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 
-	it('valid html attribute value (<>&)', () => {
+	it.each(['text/html', 'text/xml'])('%s attribute (missing =)', (mimeType) => {
 		const { errors, parser } = getTestParser()
+		const xml = [
+			'<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0"',
+			'       profile="ecmascript" id="scxmlRoot" initial="start">',
+			'',
+			'  <!--',
+			'      some comment (next line is empty)',
+			'',
+			'  -->',
+			'',
+			'  <state id="start" name="start">',
+			// this line contains the missing = for attribute value
+			'    <transition event"init" name="init" target="main_state" />',
+			'  </state>',
+			'',
+			'  </scxml>',
+		].join('\n')
 
-		const actual = parser
-			.parseFromString('<img attr="<>&"/>', 'text/html')
-			.toString()
+		const actual = parser.parseFromString(xml, mimeType).toString()
 
 		expect({ actual, ...errors }).toMatchSnapshot()
 	})

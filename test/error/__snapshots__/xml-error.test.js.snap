@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`errorHandle html attribute (miss quote) 1`] = `
+exports[`html vs xml: html attribute (miss quote) 1`] = `
 Object {
   "actual": "<img attr=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
   "warning": Array [
@@ -10,7 +10,7 @@ Object {
 }
 `;
 
-exports[`errorHandle invalid xml node "<r" 1`] = `
+exports[`html vs xml: invalid xml node "<r" 1`] = `
 Object {
   "actual": "<r/>",
   "error": Array [
@@ -24,7 +24,7 @@ Object {
 }
 `;
 
-exports[`errorHandle invalid xml node "<test><!--" 1`] = `
+exports[`html vs xml: invalid xml node "<test><!--" 1`] = `
 Object {
   "actual": "<test/>",
   "error": Array [
@@ -37,8 +37,7 @@ Object {
   ],
 }
 `;
-
-exports[`errorHandle unclosed document in text/xml 1`] = `
+exports[`html vs xml: unclosed document in text/xml 1`] = `
 Object {
   "actual": "<img/>",
   "warning": Array [
@@ -48,14 +47,50 @@ Object {
 }
 `;
 
-exports[`errorHandle unclosed document in text/html 1`] = `
+exports[`html vs xml: unclosed document in text/html 1`] = `
 Object {
   "actual": "<img xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
 }
 `;
 
-exports[`errorHandle valid html attribute value (<>&) 1`] = `
+exports[`html vs xml: text/html attribute (missing =) 1`] = `
 Object {
-  "actual": "<img attr=\\"&lt;>&amp;\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+  "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
+
+  <!--
+      some comment (next line is empty)
+
+  -->
+
+  <state id=\\"start\\" name=\\"start\\">
+    <transition event=\\"init\\" name=\\"init\\" target=\\"main_state\\"/>
+  </state>
+
+  </scxml>",
+  "warning": Array [
+    "[xmldom warning]	attribute value must after \\"=\\"
+@#[line:10,col:5]",
+  ],
+}
+`;
+
+exports[`html vs xml: text/xml attribute (missing =) 1`] = `
+Object {
+  "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
+
+  <!--
+      some comment (next line is empty)
+
+  -->
+
+  <state id=\\"start\\" name=\\"start\\">
+    <transition event=\\"init\\" name=\\"init\\" target=\\"main_state\\"/>
+  </state>
+
+  </scxml>",
+  "warning": Array [
+    "[xmldom warning]	attribute value must after \\"=\\"
+@#[line:10,col:5]",
+  ],
 }
 `;
