@@ -24,6 +24,9 @@ describe('DOMLocator', () => {
 		const doc = new DOMParser().parseFromString(xml, 'text/xml')
 
 		expect(doc.getElementsByTagName('transition')[0]).toMatchObject({
+			// we are not testing for columnNumber here to keep this test as specific as possible
+			// it proves that empty lines are counted as lines
+			// it should only fail if that changes
 			lineNumber: 10,
 		})
 	})
