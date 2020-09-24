@@ -1,8 +1,7 @@
 /* eslint strict: off */
 
-var assert = require('assert')
-var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
-var DOMParser = require('../../lib/dom-parser').DOMParser
+const { XMLSerializer, DOMParser } = require('../../lib/dom-parser')
+/*
 var DomJS = require('dom-js').DomJS
 try {
 	var Libxml = require('libxmljs')
@@ -10,6 +9,7 @@ try {
 } catch (e) {
 	console.error(e)
 }
+*/
 
 function xmldom(data) {
 	console.time('xmldom')
@@ -75,8 +75,7 @@ function addAttributes(el) {
 	}
 }
 
-// Create a Test Suite
-describe('XML Node Parse', () => {
+xdescribe('XML Node Parse', () => {
 	it('big file parse', () => {
 		var fs = require('fs')
 		var path = require('path')
