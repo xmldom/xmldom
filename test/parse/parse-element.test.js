@@ -1,94 +1,77 @@
 'use strict'
 
-var assert = require('../assert')
-var DOMParser = require('../../lib/dom-parser').DOMParser
-var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
-var parser = new DOMParser()
+const { getTestParser } = require('../get-test-parser')
+const { DOMParser } = require('../../lib/dom-parser')
 
 describe('XML Node Parse', () => {
-	it('noAttribute', () => {
-		const expected = '<xml/>'
-		assert(
-			new DOMParser().parseFromString('<xml ></xml>', 'text/xml') + '',
-			expected
-		)
-		assert(
-			new DOMParser().parseFromString('<xml></xml>', 'text/xml') + '',
-			expected
-		)
-		assert(
-			new DOMParser().parseFromString('<xml />', 'text/xml') + '',
-			expected
-		)
-		assert(new DOMParser().parseFromString(expected, 'text/xml') + '', expected)
+	describe('no attribute', () => {
+		it.each(['<xml ></xml>', '<xml></xml>', '<xml />'])('%s', (input) => {
+			const actual = new DOMParser()
+				.parseFromString(input, 'text/xml')
+				.toString()
+			expect(actual).toEqual('<xml/>')
+		})
 	})
 
-	it('simpleAttribute', () => {
-		const expected = '<xml a="1" b="2"/>'
-		const expectedEmptyB = '<xml a="1" b=""/>'
-		assert(
-			new DOMParser().parseFromString('<xml a="1" b="2"></xml>', 'text/xml'),
-			expected
-		)
-		assert(
-			new DOMParser().parseFromString('<xml a="1" b="2" ></xml>', 'text/xml'),
-			expected
-		)
-		assert(
-			new DOMParser().parseFromString('<xml a="1" b=\'\'></xml>', 'text/xml'),
-			expectedEmptyB
-		)
-		assert(
-			new DOMParser().parseFromString('<xml a="1" b=\'\' ></xml>', 'text/xml'),
-			expectedEmptyB
-		)
-		assert(
-			new DOMParser().parseFromString('<xml a="1" b="2/">', 'text/xml'),
-			'<xml a="1" b="2/"/>'
-		)
-		assert(
-			new DOMParser().parseFromString('<xml a="1" b="2" />', 'text/xml'),
-			expected
-		)
-		assert(
-			new DOMParser().parseFromString('<xml  a="1" b=\'\'/>', 'text/xml'),
-			expectedEmptyB
-		)
-		assert(
-			new DOMParser().parseFromString('<xml  a="1" b=\'\' />', 'text/xml'),
-			expectedEmptyB
-		)
+	describe('simple attributes', () => {
+		describe('nothing special', () => {
+			it.each([
+				'<xml a="1" b="2"></xml>',
+				'<xml a="1" b="2" ></xml>',
+				'<xml a="1" b="2" />',
+			])('%s', (input) => {
+				const actual = new DOMParser()
+					.parseFromString(input, 'text/xml')
+					.toString()
+
+				expect(actual).toEqual('<xml a="1" b="2"/>')
+			})
+		})
+		describe('empty b', () => {
+			it.each([
+				'<xml a="1" b=\'\'></xml>',
+				'<xml a="1" b=\'\' ></xml>',
+				'<xml  a="1" b=\'\'/>',
+				'<xml  a="1" b=\'\' />',
+			])('%s', (input) => {
+				expect(
+					new DOMParser().parseFromString(input, 'text/xml').toString()
+				).toEqual('<xml a="1" b=""/>')
+			})
+		})
+
+		it('unclosed root tag will be closed', () => {
+			const { errors, parser } = getTestParser()
+
+			const actual = parser
+				.parseFromString('<xml a="1" b="2/">', 'text/xml')
+				.toString()
+
+			expect({ actual, ...errors }).toMatchSnapshot()
+		})
 	})
 
-	it('nsAttribute', () => {
-		const expected = '<xml xmlns="1" xmlns:a="2" a:test="3"/>'
-		assert(
-			new DOMParser().parseFromString(
-				'<xml xmlns="1" xmlns:a="2" a:test="3"></xml>',
-				'text/xml'
-			),
-			expected
-		)
-		assert(
-			new DOMParser().parseFromString(
-				'<xml xmlns="1" xmlns:a="2" a:test="3" ></xml>',
-				'text/xml'
-			),
-			expected
-		)
-		assert(
-			new DOMParser().parseFromString(
-				'<xml xmlns="1" xmlns:a="2" a:test="3/">',
-				'text/xml'
-			),
-			expected.replace('3', '3/')
-		)
-		assert(
-			new DOMParser().parseFromString(
-				'<xml xmlns="1" xmlns:a="2" a:test="3" />',
-				'text/xml'
-			),
-			expected
-		)
+	describe('namespaced attributes', () => {
+		it.each([
+			'<xml xmlns="1" xmlns:a="2" a:test="3"></xml>',
+			'<xml xmlns="1" xmlns:a="2" a:test="3" ></xml>',
+			'<xml xmlns="1" xmlns:a="2" a:test="3" />',
+		])('%s', (input) => {
+			const actual = new DOMParser()
+				.parseFromString(input, 'text/xml')
+				.toString()
+
+			expect(actual).toEqual('<xml xmlns="1" xmlns:a="2" a:test="3"/>')
+		})
+
+		it('unclosed root tag will be closed', () => {
+			const { errors, parser } = getTestParser()
+
+			const actual = parser
+				.parseFromString('<xml xmlns="1" xmlns:a="2" a:test="3/">', 'text/xml')
+				.toString()
+
+			expect({ actual, ...errors }).toMatchSnapshot()
+		})
 	})
 })

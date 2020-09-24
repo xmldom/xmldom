@@ -1,147 +1,198 @@
 'use strict'
 
-var assert = require('../assert')
-var DOMParser = require('../../lib/dom-parser').DOMParser
-var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
-var parser = new DOMParser()
+const { Node } = require('../../lib/dom')
+const { DOMParser } = require('../../lib/dom-parser')
 
-// Create a Test Suite
+const expectNeighbours = (first, second, ...nodes) => {
+	expect(first.nextSibling).toStrictEqual(second)
+	expect(second.previousSibling).toStrictEqual(first)
+	expect(first.parentNode).toStrictEqual(second.parentNode)
+
+	if (nodes.length > 0) {
+		expectNeighbours(second, ...nodes)
+	}
+}
+
 describe('XML Node Parse', () => {
 	it('element', () => {
-		var dom = new DOMParser().parseFromString('<xml><child/></xml>')
-		assert(dom.childNodes.length, 1)
-		assert(dom.documentElement.childNodes.length, 1)
-		assert(dom.documentElement.tagName, 'xml')
-		assert(dom.documentElement.firstChild.tagName, 'child')
+		const dom = new DOMParser().parseFromString('<xml><child/></xml>')
+
+		expect(dom.documentElement.nodeType).toStrictEqual(Node.ELEMENT_NODE)
+		expect(dom.documentElement.firstChild.nodeType).toStrictEqual(
+			Node.ELEMENT_NODE
+		)
+		expect(dom).toMatchObject({
+			childNodes: {
+				length: 1,
+			},
+			documentElement: {
+				childNodes: {
+					length: 1,
+				},
+				firstChild: {
+					nodeName: 'child',
+					tagName: 'child',
+				},
+				nodeName: 'xml',
+				tagName: 'xml',
+			},
+		})
 	})
 
 	it('text', () => {
-		var dom = new DOMParser().parseFromString('<xml>start center end</xml>')
-		var root = dom.documentElement
-		assert(root.firstChild.data, 'start center end')
-		assert(root.firstChild.nextSibling, null)
+		const { firstChild } = new DOMParser().parseFromString(
+			'<xml>start center end</xml>'
+		).documentElement
+
+		expect(firstChild.nodeType).toStrictEqual(Node.TEXT_NODE)
+		expect(firstChild).toMatchObject({
+			data: 'start center end',
+			nextSibling: null,
+		})
 	})
 
 	it('cdata', () => {
-		var dom = new DOMParser().parseFromString(
+		const { documentElement } = new DOMParser().parseFromString(
 			'<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>'
 		)
-		var root = dom.documentElement
-		assert(root.firstChild.data, 'start ')
-		assert(root.firstChild.nextSibling.data, '<encoded>')
-		assert(
-			root.firstChild.nextSibling.nextSibling.nextSibling.data,
-			'[[[[[[[[]]]]]]]]'
-		)
+		expect(documentElement.firstChild).toMatchObject({
+			data: 'start ',
+			nextSibling: {
+				data: '<encoded>',
+				nextSibling: {
+					nextSibling: {
+						data: '[[[[[[[[]]]]]]]]',
+					},
+				},
+			},
+		})
 	})
 
 	it('cdata empty', () => {
-		var dom = new DOMParser().parseFromString(
+		const { documentElement } = new DOMParser().parseFromString(
 			'<xml><![CDATA[]]>start <![CDATA[]]> end</xml>'
 		)
-		var root = dom.documentElement
-		assert(root.textContent, 'start  end')
+		expect(documentElement).toMatchObject({
+			textContent: 'start  end',
+		})
 	})
 
 	it('comment', () => {
-		var dom = new DOMParser().parseFromString('<xml><!-- comment&>< --></xml>')
-		var root = dom.documentElement
-		assert(root.firstChild.nodeValue, ' comment&>< ')
+		const { documentElement } = new DOMParser().parseFromString(
+			'<xml><!-- comment&>< --></xml>'
+		)
+
+		expect(documentElement.firstChild).toMatchObject({
+			nodeValue: ' comment&>< ',
+		})
 	})
 
 	it('cdata comment', () => {
-		var dom = new DOMParser().parseFromString(
+		const { documentElement } = new DOMParser().parseFromString(
 			'<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>'
 		)
-		var root = dom.documentElement
-		assert(root.firstChild.nodeValue, 'start ')
-		assert(root.firstChild.nextSibling.nodeValue, '<encoded>')
-		assert(
-			root.firstChild.nextSibling.nextSibling.nextSibling.nodeValue,
-			' comment '
-		)
-		assert(
-			root.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nodeValue,
-			'end'
-		)
-	})
 
-	it('append node', () => {
-		var dom = new DOMParser().parseFromString('<xml/>')
-		var child = dom.createElement('child')
-		assert(child, dom.documentElement.appendChild(child))
-		assert(child, dom.documentElement.firstChild)
-		var fragment = new dom.createDocumentFragment()
-		assert(child, fragment.appendChild(child))
-	})
-
-	it('insert node', () => {
-		var dom = new DOMParser().parseFromString('<xml><child/></xml>')
-		var node = dom.createElement('sibling')
-		var child = dom.documentElement.firstChild
-		child.parentNode.insertBefore(node, child)
-		assert(node, child.previousSibling)
-		assert(node.nextSibling, child)
-		assert(node.parentNode, child.parentNode)
-	})
-
-	it('insert fragment', () => {
-		var dom = new DOMParser().parseFromString('<xml><child/></xml>')
-		var fragment = dom.createDocumentFragment()
-		assert(fragment.nodeType, 11)
-		var first = fragment.appendChild(dom.createElement('first'))
-		var last = fragment.appendChild(dom.createElement('last'))
-		assert(fragment.firstChild, first)
-		assert(fragment.lastChild, last)
-		assert(last.previousSibling, first)
-		assert(first.nextSibling, last)
-		var child = dom.documentElement.firstChild
-		child.parentNode.insertBefore(fragment, child)
-		assert(last.previousSibling, first)
-		assert(first.nextSibling, last)
-		assert(child.parentNode.firstChild, first)
-		assert(last, child.previousSibling)
-		assert(last.nextSibling, child)
-		assert(first.parentNode, child.parentNode)
-		assert(last.parentNode, child.parentNode)
-	})
-
-	it('instruction', () => {
-		var source =
-			'<?xml version="1.0"?><root><child>&amp;<!-- &amp; --></child></root>'
-		var doc = new DOMParser().parseFromString(source, 'text/xml')
-		var source2 = new XMLSerializer().serializeToString(doc)
-		assert(source2, source)
-	})
-
-	it('public id && sysid', () => {
-		var error = []
-		var parser = new DOMParser({
-			locator: {},
-			errorHandler: function (msg) {
-				error.push(msg)
+		expect(documentElement.firstChild).toMatchObject({
+			nodeName: '#text', // 0
+			nodeValue: 'start ',
+			nextSibling: {
+				nodeName: '#cdata-section', // 1
+				nodeValue: '<encoded>',
+				nextSibling: {
+					nodeName: '#text', // 2
+					nodeValue: ' ',
+					nextSibling: {
+						nodeName: '#comment', // 3
+						nodeValue: ' comment ',
+						nextSibling: {
+							nodeName: '#text', // 4
+							nodeValue: 'end',
+						},
+					},
+				},
 			},
 		})
-		var doc = parser.parseFromString(
-			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html/>',
-			'text/html'
-		)
-		assert(
-			doc + '',
-			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"></html>'
+	})
+
+	describe('appendChild', () => {
+		it('returns the argument', () => {
+			const dom = new DOMParser().parseFromString('<xml/>')
+
+			const child = dom.createElement('child')
+
+			expect(dom.documentElement.appendChild(child)).toStrictEqual(child)
+		})
+
+		it('appends as firstChild', () => {
+			const dom = new DOMParser().parseFromString('<xml/>')
+			const child = dom.createElement('child')
+
+			dom.documentElement.appendChild(child)
+
+			expect(dom.documentElement.firstChild).toStrictEqual(child)
+		})
+		it('subsequent calls append in order', () => {
+			const dom = new DOMParser().parseFromString('<xml />')
+			const fragment = dom.createDocumentFragment()
+
+			expect(fragment.nodeType).toStrictEqual(Node.DOCUMENT_FRAGMENT_NODE)
+
+			const first = fragment.appendChild(dom.createElement('first'))
+			const last = fragment.appendChild(dom.createElement('last'))
+
+			expectNeighbours(first, last)
+			expect(fragment.firstChild).toStrictEqual(first)
+			expect(fragment.lastChild).toStrictEqual(last)
+		})
+	})
+
+	describe('insertBefore', () => {
+		it('places created element before existing element', () => {
+			const dom = new DOMParser().parseFromString('<xml><child/></xml>')
+			const inserted = dom.createElement('sibling')
+			const child = dom.documentElement.firstChild
+
+			child.parentNode.insertBefore(inserted, child)
+
+			expectNeighbours(inserted, child)
+		})
+		it('inserts all elements in DocumentFragment', () => {
+			const dom = new DOMParser().parseFromString('<xml><child/></xml>')
+			const child = dom.documentElement.firstChild
+
+			const fragment = dom.createDocumentFragment()
+			const first = fragment.appendChild(dom.createElement('first'))
+			const second = fragment.appendChild(dom.createElement('second'))
+
+			child.parentNode.insertBefore(fragment, child)
+
+			expectNeighbours(first, second, child)
+			expect(child.parentNode.firstChild).toStrictEqual(first)
+		})
+	})
+
+	it('preserves instruction', () => {
+		const source =
+			'<?xml version="1.0"?><root><child>&amp;<!-- &amp; --></child></root>'
+
+		const actual = new DOMParser()
+			.parseFromString(source, 'text/xml')
+			.toString()
+
+		expect(actual).toStrictEqual(source)
+	})
+
+	it('preserves doctype with public id and sysid', () => {
+		const DOCTYPE =
+			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"' +
+			' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
+
+		const actual = new DOMParser()
+			.parseFromString(`${DOCTYPE}<html/>`, 'text/html')
+			.toString()
+
+		expect(actual).toStrictEqual(
+			`${DOCTYPE}<html xmlns="http://www.w3.org/1999/xhtml"></html>`
 		)
 	})
 })
-
-//var ELEMENT_NODE                = NodeType.ELEMENT_NODE                = 1;
-//var ATTRIBUTE_NODE              = NodeType.ATTRIBUTE_NODE              = 2;
-//var TEXT_NODE                   = NodeType.TEXT_NODE                   = 3;
-//var CDATA_SECTION_NODE          = NodeType.CDATA_SECTION_NODE          = 4;
-//var ENTITY_REFERENCE_NODE       = NodeType.ENTITY_REFERENCE_NODE       = 5;
-//var ENTITY_NODE                 = NodeType.ENTITY_NODE                 = 6;
-//var PROCESSING_INSTRUCTION_NODE = NodeType.PROCESSING_INSTRUCTION_NODE = 7;
-//var COMMENT_NODE                = NodeType.COMMENT_NODE                = 8;
-//var DOCUMENT_NODE               = NodeType.DOCUMENT_NODE               = 9;
-//var DOCUMENT_TYPE_NODE          = NodeType.DOCUMENT_TYPE_NODE          = 10;
-//var DOCUMENT_FRAGMENT_NODE      = NodeType.DOCUMENT_FRAGMENT_NODE      = 11;
-//var NOTATION_NODE               = NodeType.NOTATION_NODE               = 12;

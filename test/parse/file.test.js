@@ -1,24 +1,23 @@
 'use strict'
 
-var fs = require('fs')
-var DOMParser = require('../../lib/dom-parser').DOMParser
-var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
-const assert = require('../assert')
+const fs = require('fs')
 
-describe('DOMLocator', () => {
-	it('test.xml', () => {
-		var data = fs
+const { DOMParser } = require('../../lib/dom-parser')
+
+describe('from file', () => {
+	it('file-test1.xml', () => {
+		const data = fs
 			.readFileSync(__dirname + '/file-test1.xml')
 			.toString()
 			.replace(/\r\n?/g, '\n')
-		// fs.writeFileSync(__dirname+'/file-test1.xml',data)
-		var expexted = fs
+		const expexted = fs
 			.readFileSync(__dirname + '/file-test1.result.xml')
 			.toString()
 			.replace(/\r\n?/g, '\n')
-		var dom = new DOMParser().parseFromString(data)
-		var result = new XMLSerializer().serializeToString(dom)
-		assert(result, expexted)
 		// fs.writeFileSync(__dirname+'/file-test1.result.xml',result)
+
+		const actual = new DOMParser().parseFromString(data).toString()
+
+		expect(actual).toStrictEqual(expexted)
 	})
 })

@@ -1,24 +1,11 @@
 'use strict'
 
-var DOMParser = require('../../lib/dom-parser').DOMParser
-var assert = require('../assert')
-
-function assertPosition(n, line, col, info) {
-	assert.equal(
-		n.lineNumber,
-		line,
-		'lineNumber:' + n.lineNumber + '/' + line + '\n@' + info
-	)
-	assert.equal(
-		n.columnNumber,
-		col,
-		'columnNumber:' + n.columnNumber + '/' + col + '\n@' + info
-	)
-}
+const { DOMParser } = require('../../lib/dom-parser')
+const { getTestParser } = require('../get-test-parser')
 
 describe('DOMLocator', () => {
 	it('empty line number', () => {
-		var xml = [
+		const xml = [
 			'<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0"',
 			'       profile="ecmascript" id="scxmlRoot" initial="start">',
 			'',
@@ -28,76 +15,101 @@ describe('DOMLocator', () => {
 			'  -->',
 			'',
 			'  <state id="start" name="start">',
-			'    <transition event"init" name="init" target="main_state" />',
+			'    <transition event="init" name="init" target="main_state" />',
 			'  </state>',
 			'',
 			'  </scxml>',
 		].join('\n')
-		var parser = new DOMParser({ locator: {} })
-		var doc = parser.parseFromString(xml, 'text/xml')
-		var trans = doc.getElementsByTagName('transition')[0]
-		assert.equal(trans.lineNumber, 10) //,''+trans+trans.lineNumber+'/'+trans.parentNode.previousSibling.previousSibling.lineNumber)
+
+		const doc = new DOMParser().parseFromString(xml, 'text/xml')
+
+		expect(doc.getElementsByTagName('transition')[0]).toMatchObject({
+			// we are not testing for columnNumber here to keep this test as specific as possible
+			// it proves that empty lines are counted as lines
+			// it should only fail if that changes
+			lineNumber: 10,
+		})
 	})
 
 	it('node positions', () => {
-		var parser = new DOMParser({ locator: {} })
-		var doc = parser.parseFromString(
-			'<?xml version="1.0"?><!-- aaa -->\n' +
+		const instruction = '<?xml version="1.0"?>'
+
+		const dom = new DOMParser().parseFromString(
+			`${instruction}<!-- aaa -->\n` +
 				'<test>\n' +
-				'  <a attr="value"><![CDATA[1]]>something\n</a>x</test>',
+				'  <a attr="value"><![CDATA[1]]>something\n' +
+				'</a>x</test>',
 			'text/xml'
 		)
-		var test = doc.documentElement
-		var a = test.firstChild.nextSibling
-		assertPosition(doc.firstChild, 1, 1, 'first child')
-		assertPosition(
-			doc.firstChild.nextSibling,
-			1,
-			1 + '<?xml version="1.0"?>'.length,
-			'first child nextSibling'
-		)
-		assertPosition(test, 2, 1, 'document element' + test)
-		//assertPosition(test.firstChild, 1, 7);
-		assertPosition(a, 3, 3, 'documentElement firstchild nextSibling' + a)
-		assertPosition(a.firstChild, 3, 19, 'a.firstchild')
-		assertPosition(
-			a.firstChild.nextSibling,
-			3,
-			19 + '<![CDATA[1]]>'.length,
-			'a.firstchild.nextsibling'
-		)
-		assertPosition(test.lastChild, 4, 5, 'test.lastChild')
+
+		expect(dom).toMatchObject({
+			firstChild: {
+				// <?xml version="1.0"?>
+				lineNumber: 1,
+				columnNumber: 1,
+				nextSibling: {
+					nodeName: '#comment',
+					lineNumber: 1,
+					columnNumber: 1 + instruction.length,
+				},
+			},
+			documentElement: {
+				nodeName: 'test',
+				lineNumber: 2,
+				columnNumber: 1,
+				firstChild: {
+					nodeName: '#text',
+					lineNumber: 2,
+					columnNumber: 7,
+					nextSibling: {
+						nodeName: 'a',
+						lineNumber: 3,
+						columnNumber: 3,
+						firstChild: {
+							nodeName: '#cdata-section',
+							lineNumber: 3,
+							columnNumber: 19,
+						},
+						lastChild: {
+							textContent: 'something\n',
+							lineNumber: 3,
+							columnNumber: 32,
+						},
+					},
+				},
+				lastChild: {
+					textContent: 'x',
+					lineNumber: 4,
+					columnNumber: 5,
+				},
+			},
+		})
 	})
 
-	it('error positions', () => {
-		var error = []
-		var parser = new DOMParser({
+	it('attribute position', () => {
+		// TODO: xml not well formed but no warning or error, extract into different test?
+		const xml = '<html><body title="1<2"><table>&lt;;test</body></body></html>'
+		const { errors, parser } = getTestParser({
 			locator: { systemId: 'c:/test/1.xml' },
-			errorHandler: function (msg) {
-				error.push(msg)
-			},
 		})
-		var xml = '<html><body title="1<2"><table>&lt;;test</body></body></html>'
-		var doc = parser.parseFromString(xml, 'text/html')
-		var attr = doc.documentElement.firstChild.attributes.item(0)
-		assertPosition(attr, 1, 19, 'title="1<2 ')
-		assert(error.length, 0)
+
+		const doc = parser.parseFromString(xml, 'text/html')
+
+		expect({ actual: doc.toString(), ...errors }).toMatchSnapshot()
+
+		const attr = doc.documentElement.firstChild.attributes.item(0)
+
+		expect(attr).toMatchObject({
+			lineNumber: 1,
+			columnNumber: 19, // position of the starting quote
+		})
 	})
 
-	it('error positions p', () => {
-		var error = []
-		var parser = new DOMParser({
-			locator: {},
-			errorHandler: function (msg) {
-				error.push('@@' + msg)
-			},
-		})
-		var doc = parser.parseFromString('<root>\n\t<err</root>', 'text/html')
-		var root = doc.documentElement
-		var textNode = root.firstChild
-		assert.isTrue(
-			/\n@#\[line\:2,col\:2\]/.test(error.join(' ')),
-			'line,col must record:' + JSON.stringify(error)
-		)
+	it('logs error positions', () => {
+		const { errors, parser } = getTestParser()
+
+		parser.parseFromString('<root>\n\t<err</root>', 'text/html')
+
+		expect(errors).toMatchSnapshot()
 	})
 })

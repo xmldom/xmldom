@@ -1,54 +1,71 @@
 'use strict'
 
-var DOMParser = require('../../lib/dom-parser').DOMParser
-const assert = require('../assert')
+const { DOMParser } = require('../../lib/dom-parser')
 
-// Create a Test Suite
+/**
+ * Returns an array containing only one occurrence of every sting in `values` (like in a Set).
+ *
+ * @param values {string}
+ */
+const uniqArray = (...values) => [...new Set(values)]
+
 describe('XML Namespace Parse', () => {
 	it('default namespace', () => {
-		var dom = new DOMParser().parseFromString(
+		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com"><child attr="1"/></xml>',
 			'text/xml'
 		)
-		var root = dom.documentElement
-		assert(root.namespaceURI, 'http://test.com')
-		assert(root.lookupNamespaceURI(''), 'http://test.com')
-		assert(root.firstChild.namespaceURI, 'http://test.com')
-		assert(root.firstChild.lookupNamespaceURI(''), 'http://test.com')
-		assert(root.firstChild.getAttributeNode('attr').namespaceURI, null)
+
+		expect(
+			uniqArray(
+				documentElement.namespaceURI,
+				documentElement.lookupNamespaceURI(''),
+				documentElement.firstChild.namespaceURI,
+				documentElement.firstChild.lookupNamespaceURI('')
+			)
+		).toMatchObject(['http://test.com'])
+		expect(
+			documentElement.firstChild.getAttributeNode('attr').namespaceURI
+		).toBeUndefined()
 	})
 
 	it('prefix namespace', () => {
-		var dom = new DOMParser().parseFromString(
+		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns:p1="http://p1.com" xmlns:p2="http://p2.com"><p1:child a="1" p1:attr="1" b="2"/><p2:child/></xml>',
 			'text/xml'
 		)
-		var root = dom.documentElement
-		assert(root.firstChild.namespaceURI, 'http://p1.com')
-		assert(root.lookupNamespaceURI('p1'), 'http://p1.com')
-		assert(root.firstChild.getAttributeNode('attr'), null)
-		assert(
-			root.firstChild.getAttributeNode('p1:attr').namespaceURI,
-			'http://p1.com'
-		)
-		assert(root.firstChild.nextSibling.namespaceURI, 'http://p2.com')
-		assert(
-			root.firstChild.nextSibling.lookupNamespaceURI('p2'),
-			'http://p2.com'
-		)
+		const firstChild = documentElement.firstChild
+
+		expect(
+			uniqArray(
+				documentElement.lookupNamespaceURI('p1'),
+				firstChild.namespaceURI,
+				firstChild.getAttributeNode('p1:attr').namespaceURI
+			)
+		).toMatchObject(['http://p1.com'])
+		expect(
+			uniqArray(
+				firstChild.nextSibling.namespaceURI,
+				firstChild.nextSibling.lookupNamespaceURI('p2')
+			)
+		).toMatchObject(['http://p2.com'])
+		expect(firstChild.getAttributeNode('attr')).toBeUndefined()
 	})
 
 	it('after prefix namespace', () => {
-		var dom = new DOMParser().parseFromString(
+		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns:p="http://test.com"><p:child xmlns:p="http://p.com"/><p:child/></xml>',
 			'text/xml'
 		)
-		var root = dom.documentElement
-		assert(root.firstChild.namespaceURI, 'http://p.com')
-		assert(root.lastChild.namespaceURI, 'http://test.com')
-		assert(
-			root.firstChild.nextSibling.lookupNamespaceURI('p'),
+
+		expect(documentElement.firstChild.namespaceURI).toStrictEqual(
+			'http://p.com'
+		)
+		expect(documentElement.lastChild.namespaceURI).toStrictEqual(
 			'http://test.com'
 		)
+		expect(
+			documentElement.firstChild.nextSibling.lookupNamespaceURI('p')
+		).toStrictEqual('http://test.com')
 	})
 })

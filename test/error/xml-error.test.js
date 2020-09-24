@@ -1,83 +1,60 @@
 'use strict'
 
-var DOMParser = require('../../lib/dom-parser').DOMParser
-var assert = require('../assert')
+const { getTestParser } = require('../get-test-parser')
 
-describe('errorHandle', () => {
-	it('empty document', () => {
-		var errors = []
-		var p = new DOMParser({
-			errorHandler: function (key, msg) {
-				errors.push(key, msg)
-			},
-		})
-		var dom = p.parseFromString('', 'text/xml')
-		assert(errors.length, 2)
+describe('html vs xml:', () => {
+	it.each(['text/html', 'text/xml'])('unclosed document in %s', (mimeType) => {
+		const { errors, parser } = getTestParser()
+
+		const actual = parser.parseFromString('<img>', mimeType).toString()
+
+		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 
-	it('unclosed document', () => {
-		var errors = []
-		var p = new DOMParser({
-			errorHandler: function (key, msg) {
-				errors.push(key, msg)
-			},
-		})
-		var dom = p.parseFromString('<img>', 'text/xml')
-		assert(errors.length, 2)
+	it.each([
+		['<test><!--', '<test/>'],
+		['<r', '<r/>'],
+	])('invalid xml node "%s"', (input, expected) => {
+		const { errors, parser } = getTestParser()
+
+		const actual = parser
+			.parseFromString(input, 'text/xml')
+			.documentElement.toString()
+
+		expect({ actual, ...errors }).toMatchSnapshot({ actual: expected })
 	})
 
-	it('unclosed hmtl tags', () => {
-		var errors = []
-		var p = new DOMParser({
-			errorHandler: function (key, msg) {
-				errors.push(key, msg)
-			},
-		})
-		var dom = p.parseFromString('<img>', 'text/html')
-		assert(errors.length, 0, 'unclosed html tag not need report!!')
+	it('html attribute (miss quote)', () => {
+		const { errors, parser } = getTestParser()
+
+		const actual = parser
+			.parseFromString('<img attr=1/>', 'text/html')
+			.toString()
+
+		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 
-	it('invalid xml node', () => {
-		var errors = []
-		var p = new DOMParser({
-			errorHandler: function (key, msg) {
-				errors.push(key, msg)
-			},
-		})
-		assert.equal(
-			p.parseFromString('<test><!--', 'text/xml').documentElement + '',
-			'<test/>'
-		)
-		assert(errors.length, 4)
-		errors = []
-		assert.equal(
-			p.parseFromString('<r', 'text/xml').documentElement + '',
-			'<r/>'
-		)
-		assert(errors.length, 4)
-	})
+	it.each(['text/html', 'text/xml'])('%s attribute (missing =)', (mimeType) => {
+		const { errors, parser } = getTestParser()
+		const xml = [
+			'<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0"',
+			'       profile="ecmascript" id="scxmlRoot" initial="start">',
+			'',
+			'  <!--',
+			'      some comment (next line is empty)',
+			'',
+			'  -->',
+			'',
+			'  <state id="start" name="start">',
+			// this line contains the missing = for attribute value
+			'    <transition event"init" name="init" target="main_state" />',
+			'  </state>',
+			'',
+			'  </scxml>',
+		].join('\n')
 
-	it('invalid html attribute (miss quote)', () => {
-		var errors = []
-		var p = new DOMParser({
-			errorHandler: function (key, msg) {
-				errors.push(key, msg)
-			},
-		})
-		var dom = p.parseFromString('<img attr=1/>', 'text/html')
-		assert(errors.length, 2, 'invalid xml attribute(miss qute)')
-		assert(dom + '', '<img attr="1" xmlns="http://www.w3.org/1999/xhtml"/>')
-	})
+		const actual = parser.parseFromString(xml, mimeType).toString()
 
-	it('valid html attribute value (<>&)', () => {
-		var dom = new DOMParser({}).parseFromString(
-			'<img attr="<>&"/>',
-			'text/html'
-		)
-		assert(
-			dom + '',
-			'<img attr="&lt;>&amp;" xmlns="http://www.w3.org/1999/xhtml"/>',
-			'invalid xml attribute valus (<)'
-		)
+		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 })

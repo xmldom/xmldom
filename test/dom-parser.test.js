@@ -42,7 +42,10 @@ describe('DOMParser', () => {
 	describe('parseFromString', () => {
 		test('should use minimal entity map for default mime type', () => {
 			const XML = '<xml attr="&quot;">&lt; &amp;</xml>'
-			expect(new DOMParser().parseFromString(XML).toString()).toEqual(XML)
+
+			const actual = new DOMParser().parseFromString(XML).toString()
+
+			expect(actual).toEqual(XML)
 		})
 
 		test('should provide access to textContent and attribute values', () => {
@@ -69,6 +72,7 @@ describe('DOMParser', () => {
 			const textTags = document.getElementsByTagName('text')
 
 			expect(textTags.length).toEqual(3)
+
 			const expectedText = ['first', 'second', 'last']
 			for (let i = 0; i < textTags.length; i++) {
 				const textTag = textTags[i]

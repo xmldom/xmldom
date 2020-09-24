@@ -1,6 +1,6 @@
 'use strict'
 
-var { DOMParser } = require('../lib/dom-parser')
+const { DOMParser } = require('../lib/dom-parser')
 
 /**
  * @typedef ErrorLevel {'warn' | 'error' | 'fatalError'}

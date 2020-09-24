@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`XML Node Parse namespaced attributes unclosed root tag will be closed 1`] = `
+Object {
+  "actual": "<xml xmlns=\\"1\\" xmlns:a=\\"2\\" a:test=\\"3/\\"/>",
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`XML Node Parse simple attributes unclosed root tag will be closed 1`] = `
+Object {
+  "actual": "<xml a=\\"1\\" b=\\"2/\\"/>",
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+  ],
+}
+`;
