@@ -60,16 +60,6 @@ Object {
 }
 `;
 
-exports[`html normalizer <div>&amp;&lt;123&456<789;&&</div> 2`] = `
-Object {
-  "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">&amp;&lt;123&amp;456&lt;789;&amp;&amp;</div>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:789;&&<
-@#[line:1,col:22]",
-  ],
-}
-`;
-
 exports[`html normalizer <div>&nbsp;&copy;&nbsp&copy</div> 1`] = `
 Object {
   "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\"> ©&amp;nbsp&amp;copy</div>",
@@ -225,12 +215,6 @@ Object {
 `;
 
 exports[`html normalizer unclosed html <html><meta><link><img><br><hr><input></html> 1`] = `
-Object {
-  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><meta/><link/><img/><br/><hr/><input/></html>",
-}
-`;
-
-exports[`html normalizer unclosed html <html><meta><link><img><br><hr><input></html> 2`] = `
 Object {
   "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><meta/><link/><img/><br/><hr/><input/></html>",
 }
