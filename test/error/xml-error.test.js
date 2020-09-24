@@ -3,18 +3,10 @@
 const { getTestParser } = require('../get-test-parser')
 
 describe('errorHandle', () => {
-	it('unclosed document', () => {
+	it.each(['text/html', 'text/xml'])('unclosed document in %s', (mimeType) => {
 		const { errors, parser } = getTestParser()
 
-		const actual = parser.parseFromString('<img>', 'text/xml').toString()
-
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
-
-	it('unclosed html tag', () => {
-		const { errors, parser } = getTestParser()
-
-		const actual = parser.parseFromString('<img>', 'text/html').toString()
+		const actual = parser.parseFromString('<img>', mimeType).toString()
 
 		expect({ actual, ...errors }).toMatchSnapshot()
 	})
