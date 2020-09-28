@@ -24,6 +24,7 @@
   "scripts": {
     "lint": "npm-run-all lint:eslint",
     "lint:eslint": "eslint lib test",
+    "changelog": "npx auto-changelog --unreleased-only",
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test'",
     "stryker": "stryker run",
     "test": "npm-run-all test:unit lint",
@@ -87,5 +88,12 @@
   "bugs": {
     "url": "https://github.com/xmldom/xmldom/issues"
   },
-  "license": "(LGPL-2.0 OR MIT)"
+  "license": "(LGPL-2.0 OR MIT)",
+  "auto-changelog": {
+    "commitLimit": false,
+    "remote": "upstream",
+    "startingVersion": "0.3.0",
+    "tagPrefix": "",
+    "template": "./auto-changelog.hbs"
+  }
 }

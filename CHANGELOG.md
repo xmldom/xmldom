@@ -1,3 +1,5 @@
+
+<!-- auto-changelog-above -->
 ## 0.3.0
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.2.1...0.3.0)
