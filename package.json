@@ -28,6 +28,7 @@
   ],
   "scripts": {
     "lint": "eslint lib test",
+    "changelog": "npx auto-changelog --unreleased-only",
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
     "stryker": "stryker run",
     "stryker:dry-run": "stryker run -m '' --reporters progress",
@@ -56,5 +57,11 @@
   "bugs": {
     "url": "https://github.com/xmldom/xmldom/issues"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "auto-changelog": {
+    "prepend": true,
+    "remote": "upstream",
+    "tagPrefix": "",
+    "template": "./auto-changelog.hbs"
+  }
 }
