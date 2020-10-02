@@ -84,7 +84,7 @@ as `xmldom@0.1.26`
 ## 0.1.25
 
 Published on the 18th of Nov 2016 as 
-- `xmldom@0.1.24`
+- `xmldom@0.1.25`
 
 - Details unknown
 
