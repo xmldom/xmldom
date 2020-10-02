@@ -9,11 +9,8 @@
 - [Add `Document.getElementsByClassName`](https://github.com/xmldom/xmldom/issues/24).
 - [Add `Node` to the list of exports](https://github.com/xmldom/xmldom/pull/27)
 - [Add lowercase of åäö in `entityMap`](https://github.com/xmldom/xmldom/pull/23).
-- More `package.json` cleanup/refactoring.
 - Move CHANGELOG to markdown file.
 - Move LICENSE to markdown file.
-- Fix travis CI.
-- README updates.
 
 ## 0.2.1
 
@@ -25,14 +22,10 @@
 
 [Commits](https://github.com/xmldom/xmldom/compare/v0.1.27...0.2.0)
 
-**Includes all BREAKING changes introduced in [`xmldom-alpha@v0.1.28`](#0128) and in later commits to master by the original authors.**
-
+- Includes all **BREAKING** changes introduced in [`xmldom-alpha@v0.1.28`](#0128) by the original authors.
 - **POSSIBLY BREAKING** [remove the `Object.create` check from the `_extends` method of `dom.js` that added a `__proto__` property](https://github.com/xmldom/xmldom/commit/0be2ae910a8a22c9ec2cac042e04de4c04317d2a#diff-7d1c5d97786fdf9af5446a241d0b6d56L19-L22) ().
 - **POSSIBLY BREAKING** [remove code that added a `__proto__` property](https://github.com/xmldom/xmldom/commit/366159a76a181ce9a0d83f5dc48205686cfaf9cc)
 - formatting/corrections in `package.json`
-- Remove coveralls.
-- Disable cache in travis.
-- Other refactoring.
 
 ## 0.1.31
 
@@ -42,13 +35,13 @@ The patch versions (`v0.1.29` - `v0.1.31`) that have been released on the [v0.1.
 
 ## Maintainer changes
 
-After the last commit to the original repository <https://github.com/jindw/xmldom> on the 9th of May 2017, the first commit to this fork is from the 19th of December 2019. [The fork has been announced in the original repository on the 2nd of March 2020.](https://github.com/jindw/xmldom/issues/259)
+After the last commit to the original repository <https://github.com/jindw/xmldom> on the 9th of May 2017, the first commit to <https://github.com/xmldom/xmldom> is from the 19th of December 2019. [The fork has been announced in the original repository on the 2nd of March 2020.](https://github.com/jindw/xmldom/issues/259)
 
 The versions listed below have been published to one or both of the following packages:
 - <https://www.npmjs.com/package/xmldom-alpha>
 - <https://www.npmjs.com/package/xmldom>
 
-The new maintainers do not plan to continue publishing the `xmldom-alpha` package.
+It is currently not planned to continue publishing the `xmldom-alpha` package.
 
 The new maintainers did not invest time to understand changes that led to the last `xmldom` version [`0.1.27`](#0127) published by the original maintainer, but consider it the basis for their work.
 A timeline of all the changes that happened from that version until `0.3.0` is available in <https://github.com/xmldom/xmldom/issues/62>. Any related questions should be asked there.
