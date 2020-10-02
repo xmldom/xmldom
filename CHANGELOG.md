@@ -27,8 +27,8 @@
 
 **Includes all BREAKING changes introduced in [`xmldom-alpha@v0.1.28`](#0128) and in later commits to master by the original authors.**
 
-- **POSSIBLY BREAKING** [removes the `Object.create` check from the `_extends` method of `dom.js` that added a `__proto__` property](https://github.com/xmldom/xmldom/commit/0be2ae910a8a22c9ec2cac042e04de4c04317d2a#diff-7d1c5d97786fdf9af5446a241d0b6d56L19-L22) ().
-- **POSSIBLY BREAKING** [removes code that added a `__proto__` property](https://github.com/xmldom/xmldom/commit/366159a76a181ce9a0d83f5dc48205686cfaf9cc)
+- **POSSIBLY BREAKING** [remove the `Object.create` check from the `_extends` method of `dom.js` that added a `__proto__` property](https://github.com/xmldom/xmldom/commit/0be2ae910a8a22c9ec2cac042e04de4c04317d2a#diff-7d1c5d97786fdf9af5446a241d0b6d56L19-L22) ().
+- **POSSIBLY BREAKING** [remove code that added a `__proto__` property](https://github.com/xmldom/xmldom/commit/366159a76a181ce9a0d83f5dc48205686cfaf9cc)
 - formatting/corrections in `package.json`
 - Remove coveralls.
 - Disable cache in travis.
