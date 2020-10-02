@@ -131,6 +131,10 @@ Published on the 5th of May 2016 as
 - parseFromString now renders entirely plain text documents as textNode.
 - Enable option to ignore white space on parsing.
 
+## 0.1.17
+
+**Details missing for this and potential earlier version**
+
 ## 0.1.16
 
 - Correctly handle multibyte Unicode greater than two byts. #57. #56.
@@ -143,3 +147,4 @@ Published on the 5th of May 2016 as
 - Fix: remove existed attribute before setting  (bug introduced in v0.1.5)
 - Fix: index direct access for childNodes and any NodeList collection(not w3c standard)
 - Fix: remove last child bug
+
