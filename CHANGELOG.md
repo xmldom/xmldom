@@ -60,7 +60,7 @@ A timeline of all the changes that happened from that version until `0.3.0` is a
 Published by @jindw on the 9th of May 2017 as
 - `xmldom-alpha@0.1.28`
 
-  - **BREAKING** [regression regarding `&nbsp;`](https://github.com/xmldom/xmldom/issues/57) 
+- **BREAKING** includes [regression regarding `&nbsp;` (issue #57)](https://github.com/xmldom/xmldom/issues/57) 
 - [Fix `license` field in `package.json`](https://github.com/jindw/xmldom/pull/178)
 - [Conditional converting of HTML entities](https://github.com/jindw/xmldom/pull/80)
 - Fix `dom.js` serialization issue for missing document element ([example that failed on `toString()` before this change](https://github.com/xmldom/xmldom/blob/a58dcf7a265522e80ce520fe3be0cddb1b976f6f/test/parse/unclosedcomment.js#L10-L11))
