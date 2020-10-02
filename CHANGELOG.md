@@ -147,4 +147,3 @@ Published on the 5th of May 2016 as
 - Fix: remove existed attribute before setting  (bug introduced in v0.1.5)
 - Fix: index direct access for childNodes and any NodeList collection(not w3c standard)
 - Fix: remove last child bug
-
