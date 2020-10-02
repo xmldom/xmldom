@@ -6,7 +6,7 @@
 - **BREAKING** Removed component.json (deprecated package manager https://github.com/componentjs/guide)
 - **BREAKING** Moved existing sources into `lib` subdirectory.
 - Update devDependency `proof`
-- Removed `.npmignore` in favor of `files` entry in `package.json`.
+- Introduce `files` entry in `package.json` and remove use of `.npmignore`.
 
 - [Added `Document.getElementsByClassName`](https://github.com/xmldom/xmldom/issues/24).
 - [Added `Node` to the list of exports](https://github.com/xmldom/xmldom/pull/27)
