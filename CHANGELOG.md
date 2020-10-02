@@ -128,7 +128,7 @@ Published on the 5th of May 2016 as
 
 ## 0.1.19
 
-- [Fix infinite loop on unclosed comment.](https://github.com/jindw/xmldom/issues/68)
+- Fix [infinite loop on unclosed comment (jindw/xmldom#68)](https://github.com/jindw/xmldom/issues/68)
 - Add error report for unclosed tag.
 - Various other fixes.
 
