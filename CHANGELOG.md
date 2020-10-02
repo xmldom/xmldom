@@ -51,7 +51,7 @@ The versions listed below have been published to one or both of the following pa
 The new maintainers do not plan to continue publishing the `xmldom-alpha` package.
 
 The new maintainers did not invest time to understand changes that led to the last `xmldom` version [`0.1.27`](#0127) published by the original maintainer, but consider it the basis for their work.
-A time line of all the things that happened from that version until `0.3.0` is available in <https://github.com/xmldom/xmldom/issues/62> and related questions should be asked there.
+A timeline of all the changes that happened from that version until `0.3.0` is available in <https://github.com/xmldom/xmldom/issues/62>. Any related questions should be asked there.
 
 ## 0.1.28
 
