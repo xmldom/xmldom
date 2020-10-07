@@ -195,4 +195,14 @@ describe('XML Node Parse', () => {
 			`${DOCTYPE}<html xmlns="http://www.w3.org/1999/xhtml"></html>`
 		)
 	})
+
+	it('preserves doctype with sysid', () => {
+		const DOCTYPE = '<!DOCTYPE custom SYSTEM "custom.dtd">'
+
+		const actual = new DOMParser()
+			.parseFromString(`${DOCTYPE}<custom/>`, 'text/xml')
+			.toString()
+
+		expect(actual).toStrictEqual(`${DOCTYPE}<custom/>`)
+	})
 })
