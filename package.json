@@ -38,7 +38,7 @@
     "@stryker-mutator/core": "^3.3.1",
     "@stryker-mutator/javascript-mutator": "^3.3.1",
     "dom-js": "0.0.9",
-    "eslint": "^7.10.0",
+    "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-es5": "^1.5.0",
     "eslint-plugin-prettier": "^3.1.4",
