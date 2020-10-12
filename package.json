@@ -90,9 +90,7 @@
   },
   "license": "(LGPL-2.0 OR MIT)",
   "auto-changelog": {
-    "commitLimit": false,
     "remote": "upstream",
-    "startingVersion": "0.3.0",
     "tagPrefix": "",
     "template": "./auto-changelog.hbs"
   }
