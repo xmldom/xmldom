@@ -13,7 +13,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **BREAKING** Typecheck source param before parsing [`#113`](https://github.com/xmldom/xmldom/pull/113)
 - Preserve doctype with sysid [`#144`](https://github.com/xmldom/xmldom/pull/144)
 - Remove ES6 syntax from getElementsByClassName [`#91`](https://github.com/xmldom/xmldom/pull/91)
-- Revert "Add lowercase of åäö in entityMap" [`#84`](https://github.com/xmldom/xmldom/pull/84)
+- Revert "Add lowercase of åäö in entityMap" due to duplicate entries [`#84`](https://github.com/xmldom/xmldom/pull/84)
 - fix: Convert all line separators to LF [`#66`](https://github.com/xmldom/xmldom/pull/66)
 
 ### Docs
