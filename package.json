@@ -19,6 +19,9 @@
   },
   "main": "lib/dom-parser.js",
   "files": [
+    "CHANGELOG.md",
+    "LICENSE.md",
+    "readme.md",
     "lib"
   ],
   "scripts": {
