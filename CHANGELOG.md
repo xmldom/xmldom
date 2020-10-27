@@ -1,3 +1,39 @@
+## 0.4.0
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.3.0...0.4.0)
+
+### Fixes
+- **BREAKING** Restore `&nbsp;` behavior from v0.1.27 [`#67`](https://github.com/xmldom/xmldom/pull/67)
+- **BREAKING** Typecheck source param before parsing [`#113`](https://github.com/xmldom/xmldom/pull/113)
+- Include documents in package files list [`#156`](https://github.com/xmldom/xmldom/pull/156)
+- Preserve doctype with sysid [`#144`](https://github.com/xmldom/xmldom/pull/144)
+- Remove ES6 syntax from getElementsByClassName [`#91`](https://github.com/xmldom/xmldom/pull/91)
+- Revert "Add lowercase of åäö in entityMap" due to duplicate entries [`#84`](https://github.com/xmldom/xmldom/pull/84)
+- fix: Convert all line separators to LF [`#66`](https://github.com/xmldom/xmldom/pull/66)
+
+### Docs
+- Update CHANGELOG.md through version 0.3.0 [`#63`](https://github.com/xmldom/xmldom/pull/63)
+- Update badges [`#78`](https://github.com/xmldom/xmldom/pull/78)
+- Add .editorconfig file [`#104`](https://github.com/xmldom/xmldom/pull/104)
+- Add note about import [`#79`](https://github.com/xmldom/xmldom/pull/79)
+- Modernize & improve the example in readme.md [`#81`](https://github.com/xmldom/xmldom/pull/81)
+
+### CI
+- Add Stryker Mutator [`#70`](https://github.com/xmldom/xmldom/pull/70)
+- Add Stryker action to update dashboard [`#77`](https://github.com/xmldom/xmldom/pull/77)
+- Add Node GitHub action workflow [`#64`](https://github.com/xmldom/xmldom/pull/64)
+- add & enable eslint [`#106`](https://github.com/xmldom/xmldom/pull/106)
+- Use eslint-plugin-es5 to enforce ES5 syntax [`#107`](https://github.com/xmldom/xmldom/pull/107)
+- Recover `vows` tests, drop `proof` tests [`#59`](https://github.com/xmldom/xmldom/pull/59)
+- Add jest tessuite and first tests [`#114`](https://github.com/xmldom/xmldom/pull/114)
+- Add jest testsuite with `xmltest` cases [`#112`](https://github.com/xmldom/xmldom/pull/112)
+- Configure Renovate [`#108`](https://github.com/xmldom/xmldom/pull/108)
+- Test European HTML entities [`#86`](https://github.com/xmldom/xmldom/pull/86)
+- Updated devDependencies
+
+### Other
+- Remove files that are not of any use [`#131`](https://github.com/xmldom/xmldom/pull/131), [`#65`](https://github.com/xmldom/xmldom/pull/65), [`#33`](https://github.com/xmldom/xmldom/pull/33)
+
 ## 0.3.0
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.2.1...0.3.0)
