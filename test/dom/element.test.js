@@ -1,59 +1,55 @@
 'use strict'
 
-var DOMParser = require('../../lib/dom-parser').DOMParser
-var assert = require('../assert')
-var XMLSerializer = require('../../lib/dom-parser').XMLSerializer
+const {DOMParser, XMLSerializer} = require('../../lib/dom-parser')
 
 // Create a Test Suite
 describe('XML Namespace Parse', () => {
 	// See: http://jsfiddle.net/bigeasy/ShcXP/1/
 	it('supports Document_getElementsByTagName', () => {
-		var doc = new DOMParser().parseFromString('<a><b/></a>')
-		assert(doc.getElementsByTagName('*').length, 2, 'on doc')
-		assert(
-			doc.documentElement.getElementsByTagName('*').length,
-			1,
-			'on doc.documentElement'
-		)
+		const doc = new DOMParser().parseFromString('<a><b/></a>')
+		expect(doc.getElementsByTagName('*')).toHaveLength(2)
+		expect(
+			doc.documentElement.getElementsByTagName('*')
+		).toHaveLength(1)
 	})
 
 	it('supports getElementsByTagName', () => {
-		var doc = new DOMParser().parseFromString(
+		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
 				'<t:test/><test/><t2:test/>' +
 				'<child attr="1"><test><child attr="2"/></test></child>' +
 				'<child attr="3"/></xml>',
 			'text/xml'
 		)
-		var childs = doc.documentElement.getElementsByTagName('child')
-		assert(childs.item(0).getAttribute('attr'), '1', childs.item(0) + '')
-		assert(childs.item(1).getAttribute('attr'), '2', childs.item(1) + '')
-		assert(childs.item(2).getAttribute('attr'), '3', childs.item(2) + '')
-		assert(childs.length, 3, 'documentElement children length')
+		let childs = doc.documentElement.getElementsByTagName('child')
+		expect(childs.item(0).getAttribute('attr')).toEqual('1')
+		expect(childs.item(1).getAttribute('attr')).toEqual('2')
+		expect(childs.item(2).getAttribute('attr')).toEqual('3')
+		expect(childs).toHaveLength(3)
 
-		var childs = doc.getElementsByTagName('child')
-		assert(childs.item(0).getAttribute('attr'), '1', childs.item(0) + '')
-		assert(childs.item(1).getAttribute('attr'), '2', childs.item(1) + '')
-		assert(childs.item(2).getAttribute('attr'), '3', childs.item(2) + '')
-		assert(childs.length, 3, 'doc children length')
+		childs = doc.getElementsByTagName('child')
+		expect(childs.item(0).getAttribute('attr')).toEqual('1')
+		expect(childs.item(1).getAttribute('attr')).toEqual('2')
+		expect(childs.item(2).getAttribute('attr')).toEqual('3')
+		expect(childs).toHaveLength(3)
 
-		var childs = doc.documentElement.getElementsByTagName('*')
-		for (var i = 0, buf = []; i < childs.length; i++) {
+		childs = doc.documentElement.getElementsByTagName('*')
+		for (let i = 0, buf = []; i < childs.length; i++) {
 			buf.push(childs[i].tagName)
 		}
-		assert(childs.length, 7, buf)
+		expect(childs).toHaveLength(7)
 
-		var feed = new DOMParser().parseFromString(
+		const feed = new DOMParser().parseFromString(
 			'<feed><entry>foo</entry></feed>'
 		)
-		var entries = feed.documentElement.getElementsByTagName('entry')
-		assert.equal(entries.length, 1, 'assert entry nodelist length ==1')
-		assert(entries[0].nodeName, 'entry')
-		assert(feed.documentElement.childNodes.item(0).nodeName, 'entry')
+		const entries = feed.documentElement.getElementsByTagName('entry')
+		expect(entries).toHaveLength(1)
+		expect(entries[0].nodeName).toEqual('entry')
+		expect(feed.documentElement.childNodes.item(0).nodeName).toEqual('entry')
 	})
 
 	it('supports getElementsByTagNameNS', () => {
-		var doc = new DOMParser().parseFromString(
+		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
 				'<t:test/><test/><t2:test/>' +
 				'<child attr="1"><test><child attr="2"/></test></child>' +
@@ -61,119 +57,116 @@ describe('XML Namespace Parse', () => {
 			'text/xml'
 		)
 
-		var childs = doc.documentElement.getElementsByTagNameNS(
+		let childs = doc.documentElement.getElementsByTagNameNS(
 			'http://test.com',
 			'*'
 		)
-		var i = 0
-		assert(childs.length, 6)
+		expect(childs).toHaveLength(6)
 
-		var childs = doc.getElementsByTagNameNS('http://test.com', '*')
-		assert(childs.length, 7)
+		childs = doc.getElementsByTagNameNS('http://test.com', '*')
+		expect(childs).toHaveLength(7)
 
-		var childs = doc.documentElement.getElementsByTagNameNS(
+		childs = doc.documentElement.getElementsByTagNameNS(
 			'http://test.com',
 			'test'
 		)
-		assert(childs.length, 3)
+		expect(childs).toHaveLength(3)
 
-		var childs = doc.getElementsByTagNameNS('http://test.com', 'test')
-		assert(childs.length, 3)
+		childs = doc.getElementsByTagNameNS('http://test.com', 'test')
+		expect(childs).toHaveLength(3)
 
-		var childs = doc.getElementsByTagNameNS('*', 'test')
-		assert(childs.length, 4)
+		childs = doc.getElementsByTagNameNS('*', 'test')
+		expect(childs).toHaveLength(4)
 
-		var childs = doc.documentElement.getElementsByTagNameNS('*', 'test')
-		assert(childs.length, 4)
+		childs = doc.documentElement.getElementsByTagNameNS('*', 'test')
+		expect(childs).toHaveLength(4)
 	})
 
 	it('supports getElementById', () => {
-		var doc = new DOMParser().parseFromString(
+		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
 				'<child id="a1" title="1"><child id="a2"  title="2"/></child>' +
 				'<child id="a1"   title="3"/></xml>',
 			'text/xml'
 		)
-		assert.isTrue(doc.getElementById('root') != null, 'root')
-		assert(doc.getElementById('a1').getAttribute('title'), '1', 'first')
-		assert(doc.getElementById('a2').getAttribute('title'), '2', 'second')
-		assert(doc.getElementById('a2').getAttribute('title2'), '', 'empty')
+		expect(doc.getElementById('root')).not.toBeNull()
+		expect(doc.getElementById('a1').getAttribute('title')).toEqual('1')
+		expect(doc.getElementById('a2').getAttribute('title')).toEqual('2')
+		expect(doc.getElementById('a2').getAttribute('title2')).toEqual('')
 	})
 
 	it('can properly append exist child', () => {
-		var doc = new DOMParser().parseFromString(
+		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
 				'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
 				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
 			'text/xml'
 		)
 
-		var doc1 = doc
-		var str1 = new XMLSerializer().serializeToString(doc)
-		var doc2 = doc1.cloneNode(true)
-		var doc3 = doc1.cloneNode(true)
-		var doc4 = doc1.cloneNode(true)
+		const doc1 = doc
+		const str1 = new XMLSerializer().serializeToString(doc)
+		const doc2 = doc1.cloneNode(true)
+		const doc3 = doc1.cloneNode(true)
+		const doc4 = doc1.cloneNode(true)
 
 		doc3.documentElement.appendChild(doc3.documentElement.lastChild)
 		doc4.documentElement.appendChild(doc4.documentElement.firstChild)
 
-		var str2 = new XMLSerializer().serializeToString(doc2)
-		var str3 = new XMLSerializer().serializeToString(doc3)
-		var str4 = new XMLSerializer().serializeToString(doc4)
-		assert(str1, str2, 'str1 == str2')
-		assert(str2, str3, 'str2 == str3')
-		assert.isTrue(str3 != str4, 'str4 != str3:' + str3)
-		assert(str3.length, str4.length, 'str3 and str4 have same length')
+		const str2 = new XMLSerializer().serializeToString(doc2)
+		const str3 = new XMLSerializer().serializeToString(doc3)
+		const str4 = new XMLSerializer().serializeToString(doc4)
+		expect(str1).toEqual(str2)
+		expect(str2).toEqual(str3)
+		expect(str3).not.toEqual(str4)
+		expect(str3.length).toEqual(str4.length)
 	})
 
 	it('can properly append exist other child', () => {
-		var doc = new DOMParser().parseFromString(
+		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
 				'<child1 id="a1" title="1"><child11 id="a2"  title="2"><child/></child11></child1>' +
 				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
 			'text/xml'
 		)
 
-		var doc1 = doc
-		var str1 = new XMLSerializer().serializeToString(doc)
-		var doc2 = doc1.cloneNode(true)
+		const doc1 = doc
+		const str1 = new XMLSerializer().serializeToString(doc)
+		const doc2 = doc1.cloneNode(true)
 
-		assert(doc2.documentElement.lastChild.childNodes.length, 0, 'initially 0')
+		expect(doc2.documentElement.lastChild.childNodes).toHaveLength(0)
 		doc2.documentElement.appendChild(doc2.documentElement.firstChild.firstChild)
 
-		var str2 = new XMLSerializer().serializeToString(doc2)
+		const str2 = new XMLSerializer().serializeToString(doc2)
 
-		assert(
-			doc2.documentElement.lastChild.childNodes.length,
-			1,
-			'1 after adding'
-		)
-		assert.isTrue(str1 != str2, 'str1 != str2')
-		assert.isTrue(str1.length != str2.length, 'str1/length != str2.length')
-		var doc3 = new DOMParser().parseFromString(str2, 'text/xml')
+		expect(doc2.documentElement.lastChild.childNodes).toHaveLength(1)
+		expect(str1).not.toEqual(str2)
+		expect(str1).not.toHaveLength(str2.length)
+		const doc3 = new DOMParser().parseFromString(str2, 'text/xml')
 		doc3.documentElement.firstChild.appendChild(doc3.documentElement.lastChild)
-		var str3 = new XMLSerializer().serializeToString(doc3)
-		assert(str1, str3, 'final assertion')
+		const str3 = new XMLSerializer().serializeToString(doc3)
+		expect(str1).toEqual(str3)
 	})
 
 	it('can properly set textContent', () => {
-		var doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>')
-		var a = doc.documentElement.firstChild
-		var b = a.nextSibling
+		const doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>')
+		const a = doc.documentElement.firstChild
+		const b = a.nextSibling
 		a.textContent = 'hello'
-		assert(
-			doc.documentElement.toString(),
+		expect(
+			doc.documentElement.toString()
+		).toEqual(
 			'<test><a>hello</a><b><c/></b></test>'
 		)
 		b.textContent = 'there'
-		assert(
-			doc.documentElement.toString(),
+		expect(
+			doc.documentElement.toString()
+		).toEqual(
 			'<test><a>hello</a><b>there</b></test>'
 		)
 		b.textContent = ''
-		assert(doc.documentElement.toString(), '<test><a>hello</a><b/></test>')
+		expect(doc.documentElement.toString()).toEqual('<test><a>hello</a><b/></test>')
 		doc.documentElement.textContent = 'bye'
-		assert(doc.documentElement.toString(), '<test>bye</test>')
+		expect(doc.documentElement.toString()).toEqual('<test>bye</test>')
 	})
 
 	xit('nested append failed', () => {})
