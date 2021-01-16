@@ -1,6 +1,6 @@
 'use strict'
-const {DOMParser} = require('../../lib/dom-parser');
-const {DOMException} = require('../../lib/dom');
+const { DOMParser } = require('../../lib/dom-parser')
+const { DOMException } = require('../../lib/dom')
 
 describe('XML attrs', () => {
 	it('can properly set attribute', () => {
@@ -16,7 +16,7 @@ describe('XML attrs', () => {
 		expect(() => {
 			const c = root.ownerDocument.createElement('c')
 			c.setAttributeNode(root.attributes.item(0))
-		}).toThrow(new DOMException(10));
+		}).toThrow(new DOMException(10))
 	})
 
 	it('can properly set ns attribute', () => {

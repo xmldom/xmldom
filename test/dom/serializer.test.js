@@ -1,6 +1,6 @@
 'use strict'
 
-const {DOMParser} = require('../../lib/dom-parser');
+const { DOMParser } = require('../../lib/dom-parser')
 
 describe('XML Serializer', () => {
 	it('supports text node containing "]]>"', () => {
@@ -13,9 +13,7 @@ describe('XML Serializer', () => {
 		const doc = new DOMParser({
 			xmlns: { xmlns: 'http://www.w3.org/1999/xhtml' },
 		}).parseFromString('<html2><script></script></html2>', 'text/html')
-		expect(
-			doc.documentElement.firstChild.toString()
-		).toEqual(
+		expect(doc.documentElement.firstChild.toString()).toEqual(
 			'<script xmlns="http://www.w3.org/1999/xhtml"></script>'
 		)
 	})

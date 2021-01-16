@@ -1,6 +1,6 @@
 'use strict'
 
-const {DOMParser, XMLSerializer} = require('../../lib/dom-parser')
+const { DOMParser, XMLSerializer } = require('../../lib/dom-parser')
 
 // Create a Test Suite
 describe('XML Namespace Parse', () => {
@@ -8,9 +8,7 @@ describe('XML Namespace Parse', () => {
 	it('supports Document_getElementsByTagName', () => {
 		const doc = new DOMParser().parseFromString('<a><b/></a>')
 		expect(doc.getElementsByTagName('*')).toHaveLength(2)
-		expect(
-			doc.documentElement.getElementsByTagName('*')
-		).toHaveLength(1)
+		expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(1)
 	})
 
 	it('supports getElementsByTagName', () => {
@@ -152,19 +150,17 @@ describe('XML Namespace Parse', () => {
 		const a = doc.documentElement.firstChild
 		const b = a.nextSibling
 		a.textContent = 'hello'
-		expect(
-			doc.documentElement.toString()
-		).toEqual(
+		expect(doc.documentElement.toString()).toEqual(
 			'<test><a>hello</a><b><c/></b></test>'
 		)
 		b.textContent = 'there'
-		expect(
-			doc.documentElement.toString()
-		).toEqual(
+		expect(doc.documentElement.toString()).toEqual(
 			'<test><a>hello</a><b>there</b></test>'
 		)
 		b.textContent = ''
-		expect(doc.documentElement.toString()).toEqual('<test><a>hello</a><b/></test>')
+		expect(doc.documentElement.toString()).toEqual(
+			'<test><a>hello</a><b/></test>'
+		)
 		doc.documentElement.textContent = 'bye'
 		expect(doc.documentElement.toString()).toEqual('<test>bye</test>')
 	})
