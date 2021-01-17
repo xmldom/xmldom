@@ -13,8 +13,8 @@ describe('XML attrs', () => {
 		root.setAttribute('a', 1)
 		root.setAttribute('a', 1)
 		expect(root.attributes.length).toBe(2)
+		const c = root.ownerDocument.createElement('c')
 		expect(() => {
-			const c = root.ownerDocument.createElement('c')
 			c.setAttributeNode(root.attributes.item(0))
 		}).toThrow(new DOMException(10))
 	})
@@ -32,8 +32,8 @@ describe('XML attrs', () => {
 		child.setAttribute('a', 1)
 		child.setAttributeNS('b', 'b:b', '2')
 		expect(child.attributes.length).toBe(4)
+		const c = root.ownerDocument.createElement('c')
 		expect(() => {
-			const c = root.ownerDocument.createElement('c')
 			c.setAttributeNodeNS(root.attributes.item(0))
 		}).toThrow(new DOMException(10))
 	})
