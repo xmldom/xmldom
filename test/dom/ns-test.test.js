@@ -40,9 +40,7 @@ describe('XML Namespace Parse', () => {
 		for (let _i = 0, els_1 = els; _i < els_1.length; _i++) {
 			const el = els_1[_i]
 
-			let te = doc.createElementNS(n1, 'test')
-			te.setAttributeNS(n1, 'bar', 'valx')
-			te = doc.createElementNS(n1, 'test')
+			const te = doc.createElementNS(n1, 'test')
 			te.setAttributeNS(n1, 'bar', 'valx')
 			expect(String(te)).toBe('<test xmlns="' + n1 + '" bar="valx"/>')
 			el.appendChild(te)
