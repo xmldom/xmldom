@@ -68,7 +68,7 @@ describe('xss test', () => {
 
 		const actual = xss(html)
 
-		expect(actual).toEqual(
+		expect(actual).toBe(
 			'<div title="32323" xmlns="http://www.w3.org/1999/xhtml"></div>'
 		)
 	})

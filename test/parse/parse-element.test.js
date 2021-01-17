@@ -9,7 +9,7 @@ describe('XML Node Parse', () => {
 			const actual = new DOMParser()
 				.parseFromString(input, 'text/xml')
 				.toString()
-			expect(actual).toEqual('<xml/>')
+			expect(actual).toBe('<xml/>')
 		})
 	})
 
@@ -24,7 +24,7 @@ describe('XML Node Parse', () => {
 					.parseFromString(input, 'text/xml')
 					.toString()
 
-				expect(actual).toEqual('<xml a="1" b="2"/>')
+				expect(actual).toBe('<xml a="1" b="2"/>')
 			})
 		})
 		describe('empty b', () => {
@@ -36,7 +36,7 @@ describe('XML Node Parse', () => {
 			])('%s', (input) => {
 				expect(
 					new DOMParser().parseFromString(input, 'text/xml').toString()
-				).toEqual('<xml a="1" b=""/>')
+				).toBe('<xml a="1" b=""/>')
 			})
 		})
 
@@ -61,7 +61,7 @@ describe('XML Node Parse', () => {
 				.parseFromString(input, 'text/xml')
 				.toString()
 
-			expect(actual).toEqual('<xml xmlns="1" xmlns:a="2" a:test="3"/>')
+			expect(actual).toBe('<xml xmlns="1" xmlns:a="2" a:test="3"/>')
 		})
 
 		it('unclosed root tag will be closed', () => {
