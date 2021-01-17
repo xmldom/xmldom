@@ -18,7 +18,7 @@ describe('XML attrs', () => {
 		const c = root.ownerDocument.createElement('c')
 		expect(() => {
 			c.setAttributeNode(root.attributes.item(0))
-		}).toThrow(new DOMException(10))
+		}).toThrow(new DOMException(DOMException.INUSE_ATTRIBUTE_ERR))
 	})
 
 	it('can properly set ns attribute', () => {
@@ -39,7 +39,7 @@ describe('XML attrs', () => {
 		const c = root.ownerDocument.createElement('c')
 		expect(() => {
 			c.setAttributeNodeNS(root.attributes.item(0))
-		}).toThrow(new DOMException(10))
+		}).toThrow(new DOMException(DOMException.INUSE_ATTRIBUTE_ERR))
 	})
 
 	it('can properly override attribute', () => {

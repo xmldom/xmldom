@@ -98,23 +98,30 @@ DOM level2 method and attribute:
 			normalize()
 			isSupported(feature, version)
 			hasAttributes()
- * [DOMException](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html)
-   * used as the Error type thrown as part of DOM API:
-	 1. Index size error
-	 2. DOMString size error
-	 3. Hierarchy request error
-	 4. Wrong document
-	 5. Invalid character
-	 6. No data allowed
-	 7. No modification allowed
-	 8. Not found
-	 9. Not supported
-	 10. Attribute in use
-	 11. Invalid state
-	 12. Syntax error
-	 13. Invalid modification
-	 14. Invalid namespace
-	 15. Invalid access
+* [DOMException](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html)
+   The DOMException class has the following constants (and `value` of type `Number`):
+  
+  1. `DOMException.INDEX_SIZE_ERR` (`1`)
+  1. `DOMException.DOMSTRING_SIZE_ERR` (`2`)
+  1. `DOMException.HIERARCHY_REQUEST_ERR` (`3`)
+  1. `DOMException.WRONG_DOCUMENT_ERR` (`4`)
+  1. `DOMException.INVALID_CHARACTER_ERR` (`5`)
+  1. `DOMException.NO_DATA_ALLOWED_ERR` (`6`)
+  1. `DOMException.NO_MODIFICATION_ALLOWED_ERR` (`7`)
+  1. `DOMException.NOT_FOUND_ERR` (`8`)
+  1. `DOMException.NOT_SUPPORTED_ERR` (`9`)
+  1. `DOMException.INUSE_ATTRIBUTE_ERR` (`10`)
+  1. `DOMException.INVALID_STATE_ERR` (`11`)
+  1. `DOMException.SYNTAX_ERR` (`12`)
+  1. `DOMException.INVALID_MODIFICATION_ERR` (`13`)
+  1. `DOMException.NAMESPACE_ERR` (`14`)
+  1. `DOMException.INVALID_ACCESS_ERR` (`15`)
+   
+   The DOMException object has the following properties:
+   code
+   This property is of type Number.
+
+	 * extends the Error type thrown as part of DOM API:
 
  * [DOMImplementation](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-102161490)
 		
