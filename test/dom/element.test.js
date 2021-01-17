@@ -19,23 +19,24 @@ describe('XML Namespace Parse', () => {
 				'<child attr="3"/></xml>',
 			'text/xml'
 		)
-		let childs = doc.documentElement.getElementsByTagName('child')
-		expect(childs.item(0).getAttribute('attr')).toBe('1')
-		expect(childs.item(1).getAttribute('attr')).toBe('2')
-		expect(childs.item(2).getAttribute('attr')).toBe('3')
-		expect(childs).toHaveLength(3)
 
-		childs = doc.getElementsByTagName('child')
-		expect(childs.item(0).getAttribute('attr')).toBe('1')
-		expect(childs.item(1).getAttribute('attr')).toBe('2')
-		expect(childs.item(2).getAttribute('attr')).toBe('3')
-		expect(childs).toHaveLength(3)
+		const childs1 = doc.documentElement.getElementsByTagName('child')
+		expect(childs1.item(0).getAttribute('attr')).toBe('1')
+		expect(childs1.item(1).getAttribute('attr')).toBe('2')
+		expect(childs1.item(2).getAttribute('attr')).toBe('3')
+		expect(childs1).toHaveLength(3)
 
-		childs = doc.documentElement.getElementsByTagName('*')
-		for (let i = 0, buf = []; i < childs.length; i++) {
-			buf.push(childs[i].tagName)
+		const childs2 = doc.getElementsByTagName('child')
+		expect(childs2.item(0).getAttribute('attr')).toBe('1')
+		expect(childs2.item(1).getAttribute('attr')).toBe('2')
+		expect(childs2.item(2).getAttribute('attr')).toBe('3')
+		expect(childs2).toHaveLength(3)
+
+		const childs3 = doc.documentElement.getElementsByTagName('*')
+		for (let i = 0, buf = []; i < childs3.length; i++) {
+			buf.push(childs3[i].tagName)
 		}
-		expect(childs).toHaveLength(7)
+		expect(childs3).toHaveLength(7)
 
 		const feed = new DOMParser().parseFromString(
 			'<feed><entry>foo</entry></feed>'
@@ -55,29 +56,29 @@ describe('XML Namespace Parse', () => {
 			'text/xml'
 		)
 
-		let childs = doc.documentElement.getElementsByTagNameNS(
+		const childs1 = doc.documentElement.getElementsByTagNameNS(
 			'http://test.com',
 			'*'
 		)
-		expect(childs).toHaveLength(6)
+		expect(childs1).toHaveLength(6)
 
-		childs = doc.getElementsByTagNameNS('http://test.com', '*')
-		expect(childs).toHaveLength(7)
+		const childs2 = doc.getElementsByTagNameNS('http://test.com', '*')
+		expect(childs2).toHaveLength(7)
 
-		childs = doc.documentElement.getElementsByTagNameNS(
+		const childs3 = doc.documentElement.getElementsByTagNameNS(
 			'http://test.com',
 			'test'
 		)
-		expect(childs).toHaveLength(3)
+		expect(childs3).toHaveLength(3)
 
-		childs = doc.getElementsByTagNameNS('http://test.com', 'test')
-		expect(childs).toHaveLength(3)
+		const childs4 = doc.getElementsByTagNameNS('http://test.com', 'test')
+		expect(childs4).toHaveLength(3)
 
-		childs = doc.getElementsByTagNameNS('*', 'test')
-		expect(childs).toHaveLength(4)
+		const childs5 = doc.getElementsByTagNameNS('*', 'test')
+		expect(childs5).toHaveLength(4)
 
-		childs = doc.documentElement.getElementsByTagNameNS('*', 'test')
-		expect(childs).toHaveLength(4)
+		const childs6 = doc.documentElement.getElementsByTagNameNS('*', 'test')
+		expect(childs6).toHaveLength(4)
 	})
 
 	it('supports getElementById', () => {
