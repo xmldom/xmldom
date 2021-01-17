@@ -98,6 +98,23 @@ DOM level2 method and attribute:
 			normalize()
 			isSupported(feature, version)
 			hasAttributes()
+ * [DOMException](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html)
+   * used as the Error type thrown as part of DOM API:
+	 1. Index size error
+	 2. DOMString size error
+	 3. Hierarchy request error
+	 4. Wrong document
+	 5. Invalid character
+	 6. No data allowed
+	 7. No modification allowed
+	 8. Not found
+	 9. Not supported
+	 10. Attribute in use
+	 11. Invalid state
+	 12. Syntax error
+	 13. Invalid modification
+	 14. Invalid namespace
+	 15. Invalid access
 
  * [DOMImplementation](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-102161490)
 		
@@ -228,7 +245,8 @@ DOM level 3 support:
 
 DOM extension by xmldom
 ---
- * [Node] Source position extension; 
+
+* [Node] Source position extension; 
 		
 		attribute:
 			//Numbered starting from '1'
