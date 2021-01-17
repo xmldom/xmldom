@@ -10,6 +10,6 @@ describe('DOM DocumentFragment', () => {
 		document.getElementById('p').insertBefore(fragment, null)
 		fragment.appendChild(document.createTextNode('a'))
 		document.getElementById('p').insertBefore(fragment, null)
-		expect(document.toString()).toEqual('<p id="p">a</p>')
+		expect(document.toString()).toBe('<p id="p">a</p>')
 	})
 })

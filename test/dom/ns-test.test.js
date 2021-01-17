@@ -15,8 +15,8 @@ describe('XML Namespace Parse', () => {
 			'text/xml'
 		)
 		const el = doc.getElementsByTagName('c:var')[0]
-		expect(el.namespaceURI).toEqual('http://www.xidea.org/lite/core')
-		expect(doc.toString()).toEqual(
+		expect(el.namespaceURI).toBe('http://www.xidea.org/lite/core')
+		expect(doc.toString()).toBe(
 			'<html xmlns="http://www.w3.org/1999/xhtml"><body><c:var name="a" value="${1}" xmlns:c="http://www.xidea.org/lite/core"></c:var></body></html>'
 		)
 	})
@@ -44,14 +44,14 @@ describe('XML Namespace Parse', () => {
 			te.setAttributeNS(n1, 'bar', 'valx')
 			te = doc.createElementNS(n1, 'test')
 			te.setAttributeNS(n1, 'bar', 'valx')
-			expect(String(te)).toEqual('<test xmlns="' + n1 + '" bar="valx"/>')
+			expect(String(te)).toBe('<test xmlns="' + n1 + '" bar="valx"/>')
 			el.appendChild(te)
 			const tx = doc.createElementNS(n2, 'test')
 			tx.setAttributeNS(n2, 'bar', 'valx')
-			expect(String(tx)).toEqual('<test xmlns="' + n2 + '" bar="valx"/>')
+			expect(String(tx)).toBe('<test xmlns="' + n2 + '" bar="valx"/>')
 			el.appendChild(tx)
 		}
-		expect(String(doc)).toEqual(
+		expect(String(doc)).toBe(
 			'<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" bar="valx"></test><test xmlns="http://rmf.vc/n2" bar="valx"></test></rmf:foo></html>'
 		)
 	})

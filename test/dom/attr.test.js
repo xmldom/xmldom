@@ -7,12 +7,12 @@ describe('XML attrs', () => {
 		const root = new DOMParser().parseFromString('<xml/>', 'text/xml')
 			.documentElement
 		root.setAttribute('a', '1')
-		expect(root.attributes[0].localName).toEqual('a')
+		expect(root.attributes[0].localName).toBe('a')
 		root.setAttribute('b', 2)
 		root.setAttribute('a', 1)
 		root.setAttribute('a', 1)
 		root.setAttribute('a', 1)
-		expect(root.attributes.length).toEqual(2)
+		expect(root.attributes.length).toBe(2)
 		expect(() => {
 			const c = root.ownerDocument.createElement('c')
 			c.setAttributeNode(root.attributes.item(0))
@@ -28,10 +28,10 @@ describe('XML attrs', () => {
 		child.setAttributeNS('a', 'a:a', '1')
 		child.setAttributeNS('b', 'b:b', '2')
 		child.setAttributeNS('b', 'b:a', '1')
-		expect(child.attributes.length).toEqual(3)
+		expect(child.attributes.length).toBe(3)
 		child.setAttribute('a', 1)
 		child.setAttributeNS('b', 'b:b', '2')
-		expect(child.attributes.length).toEqual(4)
+		expect(child.attributes.length).toBe(4)
 		expect(() => {
 			const c = root.ownerDocument.createElement('c')
 			c.setAttributeNodeNS(root.attributes.item(0))
@@ -44,7 +44,7 @@ describe('XML attrs', () => {
 			'text/xml'
 		).documentElement
 		root.setAttributeNS('a', 'a:a', '1')
-		expect(root.attributes.length).toEqual(4)
+		expect(root.attributes.length).toBe(4)
 		//not standart
 		//    	root.firstChild.setAttributeNode(root.attributes[0]);
 		//    	expect(root.attributes).toHaveLength(0);
@@ -55,7 +55,7 @@ describe('XML attrs', () => {
 			"<xml xmlns:a='a' xmlns:b='b' a:b='e'></xml>",
 			'text/xml'
 		).documentElement
-		expect(root.getAttributeNS('a', 'b')).toEqual('e')
+		expect(root.getAttributeNS('a', 'b')).toBe('e')
 	})
 
 	xit('can properly override ns attribute', () => {})

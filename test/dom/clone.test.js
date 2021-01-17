@@ -10,7 +10,7 @@ describe('XML Namespace Parse', () => {
 		)
 		const doc1s = new XMLSerializer().serializeToString(doc1)
 		const n = doc1.cloneNode(true)
-		expect(n.toString()).toEqual(doc1s.toString())
+		expect(n.toString()).toBe(doc1s.toString())
 	})
 
 	it('can properly import', () => {
@@ -25,7 +25,7 @@ describe('XML Namespace Parse', () => {
 		)
 		const n = doc1.importNode(doc2.documentElement, true)
 		doc1.documentElement.appendChild(n)
-		expect(doc1.toString()).toEqual(doc3.toString())
-		expect(doc2.toString()).not.toEqual(doc3.toString())
+		expect(doc1.toString()).toBe(doc3.toString())
+		expect(doc2.toString()).not.toBe(doc3.toString())
 	})
 })

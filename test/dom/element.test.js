@@ -20,15 +20,15 @@ describe('XML Namespace Parse', () => {
 			'text/xml'
 		)
 		let childs = doc.documentElement.getElementsByTagName('child')
-		expect(childs.item(0).getAttribute('attr')).toEqual('1')
-		expect(childs.item(1).getAttribute('attr')).toEqual('2')
-		expect(childs.item(2).getAttribute('attr')).toEqual('3')
+		expect(childs.item(0).getAttribute('attr')).toBe('1')
+		expect(childs.item(1).getAttribute('attr')).toBe('2')
+		expect(childs.item(2).getAttribute('attr')).toBe('3')
 		expect(childs).toHaveLength(3)
 
 		childs = doc.getElementsByTagName('child')
-		expect(childs.item(0).getAttribute('attr')).toEqual('1')
-		expect(childs.item(1).getAttribute('attr')).toEqual('2')
-		expect(childs.item(2).getAttribute('attr')).toEqual('3')
+		expect(childs.item(0).getAttribute('attr')).toBe('1')
+		expect(childs.item(1).getAttribute('attr')).toBe('2')
+		expect(childs.item(2).getAttribute('attr')).toBe('3')
 		expect(childs).toHaveLength(3)
 
 		childs = doc.documentElement.getElementsByTagName('*')
@@ -42,8 +42,8 @@ describe('XML Namespace Parse', () => {
 		)
 		const entries = feed.documentElement.getElementsByTagName('entry')
 		expect(entries).toHaveLength(1)
-		expect(entries[0].nodeName).toEqual('entry')
-		expect(feed.documentElement.childNodes.item(0).nodeName).toEqual('entry')
+		expect(entries[0].nodeName).toBe('entry')
+		expect(feed.documentElement.childNodes.item(0).nodeName).toBe('entry')
 	})
 
 	it('supports getElementsByTagNameNS', () => {
@@ -88,9 +88,9 @@ describe('XML Namespace Parse', () => {
 			'text/xml'
 		)
 		expect(doc.getElementById('root')).not.toBeNull()
-		expect(doc.getElementById('a1').getAttribute('title')).toEqual('1')
-		expect(doc.getElementById('a2').getAttribute('title')).toEqual('2')
-		expect(doc.getElementById('a2').getAttribute('title2')).toEqual('')
+		expect(doc.getElementById('a1').getAttribute('title')).toBe('1')
+		expect(doc.getElementById('a2').getAttribute('title')).toBe('2')
+		expect(doc.getElementById('a2').getAttribute('title2')).toBe('')
 	})
 
 	it('can properly append exist child', () => {
@@ -113,10 +113,10 @@ describe('XML Namespace Parse', () => {
 		const str2 = new XMLSerializer().serializeToString(doc2)
 		const str3 = new XMLSerializer().serializeToString(doc3)
 		const str4 = new XMLSerializer().serializeToString(doc4)
-		expect(str1).toEqual(str2)
-		expect(str2).toEqual(str3)
-		expect(str3).not.toEqual(str4)
-		expect(str3.length).toEqual(str4.length)
+		expect(str1).toBe(str2)
+		expect(str2).toBe(str3)
+		expect(str3).not.toBe(str4)
+		expect(str3.length).toBe(str4.length)
 	})
 
 	it('can properly append exist other child', () => {
@@ -137,12 +137,12 @@ describe('XML Namespace Parse', () => {
 		const str2 = new XMLSerializer().serializeToString(doc2)
 
 		expect(doc2.documentElement.lastChild.childNodes).toHaveLength(1)
-		expect(str1).not.toEqual(str2)
+		expect(str1).not.toBe(str2)
 		expect(str1).not.toHaveLength(str2.length)
 		const doc3 = new DOMParser().parseFromString(str2, 'text/xml')
 		doc3.documentElement.firstChild.appendChild(doc3.documentElement.lastChild)
 		const str3 = new XMLSerializer().serializeToString(doc3)
-		expect(str1).toEqual(str3)
+		expect(str1).toBe(str3)
 	})
 
 	it('can properly set textContent', () => {
@@ -150,19 +150,17 @@ describe('XML Namespace Parse', () => {
 		const a = doc.documentElement.firstChild
 		const b = a.nextSibling
 		a.textContent = 'hello'
-		expect(doc.documentElement.toString()).toEqual(
+		expect(doc.documentElement.toString()).toBe(
 			'<test><a>hello</a><b><c/></b></test>'
 		)
 		b.textContent = 'there'
-		expect(doc.documentElement.toString()).toEqual(
+		expect(doc.documentElement.toString()).toBe(
 			'<test><a>hello</a><b>there</b></test>'
 		)
 		b.textContent = ''
-		expect(doc.documentElement.toString()).toEqual(
-			'<test><a>hello</a><b/></test>'
-		)
+		expect(doc.documentElement.toString()).toBe('<test><a>hello</a><b/></test>')
 		doc.documentElement.textContent = 'bye'
-		expect(doc.documentElement.toString()).toEqual('<test>bye</test>')
+		expect(doc.documentElement.toString()).toBe('<test>bye</test>')
 	})
 
 	xit('nested append failed', () => {})
