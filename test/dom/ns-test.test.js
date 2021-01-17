@@ -42,14 +42,14 @@ describe('XML Namespace Parse', () => {
 
 			const te = doc.createElementNS(n1, 'test')
 			te.setAttributeNS(n1, 'bar', 'valx')
-			expect(String(te)).toBe('<test xmlns="' + n1 + '" bar="valx"/>')
+			expect(te.toString()).toBe('<test xmlns="' + n1 + '" bar="valx"/>')
 			el.appendChild(te)
 			const tx = doc.createElementNS(n2, 'test')
 			tx.setAttributeNS(n2, 'bar', 'valx')
-			expect(String(tx)).toBe('<test xmlns="' + n2 + '" bar="valx"/>')
+			expect(tx.toString()).toBe('<test xmlns="' + n2 + '" bar="valx"/>')
 			el.appendChild(tx)
 		}
-		expect(String(doc)).toBe(
+		expect(doc.toString()).toBe(
 			'<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" bar="valx"></test><test xmlns="http://rmf.vc/n2" bar="valx"></test></rmf:foo></html>'
 		)
 	})
