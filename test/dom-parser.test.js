@@ -15,7 +15,7 @@ describe('DOMParser', () => {
 				columnNumber: 1,
 				lineNumber: 1,
 			}
-			expect(options.locator).toEqual(expected)
+			expect(options.locator).toStrictEqual(expected)
 		})
 
 		test('should store passed options.xmlns for default mime type', () => {
@@ -25,7 +25,7 @@ describe('DOMParser', () => {
 			// TODO: is there a simpler way to test this that doesn't involve invoking parseFromString?
 			const actual = it.parseFromString('<xml/>')
 
-			expect(actual.toString()).toEqual('<xml xmlns="custom-default-ns"/>')
+			expect(actual.toString()).toBe('<xml xmlns="custom-default-ns"/>')
 		})
 
 		test('should store and modify passed options.xmlns for html mime type', () => {
@@ -35,7 +35,7 @@ describe('DOMParser', () => {
 			// TODO: is there a simpler way to test this that doesn't involve invoking parseFromString?
 			it.parseFromString('<xml/>', 'text/html')
 
-			expect(options.xmlns['']).toEqual('http://www.w3.org/1999/xhtml')
+			expect(options.xmlns['']).toBe('http://www.w3.org/1999/xhtml')
 		})
 	})
 
@@ -45,7 +45,7 @@ describe('DOMParser', () => {
 
 			const actual = new DOMParser().parseFromString(XML).toString()
 
-			expect(actual).toEqual(XML)
+			expect(actual).toBe(XML)
 		})
 
 		test('should provide access to textContent and attribute values', () => {
@@ -71,13 +71,13 @@ describe('DOMParser', () => {
 			*/
 			const textTags = document.getElementsByTagName('text')
 
-			expect(textTags.length).toEqual(3)
+			expect(textTags).toHaveLength(3)
 
 			const expectedText = ['first', 'second', 'last']
 			for (let i = 0; i < textTags.length; i++) {
 				const textTag = textTags[i]
-				expect(textTag.textContent).toEqual(expectedText[i])
-				expect(textTag.getAttribute('top')).toEqual(`${i}`)
+				expect(textTag.textContent).toBe(expectedText[i])
+				expect(textTag.getAttribute('top')).toBe(`${i}`)
 			}
 		})
 	})
