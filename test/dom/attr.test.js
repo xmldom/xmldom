@@ -49,9 +49,6 @@ describe('XML attrs', () => {
 		).documentElement
 		root.setAttributeNS('a', 'a:a', '1')
 		expect(root.attributes.length).toBe(4)
-		//not standart
-		//    	root.firstChild.setAttributeNode(root.attributes[0]);
-		//    	expect(root.attributes).toHaveLength(0);
 	})
 
 	it('properly supports attribute namespace', () => {
