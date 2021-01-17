@@ -8,11 +8,13 @@ describe('XML attrs', () => {
 			.documentElement
 		root.setAttribute('a', '1')
 		expect(root.attributes[0].localName).toBe('a')
+
 		root.setAttribute('b', 2)
 		root.setAttribute('a', 1)
 		root.setAttribute('a', 1)
 		root.setAttribute('a', 1)
 		expect(root.attributes.length).toBe(2)
+
 		const c = root.ownerDocument.createElement('c')
 		expect(() => {
 			c.setAttributeNode(root.attributes.item(0))
@@ -24,6 +26,7 @@ describe('XML attrs', () => {
 			"<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",
 			'text/xml'
 		).documentElement
+
 		const child = root.firstChild
 		child.setAttributeNS('a', 'a:a', '1')
 		child.setAttributeNS('b', 'b:b', '2')
@@ -32,6 +35,7 @@ describe('XML attrs', () => {
 		child.setAttribute('a', 1)
 		child.setAttributeNS('b', 'b:b', '2')
 		expect(child.attributes.length).toBe(4)
+
 		const c = root.ownerDocument.createElement('c')
 		expect(() => {
 			c.setAttributeNodeNS(root.attributes.item(0))
