@@ -116,7 +116,7 @@ describe('XML Namespace Parse', () => {
 		const str4 = new XMLSerializer().serializeToString(doc4)
 		expect(str1).toBe(str2)
 		expect(str2).toBe(str3)
-		expect(str3).not.toBe(str4)
+		expect(str3).not.toEqual(str4)
 		expect(str3.length).toBe(str4.length)
 	})
 
@@ -138,7 +138,7 @@ describe('XML Namespace Parse', () => {
 		const str2 = new XMLSerializer().serializeToString(doc2)
 
 		expect(doc2.documentElement.lastChild.childNodes).toHaveLength(1)
-		expect(str1).not.toBe(str2)
+		expect(str1).not.toEqual(str2)
 		expect(str1).not.toHaveLength(str2.length)
 		const doc3 = new DOMParser().parseFromString(str2, 'text/xml')
 		doc3.documentElement.firstChild.appendChild(doc3.documentElement.lastChild)

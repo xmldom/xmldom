@@ -26,6 +26,6 @@ describe('XML Namespace Parse', () => {
 		const n = doc1.importNode(doc2.documentElement, true)
 		doc1.documentElement.appendChild(n)
 		expect(doc1.toString()).toBe(doc3.toString())
-		expect(doc2.toString()).not.toBe(doc3.toString())
+		expect(doc2.toString()).not.toEqual(doc3.toString())
 	})
 })
