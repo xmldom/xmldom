@@ -1,16 +1,15 @@
 'use strict'
 
-var DOMParser = require('../../lib/dom-parser').DOMParser
-const assert = require('../assert')
+const { DOMParser } = require('../../lib/dom-parser')
 
 describe('DOM DocumentFragment', () => {
 	// see: http://jsfiddle.net/9Wmh2/1/
 	it('append empty fragment', () => {
-		var document = new DOMParser().parseFromString('<p id="p"/>')
-		var fragment = document.createDocumentFragment()
+		const document = new DOMParser().parseFromString('<p id="p"/>')
+		const fragment = document.createDocumentFragment()
 		document.getElementById('p').insertBefore(fragment, null)
 		fragment.appendChild(document.createTextNode('a'))
 		document.getElementById('p').insertBefore(fragment, null)
-		assert(document.toString(), '<p id="p">a</p>')
+		expect(document.toString()).toBe('<p id="p">a</p>')
 	})
 })
