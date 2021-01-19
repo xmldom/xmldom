@@ -20,7 +20,7 @@
   "main": "lib/dom-parser.js",
   "files": [
     "CHANGELOG.md",
-    "LICENSE.md",
+    "LICENSE",
     "readme.md",
     "lib"
   ],
@@ -95,5 +95,5 @@
   "bugs": {
     "url": "https://github.com/xmldom/xmldom/issues"
   },
-  "license": "(LGPL-2.0 OR MIT)"
+  "license": "MIT"
 }
