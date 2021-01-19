@@ -38,8 +38,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stryker-mutator/core": "^3.3.1",
-    "@stryker-mutator/javascript-mutator": "^3.3.1",
+    "@stryker-mutator/core": "^4.3.1",
+    "@stryker-mutator/javascript-mutator": "^4.0.0",
     "dom-js": "0.0.9",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.2.0",
