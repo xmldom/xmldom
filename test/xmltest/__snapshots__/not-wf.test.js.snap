@@ -112,7 +112,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 014.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"&lt;foo>\\"/>",
+  "actual": "<doc a1=\\"<foo>\\"/>",
 }
 `;
 
