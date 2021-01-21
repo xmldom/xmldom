@@ -144,7 +144,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 018.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&lt;![CDATA [ stuff]]></doc>",
+  "actual": "<doc>&lt;![CDATA [ stuff]]&gt;</doc>",
 }
 `;
 
@@ -205,13 +205,13 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 025.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>]]></doc>",
+  "actual": "<doc>]]&gt;</doc>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 026.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>]]]></doc>",
+  "actual": "<doc>]]]&gt;</doc>",
 }
 `;
 
@@ -237,7 +237,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 029.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>abc]]]>def</doc>",
+  "actual": "<doc>abc]]]&gt;def</doc>",
 }
 `;
 
@@ -831,7 +831,7 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 108.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>
-&lt;![CDATA [  ]]>
+&lt;![CDATA [  ]]&gt;
 </doc>",
 }
 `;
@@ -870,7 +870,7 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 112.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>
-&lt;![cdata[data]]>
+&lt;![cdata[data]]&gt;
 </doc>",
 }
 `;
@@ -1354,7 +1354,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 181.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;]]></doc>",
+  "actual": "<doc>&amp;e;]]&gt;</doc>",
   "error": Array [
     "[xmldom error]	entity not found:&e;
 @#[line:1,col:1]",

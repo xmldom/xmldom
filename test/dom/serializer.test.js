@@ -6,7 +6,7 @@ describe('XML Serializer', () => {
 	it('supports text node containing "]]>"', () => {
 		const doc = new DOMParser().parseFromString('<test/>', 'text/xml')
 		doc.documentElement.appendChild(doc.createTextNode('hello ]]> there'))
-		expect(doc.documentElement.firstChild.toString()).toBe('hello ]]> there')
+		expect(doc.documentElement.firstChild.toString()).toBe('hello ]]&gt; there')
 	})
 
 	it('supports <script> element with no children', () => {
