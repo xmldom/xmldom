@@ -1,0 +1,1407 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`xmltest/not-wellformed standalone should match 001.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;doc
+?
+&lt;a
+</doc>",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: invalid attribute:?
+@#[line:2,col:1]",
+    "[xmldom error]	element parse error: Error: invalid tagName:a<
+@#[line:4,col:1]",
+  ],
+  "warning": Array [
+    "[xmldom warning]	attribute \\"?\\" missed value!! \\"?\\" instead2!!
+@#[line:2,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 002.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;.doc>
+</doc>",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: invalid tagName:.doc
+@#[line:2,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 003.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc><? ?></doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 004.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&lt;?target some data></doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 005.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&lt;?target some data?</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc><!-- a comment -- another --></doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 007.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;amp no refc</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 008.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;.entity;</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 009.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!0!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 010.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>A &amp; B</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 011.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a1=\\"a1\\"/>",
+  "warning": Array [
+    "[xmldom warning]	attribute \\"a1\\" missed value!! \\"a1\\" instead!!
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 012.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a1=\\"v1\\"/>",
+  "warning": Array [
+    "[xmldom warning]	attribute \\"v1\\" missed quot(\\")!!
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 013.xml with snapshot 1`] = `
+Object {
+  "actual": "",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 014.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a1=\\"&lt;foo>\\"/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 015.xml with snapshot 1`] = `
+Object {
+  "actual": "",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: attribute value missed!!
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 016.xml with snapshot 1`] = `
+Object {
+  "actual": "",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: attribute value must after \\"=\\"
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 017.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&lt;![CDATA[</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 018.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&lt;![CDATA [ stuff]]&gt;</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 019.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+  "error": Array [
+    "[xmldom error]	end tag name: >
+ is not complete:undefined
+@#[line:1,col:1]",
+  ],
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 020.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a1=\\"A &amp; B\\"/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 021.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a1=\\"a&amp;b\\"/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 022.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a1=\\"&amp;#123:\\"/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 023.xml with snapshot 1`] = `
+Object {
+  "actual": "",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: invalid attribute:12
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 024.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;123>
+</doc>",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: invalid tagName:123
+@#[line:2,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 025.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>]]&gt;</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 026.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>]]]&gt;</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 027.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;!-- abc
+</doc>",
+  "error": Array [
+    "[xmldom error]	Unclosed comment
+@#[line:2,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 028.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;?a pi that is not closed
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 029.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>abc]]]&gt;def</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 030.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>A form feed () is not legal in data</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 031.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc><?pi a form feed () is not allowed in a pi?></doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 032.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc><!-- a form feed () is not allowed in a comment --></doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 033.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>abc{!1b!}def</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 034.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>A form-feed is not white space or a name character</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 035.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>1 &lt; 2 but not in XML</doc>",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: invalid tagName:
+@#[line:1,col:8]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 036.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>
+Illegal data
+",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 037.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>
+&amp;#32;
+",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 038.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc x=\\"baz\\" y=\\"bar\\"/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 039.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc><a/></doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 040.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 041.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 042.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 043.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>
+Illegal data
+",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 044.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/><doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 045.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;a/
+</doc>",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: elements closed character '/' and '>' must be connected to
+@#[line:2,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 046.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;a/
+</doc>",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: elements closed character '/' and '>' must be connected to
+@#[line:2,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 047.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+<a/>
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 048.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+</doc>
+",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 049.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+<a><![CDATA[xyz]]]></a>
+
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 050.xml with snapshot 1`] = `
+Object {
+  "actual": undefined,
+  "error": Array [
+    "[xmldom error]	invalid doc source
+@#[line:0,col:undefined]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 051.xml with snapshot 1`] = `
+Object {
+  "actual": "<!-- a comment -->
+
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 052.xml with snapshot 1`] = `
+Object {
+  "actual": "<!-- a comment -->
+ 
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 053.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 054.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 055.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 056.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 057.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 058.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 059.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 060.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 061.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 062.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 063.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc><doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 064.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 065.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 066.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 067.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 068.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 069.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 070.xml with snapshot 1`] = `
+Object {
+  "actual": "<!-- a comment ending with three dashes --->
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 071.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e1;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e1;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 072.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;foo;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&foo;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 073.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;f;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&f;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 074.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+<foo>&amp;e;</foo>
+</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:2,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 075.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a=\\"&amp;e1;\\"/>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e1;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 076.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a=\\"&amp;foo;\\"/>",
+  "error": Array [
+    "[xmldom error]	entity not found:&foo;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 077.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a=\\"&amp;foo;\\"/>",
+  "error": Array [
+    "[xmldom error]	entity not found:&foo;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 078.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 079.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 080.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 081.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a=\\"&amp;e;\\"/>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 082.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 083.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 084.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 085.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc PUBLIC \\"[\\" \\"null.ent\\">
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 086.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 087.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 088.xml with snapshot 1`] = `
+Object {
+  "actual": "",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
+@#[line:1,col:1]",
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 089.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 090.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 091.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 092.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 093.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!0!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 094.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml VERSION=\\"1.0\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 095.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml encoding=\\"UTF-8\\" version=\\"1.0\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 096.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml version=\\"1.0\\"encoding=\\"UTF-8\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 097.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml version=\\"1.0' encoding=\\"UTF-8\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 098.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml version=\\"1.0\\" version=\\"1.0\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 099.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml version=\\"1.0\\" valid=\\"no\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 100.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml version=\\"1.0\\" standalone=\\"YES\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 101.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml version=\\"1.0\\" encoding=\\" UTF-8\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 102.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml version=\\"1.0 \\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 103.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 104.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 105.xml with snapshot 1`] = `
+Object {
+  "actual": "<?pi stuff?>
+
+<doc>
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 106.xml with snapshot 1`] = `
+Object {
+  "actual": "<?pi data?>
+ <doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 107.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc><doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 108.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;![CDATA [  ]]&gt;
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 109.xml with snapshot 1`] = `
+Object {
+  "actual": "&amp;e;
+",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 110.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>
+&amp;e;
+",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 111.xml with snapshot 1`] = `
+Object {
+  "actual": "",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: invalid attribute:&e;
+@#[line:1,col:1]",
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+  "warning": Array [
+    "[xmldom warning]	attribute \\"&e;\\" missed value!! \\"&e;\\" instead!!
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 112.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&lt;![cdata[data]]&gt;
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 113.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 114.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 115.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a=\\"&amp;e;\\"/>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 116.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;7;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 117.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;#97;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 118.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;&amp;e;97;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 119.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&amp;e;#38;
+</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 120.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+&amp;e;
+</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 121.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 122.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 123.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 124.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 125.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 126.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 127.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 128.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 129.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 130.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 131.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 132.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 133.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 134.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 135.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 136.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 137.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 138.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 139.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 140.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 141.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 142.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!0!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 143.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!1f!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 144.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!ffff!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 145.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!d800!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 146.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!dc00!}{!dc00!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 147.xml with snapshot 1`] = `
+Object {
+  "actual": "
+<?xml version=\\"1.0\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 148.xml with snapshot 1`] = `
+Object {
+  "actual": "<!-- -->
+<?xml version=\\"1.0\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 149.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 150.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+<?xml version=\\"1.0\\"?>
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 151.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+</doc>
+<?xml version=\\"1.0\\"?>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 152.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml encoding=\\"UTF-8\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 153.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 154.xml with snapshot 1`] = `
+Object {
+  "actual": "<?XML version=\\"1.0\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 155.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xmL version=\\"1.0\\"?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 156.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+<?xMl version=\\"1.0\\"?>
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 157.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>
+<?xmL ?>
+</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 158.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 159.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc><doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:5,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 160.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 161.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 162.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 163.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 164.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc><doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 165.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 166.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!ffff!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 167.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>{!fffe!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 168.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>���</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 169.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>���</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 170.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>����</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot 1`] = `
+Object {
+  "actual": "<!-- {!ffff!} -->
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 172.xml with snapshot 1`] = `
+Object {
+  "actual": "<?pi {!ffff!}?>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 173.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc a=\\"{!ffff!}\\"/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 174.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc><![CDATA[{!ffff!}]]></doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 175.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 176.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 177.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>A{!ffff!}</doc>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 178.xml with snapshot 1`] = `
+Object {
+  "actual": "",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 179.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 180.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 181.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;]]&gt;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 182.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc>&amp;e;--></doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 183.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 184.xml with snapshot 1`] = `
+Object {
+  "actual": "<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 185.xml with snapshot 1`] = `
+Object {
+  "actual": "<?xml version=\\"1.0\\" standalone=\\"yes\\"?>
+<!DOCTYPE doc SYSTEM \\"185.ent\\">
+<doc>&amp;e;</doc>",
+  "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:3,col:1]",
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 186.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE a><a b=\\"c\\" d=\\"e\\"/>",
+  "warning": Array [
+    "[xmldom warning]	attribute space is required\\"b\\"!!
+@#[line:5,col:1]",
+  ],
+}
+`;

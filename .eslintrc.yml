@@ -1,0 +1,26 @@
+env:
+  browser: true
+  commonjs: true
+  es2020: true
+  node: true
+plugins:
+  - es5
+# FUTURE TBD:
+# extends: 'eslint:recommended'
+parserOptions:
+  ecmaVersion: 11
+rules:
+  # FUTURE TBD:
+  # indent:
+  #   - error
+  #   - tab
+  linebreak-style:
+    - error
+    - unix
+  # FUTURE TBD:
+  # quotes:
+  #   - error
+  #   - single
+  # semi:
+  #   - error
+  #   - always
