@@ -5,9 +5,11 @@ var DOMParser = require('../lib/dom-parser').DOMParser
 var XMLSerializer = require('../lib/dom-parser').XMLSerializer
 
 var doc = new DOMParser().parseFromString(
-	'<xml xmlns="http://test.com" id="root">' +
-		'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
-		'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
+	''.concat(
+		'<xml xmlns="http://test.com" id="root">',
+		'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>',
+		'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>'
+	),
 	'text/xml'
 )
 

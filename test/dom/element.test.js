@@ -51,10 +51,12 @@ describe('XML Namespace Parse', () => {
 
 	it('supports getElementsByTagNameNS', () => {
 		const doc = new DOMParser().parseFromString(
-			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
-				'<t:test/><test/><t2:test/>' +
-				'<child attr="1"><test><child attr="2"/></test></child>' +
-				'<child attr="3"/></xml>',
+			''.concat(
+				'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">',
+				'<t:test/><test/><t2:test/>',
+				'<child attr="1"><test><child attr="2"/></test></child>',
+				'<child attr="3"/></xml>'
+			),
 			'text/xml'
 		)
 
@@ -85,9 +87,11 @@ describe('XML Namespace Parse', () => {
 
 	it('supports getElementById', () => {
 		const doc = new DOMParser().parseFromString(
-			'<xml xmlns="http://test.com" id="root">' +
-				'<child id="a1" title="1"><child id="a2"  title="2"/></child>' +
-				'<child id="a1"   title="3"/></xml>',
+			''.concat(
+				'<xml xmlns="http://test.com" id="root">',
+				'<child id="a1" title="1"><child id="a2"  title="2"/></child>',
+				'<child id="a1"   title="3"/></xml>'
+			),
 			'text/xml'
 		)
 		expect(doc.getElementById('root')).not.toBeNull()
@@ -98,9 +102,11 @@ describe('XML Namespace Parse', () => {
 
 	it('can properly append exist child', () => {
 		const doc = new DOMParser().parseFromString(
-			'<xml xmlns="http://test.com" id="root">' +
-				'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
-				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
+			''.concat(
+				'<xml xmlns="http://test.com" id="root">',
+				'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>',
+				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>'
+			),
 			'text/xml'
 		)
 
@@ -124,9 +130,11 @@ describe('XML Namespace Parse', () => {
 
 	it('can properly append exist other child', () => {
 		const doc = new DOMParser().parseFromString(
-			'<xml xmlns="http://test.com" id="root">' +
-				'<child1 id="a1" title="1"><child11 id="a2"  title="2"><child/></child11></child1>' +
-				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
+			''.concat(
+				'<xml xmlns="http://test.com" id="root">',
+				'<child1 id="a1" title="1"><child11 id="a2"  title="2"><child/></child11></child1>',
+				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>'
+			),
 			'text/xml'
 		)
 
