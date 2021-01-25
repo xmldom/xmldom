@@ -13,10 +13,12 @@ describe('XML Namespace Parse', () => {
 
 	it('supports getElementsByTagName', () => {
 		const doc = new DOMParser().parseFromString(
-			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
-				'<t:test/><test/><t2:test/>' +
-				'<child attr="1"><test><child attr="2"/></test></child>' +
-				'<child attr="3"/></xml>',
+			''.concat(
+				'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">',
+				'<t:test/><test/><t2:test/>',
+				'<child attr="1"><test><child attr="2"/></test></child>',
+				'<child attr="3"/></xml>'
+			),
 			'text/xml'
 		)
 
