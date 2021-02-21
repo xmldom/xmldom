@@ -46,7 +46,7 @@ import { DOMParser } from 'xmldom'
 API Reference
 =====
 
- * [DOMParser](https://developer.mozilla.org/en/DOMParser):
+ * [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser):
 
 	```javascript
 	parseFromString(xmlsource,mimeType)
@@ -74,7 +74,7 @@ API Reference
 		
 	```
 
- * [XMLSerializer](https://developer.mozilla.org/en/XMLSerializer)
+ * [XMLSerializer](https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer)
  
 	```javascript
 	serializeToString(node)
