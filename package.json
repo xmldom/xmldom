@@ -1,6 +1,6 @@
 {
   "name": "xmldom",
-  "version": "0.4.1-dev",
+  "version": "0.5.1-dev",
   "description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
   "keywords": [
     "w3c",
@@ -20,7 +20,7 @@
   "main": "lib/dom-parser.js",
   "files": [
     "CHANGELOG.md",
-    "LICENSE.md",
+    "LICENSE",
     "readme.md",
     "lib"
   ],
@@ -38,19 +38,18 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stryker-mutator/core": "^3.3.1",
-    "@stryker-mutator/javascript-mutator": "^3.3.1",
+    "@stryker-mutator/core": "^4.4.1",
     "dom-js": "0.0.9",
-    "eslint": "^7.12.1",
-    "eslint-config-prettier": "^6.15.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-es5": "^1.5.0",
-    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-prettier": "^3.3.1",
     "get-stream": "^6.0.0",
     "jest": "^26.6.3",
-    "nodemon": "^2.0.6",
+    "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.1.2",
-    "xmltest": "^1.4.0",
+    "prettier": "^2.2.1",
+    "xmltest": "^1.5.0",
     "yauzl": "^2.10.0"
   },
   "maintainers": [
@@ -85,10 +84,15 @@
       "name": "Eric Newport",
       "email": "kethinov@gmail.com",
       "web": "https://github.com/kethinov"
+    },
+    {
+      "name": "Christian Bewernitz",
+      "email": "coder@karfau.de",
+      "web": "https://github.com/karfau"
     }
   ],
   "bugs": {
     "url": "https://github.com/xmldom/xmldom/issues"
   },
-  "license": "(LGPL-2.0 OR MIT)"
+  "license": "MIT"
 }

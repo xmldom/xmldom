@@ -1,6 +1,6 @@
 # XMLDOM
 
-[![license](https://img.shields.io/npm/l/xmldom?color=blue&style=flat-square)](./LICENSE.md)
+[![license](https://img.shields.io/npm/l/xmldom?color=blue&style=flat-square)](LICENSE)
 [![npm](https://img.shields.io/npm/v/xmldom?style=flat-square)](https://www.npmjs.com/package/xmldom)
 [![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 [!["help wanted" issues](https://img.shields.io/github/issues/xmldom/xmldom/help%20wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
@@ -46,7 +46,7 @@ import { DOMParser } from 'xmldom'
 API Reference
 =====
 
- * [DOMParser](https://developer.mozilla.org/en/DOMParser):
+ * [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser):
 
 	```javascript
 	parseFromString(xmlsource,mimeType)
@@ -74,7 +74,7 @@ API Reference
 		
 	```
 
- * [XMLSerializer](https://developer.mozilla.org/en/XMLSerializer)
+ * [XMLSerializer](https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer)
  
 	```javascript
 	serializeToString(node)
@@ -98,6 +98,30 @@ DOM level2 method and attribute:
 			normalize()
 			isSupported(feature, version)
 			hasAttributes()
+* [DOMException](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html)
+   The DOMException class has the following constants (and `value` of type `Number`):
+  
+  1. `DOMException.INDEX_SIZE_ERR` (`1`)
+  1. `DOMException.DOMSTRING_SIZE_ERR` (`2`)
+  1. `DOMException.HIERARCHY_REQUEST_ERR` (`3`)
+  1. `DOMException.WRONG_DOCUMENT_ERR` (`4`)
+  1. `DOMException.INVALID_CHARACTER_ERR` (`5`)
+  1. `DOMException.NO_DATA_ALLOWED_ERR` (`6`)
+  1. `DOMException.NO_MODIFICATION_ALLOWED_ERR` (`7`)
+  1. `DOMException.NOT_FOUND_ERR` (`8`)
+  1. `DOMException.NOT_SUPPORTED_ERR` (`9`)
+  1. `DOMException.INUSE_ATTRIBUTE_ERR` (`10`)
+  1. `DOMException.INVALID_STATE_ERR` (`11`)
+  1. `DOMException.SYNTAX_ERR` (`12`)
+  1. `DOMException.INVALID_MODIFICATION_ERR` (`13`)
+  1. `DOMException.NAMESPACE_ERR` (`14`)
+  1. `DOMException.INVALID_ACCESS_ERR` (`15`)
+   
+   The DOMException object has the following properties:
+   code
+   This property is of type Number.
+
+	 * extends the Error type thrown as part of DOM API:
 
  * [DOMImplementation](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-102161490)
 		
@@ -228,7 +252,8 @@ DOM level 3 support:
 
 DOM extension by xmldom
 ---
- * [Node] Source position extension; 
+
+* [Node] Source position extension; 
 		
 		attribute:
 			//Numbered starting from '1'

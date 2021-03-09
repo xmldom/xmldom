@@ -4,7 +4,7 @@ exports[`html vs xml: html attribute (miss quote) 1`] = `
 Object {
   "actual": "<img attr=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
   "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!!
+    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
 @#[line:1,col:1]",
   ],
 }
@@ -35,21 +35,6 @@ Object {
     "[xmldom warning]	unclosed xml attribute
 @#[line:1,col:1]",
   ],
-}
-`;
-exports[`html vs xml: unclosed document in text/xml 1`] = `
-Object {
-  "actual": "<img/>",
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:1]",
-  ],
-}
-`;
-
-exports[`html vs xml: unclosed document in text/html 1`] = `
-Object {
-  "actual": "<img xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
 }
 `;
 
@@ -91,6 +76,22 @@ Object {
   "warning": Array [
     "[xmldom warning]	attribute value must after \\"=\\"
 @#[line:10,col:5]",
+  ],
+}
+`;
+
+exports[`html vs xml: unclosed document in text/html 1`] = `
+Object {
+  "actual": "<img xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+}
+`;
+
+exports[`html vs xml: unclosed document in text/xml 1`] = `
+Object {
+  "actual": "<img/>",
+  "warning": Array [
+    "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
   ],
 }
 `;

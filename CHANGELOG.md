@@ -1,3 +1,21 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## 0.5.0
+
+### Fixes
+- Avoid misinterpretation of malicious XML input - `GHSA-h6q6-9hqw-rwfv` (CVE-2021-21366)
+- Fix breaking preprocessors' directives when parsing attributes [`#171`](https://github.com/xmldom/xmldom/pull/171)
+- fix(dom): Escape `]]&gt;` when serializing CharData [`#181`](https://github.com/xmldom/xmldom/pull/181)
+- Switch to (only) MIT license (drop problematic LGPL license option) [`#178`](https://github.com/xmldom/xmldom/pull/178)
+- Export DOMException; remove custom assertions; etc.  [`#174`](https://github.com/xmldom/xmldom/pull/174)
+
+### Docs
+- Update MDN links in `readme.md` [`#188`](https://github.com/xmldom/xmldom/pull/188)
+
 ## 0.4.0
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.3.0...0.4.0)

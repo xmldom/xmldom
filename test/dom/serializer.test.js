@@ -1,21 +1,19 @@
 'use strict'
 
-var DOMParser = require('../../lib/dom-parser').DOMParser
-const assert = require('../assert')
+const { DOMParser } = require('../../lib/dom-parser')
 
 describe('XML Serializer', () => {
 	it('supports text node containing "]]>"', () => {
-		var doc = new DOMParser().parseFromString('<test/>', 'text/xml')
+		const doc = new DOMParser().parseFromString('<test/>', 'text/xml')
 		doc.documentElement.appendChild(doc.createTextNode('hello ]]> there'))
-		assert(doc.documentElement.firstChild.toString(), 'hello ]]> there')
+		expect(doc.documentElement.firstChild.toString()).toBe('hello ]]&gt; there')
 	})
 
 	it('supports <script> element with no children', () => {
-		var doc = new DOMParser({
+		const doc = new DOMParser({
 			xmlns: { xmlns: 'http://www.w3.org/1999/xhtml' },
 		}).parseFromString('<html2><script></script></html2>', 'text/html')
-		assert(
-			doc.documentElement.firstChild.toString(),
+		expect(doc.documentElement.firstChild.toString()).toBe(
 			'<script xmlns="http://www.w3.org/1999/xhtml"></script>'
 		)
 	})
