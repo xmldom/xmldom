@@ -94,7 +94,7 @@ exports[`xmltest/not-wellformed standalone should match 012.xml with snapshot 1`
 Object {
   "actual": "<doc a1=\\"v1\\"/>",
   "warning": Array [
-    "[xmldom warning]	attribute \\"v1\\" missed quot(\\")!!
+    "[xmldom warning]	attribute \\"v1\\" missed quot(\\")!
 @#[line:1,col:1]",
   ],
 }
@@ -300,6 +300,10 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 038.xml with snapshot 1`] = `
 Object {
   "actual": "<doc x=\\"baz\\" y=\\"bar\\"/>",
+  "fatalError": Array [
+    "[xmldom fatalError]	Attribute x redefined
+@#[line:1,col:1]",
+  ],
 }
 `;
 

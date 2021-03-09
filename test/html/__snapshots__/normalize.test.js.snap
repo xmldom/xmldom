@@ -13,6 +13,10 @@ Object {
 exports[`html normalizer <div a=& a="&''" b/> 1`] = `
 Object {
   "actual": "<div a=\\"&amp;''\\" b=\\"b\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
+  "fatalError": Array [
+    "[xmldom fatalError]	Attribute a redefined
+@#[line:1,col:1]",
+  ],
   "warning": Array [
     "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
 @#[line:1,col:1]",
@@ -32,7 +36,7 @@ Object {
 @#[line:1,col:1]",
     "[xmldom warning]	attribute \\"c\\" missed value!! \\"c\\" instead2!!
 @#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"123&&456\\" missed quot(\\")!!
+    "[xmldom warning]	attribute \\"123&&456\\" missed quot(\\")!
 @#[line:1,col:1]",
   ],
 }
@@ -178,7 +182,7 @@ exports[`html normalizer unclosed html <html title = 1/> 1`] = `
 Object {
   "actual": "<html title=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
   "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!!
+    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
 @#[line:1,col:1]",
   ],
 }
@@ -188,7 +192,7 @@ exports[`html normalizer unclosed html <html title =1/2></html> 1`] = `
 Object {
   "actual": "<html title=\\"1/2\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
   "warning": Array [
-    "[xmldom warning]	attribute \\"1/2\\" missed quot(\\")!!
+    "[xmldom warning]	attribute \\"1/2\\" missed quot(\\")!
 @#[line:1,col:1]",
   ],
 }
@@ -208,7 +212,7 @@ exports[`html normalizer unclosed html <html title= 1/> 1`] = `
 Object {
   "actual": "<html title=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
   "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!!
+    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
 @#[line:1,col:1]",
   ],
 }

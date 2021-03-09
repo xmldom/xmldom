@@ -1,0 +1,501 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: attribute value missed!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: attribute value missed!!||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: attribute value missed!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: attribute value missed!!||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: attribute value no end '\\"' match||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: attribute value no end '\\"' match||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_ElementClosingNotConnected with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: elements closed character '/' and '>' must be connected to
+@#[line:1,col:6]",
+]
+`;
+
+exports[`SYNTAX_ElementClosingNotConnected with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: elements closed character '/' and '>' must be connected to||@#[line:1,col:6]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_ElementClosingNotConnected with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: elements closed character '/' and '>' must be connected to
+@#[line:1,col:6]",
+]
+`;
+
+exports[`SYNTAX_ElementClosingNotConnected with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: elements closed character '/' and '>' must be connected to||@#[line:1,col:6]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	end tag name: inner maybe not complete
+@#[line:1,col:6]",
+]
+`;
+
+exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	end tag name: inner maybe not complete||@#[line:1,col:6]
+    at parse (lib/sax.js:128)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: inner maybe not complete||@#[line:1,col:6]||@#[line:1,col:6]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	end tag name: inner maybe not complete
+@#[line:1,col:6]",
+]
+`;
+
+exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	end tag name: inner maybe not complete||@#[line:1,col:6]
+    at parse (lib/sax.js:128)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: inner maybe not complete||@#[line:1,col:6]||@#[line:1,col:6]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_EndTagNotComplete with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	end tag name: xml is not complete:xml
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_EndTagNotComplete with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	end tag name: xml is not complete:xml||@#[line:1,col:1]
+    at parse (lib/sax.js:124)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: xml is not complete:xml||@#[line:1,col:1]||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_EndTagNotComplete with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	end tag name: xml is not complete:xml
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_EndTagNotComplete with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	end tag name: xml is not complete:xml||@#[line:1,col:1]
+    at parse (lib/sax.js:124)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: xml is not complete:xml||@#[line:1,col:1]||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_InvalidAttributeName with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: invalid attribute:123
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_InvalidAttributeName with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: invalid attribute:123||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_InvalidAttributeName with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: invalid attribute:123
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_InvalidAttributeName with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: invalid attribute:123||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_InvalidTagName with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: invalid tagName:123
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_InvalidTagName with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: invalid tagName:123||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_InvalidTagName with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: invalid tagName:123
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_InvalidTagName with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	element parse error: Error: invalid tagName:123||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_UnclosedComment with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	Unclosed comment
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_UnclosedComment with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	Unclosed comment||@#[line:1,col:1]
+    at parseDCC (lib/sax.js:538)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	Unclosed comment||@#[line:1,col:1]||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_UnclosedComment with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	Unclosed comment
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_UnclosedComment with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	Unclosed comment||@#[line:1,col:1]
+    at parseDCC (lib/sax.js:538)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	Unclosed comment||@#[line:1,col:1]||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	unexpected end of input
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	unexpected end of input||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:308)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	unexpected end of input||@#[line:1,col:1]||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	unexpected end of input
+@#[line:1,col:1]",
+]
+`;
+
+exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	unexpected end of input||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:308)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	unexpected end of input||@#[line:1,col:1]||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`WF_AttributeMissingQuote with mimeType text/html should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"value\\" missed quot(\\")!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingQuote with mimeType text/html should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"value\\" missed quot(\\")!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:333)",
+]
+`;
+
+exports[`WF_AttributeMissingQuote with mimeType text/xml should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"value\\" missed quot(\\")!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingQuote with mimeType text/xml should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"value\\" missed quot(\\")!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:333)",
+]
+`;
+
+exports[`WF_AttributeMissingQuote2 with mimeType text/html should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingQuote2 with mimeType text/html should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:363)",
+]
+`;
+
+exports[`WF_AttributeMissingQuote2 with mimeType text/xml should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingQuote2 with mimeType text/xml should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:363)",
+]
+`;
+
+exports[`WF_AttributeMissingStartingQuote with mimeType text/html should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed start quot(\\")!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingStartingQuote with mimeType text/html should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed start quot(\\")!!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:281)",
+]
+`;
+
+exports[`WF_AttributeMissingStartingQuote with mimeType text/xml should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed start quot(\\")!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingStartingQuote with mimeType text/xml should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed start quot(\\")!!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:281)",
+]
+`;
+
+exports[`WF_AttributeMissingValue with mimeType text/html should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingValue with mimeType text/html should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead!!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:337)",
+]
+`;
+
+exports[`WF_AttributeMissingValue with mimeType text/xml should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingValue with mimeType text/xml should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead!!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:337)",
+]
+`;
+
+exports[`WF_AttributeMissingValue2 with mimeType text/html should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead2!!
+@#[line:1,col:1]",
+  "[xmldom warning]	attribute \\"attr2\\" missed value!! \\"attr2\\" instead!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingValue2 with mimeType text/html should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead2!!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:385)",
+]
+`;
+
+exports[`WF_AttributeMissingValue2 with mimeType text/xml should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead2!!
+@#[line:1,col:1]",
+  "[xmldom warning]	attribute \\"attr2\\" missed value!! \\"attr2\\" instead!!
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeMissingValue2 with mimeType text/xml should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead2!!||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:385)",
+]
+`;
+
+exports[`WF_AttributeValueMustAfterEqual with mimeType text/html should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute value must after \\"=\\"
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeValueMustAfterEqual with mimeType text/html should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute value must after \\"=\\"||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:263)",
+]
+`;
+
+exports[`WF_AttributeValueMustAfterEqual with mimeType text/xml should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	attribute value must after \\"=\\"
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_AttributeValueMustAfterEqual with mimeType text/xml should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	attribute value must after \\"=\\"||@#[line:1,col:1]
+    at parseElementStartPart (lib/sax.js:263)",
+]
+`;
+
+exports[`WF_DuplicateAttribute with mimeType text/html should be reported as fatalError 1`] = `
+Array [
+  "[xmldom fatalError]	Attribute a redefined
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_DuplicateAttribute with mimeType text/xml should be reported as fatalError 1`] = `
+Array [
+  "[xmldom fatalError]	Attribute a redefined
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_EntityDeclared with mimeType text/html should be reported as error 1`] = `
+Array [
+  "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_EntityDeclared with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	entity not found:&e;||@#[line:1,col:1]
+    at replace (lib/sax.js:71)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	entity not found:&e;||@#[line:1,col:1]||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`WF_EntityDeclared with mimeType text/xml should be reported as error 1`] = `
+Array [
+  "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_EntityDeclared with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
+Array [
+  "[xmldom error]	entity not found:&e;||@#[line:1,col:1]
+    at replace (lib/sax.js:71)",
+  "[xmldom error]	element parse error: Error: [xmldom error]	entity not found:&e;||@#[line:1,col:1]||@#[line:1,col:1]
+    at parse (lib/sax.js:208)",
+]
+`;
+
+exports[`WF_UnclosedXmlAttribute with mimeType text/xml should be reported as warning 1`] = `
+Array [
+  "[xmldom warning]	unclosed xml attribute
+@#[line:1,col:1]",
+]
+`;
+
+exports[`WF_UnclosedXmlAttribute with mimeType text/xml should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
+Array [
+  "[xmldom warning]	unclosed xml attribute||@#[line:1,col:1]
+    at parse (lib/sax.js:173)",
+]
+`;
