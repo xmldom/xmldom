@@ -87,6 +87,20 @@ describe('XML Node Parse', () => {
 		})
 	})
 
+	it('prefixed without empty namespace', () => {
+		const source = '<w:p><w:r>test1</w:r><w:r>test2</w:r></w:p>'
+		const { documentElement } = new DOMParser().parseFromString(source)
+
+		expect(documentElement.firstChild.firstChild).toMatchObject({
+			nodeValue: 'test1',
+		})
+		expect(documentElement.lastChild.firstChild).toMatchObject({
+			nodeValue: 'test2',
+		})
+
+		expect(documentElement.toString()).toStrictEqual(source)
+	})
+
 	it('cdata comment', () => {
 		const { documentElement } = new DOMParser().parseFromString(
 			'<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>'
