@@ -293,7 +293,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 040.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"&quot;<&amp;>'\\"/>",
+  "actual": "<doc a1=\\"&quot;&lt;&amp;>'\\"/>",
   "expected": "<doc a1=\\"&quot;&lt;&amp;&gt;'\\"></doc>",
 }
 `;

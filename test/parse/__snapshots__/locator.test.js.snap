@@ -2,7 +2,7 @@
 
 exports[`DOMLocator attribute position 1`] = `
 Object {
-  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1<2\\"><table></table>&lt;;test</body></html>",
+  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"><table></table>&lt;;test</body></html>",
 }
 `;
 
