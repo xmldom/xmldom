@@ -1,6 +1,6 @@
 'use strict'
 
-const { REPORTED } = require('./reported')
+const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported')
 const { getTestParser } = require('../get-test-parser')
 const { ParseError } = require('../../lib/sax')
 const { DOMParser } = require('../../lib/dom-parser')
@@ -90,8 +90,10 @@ describe.each(Object.entries(REPORTED))(
  * - put's the message on one line as first line
  * - picks the first line in the stack trace that is in `lib/sax.js`,
  *   and strips absolute paths and character position from that stack entry
- *   as second line
+ *   as second line. the line number in the stack is converted to the error index
+ *   (to make snapshot testing possible even with stryker).
  * @param {Error} error
+ * @returns {string}
  */
 function toErrorSnapshot(error) {
 	const libSaxMatch = /\/.*\/(lib\/sax\.js)/
@@ -102,5 +104,17 @@ function toErrorSnapshot(error) {
 		// strip of absolute path
 		.replace(libSaxMatch, '$1')
 		// strip of position of character in line
-		.replace(/:\d+\)$/, ')')}`
+		.replace(/:\d+\)$/, ')')
+		// since stryker mutates the code, line numbers in the stack trace will change
+		// and no longer match the ones in the snapshots.
+		// So we map line numbers to an "error index" meaning "the nth thing reported by lib/sax.js"
+		// `./reported.js` creates that index on every test run
+		// and writes it `./report.json` on every run, for later inspection.
+		.replace(/(lib\/sax\.js:)\d+/, (fileAndLine, file) => {
+			return `${file}#${
+				fileAndLine in LINE_TO_ERROR_INDEX
+					? LINE_TO_ERROR_INDEX[fileAndLine].index
+					: -1
+			}`
+		})}`
 }
