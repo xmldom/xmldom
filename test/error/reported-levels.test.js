@@ -1,6 +1,6 @@
 'use strict'
 
-const { REPORTED } = require('./reported')
+const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported')
 const { getTestParser } = require('../get-test-parser')
 const { ParseError } = require('../../lib/sax')
 const { DOMParser } = require('../../lib/dom-parser')
@@ -56,7 +56,9 @@ describe.each(Object.entries(REPORTED))(
 						expect(() => parser.parseFromString(source, mimeType)).toThrow(
 							Error
 						)
-						expect(thrown.map(toErrorSnapshot)).toMatchSnapshot()
+						expect(
+							thrown.map((error) => toErrorSnapshot(error, 'lib/sax.js'))
+						).toMatchSnapshot()
 						match && expect(match(thrown[0].toString())).toBe(true)
 					})
 				} else if (level === 'warning') {
@@ -76,7 +78,9 @@ describe.each(Object.entries(REPORTED))(
 
 						expect(errorHandler.warning).toHaveBeenCalledTimes(1)
 						expect(errorHandler.error).toHaveBeenCalledTimes(1)
-						expect(thrown.map(toErrorSnapshot)).toMatchSnapshot()
+						expect(
+							thrown.map((error) => toErrorSnapshot(error, 'lib/sax.js'))
+						).toMatchSnapshot()
 						match && expect(match(thrown[0].message)).toBe(true)
 					})
 				}
@@ -88,19 +92,33 @@ describe.each(Object.entries(REPORTED))(
 /**
  * Creates a string from an error that is easily readable in a snapshot
  * - put's the message on one line as first line
- * - picks the first line in the stack trace that is in `lib/sax.js`,
+ * - picks the first line in the stack trace that is in `libFile`,
  *   and strips absolute paths and character position from that stack entry
- *   as second line
+ *   as second line. the line number in the stack is converted to the error index
+ *   (to make snapshot testing possible even with stryker).
  * @param {Error} error
+ * @param {string} libFile the path from the root of the project that should be preserved in the stack
+ * @returns {string}
  */
-function toErrorSnapshot(error) {
-	const libSaxMatch = /\/.*\/(lib\/sax\.js)/
+function toErrorSnapshot(error, libFile) {
+	const libFileMatch = new RegExp(`\/.*\/(${libFile})`)
 	return `${error.message.replace(/([\n\r]+\s*)/g, '||')}\n${error.stack
 		.split(/[\n\r]+/)
 		// find first line that is from lib/sax.js
-		.filter((l) => libSaxMatch.test(l))[0]
+		.filter((l) => libFileMatch.test(l))[0]
 		// strip of absolute path
-		.replace(libSaxMatch, '$1')
+		.replace(libFileMatch, '$1')
 		// strip of position of character in line
-		.replace(/:\d+\)$/, ')')}`
+		.replace(/:\d+\)$/, ')')
+		// We only store the error index int he snapshot instead of the line numbers.
+		// This way they need to be updated less frequent and are compatible with stryker.
+		// see `parseErrorLines` in `./reported.js` for how LINE_TO_ERROR_INDEX is created,
+		// and `./reported.json` (after running the tests) to inspect it.
+		.replace(new RegExp(`${libFile}:\\d+`), (fileAndLine) => {
+			return `${libFile}:#${
+				fileAndLine in LINE_TO_ERROR_INDEX
+					? LINE_TO_ERROR_INDEX[fileAndLine].index
+					: -1
+			}`
+		})}`
 }
