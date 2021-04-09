@@ -23,9 +23,9 @@ map "Document Object Model (DOM) [[https://www.w3.org/standards/history/dom hist
 
 map "Hyper Text Markup Language (HTML)" as HTML {
   [[https://html.spec.whatwg.org/ latest]] => Living Standard
-  [[https://html.spec.whatwg.org/review-drafts/2020-01/ HTML5 (2020)]] => Recommendation ([[https://www.w3.org/standards/history/html history]])
-  [[https://www.w3.org/TR/html401/ HTML4.01 (1999)]] => Recommendation ([[https://www.w3.org/standards/history/html401 history]])
-  [[https://www.w3.org/TR/html401/ HTML4.01 (1999)]] => Superseded Recommendation ([[https://www.w3.org/standards/history/html401 history]])
+  [[https://html.spec.whatwg.org/review-drafts/2020-01/ HTML5 (2020)]] => Recommendation [[https://www.w3.org/standards/history/html history]]
+  [[https://www.w3.org/TR/html401/ HTML4.01 (1999)]] => Recommendation [[https://www.w3.org/standards/history/html401 history]]
+  [[https://www.w3.org/TR/html401/ HTML4.01 (1999)]] => Superseded Recommendation [[https://www.w3.org/standards/history/html401 history]]
   [[https://www.w3.org/TR/xhtml1/ XHTML 1.0 (2002)]] => Superseded Recommendation [[https://www.w3.org/standards/history/xhtml1 history]]
   [[https://www.w3.org/TR/xhtml1/ XHTML 1.0 (2002)]] => Superseded Recommendation [[https://www.w3.org/standards/history/xhtml1 history]]
 
@@ -47,10 +47,15 @@ map "WebIDL [[https://www.w3.org/standards/history/WebIDL-1 history]]" as WebIDL
 }
 
 map "[[http://www.saxproject.org/ Simple API for XML (SAX)]]" as SAX {
-
 }
 
+map "[[https://infra.spec.whatwg.org/ Infra Standard]]" as Infra {
+}
+
+
+
 DOM <--> HTML
+DOM --> Infra
 DOM --> WebIDL
 DOM --> XML
 
@@ -59,6 +64,7 @@ DOMParsing <--> HTML
 DOMParsing --> XML
 DOMParsing --> WebIDL
 
+HTML --> Infra
 HTML --> XML
 HTML --> XMLNS
 
@@ -66,7 +72,5 @@ SAX --> XML
 SAX --> XMLNS
 
 XMLNS --> XML
-
-
 
 @enduml
