@@ -13,7 +13,7 @@ xmldom is a javascript [ponyfill](https://ponyfill.com/) for the following APIs 
 
 If your code always/only needs to work in a browser, you should rather not use xmldom. But you should (potentially always) use it, when your code needs to also work in other runtimes like NodeJS or Rhino.
 
-[The implementation is based on several specs](docs/architecture.svg):
+The implementation is based on several specs:
 
 ## Specs
 
@@ -56,7 +56,7 @@ xmldom implements the following interfaces (most constructors are currently not 
 - `ProcessingInstruction`
 - `Text`
 
-more details are available in the (incomplete) [API Reference](#api-reference) section
+more details are available in the (incomplete) [API Reference](#api-reference) section.
 
 ### HTML
 
