@@ -4,11 +4,20 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0](https://github.com/xmldom/xmldom/compare/0.5.0...0.6.0)
+
+### Fixes
+
+- Stop serializing empty namespace values like `xmlns:ds=""` [`#168`](https://github.com/xmldom/xmldom/pull/168)  
+  BREAKING CHANGE: If your code expected empty namespaces attributes to be serialized.  
+  Thank you [@pdecat](https://github.com/pdecat) and [@FranckDepoortere](https://github.com/FranckDepoortere)
+- Escape `<` to `&lt;` when serializing attribute values [`#198`](https://github.com/xmldom/xmldom/issues/198) / [`#199`](https://github.com/xmldom/xmldom/pull/199)
+
 ## 0.5.0
 
 ### Fixes
 - Avoid misinterpretation of malicious XML input - [`GHSA-h6q6-9hqw-rwfv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-h6q6-9hqw-rwfv) (CVE-2021-21366)
-  - Improve error reporting; throw on duplicate attribute
+  - Improve error reporting; throw on duplicate attribute\
     BREAKING CHANGE: It is currently not clear how to consistently deal with duplicate attributes, so it's also safer for our users to fail when detecting them.
     It's possible to configure the `DOMParser.errorHandler` before parsing, to handle those errors differently.
 
