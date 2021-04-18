@@ -12,7 +12,6 @@
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "$comment": "We will only ever update the major version of node when we can no longer support it. Which will be a breaking change.",
       "packageNames": ["node"],
       "enabled": false
     }
