@@ -9,5 +9,12 @@
   "commitMessageExtra": "-> {{#if isMajor}}{{{newMajor}}}{{else}}{{#if isSingleVersion}}{{{toVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}} - {{depType}}",
   "commitMessageTopic": "{{depName}}",
   "prHourlyLimit": 0,
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "$comment": "We will only ever update the major version of node when we can no longer support it. Which will be a breaking change.",
+      "packageNames": ["node"],
+      "enabled": false
+    }
+  ]
 }
