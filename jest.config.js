@@ -143,21 +143,24 @@ module.exports = {
   // Adds a location field to test results
   // testLocationInResults: false,
 
+  // TBD ENABLED to work with Stryker Jest runner:
   // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
-  // ],
+  testMatch: [
+    "**/__tests__/**/*.[jt]s?(x)",
+    "**/?(*.)+(spec|test).[tj]s?(x)"
+  ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
+  testPathIgnorePatterns: [
   //   "/node_modules/"
-  // ],
+    "/test/test.js"
+  ],
 
+  // TBD NOT WORKING with Stryker Jest runner:
   // The regexp pattern or array of patterns that Jest uses to detect test files
-  testRegex: [
-  	/\.test\.js?$/
-	],
+  //  testRegex: [
+  //    /\.test\.js?$/
+  //  ],
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,
