@@ -1,6 +1,10 @@
 'use strict'
 
-const { DOMParser, XMLSerializer } = require('../../lib/dom-parser')
+const {
+	DOMParser,
+	DOMImplementation,
+	XMLSerializer,
+} = require('../../lib/dom-parser')
 
 // Create a Test Suite
 describe('XML Namespace Parse', () => {
@@ -162,6 +166,12 @@ describe('XML Namespace Parse', () => {
 		expect(doc.documentElement.toString()).toBe('<test><a>hello</a><b/></test>')
 		doc.documentElement.textContent = 'bye'
 		expect(doc.documentElement.toString()).toBe('<test>bye</test>')
+	})
+
+	it('creates elements with a localName', () => {
+		const doc = new DOMImplementation().createDocument(null, 'test', null)
+		const elem = doc.createElement('foo')
+		expect(elem.localName === 'foo')
 	})
 
 	xit('nested append failed', () => {})
