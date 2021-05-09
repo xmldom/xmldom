@@ -1,6 +1,6 @@
 /* eslint strict: off */
 
-const { XMLSerializer, DOMParser } = require('../../lib/dom-parser')
+const { XMLSerializer, DOMParser } = require('../../lib')
 /*
 var DomJS = require('dom-js').DomJS
 try {

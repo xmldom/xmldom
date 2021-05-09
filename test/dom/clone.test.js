@@ -1,6 +1,6 @@
 'use strict'
 
-const { DOMParser, XMLSerializer } = require('../../lib/dom-parser')
+const { DOMParser, XMLSerializer } = require('../../lib')
 
 describe('XML Namespace Parse', () => {
 	it('can properly set clone', () => {

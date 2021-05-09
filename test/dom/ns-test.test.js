@@ -1,6 +1,6 @@
 'use strict'
 
-const { DOMParser } = require('../../lib/dom-parser')
+const { DOMParser } = require('../../lib')
 
 // Create a Test Suite
 describe('XML Namespace Parse', () => {

@@ -1,10 +1,6 @@
 'use strict'
 
-const {
-	DOMParser,
-	DOMImplementation,
-	XMLSerializer,
-} = require('../../lib/dom-parser')
+const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib')
 
 describe('Document', () => {
 	// See: http://jsfiddle.net/bigeasy/ShcXP/1/

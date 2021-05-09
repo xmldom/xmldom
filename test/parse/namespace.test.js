@@ -1,6 +1,6 @@
 'use strict'
 
-const { DOMParser } = require('../../lib/dom-parser')
+const { DOMParser } = require('../../lib')
 
 /**
  * Returns an array containing only one occurrence of every sting in `values` (like in a Set).

@@ -3,7 +3,7 @@
 const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported')
 const { getTestParser } = require('../get-test-parser')
 const { ParseError } = require('../../lib/sax')
-const { DOMParser } = require('../../lib/dom-parser')
+const { DOMParser } = require('../../lib')
 
 describe.each(Object.entries(REPORTED))(
 	'%s',
