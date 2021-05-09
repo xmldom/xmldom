@@ -9,5 +9,11 @@
   "commitMessageExtra": "-> {{#if isMajor}}{{{newMajor}}}{{else}}{{#if isSingleVersion}}{{{toVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}} - {{depType}}",
   "commitMessageTopic": "{{depName}}",
   "prHourlyLimit": 0,
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "packageNames": ["node"],
+      "enabled": false
+    }
+  ]
 }

@@ -1,50 +1,55 @@
 'use strict'
 
-const { DOMParser, XMLSerializer } = require('../../lib/dom-parser')
+const {
+	DOMParser,
+	DOMImplementation,
+	XMLSerializer,
+} = require('../../lib/dom-parser')
 
-// Create a Test Suite
-describe('XML Namespace Parse', () => {
+describe('Document', () => {
 	// See: http://jsfiddle.net/bigeasy/ShcXP/1/
-	it('supports Document_getElementsByTagName', () => {
-		const doc = new DOMParser().parseFromString('<a><b/></a>')
-		expect(doc.getElementsByTagName('*')).toHaveLength(2)
-		expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(1)
-	})
+	describe('getElementsByTagName', () => {
+		it('should return the correct number of elements', () => {
+			const doc = new DOMParser().parseFromString('<a><b/></a>')
+			expect(doc.getElementsByTagName('*')).toHaveLength(2)
+			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(1)
+		})
 
-	it('supports getElementsByTagName', () => {
-		const doc = new DOMParser().parseFromString(
-			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
-				'<t:test/><test/><t2:test/>' +
-				'<child attr="1"><test><child attr="2"/></test></child>' +
-				'<child attr="3"/></xml>',
-			'text/xml'
-		)
+		it('should support API on element (this test needs to be split)', () => {
+			const doc = new DOMParser().parseFromString(
+				'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
+					'<t:test/><test/><t2:test/>' +
+					'<child attr="1"><test><child attr="2"/></test></child>' +
+					'<child attr="3"/></xml>',
+				'text/xml'
+			)
 
-		const childs1 = doc.documentElement.getElementsByTagName('child')
-		expect(childs1.item(0).getAttribute('attr')).toBe('1')
-		expect(childs1.item(1).getAttribute('attr')).toBe('2')
-		expect(childs1.item(2).getAttribute('attr')).toBe('3')
-		expect(childs1).toHaveLength(3)
+			const childs1 = doc.documentElement.getElementsByTagName('child')
+			expect(childs1.item(0).getAttribute('attr')).toBe('1')
+			expect(childs1.item(1).getAttribute('attr')).toBe('2')
+			expect(childs1.item(2).getAttribute('attr')).toBe('3')
+			expect(childs1).toHaveLength(3)
 
-		const childs2 = doc.getElementsByTagName('child')
-		expect(childs2.item(0).getAttribute('attr')).toBe('1')
-		expect(childs2.item(1).getAttribute('attr')).toBe('2')
-		expect(childs2.item(2).getAttribute('attr')).toBe('3')
-		expect(childs2).toHaveLength(3)
+			const childs2 = doc.getElementsByTagName('child')
+			expect(childs2.item(0).getAttribute('attr')).toBe('1')
+			expect(childs2.item(1).getAttribute('attr')).toBe('2')
+			expect(childs2.item(2).getAttribute('attr')).toBe('3')
+			expect(childs2).toHaveLength(3)
 
-		const childs3 = doc.documentElement.getElementsByTagName('*')
-		for (let i = 0, buf = []; i < childs3.length; i++) {
-			buf.push(childs3[i].tagName)
-		}
-		expect(childs3).toHaveLength(7)
+			const childs3 = doc.documentElement.getElementsByTagName('*')
+			for (let i = 0, buf = []; i < childs3.length; i++) {
+				buf.push(childs3[i].tagName)
+			}
+			expect(childs3).toHaveLength(7)
 
-		const feed = new DOMParser().parseFromString(
-			'<feed><entry>foo</entry></feed>'
-		)
-		const entries = feed.documentElement.getElementsByTagName('entry')
-		expect(entries).toHaveLength(1)
-		expect(entries[0].nodeName).toBe('entry')
-		expect(feed.documentElement.childNodes.item(0).nodeName).toBe('entry')
+			const feed = new DOMParser().parseFromString(
+				'<feed><entry>foo</entry></feed>'
+			)
+			const entries = feed.documentElement.getElementsByTagName('entry')
+			expect(entries).toHaveLength(1)
+			expect(entries[0].nodeName).toBe('entry')
+			expect(feed.documentElement.childNodes.item(0).nodeName).toBe('entry')
+		})
 	})
 
 	it('supports getElementsByTagNameNS', () => {
@@ -162,6 +167,16 @@ describe('XML Namespace Parse', () => {
 		expect(doc.documentElement.toString()).toBe('<test><a>hello</a><b/></test>')
 		doc.documentElement.textContent = 'bye'
 		expect(doc.documentElement.toString()).toBe('<test>bye</test>')
+	})
+
+	describe('createElement', () => {
+		it('should set localName', () => {
+			const doc = new DOMImplementation().createDocument(null, 'test', null)
+
+			const elem = doc.createElement('foo')
+
+			expect(elem.localName === 'foo')
+		})
 	})
 
 	xit('nested append failed', () => {})
