@@ -1,7 +1,7 @@
 @startuml
-'https://plantuml.com/component-diagram
+'Syntax: https://plantuml.com/component-diagram
 'to update the SVG after changing this file run
-'docs/puml.sh
+'docs/puml2svg.sh
 skinparam componentStyle rectangle
 
 frame "lib/dom.js" {

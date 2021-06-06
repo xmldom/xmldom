@@ -4,7 +4,7 @@ if [[ ! -d docs ]] ; then
   echo "execute from the root directory!" && exit 1
 fi
 
-export PLANTUML_VERSION=1.2021.4
+export PLANTUML_VERSION=1.2021.7
 
 function svg {
   if [[ -f "docs/$1.puml" ]] ; then
