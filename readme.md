@@ -13,11 +13,11 @@ xmldom is a javascript [ponyfill](https://ponyfill.com/) for the following APIs 
 
 Note that this `xmldom` library is not required if your code targets a modern browser. But this library is recommended if your code needs to also work in other runtimes like NodeJS or Rhino.
 
-The implementation is based on several specs:
+The implementation is based on several specifications:
 
 ## Specs
 
-![Related specifications](docs/specs.svg)
+[![Overview of related specifications and their relations](docs/specs.svg)](https://raw.githubusercontent.com/xmldom/xmldom/master/docs/specs.svg)
 
 ### DOM Parsing and Serialization
 
