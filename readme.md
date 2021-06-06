@@ -6,18 +6,84 @@
 [!["help wanted" issues](https://img.shields.io/github/issues/xmldom/xmldom/help%20wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 [![Mutation report](https://camo.githubusercontent.com/ee312c4ebce7784ce9f785757eba5d6e33e6d950/68747470733a2f2f696d672e736869656c64732e696f2f656e64706f696e743f7374796c653d666c61742675726c3d687474707325334125324625324662616467652d6170692e737472796b65722d6d757461746f722e696f2532466769746875622e636f6d25324662726f647962697473253246786d6c646f6d2532466d6173746572)](https://dashboard.stryker-mutator.io/reports/github.com/brodybits/xmldom/master)
 
-A JavaScript implementation of W3C DOM for Node.js, Rhino and the browser. Fully
-compatible with `W3C DOM level2`; and some compatible with `level3`. Supports
-`DOMParser` and `XMLSerializer` interface such as in browser.
+xmldom is a javascript [ponyfill](https://ponyfill.com/) for the following APIs supported in browsers:
+- convert an XML string into a DOM tree (`new DOMParser().parseFromString(xml, mimeType)` => `Document`)
+- create, access and modify a DOM tree (`new DOMImplementation().createDocument(...)` => `Document`, )
+- serialize a DOM tree back into an XML string (`new XMLSerializer().serializeToString(node)` => `string`)
+
+Note that this `xmldom` library is not required if your code targets a modern browser. But this library is recommended if your code needs to also work in other runtimes like NodeJS or Rhino.
+
+The implementation is based on several specs:
+
+## Specs
+
+![Related specifications](docs/specs.svg)
+
+### DOM Parsing and Serialization
+
+From the [W3C DOM Parsing and Serialization (WD 2016)](https://www.w3.org/TR/2016/WD-DOM-Parsing-20160517/) `xmldom` provides an implementation for the interfaces:
+- `DOMParser`
+- `XMLSerializer`
+
+Note that there are some known deviations between this implementation and the W3 specifications.
+
+Note: [The latest version of this spec](https://w3c.github.io/DOM-Parsing/) has the status "Editors Draft", since it is under active development. One major change is that [the definition of the `DOMParser` interface has been moved to the HTML spec](https://w3c.github.io/DOM-Parsing/#the-domparser-interface)
+
+
+### DOM
+
+The original author claims that xmldom implements [DOM Level 2] in a "fully compatible" way and some parts of [DOM Level 3], but there are not enough tests to prove this. Both Specifications are now superseded by the [DOM Level 4 aka Living standard] wich has a much broader scope than xmldom.
+
+xmldom implements the following interfaces (most constructors are currently not exposed):
+- `Attr`
+- `CDATASection`
+- `CharacterData`
+- `Comment`
+- `Document`
+- `DocumentFragment`
+- `DocumentType`
+- `DOMException` (constructor exposed) 
+- `DOMImplementation` (constructor exposed)
+- `Element`
+- `Entity`
+- `EntityReference`
+- `LiveNodeList`
+- `NamedNodeMap`
+- `Node` (constructor exposed)
+- `NodeList`
+- `Notation`
+- `ProcessingInstruction`
+- `Text`
+
+more details are available in the (incomplete) [API Reference](#api-reference) section.
+
+### HTML
+
+xmldom does not have any goal of supporting the full spec, but it has some capability to parse, report and serialize things differently when "detecting HTML" (by checking the default namespace).
+There is an upcoming change to better align the implementation with the latest specs, related to <https://github.com/xmldom/xmldom/issues/203>.
+
+### SAX, XML, XMLNS
+
+xmldom has an own SAX parser implementation to do the actual parsing, which implements some interfaces in alignment with the Java interfaces SAX defines:
+- `XMLReader`
+- `DOMHandler`
+
+There is an idea/proposal to make ti possible to replace it with something else in <https://github.com/xmldom/xmldom/issues/55>
+
+## Forked
 
 **Original project location:** <https://github.com/jindw/xmldom>
 
-Install:
--------
->npm install xmldom
+More details about the transition can be found in the [CHANGELOG](CHANGELOG.md#maintainer-changes) and in <https://github.com/xmldom/xmldom/issues/62>
 
-Example:
-====
+## Usage
+
+### Install:
+
+> npm install xmldom
+
+### Example:
+
 ```javascript
 const { DOMParser } = require('xmldom')
 
@@ -43,8 +109,7 @@ Note: in Typescript and ES6 you can use the import approach, as follows:
 import { DOMParser } from 'xmldom'
 ```
 
-API Reference
-=====
+## API Reference
 
  * [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser):
 
@@ -79,8 +144,7 @@ API Reference
 	```javascript
 	serializeToString(node)
 	```
-DOM level2 method and attribute:
-------
+### DOM level2 method and attribute:
 
  * [Node](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247)
 	
@@ -239,8 +303,7 @@ DOM level2 method and attribute:
 		readonly attribute:
 			target
 		
-DOM level 3 support:
------
+### DOM level 3 support:
 
  * [Node](http://www.w3.org/TR/DOM-Level-3-Core/core.html#Node3-textContent)
 		
@@ -250,8 +313,7 @@ DOM level 3 support:
 			isDefaultNamespace(namespaceURI){
 			lookupNamespaceURI(prefix)
 
-DOM extension by xmldom
----
+### DOM extension by xmldom
 
 * [Node] Source position extension; 
 		

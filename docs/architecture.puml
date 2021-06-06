@@ -1,0 +1,53 @@
+@startuml
+'Syntax: https://plantuml.com/component-diagram
+'to update the SVG after changing this file run
+'docs/puml2svg.sh
+skinparam componentStyle rectangle
+
+frame "lib/dom.js" {
+  cloud "Spec:DOM" {
+    [DOMException]
+    [DOMImplementation]
+    interface Document
+    interface Element
+    interface Node
+  }
+  component XMLSerializer [
+    XMLSerializer
+    Spec:DOM-Parsing
+  ]
+}
+
+frame "lib/dom-parser.js" {
+  component DOMParser [
+    DOMParser
+    Spec:HTML
+  ]
+
+  component DOMHandler [
+    DOMHandler
+     Spec:SAX
+  ]
+}
+
+frame "lib/sax.js" {
+  component XMLReader [
+    XMLReader
+     Spec:SAX
+  ]
+  [ParseError]
+}
+
+DOMParser -d-> DOMHandler: new
+DOMParser -r-> XMLReader: new
+XMLReader --> DOMHandler: using
+XMLReader --> ParseError: throw
+DOMHandler --> DOMImplementation: new
+DOMHandler --> Document: using
+DOMImplementation -d-> Document: new
+Document -r-> Node: new
+Document -l-> Element: new
+Document -d-> DOMException: throw
+XMLSerializer -u-> Node: visit
+
+@enduml

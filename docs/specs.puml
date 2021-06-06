@@ -1,0 +1,76 @@
+@startuml
+'Syntax: https://plantuml.com/object-diagram
+'to update the SVG after changing this file run
+'docs/puml2svg.sh
+
+title "References between relevant specs"
+
+note "About spec status: [[https://www.w3.org/2020/Process-20200915/#rec-track The W3C Recommendation Track]]" as status
+
+map "W3C DOM Parsing and Serialization [[https://www.w3.org/standards/history/DOM-Parsing history]]" as DOMParsing {
+  [[https://w3c.github.io/DOM-Parsing/ latest]] => Editors Draft
+  **[[https://www.w3.org/TR/2016/WD-DOM-Parsing-20160517/ 2016]]** => Working Draft
+  [[https://www.w3.org/TR/2014/CR-DOM-Parsing-20140617/ 2014]] => Outdated Candidate Recommendation
+}
+
+map "Document Object Model (DOM) [[https://www.w3.org/standards/history/dom history]]" as DOM {
+  [[https://dom.spec.whatwg.org/ latest]] => Living Standard
+  **[[https://dom.spec.whatwg.org/review-drafts/2019-06/ Level 4 (2020)]]** => DOM Recommendation
+  [[https://www.w3.org/TR/DOM-Level-3-Core/ Level 3 Core (2004)]] => Recommendation (**[[https://dom.spec.whatwg.org/#historical has outdated parts!]]**, [[https://www.w3.org/standards/history/DOM-Level-3-Core history]])
+  **[[https://www.w3.org/TR/DOM-Level-2-HTML/ Level 2 HTML (2003)]]** => Superseded Recommendation
+  **[[https://www.w3.org/TR/DOM-Level-2-Core/ Level 2 Core (2000)]]** => Superseded Recommendation
+}
+
+map "Hyper Text Markup Language (HTML)" as HTML {
+  [[https://html.spec.whatwg.org/ latest]] => Living Standard
+  [[https://html.spec.whatwg.org/review-drafts/2020-01/ HTML5 (2020)]] => Recommendation [[https://www.w3.org/standards/history/html history]]
+  [[https://www.w3.org/TR/html401/ HTML4.01 (1999)]] => Recommendation [[https://www.w3.org/standards/history/html401 history]]
+  [[https://www.w3.org/TR/html401/ HTML4.01 (1999)]] => Superseded Recommendation [[https://www.w3.org/standards/history/html401 history]]
+  [[https://www.w3.org/TR/xhtml1/ XHTML 1.0 (2002)]] => Superseded Recommendation [[https://www.w3.org/standards/history/xhtml1 history]]
+  [[https://www.w3.org/TR/xhtml1/ XHTML 1.0 (2002)]] => Superseded Recommendation [[https://www.w3.org/standards/history/xhtml1 history]]
+
+}
+
+map "Extensible Markup Language (XML)" as XML {
+  [[https://www.w3.org/TR/xml11/ 1.1 (2006)]] => Recommendation [[https://www.w3.org/standards/history/xml11 history]]
+  [[https://www.w3.org/TR/xml/ 1.0 (2008)]] => Recommendation [[https://www.w3.org/standards/history/xml history]]
+}
+
+map "Namespaces in XML" as XMLNS {
+  [[https://www.w3.org/TR/xml-names11/ 1.1 (2006)]] => Recommendation
+  [[https://www.w3.org/TR/REC-xml-names/ 1.0 (2009)]] => Recommendation
+}
+
+map "WebIDL [[https://www.w3.org/standards/history/WebIDL-1 history]]" as WebIDL {
+  [[https://heycam.github.io/webidl/ latest]] => Editors Draft
+  [[https://www.w3.org/TR/WebIDL-1/ Level 1 (2016)]] => Recommendation
+}
+
+map "[[http://www.saxproject.org/ Simple API for XML (SAX)]]" as SAX {
+}
+
+map "[[https://infra.spec.whatwg.org/ Infra Standard]]" as Infra {
+}
+
+
+
+DOM <--> HTML
+DOM --> Infra
+DOM --> WebIDL
+DOM --> XML
+
+DOMParsing --> DOM
+DOMParsing <--> HTML
+DOMParsing --> XML
+DOMParsing --> WebIDL
+
+HTML --> Infra
+HTML --> XML
+HTML --> XMLNS
+
+SAX --> XML
+SAX --> XMLNS
+
+XMLNS --> XML
+
+@enduml
