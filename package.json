@@ -40,7 +40,6 @@
   "dependencies": {},
   "devDependencies": {
     "@stryker-mutator/core": "^4.5.1",
-    "dom-js": "0.0.9",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-es5": "^1.5.0",
