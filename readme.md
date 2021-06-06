@@ -11,7 +11,7 @@ xmldom is a javascript [ponyfill](https://ponyfill.com/) for the following APIs 
 - create, access and modify a DOM tree (`new DOMImplementation().createDocument(...)` => `Document`, )
 - serialize a DOM tree back into an XML string (`new XMLSerializer().serializeToString(node)` => `string`)
 
-If your code always/only needs to work in a browser, you should rather not use xmldom. But you should (potentially always) use it, when your code needs to also work in other runtimes like NodeJS or Rhino.
+Note that this `xmldom` library is not required if your code targets a modern browser. But this library is recommended if your code needs to also work in other runtimes like NodeJS or Rhino.
 
 The implementation is based on several specs:
 
@@ -19,14 +19,13 @@ The implementation is based on several specs:
 
 ![Related specifications](docs/specs.svg)
 
-
 ### DOM Parsing and Serialization
 
-From the [W3C DOM Parsing and Serialization (WD 2016)](https://www.w3.org/TR/2016/WD-DOM-Parsing-20160517/) xmldom provides an implementation for the interfaces
+From the [W3C DOM Parsing and Serialization (WD 2016)](https://www.w3.org/TR/2016/WD-DOM-Parsing-20160517/) `xmldom` provides an implementation for the interfaces:
 - `DOMParser`
 - `XMLSerializer`
 
-The implementation behaves differently than specified in the spec.
+Note that there are some known deviations between this implementation and the W3 specifications.
 
 Note: [The latest version of this spec](https://w3c.github.io/DOM-Parsing/) has the status "Editors Draft", since it is under active development. One major change is that [the definition of the `DOMParser` interface has been moved to the HTML spec](https://w3c.github.io/DOM-Parsing/#the-domparser-interface)
 
