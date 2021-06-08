@@ -4,8 +4,10 @@ const { DOMException } = require('../../lib/dom')
 
 describe('XML attrs', () => {
 	it('can properly set attribute', () => {
-		const root = new DOMParser().parseFromString('<xml/>', 'text/xml')
-			.documentElement
+		const root = new DOMParser().parseFromString(
+			'<xml/>',
+			'text/xml'
+		).documentElement
 		root.setAttribute('a', '1')
 		expect(root.attributes[0].localName).toBe('a')
 
