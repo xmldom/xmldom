@@ -5,12 +5,44 @@ const { DOMParser } = require('../../lib/dom-parser')
 
 describe('XML Node Parse', () => {
 	describe('no attribute', () => {
-		it.each(['<xml ></xml>', '<xml></xml>', '<xml />'])('%s', (input) => {
-			const actual = new DOMParser()
-				.parseFromString(input, 'text/xml')
-				.toString()
-			expect(actual).toBe('<xml/>')
-		})
+		it.each(['<xml ></xml>', '<xml></xml>', '<xml></xml \r\n>', '<xml />'])(
+			'%s',
+			(input) => {
+				const actual = new DOMParser()
+					.parseFromString(input, 'text/xml')
+					.toString()
+				expect(actual).toBe('<xml/>')
+			}
+		)
+	})
+	it('nested closing tag with whitespace', () => {
+		const actual = new DOMParser()
+			.parseFromString(
+				`<?xml version="1.0" encoding="UTF-8"?>
+<bookstore>
+  <book category="cooking">
+    <author>Giada De Laurentiis</author
+    >
+    <title lang="en">Everyday Italian</title>
+  </book>
+</bookstore>`,
+				'text/xml'
+			)
+			.toString()
+		expect(actual).toBe(`<?xml version="1.0" encoding="UTF-8"?>
+<bookstore>
+  <book category="cooking">
+    <author>Giada De Laurentiis</author>
+    <title lang="en">Everyday Italian</title>
+  </book>
+</bookstore>`)
+	})
+
+	it('nested closing tag with whitespace', () => {
+		const actual = new DOMParser()
+			.parseFromString(`<book></book ><title>Harry Potter</title>`, 'text/xml')
+			.toString()
+		expect(actual).toBe(`<book/><title>Harry Potter</title>`)
 	})
 
 	describe('simple attributes', () => {
