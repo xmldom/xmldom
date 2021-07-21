@@ -89,7 +89,7 @@ describe('XML Serializer', () => {
 			)
 			doc.documentElement.appendChild(child)
 			expect(new XMLSerializer().serializeToString(doc, true)).toBe(
-					'<a:foo xmlns:a="AAA"><child xmlns="AAA"></child></a:foo>'
+				'<a:foo xmlns:a="AAA"><child xmlns="AAA"></child></a:foo>'
 			)
 			const nested = doc.createElementNS('AAA', 'nested')
 			expect(new XMLSerializer().serializeToString(nested, true)).toBe(
