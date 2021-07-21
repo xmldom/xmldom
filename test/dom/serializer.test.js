@@ -2,6 +2,7 @@
 
 const { DOMParser } = require('../../lib/dom-parser')
 const { XMLSerializer } = require('../../lib/dom')
+const { MIME_TYPE } = require('../../lib/conventions')
 
 describe('XML Serializer', () => {
 	it('supports text node containing "]]>"', () => {
@@ -46,7 +47,7 @@ describe('XML Serializer', () => {
 	describe('does detect matching visible namespace for tags without prefix', () => {
 		it('should add local namespace after sibling', () => {
 			const str = '<a:foo xmlns:a="AAA"><bar xmlns="AAA"/></a:foo>'
-			const doc = new DOMParser().parseFromString(str)
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
 
 			const child = doc.createElementNS('AAA', 'child')
 			expect(new XMLSerializer().serializeToString(child)).toBe(
@@ -59,7 +60,7 @@ describe('XML Serializer', () => {
 		})
 		it('should add local namespace from parent', () => {
 			const str = '<a:foo xmlns:a="AAA"/>'
-			const doc = new DOMParser().parseFromString(str)
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
 
 			const child = doc.createElementNS('AAA', 'child')
 			expect(new XMLSerializer().serializeToString(child)).toBe(
@@ -78,9 +79,30 @@ describe('XML Serializer', () => {
 				'<a:foo xmlns:a="AAA"><a:child><a:nested/></a:child></a:foo>'
 			)
 		})
+		it('should add local namespace as xmlns in HTML', () => {
+			const str = '<a:foo xmlns:a="AAA"/>'
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.HTML)
+
+			const child = doc.createElementNS('AAA', 'child')
+			expect(new XMLSerializer().serializeToString(child, true)).toBe(
+				'<child xmlns="AAA"></child>'
+			)
+			doc.documentElement.appendChild(child)
+			expect(new XMLSerializer().serializeToString(doc, true)).toBe(
+					'<a:foo xmlns:a="AAA"><child xmlns="AAA"></child></a:foo>'
+			)
+			const nested = doc.createElementNS('AAA', 'nested')
+			expect(new XMLSerializer().serializeToString(nested, true)).toBe(
+				'<nested xmlns="AAA"></nested>'
+			)
+			child.appendChild(nested)
+			expect(new XMLSerializer().serializeToString(doc, true)).toBe(
+				'<a:foo xmlns:a="AAA"><child xmlns="AAA"><nested></nested></child></a:foo>'
+			)
+		})
 		it('should add keep different default namespace of child', () => {
 			const str = '<a:foo xmlns:a="AAA"/>'
-			const doc = new DOMParser().parseFromString(str)
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
 
 			const child = doc.createElementNS('BBB', 'child')
 			child.setAttribute('xmlns', 'BBB')
