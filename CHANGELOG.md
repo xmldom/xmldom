@@ -4,7 +4,35 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0](https://github.com/xmldom/xmldom/compare/0.5.0...0.6.0)
+## 0.7.0 
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.6.0...0.7.0)
+
+### Fixes:
+
+- Security: Misinterpretation of malicious XML input [`CVE-2021-32796`](https://github.com/xmldom/xmldom/security/advisories/GHSA-5fg8-2547-mr8q)
+- Implement `Document.getElementsByClassName` as specified [`#213`](https://github.com/xmldom/xmldom/pull/213), thank you [@ChALkeR](https://github.com/ChALkeR)
+- Inherit namespace prefix from parent when required [`#268`](https://github.com/xmldom/xmldom/pull/268)
+- Handle whitespace in closing tags [`#267`](https://github.com/xmldom/xmldom/pull/267)
+- Update `DOMImplementation` according to recent specs [`#210`](https://github.com/xmldom/xmldom/pull/210)  
+  BREAKING CHANGE: Only if you "passed features to be marked as available as a constructor arguments" and expected it to "magically work".
+- No longer serializes any namespaces with an empty URI [`#244`](https://github.com/xmldom/xmldom/pull/244)   
+  (related to [`#168`](https://github.com/xmldom/xmldom/pull/168) released in 0.6.0)  
+  BREAKING CHANGE: Only if you rely on ["unsetting" a namespace prefix](https://github.com/xmldom/xmldom/pull/168#issuecomment-886984994) by setting it to an empty string 
+- Set `localName` as part of `Document.createElement` [`#229`](https://github.com/xmldom/xmldom/pull/229), thank you [@rrthomas](https://github.com/rrthomas)
+
+### CI
+
+- We are now additionally running tests against node v16
+- Stryker tests on the master branch now run against node v14
+
+### Docs
+
+- Describe relations with and between specs: [`#211`](https://github.com/xmldom/xmldom/pull/211), [`#247`](https://github.com/xmldom/xmldom/pull/247)
+
+## 0.6.0
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.5.0...0.6.0)
 
 ### Fixes
 
@@ -14,6 +42,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Escape `<` to `&lt;` when serializing attribute values [`#198`](https://github.com/xmldom/xmldom/issues/198) / [`#199`](https://github.com/xmldom/xmldom/pull/199)
 
 ## 0.5.0
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.4.0...0.5.0)
 
 ### Fixes
 - Avoid misinterpretation of malicious XML input - [`GHSA-h6q6-9hqw-rwfv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-h6q6-9hqw-rwfv) (CVE-2021-21366)
