@@ -66,7 +66,7 @@ describe('Document.prototype', () => {
 			const MIXED_CASES = ['AAA', 'AAa', 'AaA', 'aAA']
 			const doc = getTestParser().parser.parseFromString(INPUT(...MIXED_CASES))
 
-			MIXED_CASES.forEach(className => {
+			MIXED_CASES.forEach((className) => {
 				expect(doc.getElementsByClassName(className)).toHaveLength(1)
 			})
 		})
