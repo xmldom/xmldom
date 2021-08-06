@@ -4,10 +4,36 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.5.1
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.5.0...0.5.1)
+
+### Fixes:
+
+- Security: Misinterpretation of malicious XML input [`CVE-2021-32796`](https://github.com/xmldom/xmldom/security/advisories/GHSA-5fg8-2547-mr8q)
+
 ## 0.5.0
 
+[Commits](https://github.com/xmldom/xmldom/compare/0.4.0...0.5.0)
+
 ### Fixes
-- Avoid misinterpretation of malicious XML input - `GHSA-h6q6-9hqw-rwfv` (CVE-2021-21366)
+- Avoid misinterpretation of malicious XML input - [`GHSA-h6q6-9hqw-rwfv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-h6q6-9hqw-rwfv) (CVE-2021-21366)
+  - Improve error reporting; throw on duplicate attribute\
+    BREAKING CHANGE: It is currently not clear how to consistently deal with duplicate attributes, so it's also safer for our users to fail when detecting them.
+    It's possible to configure the `DOMParser.errorHandler` before parsing, to handle those errors differently.
+
+    To accomplish this and also be able to verify it in tests I needed to
+    - create a new `Error` type `ParseError` and export it
+    - Throw `ParseError` from `errorHandler.fatalError` and prevent those from being caught in `XMLReader`.
+    - export `DOMHandler` constructor as `__DOMHandler`
+  - Preserve quotes in DOCTYPE declaration
+    Since the only purpose of parsing the DOCTYPE is to be able to restore it when serializing, we decided that it would be best to leave the parsed `publicId` and `systemId` as is, including any quotes.
+    BREAKING CHANGE: If somebody relies on the actual unquoted values of those ids, they will need to take care of either single or double quotes and the right escaping.
+    (Without this change this would not have been possible because the SAX parser already dropped the information about the quotes that have been used in the source.)
+
+    https://www.w3.org/TR/2006/REC-xml11-20060816/#dtd
+    https://www.w3.org/TR/2006/REC-xml11-20060816/#IDAX1KS (External Entity Declaration)
+
 - Fix breaking preprocessors' directives when parsing attributes [`#171`](https://github.com/xmldom/xmldom/pull/171)
 - fix(dom): Escape `]]&gt;` when serializing CharData [`#181`](https://github.com/xmldom/xmldom/pull/181)
 - Switch to (only) MIT license (drop problematic LGPL license option) [`#178`](https://github.com/xmldom/xmldom/pull/178)
