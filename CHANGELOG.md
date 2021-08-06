@@ -4,7 +4,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0](https://github.com/xmldom/xmldom/compare/0.5.0...0.6.0)
+## 0.6.1
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.6.0...0.6.1)
+
+### Fixes:
+
+- Security: Misinterpretation of malicious XML input [`CVE-2021-32796`](https://github.com/xmldom/xmldom/security/advisories/GHSA-5fg8-2547-mr8q)
+
+## 0.6.0
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.5.0...0.6.0)
 
 ### Fixes
 
@@ -14,6 +24,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Escape `<` to `&lt;` when serializing attribute values [`#198`](https://github.com/xmldom/xmldom/issues/198) / [`#199`](https://github.com/xmldom/xmldom/pull/199)
 
 ## 0.5.0
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.4.0...0.5.0)
 
 ### Fixes
 - Avoid misinterpretation of malicious XML input - [`GHSA-h6q6-9hqw-rwfv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-h6q6-9hqw-rwfv) (CVE-2021-21366)
