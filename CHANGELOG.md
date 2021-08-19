@@ -8,7 +8,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.6.0...0.7.0)
 
-First version published as `@xmldom/xmldom` due to [`#271`](https://github.com/xmldom/xmldom/pull/271).
+Due to [`#271`](https://github.com/xmldom/xmldom/issue/271) this version was published as
+- unscoped `xmldom` package to github (git tags [`0.7.0`](https://github.com/xmldom/xmldom/tree/0.7.0) and [`0.7.0+unscoped`](https://github.com/xmldom/xmldom/tree/0.7.0%2Bunscoped))
+- scoped `@xmldom/xmldom` package to npm (git tag `0.7.0+scoped`)
+For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issuecomment-902172483)
 
 ### Fixes:
 
