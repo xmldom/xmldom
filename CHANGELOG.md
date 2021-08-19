@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.6.0...0.7.0)
 
+First version published as `@xmldom/xmldom` due to [`#271`](https://github.com/xmldom/xmldom/pull/271).
+
 ### Fixes:
 
 - Security: Misinterpretation of malicious XML input [`CVE-2021-32796`](https://github.com/xmldom/xmldom/security/advisories/GHSA-5fg8-2547-mr8q)
