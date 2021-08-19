@@ -18,6 +18,7 @@
     "url": "git://github.com/xmldom/xmldom.git"
   },
   "main": "lib/dom-parser.js",
+  "types": "index.d.ts",
   "files": [
     "CHANGELOG.md",
     "LICENSE",
