@@ -12,7 +12,6 @@
     "XMLSerializer",
     "ponyfill"
   ],
-  "author": "jindw <jindw@xidea.org> (http://www.xidea.org)",
   "homepage": "https://github.com/xmldom/xmldom",
   "repository": {
     "type": "git",
