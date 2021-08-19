@@ -1,10 +1,14 @@
-# XMLDOM
+# @xmldom/xmldom
 
-[![license](https://img.shields.io/npm/l/xmldom?color=blue&style=flat-square)](LICENSE)
-[![npm](https://img.shields.io/npm/v/xmldom?style=flat-square)](https://www.npmjs.com/package/xmldom)
+[![license](https://img.shields.io/npm/l/@xmldom/xmldom?color=blue&style=flat-square)](LICENSE)
+[![npm](https://img.shields.io/npm/v/@xmldom/xmldom?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
 [![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 [!["help wanted" issues](https://img.shields.io/github/issues/xmldom/xmldom/help%20wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 [![Mutation report](https://camo.githubusercontent.com/ee312c4ebce7784ce9f785757eba5d6e33e6d950/68747470733a2f2f696d672e736869656c64732e696f2f656e64706f696e743f7374796c653d666c61742675726c3d687474707325334125324625324662616467652d6170692e737472796b65722d6d757461746f722e696f2532466769746875622e636f6d25324662726f647962697473253246786d6c646f6d2532466d6173746572)](https://dashboard.stryker-mutator.io/reports/github.com/brodybits/xmldom/master)
+
+**The currently active maintainers decided to publish this code as `@xmldom/xmldom` because [the npm library `xmldom` contains security issues but can currently not be published by us](https://github.com/xmldom/xmldom/issues/271).**
+
+*For better readability in the docs we will continue to talk about this library as "xmldom".*
 
 xmldom is a javascript [ponyfill](https://ponyfill.com/) for the following APIs supported in browsers:
 - convert an XML string into a DOM tree (`new DOMParser().parseFromString(xml, mimeType)` => `Document`)
@@ -81,12 +85,12 @@ More details about the transition can be found in the [CHANGELOG](CHANGELOG.md#m
 
 ### Install:
 
-> npm install xmldom
+> npm install @xmldom/xmldom
 
 ### Example:
 
 ```javascript
-const { DOMParser } = require('xmldom')
+const { DOMParser } = require('@xmldom/xmldom')
 
 const doc = new DOMParser().parseFromString(
     '<xml xmlns="a" xmlns:c="./lite">\n' +
@@ -107,7 +111,7 @@ console.info(nsAttr)
 Note: in Typescript and ES6 you can use the import approach, as follows:
 
 ```javascript
-import { DOMParser } from 'xmldom'
+import { DOMParser } from '@xmldom/xmldom'
 ```
 
 ## API Reference
