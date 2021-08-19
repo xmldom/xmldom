@@ -57,11 +57,6 @@
       "name": "brodybits",
       "email": "chris@brody.consulting",
       "url": "https://github.com/brodybits"
-    },
-    {
-      "name": "Christian Bewernitz",
-      "email": "coder@karfau.de",
-      "web": "https://github.com/karfau"
     }
   ],
   "contributors": [
@@ -89,6 +84,11 @@
       "name": "Eric Newport",
       "email": "kethinov@gmail.com",
       "web": "https://github.com/kethinov"
+    },
+    {
+      "name": "Christian Bewernitz",
+      "email": "coder@karfau.de",
+      "web": "https://github.com/karfau"
     }
   ],
   "bugs": {
