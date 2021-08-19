@@ -1,5 +1,5 @@
 {
-  "name": "xmldom",
+  "name": "@xmldom/xmldom",
   "version": "0.7.0",
   "description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
   "keywords": [
@@ -57,6 +57,11 @@
       "name": "brodybits",
       "email": "chris@brody.consulting",
       "url": "https://github.com/brodybits"
+    },
+    {
+      "name": "Christian Bewernitz",
+      "email": "coder@karfau.de",
+      "web": "https://github.com/karfau"
     }
   ],
   "contributors": [
@@ -84,11 +89,6 @@
       "name": "Eric Newport",
       "email": "kethinov@gmail.com",
       "web": "https://github.com/kethinov"
-    },
-    {
-      "name": "Christian Bewernitz",
-      "email": "coder@karfau.de",
-      "web": "https://github.com/karfau"
     }
   ],
   "bugs": {
