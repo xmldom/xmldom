@@ -23,6 +23,7 @@
     "CHANGELOG.md",
     "LICENSE",
     "readme.md",
+    "index.d.ts",
     "lib"
   ],
   "scripts": {
