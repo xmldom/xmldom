@@ -23,8 +23,8 @@
     "CHANGELOG.md",
     "LICENSE",
     "readme.md",
-    "lib",
-    "index.d.ts"
+    "index.d.ts",
+    "lib"
   ],
   "scripts": {
     "lint": "npm-run-all lint:eslint",
