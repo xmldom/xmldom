@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.7.1
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.7.0...0.7.1)
+
+### Fixes:
+
+- Types: Copy types from DefinitelyTyped [`#283`](https://github.com/xmldom/xmldom/pull/283)
+  Thank you [@kachkaev](https://github.com/kachkaev)
+
+### Chore:
+- package.json: remove author, maintainers, etc. [`#279`](https://github.com/xmldom/xmldom/pull/279)
+
 ## 0.7.0 
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.6.0...0.7.0)
