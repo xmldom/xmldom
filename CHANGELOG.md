@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.7.2
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.7.1...0.7.2)
+
+### Fixes:
+
+- Types: Add index.d.ts to packaged files [`#288`](https://github.com/xmldom/xmldom/pull/288)
+  Thank you [@forty](https://github.com/forty)
+
 ## 0.7.1
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.7.0...0.7.1)
