@@ -313,7 +313,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 043.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"foo&#13;&#10;bar\\"/>",
+  "actual": "<doc a1=\\"foo  bar\\"/>",
   "expected": "<doc a1=\\"foo bar\\"></doc>",
 }
 `;
@@ -461,7 +461,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 058.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\" 1  &#9;2 &#9;\\"/>",
+  "actual": "<doc a1=\\" 1   2  \\"/>",
   "expected": "<doc a1=\\"1 2\\"></doc>",
 }
 `;
@@ -823,7 +823,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 104.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"x&#9;y\\"/>",
+  "actual": "<doc a=\\"x y\\"/>",
   "expected": "<doc a=\\"x y\\"></doc>",
 }
 `;
