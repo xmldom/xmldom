@@ -120,15 +120,11 @@ describe('XML Serializer', () => {
 		})
 	})
 	describe('properly escapes attribute values', () => {
-		it.only('should properly convert whitespace literals back to character references', () => {
+		it('should properly convert whitespace literals back to character references', () => {
 			const input = '<xml attr="&#9;&#10;&#13;"/>'
 			const dom = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
 			const attr = dom.documentElement.attributes[0]
 
-			// are transferred to literal values in the DOM
-			expect(attr.value).toBe('\t\n\r')
-
-			// and back to character references when serializing
 			expect(new XMLSerializer().serializeToString(dom)).toBe(input)
 		})
 		it('should escape special characters in namespace attributes', () => {

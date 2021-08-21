@@ -858,6 +858,8 @@ exports[`xmltest/not-wellformed standalone should match 111.xml with snapshot 1`
 Object {
   "actual": "",
   "error": Array [
+    "[xmldom error]	entity not found:&e;
+@#[line:1,col:1]",
     "[xmldom error]	element parse error: Error: invalid attribute:&e;
 @#[line:1,col:1]",
     "[xmldom error]	entity not found:&e;
