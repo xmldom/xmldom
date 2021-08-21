@@ -9,7 +9,7 @@
   ],
   "testRunner": "command",
   "dashboard": {
-    "project": "github.com/brodybits/xmldom",
+    "project": "github.com/xmldom/xmldom",
     "version": "master"
   },
   "coverageAnalysis": "off",
