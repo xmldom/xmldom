@@ -1,85 +1,36 @@
 # @xmldom/xmldom
 
+***Since version 0.7.0 this package is published to npm as [`@xmldom/xmldom`](https://www.npmjs.com/package/@xmldom/xmldom) and no longer as [`xmldom`](https://www.npmjs.com/package/xmldom), because [we are no longer able to publish `xmldom`](https://github.com/xmldom/xmldom/issues/271).***  
+*For better readability in the docs we will continue to talk about this library as "xmldom".*
+
 [![license](https://img.shields.io/npm/l/@xmldom/xmldom?color=blue&style=flat-square)](LICENSE)
 [![npm](https://img.shields.io/npm/v/@xmldom/xmldom?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
 [![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 [!["help wanted" issues](https://img.shields.io/github/issues/xmldom/xmldom/help%20wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fxmldom%2Fxmldom%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/xmldom/xmldom/master)
 
-**The currently active maintainers decided to publish this code as `@xmldom/xmldom` because [the npm library `xmldom` contains security issues but can currently not be published by us](https://github.com/xmldom/xmldom/issues/271).**
 
-*For better readability in the docs we will continue to talk about this library as "xmldom".*
+xmldom is a javascript [ponyfill](https://ponyfill.com/) to provide the following APIs [that are present in modern browsers](https://caniuse.com/xml-serializer) to other runtimes:
+- convert an XML string into a DOM tree
+  ```
+  new DOMParser().parseFromString(xml, mimeType) => Document
+  ```
+- create, access and modify a DOM tree
+  ```
+  new DOMImplementation().createDocument(...) => Document
+  ```
+- serialize a DOM tree back into an XML string
+  ```
+  new XMLSerializer().serializeToString(node) => string
+  ```
 
-xmldom is a javascript [ponyfill](https://ponyfill.com/) for the following APIs supported in browsers:
-- convert an XML string into a DOM tree (`new DOMParser().parseFromString(xml, mimeType)` => `Document`)
-- create, access and modify a DOM tree (`new DOMImplementation().createDocument(...)` => `Document`, )
-- serialize a DOM tree back into an XML string (`new XMLSerializer().serializeToString(node)` => `string`)
+The target runtimes `xmldom` supports are currently Node >= v10 (ES5) and Rhino ([not tested as part of CI](https://github.com/xmldom/xmldom/discussions/214)).
 
-Note that this `xmldom` library is not required if your code targets a modern browser. But this library is recommended if your code needs to also work in other runtimes like NodeJS or Rhino.
+When deciding how to fix bugs or implement features, `xmldom` tries to stay as close  as possible to the various [related specifications/standards](#specs).  
+As indicated by the version starting with `0.`, this implementation is not feature complete and some implemented features differ from what the specifications describe.  
+**Issues and PRs for such differences are always welcome, even when they only provide a failing test case.**
 
-## Specs
-
-The implementation is based on several specifications:
-
-<!-- Should open in new tab and the links in the SVG should be clickable there! -->
-<a href="https://raw.githubusercontent.com/xmldom/xmldom/master/docs/specs.svg" target="_blank" rel="noopener noreferrer nofollow" >![Overview of related specifications and their relations](docs/specs.svg)</a>
-
-### DOM Parsing and Serialization
-
-From the [W3C DOM Parsing and Serialization (WD 2016)](https://www.w3.org/TR/2016/WD-DOM-Parsing-20160517/) `xmldom` provides an implementation for the interfaces:
-- `DOMParser`
-- `XMLSerializer`
-
-Note that there are some known deviations between this implementation and the W3 specifications.
-
-Note: [The latest version of this spec](https://w3c.github.io/DOM-Parsing/) has the status "Editors Draft", since it is under active development. One major change is that [the definition of the `DOMParser` interface has been moved to the HTML spec](https://w3c.github.io/DOM-Parsing/#the-domparser-interface)
-
-
-### DOM
-
-The original author claims that xmldom implements [DOM Level 2] in a "fully compatible" way and some parts of [DOM Level 3], but there are not enough tests to prove this. Both Specifications are now superseded by the [DOM Level 4 aka Living standard] wich has a much broader scope than xmldom.
-
-xmldom implements the following interfaces (most constructors are currently not exposed):
-- `Attr`
-- `CDATASection`
-- `CharacterData`
-- `Comment`
-- `Document`
-- `DocumentFragment`
-- `DocumentType`
-- `DOMException` (constructor exposed) 
-- `DOMImplementation` (constructor exposed)
-- `Element`
-- `Entity`
-- `EntityReference`
-- `LiveNodeList`
-- `NamedNodeMap`
-- `Node` (constructor exposed)
-- `NodeList`
-- `Notation`
-- `ProcessingInstruction`
-- `Text`
-
-more details are available in the (incomplete) [API Reference](#api-reference) section.
-
-### HTML
-
-xmldom does not have any goal of supporting the full spec, but it has some capability to parse, report and serialize things differently when "detecting HTML" (by checking the default namespace).
-There is an upcoming change to better align the implementation with the latest specs, related to <https://github.com/xmldom/xmldom/issues/203>.
-
-### SAX, XML, XMLNS
-
-xmldom has an own SAX parser implementation to do the actual parsing, which implements some interfaces in alignment with the Java interfaces SAX defines:
-- `XMLReader`
-- `DOMHandler`
-
-There is an idea/proposal to make ti possible to replace it with something else in <https://github.com/xmldom/xmldom/issues/55>
-
-## Forked
-
-**Original project location:** <https://github.com/jindw/xmldom>
-
-More details about the transition can be found in the [CHANGELOG](CHANGELOG.md#maintainer-changes) and in <https://github.com/xmldom/xmldom/issues/62>
+This project was forked from it's [original source](https://github.com/jindw/xmldom) in 2019, more details about that transition can be found in the [CHANGELOG](CHANGELOG.md#maintainer-changes).
 
 ## Usage
 
@@ -121,7 +72,7 @@ import { DOMParser } from '@xmldom/xmldom'
 	```javascript
 	parseFromString(xmlsource,mimeType)
 	```
-	* **options extension** _by xmldom_(not BOM standard!!)
+	* **options extension** _by xmldom_ (not DOM standard!!)
 
 	```javascript
 	//added the options argument
@@ -327,3 +278,61 @@ import { DOMParser } from '@xmldom/xmldom'
 			lineNumber
 			//Numbered starting from '1'
 			columnNumber
+
+## Specs
+
+The implementation is based on several specifications:
+
+<!-- Should open in new tab and the links in the SVG should be clickable there! -->
+<a href="https://raw.githubusercontent.com/xmldom/xmldom/master/docs/specs.svg" target="_blank" rel="noopener noreferrer nofollow" >![Overview of related specifications and their relations](docs/specs.svg)</a>
+
+### DOM Parsing and Serialization
+
+From the [W3C DOM Parsing and Serialization (WD 2016)](https://www.w3.org/TR/2016/WD-DOM-Parsing-20160517/) `xmldom` provides an implementation for the interfaces:
+- `DOMParser`
+- `XMLSerializer`
+
+Note that there are some known deviations between this implementation and the W3 specifications.
+
+Note: [The latest version of this spec](https://w3c.github.io/DOM-Parsing/) has the status "Editors Draft", since it is under active development. One major change is that [the definition of the `DOMParser` interface has been moved to the HTML spec](https://w3c.github.io/DOM-Parsing/#the-domparser-interface)
+
+
+### DOM
+
+The original author claims that xmldom implements [DOM Level 2] in a "fully compatible" way and some parts of [DOM Level 3], but there are not enough tests to prove this. Both Specifications are now superseded by the [DOM Level 4 aka Living standard] wich has a much broader scope than xmldom.
+
+xmldom implements the following interfaces (most constructors are currently not exposed):
+- `Attr`
+- `CDATASection`
+- `CharacterData`
+- `Comment`
+- `Document`
+- `DocumentFragment`
+- `DocumentType`
+- `DOMException` (constructor exposed) 
+- `DOMImplementation` (constructor exposed)
+- `Element`
+- `Entity`
+- `EntityReference`
+- `LiveNodeList`
+- `NamedNodeMap`
+- `Node` (constructor exposed)
+- `NodeList`
+- `Notation`
+- `ProcessingInstruction`
+- `Text`
+
+more details are available in the (incomplete) [API Reference](#api-reference) section.
+
+### HTML
+
+xmldom does not have any goal of supporting the full spec, but it has some capability to parse, report and serialize things differently when "detecting HTML" (by checking the default namespace).
+There is an upcoming change to better align the implementation with the latest specs, related to <https://github.com/xmldom/xmldom/issues/203>.
+
+### SAX, XML, XMLNS
+
+xmldom has an own SAX parser implementation to do the actual parsing, which implements some interfaces in alignment with the Java interfaces SAX defines:
+- `XMLReader`
+- `DOMHandler`
+
+There is an idea/proposal to make ti possible to replace it with something else in <https://github.com/xmldom/xmldom/issues/55>
