@@ -27,13 +27,10 @@
     "lib"
   ],
   "scripts": {
-    "lint": "npm-run-all lint:eslint",
-    "lint:eslint": "eslint lib test",
-    "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test'",
+    "lint": "eslint lib test",
+    "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
     "stryker": "stryker run",
-    "test": "npm-run-all test:unit lint",
-    "test:unit": "npm-run-all test:jest",
-    "test:jest": "jest"
+    "test": "jest"
   },
   "engines": {
     "node": ">=10.0.0"
