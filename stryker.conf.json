@@ -14,7 +14,7 @@
   },
   "coverageAnalysis": "off",
   "commandRunner": {
-    "command": "npm run test:jest -- --bail --no-cache --ci --maxWorkers=1"
+    "command": "npm run test -- --bail --no-cache --ci --maxWorkers=1"
   },
   "timeoutMS_comment": "When all tests pass (mutant survives) our tests need some time. So this is configured to prevent 'timeout's",
   "timeoutMS": 15000
