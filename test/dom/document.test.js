@@ -1,6 +1,7 @@
 'use strict'
 
 const { getTestParser } = require('../get-test-parser')
+const { DOMImplementation } = require('../../lib/dom')
 
 const INPUT = (first = '', second = '', third = '', fourth = '') => `
 <html >
@@ -69,6 +70,17 @@ describe('Document.prototype', () => {
 			MIXED_CASES.forEach((className) => {
 				expect(doc.getElementsByClassName(className)).toHaveLength(1)
 			})
+		})
+	})
+	describe('doctype', () => {
+		it('should be added when passed to createDocument', () => {
+			const impl = new DOMImplementation()
+			const doctype = impl.createDocumentType('name')
+			const doc = impl.createDocument(null, undefined, doctype)
+
+			expect(doc.doctype === doctype).toBe(true)
+			expect(doctype.ownerDocument === doc).toBe(true)
+			expect(doc.firstChild === doctype).toBe(true)
 		})
 	})
 })

@@ -1,6 +1,8 @@
 'use strict'
 
 const { getTestParser } = require('../get-test-parser')
+const { MIME_TYPE } = require('../../lib/conventions')
+
 describe('doctype', () => {
 	describe.each(['SYSTEM', 'PUBLIC'])('%s', (idType) => {
 		test.each([
@@ -23,5 +25,28 @@ describe('doctype', () => {
 				})
 			}
 		)
+	})
+	describe('sets Document.doctype', () => {
+		it('should set it for XML documents', () => {
+			const { parser } = getTestParser()
+			const doc = parser.parseFromString('<!DOCTYPE name><X/>')
+
+			expect(doc.doctype).toBeTruthy()
+			expect(doc.doctype.ownerDocument === doc).toBe(true)
+			expect(doc.firstChild === doc.doctype).toBe(true)
+			expect(doc.childNodes.length).toBe(2)
+		})
+		it('should set it for HTML documents', () => {
+			const { parser } = getTestParser()
+			const doc = parser.parseFromString(
+				'<!DOCTYPE html><body></body>',
+				MIME_TYPE.HTML
+			)
+
+			expect(doc.doctype).toBeTruthy()
+			expect(doc.doctype.ownerDocument === doc).toBe(true)
+			expect(doc.firstChild === doc.doctype).toBe(true)
+			expect(doc.childNodes.length).toBe(2)
+		})
 	})
 })

@@ -21,8 +21,7 @@ describe('XML Namespace Parse', () => {
 		)
 	})
 
-	//ignore default prefix xml attribute
-	it('test', () => {
+	it('should ignore default prefix xml attribute', () => {
 		const w3 = 'http://www.w3.org/1999/xhtml'
 		const n1 = 'http://www.frankston.com/public'
 		const n2 = 'http://rmf.vc/n2'
