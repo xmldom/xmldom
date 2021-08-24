@@ -1,6 +1,6 @@
 'use strict'
 
-const { DOMParser } = require('../../lib/dom-parser')
+const { DOMParser } = require('../../lib')
 const { getTestParser } = require('../get-test-parser')
 
 describe('DOMLocator', () => {

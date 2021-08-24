@@ -1,7 +1,7 @@
 'use strict'
 
 const { getTestParser } = require('../get-test-parser')
-const { DOMParser } = require('../../lib/dom-parser')
+const { DOMParser } = require('../../lib')
 
 describe('XML Node Parse', () => {
 	describe('no attribute', () => {

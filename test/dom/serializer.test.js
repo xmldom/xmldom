@@ -1,7 +1,6 @@
 'use strict'
 
-const { DOMParser } = require('../../lib/dom-parser')
-const { XMLSerializer } = require('../../lib/dom')
+const { DOMParser, XMLSerializer } = require('../../lib')
 const { MIME_TYPE } = require('../../lib/conventions')
 
 describe('XML Serializer', () => {

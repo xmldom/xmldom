@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 
-const { DOMParser } = require('../../lib/dom-parser')
+const { DOMParser } = require('../../lib')
 
 describe('from file', () => {
 	it('file-test1.xml', () => {

@@ -1,7 +1,7 @@
 'use strict'
 
 const { Node } = require('../../lib/dom')
-const { DOMParser } = require('../../lib/dom-parser')
+const { DOMParser } = require('../../lib')
 
 const expectNeighbours = (first, second, ...nodes) => {
 	expect(first.nextSibling).toStrictEqual(second)
