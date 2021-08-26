@@ -6,6 +6,8 @@ name: run Stryker - Node.js CI
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -23,6 +25,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: npm run stryker
+
+    - if: ${{ github.event_name == 'pull_request' }}
+      # on pr branches we only do a dry-run that doesn't mutate anything but checks the configuration works
+      run: npm run stryker:dryrun
+
+    - if: ${{ github.event_name == 'push' }}
+      # on the default branch we run the full suite wich takes > 1 hour to run
+      run: npm run stryker
       env:
         STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
