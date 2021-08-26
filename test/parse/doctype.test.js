@@ -26,6 +26,7 @@ describe('doctype', () => {
 			}
 		)
 	})
+
 	describe('sets Document.doctype', () => {
 		it('should set it for XML documents', () => {
 			const { parser } = getTestParser()
