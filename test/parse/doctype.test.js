@@ -36,6 +36,7 @@ describe('doctype', () => {
 			expect(doc.doctype.ownerDocument === doc).toBe(true)
 			expect(doc.firstChild === doc.doctype).toBe(true)
 			expect(doc.childNodes.length).toBe(2)
+
 		})
 		it('should set it for HTML documents', () => {
 			const { parser } = getTestParser()
