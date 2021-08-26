@@ -30,7 +30,7 @@
     "lint": "eslint lib test",
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
     "stryker": "stryker run",
-    "stryker:dryrun": "stryker run -m '' --reporters progress",
+    "stryker:dry-run": "stryker run -m '' --reporters progress",
     "test": "jest"
   },
   "engines": {

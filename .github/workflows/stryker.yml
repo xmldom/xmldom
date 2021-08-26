@@ -28,7 +28,7 @@ jobs:
 
     - if: ${{ github.event_name == 'pull_request' }}
       # on pr branches we only do a dry-run that doesn't mutate anything but checks the configuration works
-      run: npm run stryker:dryrun
+      run: npm run stryker:dry-run
 
     - if: ${{ github.event_name == 'push' }}
       # on the default branch we run the full suite wich takes > 1 hour to run
