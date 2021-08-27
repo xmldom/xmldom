@@ -72,6 +72,7 @@ describe('XML Node Parse', () => {
 				).toBe('<xml a="1" b=""/>')
 			})
 		})
+
 		describe('containing whitespace', () => {
 			it('should transform whitespace literals into spaces', () => {
 				const { parser } = getTestParser()
@@ -84,6 +85,7 @@ describe('XML Node Parse', () => {
 
 				expect(attr.value).toBe('    ')
 			})
+
 			it.each([
 				['&#x9;', '\t'],
 				['&#9;', '\t'],
@@ -105,11 +107,11 @@ describe('XML Node Parse', () => {
 					)
 
 					const attr = dom.documentElement.attributes.getNamedItem('attr')
-
 					expect(attr.value).toBe(literal)
 				}
 			)
 		})
+
 		it('unclosed root tag will be closed', () => {
 			const { errors, parser } = getTestParser()
 
