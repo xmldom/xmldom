@@ -127,6 +127,7 @@ describe('XML Serializer', () => {
 
 			expect(new XMLSerializer().serializeToString(dom)).toBe(input)
 		})
+
 		it('should escape special characters in namespace attributes', () => {
 			const input = `<xml xmlns='<&"' xmlns:attr='"&<'><test attr:test=""/></xml>`
 			const doc = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
