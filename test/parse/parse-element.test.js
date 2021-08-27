@@ -77,6 +77,7 @@ describe('XML Node Parse', () => {
 			it('should transform whitespace literals into spaces', () => {
 				const { parser } = getTestParser()
 				const dom = parser.parseFromString(
+					// `\r\n` would be replaced by `\n` due to https://www.w3.org/TR/xml/#sec-line-ends
 					'<xml attr=" \t\n\r"/>',
 					MIME_TYPE.XML_TEXT
 				)
