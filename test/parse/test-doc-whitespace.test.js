@@ -44,7 +44,8 @@ describe('whitespace', () => {
 			'in attributes',
 			'<xml attr="\r\n"/>',
 			(dom) => dom.documentElement.getAttribute('attr'),
-			'#xa',
+			// space due to https://www.w3.org/TR/xml/#AVNormalize
+			'#x20',
 		],
 		[
 			'in firstChild text node',
