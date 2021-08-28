@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.7.3
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.7.2...0.7.3)
+
+### Fixes:
+
+- Add doctype when parsing from string [`#277`](https://github.com/xmldom/xmldom/issues/277) / [`#301`](https://github.com/xmldom/xmldom/pull/301)
+- Correct typo in error message [`#294`](https://github.com/xmldom/xmldom/pull/294)
+  Thank you [@rrthomas](https://github.com/rrthomas)
+
+### Refactor:
+
+- Improve exports & require statements, new main package entry [`#233`](https://github.com/xmldom/xmldom/pull/233)
+
+### Docs:
+
+- Fix Stryker badge [`#298`](https://github.com/xmldom/xmldom/pull/298)
+- Fix link to help-wanted issues [`#299`](https://github.com/xmldom/xmldom/pull/299)
+
+### Chore:
+
+- Execute stryker:dry-run on branches [`#302`](https://github.com/xmldom/xmldom/pull/302)
+- Fix stryker config [`#300`](https://github.com/xmldom/xmldom/pull/300)
+- Split test and lint scripts [`#297`](https://github.com/xmldom/xmldom/pull/297)
+- Switch to stryker dashboard owned by org [`#292`](https://github.com/xmldom/xmldom/pull/292)
+
 ## 0.7.2
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.7.1...0.7.2)
