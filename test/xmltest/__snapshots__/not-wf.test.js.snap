@@ -152,8 +152,7 @@ exports[`xmltest/not-wellformed standalone should match 019.xml with snapshot 1`
 Object {
   "actual": "<doc/>",
   "error": Array [
-    "[xmldom error]	end tag name: >
- is not complete:undefined
+    "[xmldom error]	end tag name: > is not complete:undefined
 @#[line:1,col:1]",
   ],
   "warning": Array [

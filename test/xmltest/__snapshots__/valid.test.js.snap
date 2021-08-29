@@ -783,8 +783,6 @@ exports[`xmltest/valid standalone should match 098.xml with snapshot 1`] = `
 Object {
   "actual": "<doc><?pi x
 y?></doc>",
-  "expected": "<doc><?pi x
-y?></doc>",
 }
 `;
 

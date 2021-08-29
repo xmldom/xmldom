@@ -8,7 +8,7 @@ Object {
 }
 `;
 
-exports[`errorHandle test 1`] = `
+exports[`errorHandle should encode < literal when not part of a tag 1`] = `
 Object {
   "actual": "<p xmlns=\\"http://www.w3.org/1999/xhtml\\">populaciji (&lt; 0.1%), te se</p>",
   "error": Array [
