@@ -1,6 +1,6 @@
 # @xmldom/xmldom
 
-***Since version 0.7.0 this package is published to npm as [`@xmldom/xmldom`](https://www.npmjs.com/package/@xmldom/xmldom) and no longer as [`xmldom`](https://www.npmjs.com/package/xmldom), because [we are no longer able to publish `xmldom`](https://github.com/xmldom/xmldom/issues/271).***  
+***Since version 0.7.0 this package is published to npm as [`@xmldom/xmldom` ![npm downloads per week](https://img.shields.io/npm/dw/@xmldom/xmldom?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom) and no longer as [`xmldom` ![npm downloads per week](https://img.shields.io/npm/dw/xmldom?style=flat-square)](https://www.npmjs.com/package/xmldom) , because [we are no longer able to publish `xmldom`](https://github.com/xmldom/xmldom/issues/271).***  
 *For better readability in the docs we will continue to talk about this library as "xmldom".*
 
 [![license](https://img.shields.io/npm/l/@xmldom/xmldom?color=blue&style=flat-square)](LICENSE)
