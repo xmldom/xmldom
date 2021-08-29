@@ -73,6 +73,7 @@ describe('XML Node Parse', () => {
 			})
 		})
 
+		// https://www.w3.org/TR/xml/#AVNormalize
 		describe('containing whitespace', () => {
 			it('should transform whitespace literals into spaces', () => {
 				const { parser } = getTestParser()
