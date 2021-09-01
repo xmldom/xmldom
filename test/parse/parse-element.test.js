@@ -81,6 +81,26 @@ describe('XML Node Parse', () => {
 
 			expect({ actual, ...errors }).toMatchSnapshot()
 		})
+
+		it('should be able to have `constructor` attribute', () => {
+			const { errors, parser } = getTestParser()
+
+			const actual = parser
+				.parseFromString('<xml constructor=""/>', 'text/xml')
+				.toString()
+
+			expect({ actual, ...errors }).toMatchSnapshot()
+		})
+
+		it('should be able to have `__prototype__` attribute', () => {
+			const { errors, parser } = getTestParser()
+
+			const actual = parser
+				.parseFromString('<xml __prototype__=""/>', 'text/xml')
+				.toString()
+
+			expect({ actual, ...errors }).toMatchSnapshot()
+		})
 	})
 
 	describe('namespaced attributes', () => {
