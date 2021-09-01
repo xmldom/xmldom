@@ -7,10 +7,15 @@ const whitespaceToHex = (str) =>
 
 describe('DOMParser constructor option normalizeLineEndings', () => {
 	it('should apply the exported function by default', () => {
-		const parser = new DOMParser();
-		const actual = parser.parseFromString('\r\n \r \u0085<xml/>', MIME_TYPE.XML_TEXT)
+		const parser = new DOMParser()
+		const actual = parser.parseFromString(
+			'\r\n \r \u0085<xml/>',
+			MIME_TYPE.XML_TEXT
+		)
 
-		expect(whitespaceToHex(actual.firstChild.nodeValue)).toBe('#xa#x20#xa#x20#xa')
+		expect(whitespaceToHex(actual.firstChild.nodeValue)).toBe(
+			'#xa#x20#xa#x20#xa'
+		)
 	})
 
 	it('should use the provided normalizeLineEndings option', () => {
@@ -25,7 +30,6 @@ describe('DOMParser constructor option normalizeLineEndings', () => {
 })
 
 describe('normalizeLineEndings', () => {
-
 	it('should normalize the two-character sequence #xD #xA (aka "\\r\\n")', () => {
 		expect(whitespaceToHex(normalizeLineEndings('\r\n'))).toBe('#xa')
 		expect(whitespaceToHex(normalizeLineEndings('\x0D\x0A'))).toBe('#xa')
