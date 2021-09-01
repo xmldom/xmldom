@@ -10,6 +10,18 @@ Object {
 }
 `;
 
+exports[`XML Node Parse simple attributes should be able to have \`__prototype__\` attribute 1`] = `
+Object {
+  "actual": "<xml __prototype__=\\"\\"/>",
+}
+`;
+
+exports[`XML Node Parse simple attributes should be able to have \`constructor\` attribute 1`] = `
+Object {
+  "actual": "<xml constructor=\\"\\"/>",
+}
+`;
+
 exports[`XML Node Parse simple attributes unclosed root tag will be closed 1`] = `
 Object {
   "actual": "<xml a=\\"1\\" b=\\"2/\\"/>",
