@@ -42,7 +42,9 @@ describe('Document.prototype', () => {
 		})
 		it('should be able to resolve non html whitespace as classname', () => {
 			const doc = getTestParser().parser.parseFromString(INPUT())
-			const firstP = doc.documentElement.getElementsByTagName('body')[0].getElementsByTagName('p')[0]
+			const firstP = doc.documentElement
+				.getElementsByTagName('body')[0]
+				.getElementsByTagName('p')[0]
 			expect(firstP).toBeDefined()
 
 			firstP.setAttribute(
