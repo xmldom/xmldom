@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.7.4
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.7.3...0.7.4)
+
+### Fixes:
+
+- Restore ability to parse `__prototype__` attributes [`#315`](https://github.com/xmldom/xmldom/pull/315)
+  Thank you [@dsimsonOMF](https://github.com/dsimsonOMF)
+
 ## 0.7.3
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.7.2...0.7.3)
