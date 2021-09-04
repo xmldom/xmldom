@@ -1,0 +1,32 @@
+# This workflow will run the examples provided in the examples folder
+name: examples
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  nodejs:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version:
+        - 10.x
+        - 12.x
+        - 14.x
+        - 16.x
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: examples/nodejs
+    - run: npm run test
+      working-directory: examples/nodejs
