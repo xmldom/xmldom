@@ -44,7 +44,7 @@
     "eslint-plugin-es5": "^1.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "get-stream": "^6.0.1",
-    "jest": "^27.1.0",
+    "jest": "^27.1.1",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
     "xmltest": "^1.5.0",
