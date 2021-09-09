@@ -119,6 +119,33 @@ describe('XML Serializer', () => {
 			)
 		})
 	})
+	describe('is insensitive to namespace order', () => {
+		it('should produce unprefixed svg elements regardless of xmlns vs xmnls:svg order', () => {
+			const svgNamedIsFirst = [
+				'<svg version="1.1" width="153" height="144" ',
+				'  xmlns:svg="http://www.w3.org/2000/svg" ',
+				'  xmlns="http://www.w3.org/2000/svg" >',
+				'<g><circle cx="60" cy="60" r="50"/></g>',
+				'</svg>',
+			].join('\n')
+			const dom1 = new DOMParser().parseFromString(svgNamedIsFirst, 'text/xml')
+			const result1 = new XMLSerializer().serializeToString(dom1)
+			expect(result1).not.toContain('<svg:g')
+			const svgDefaultIsFirst = [
+				'<svg version="1.1" width="153" height="144" ',
+				'  xmlns="http://www.w3.org/2000/svg" ',
+				'  xmlns:svg="http://www.w3.org/2000/svg" >',
+				'<g><circle cx="60" cy="60" r="50"/></g>',
+				'</svg>',
+			].join('\n')
+			const dom2 = new DOMParser().parseFromString(
+				svgDefaultIsFirst,
+				'text/xml'
+			)
+			const result2 = new XMLSerializer().serializeToString(dom2)
+			expect(result2.toString()).not.toContain('<svg:g')
+		})
+	})
 	describe('properly escapes attribute values', () => {
 		it('should escape special characters in namespace attributes', () => {
 			const input = `<xml xmlns='<&"' xmlns:attr='"&<'><test attr:test=""/></xml>`
