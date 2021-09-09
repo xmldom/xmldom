@@ -14,6 +14,15 @@ const INPUT = (first = '', second = '', third = '', fourth = '') => `
 </html>
 `
 
+/**
+ * Whitespace that can be part of classnames.
+ * Some characters (like `\u2028`) will be normalized when parsing,
+ * but they can still be added to the dom after parsing.
+ *
+ * @see https://www.w3.org/TR/html52/infrastructure.html#set-of-space-separated-tokens
+ * @see normalizeLineEndings
+ * @see https://www.w3.org/TR/xml11/#sec-line-ends
+ */
 const NON_HTML_WHITESPACE =
 	'\v\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff'
 
@@ -32,8 +41,15 @@ describe('Document.prototype', () => {
 			expect(doc.getElementsByClassName('odd quote')).toHaveLength(2)
 		})
 		it('should be able to resolve non html whitespace as classname', () => {
-			const doc = getTestParser().parser.parseFromString(
-				INPUT(NON_HTML_WHITESPACE)
+			const doc = getTestParser().parser.parseFromString(INPUT())
+			const firstP = doc.documentElement
+				.getElementsByTagName('body')[0]
+				.getElementsByTagName('p')[0]
+			expect(firstP).toBeDefined()
+
+			firstP.setAttribute(
+				'class',
+				firstP.getAttribute('class') + ' ' + NON_HTML_WHITESPACE
 			)
 
 			expect(

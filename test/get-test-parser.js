@@ -1,5 +1,4 @@
 'use strict'
-
 const { DOMParser } = require('../lib/dom-parser')
 
 /**
@@ -10,7 +9,7 @@ const { DOMParser } = require('../lib/dom-parser')
  * Helper method for configuring an instance of DOMParser.
  * Calling it without any arguments allows to assert on `errors` after using the parser.
  * every field of the first argument is options and allows to specify test specific behavior.
- * - `errorHandler`: The `locator` to pass to DOMParser constructor options,
+ * - `errorHandler`: The `errorHandler` to pass to DOMParser constructor options,
  * 									default stores a list of all entries per `key` in `errors` and does not log or throw.
  * - `errors`: the object for the `errorHandler` to use,
  * 						is also returned with the same name for later assertions,
