@@ -119,31 +119,34 @@ describe('XML Serializer', () => {
 			)
 		})
 	})
-	describe('is insensitive to namespace order', () => {
-		it('should produce unprefixed svg elements regardless of xmlns vs xmnls:svg order', () => {
-			const svgNamedIsFirst = [
-				'<svg version="1.1" width="153" height="144" ',
-				'  xmlns:svg="http://www.w3.org/2000/svg" ',
-				'  xmlns="http://www.w3.org/2000/svg" >',
-				'<g><circle cx="60" cy="60" r="50"/></g>',
-				'</svg>',
-			].join('\n')
-			const dom1 = new DOMParser().parseFromString(svgNamedIsFirst, 'text/xml')
-			const result1 = new XMLSerializer().serializeToString(dom1)
-			expect(result1).not.toContain('<svg:g')
-			const svgDefaultIsFirst = [
-				'<svg version="1.1" width="153" height="144" ',
-				'  xmlns="http://www.w3.org/2000/svg" ',
-				'  xmlns:svg="http://www.w3.org/2000/svg" >',
-				'<g><circle cx="60" cy="60" r="50"/></g>',
-				'</svg>',
-			].join('\n')
-			const dom2 = new DOMParser().parseFromString(
-				svgDefaultIsFirst,
-				'text/xml'
-			)
-			const result2 = new XMLSerializer().serializeToString(dom2)
-			expect(result2.toString()).not.toContain('<svg:g')
+	describe.only('is insensitive to namespace order', () => {
+		//TODO fill in tests (think of an example as simple as possible that makes sense, doesn't have to be SVG related)
+		it('should preserve prefixes for inner elements and attributes')
+		it(
+			'should preserve missing prefixes for inner prefixed elements and attributes'
+		)
+		it('should produce unprefixed svg elements when prefixed namespace comes first', () => {
+			const svg = `
+<svg 
+	xmlns:svg="http://www.w3.org/2000/svg" 
+	xmlns="http://www.w3.org/2000/svg">
+	<g><circle/></g>
+</svg>`
+			const dom = new DOMParser().parseFromString(svg, 'text/xml')
+
+			expect(new XMLSerializer().serializeToString(dom)).toEqual(svg)
+		})
+		it('should produce unprefixed svg elements when default namespace comes first', () => {
+			const svg = `
+<svg 
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:svg="http://www.w3.org/2000/svg" 
+	>
+	<g><circle/></g>
+</svg>`
+			const dom = new DOMParser().parseFromString(svg, 'text/xml')
+
+			expect(new XMLSerializer().serializeToString(dom)).toEqual(svg)
 		})
 	})
 	describe('properly escapes attribute values', () => {
