@@ -121,15 +121,11 @@ describe('XML Serializer', () => {
 	})
 	describe.only('is insensitive to namespace order', () => {
 		//TODO fill in tests (think of an example as simple as possible that makes sense, doesn't have to be SVG related)
-		it('should preserve prefixes for inner elements and attributes')
-		it(
-			'should preserve missing prefixes for inner prefixed elements and attributes'
-		)
+		it('should preserve prefixes for inner elements and attributes', () => {})
+		it('should preserve missing prefixes for inner prefixed elements and attributes', () => {})
 		it('should produce unprefixed svg elements when prefixed namespace comes first', () => {
 			const svg = `
-<svg 
-	xmlns:svg="http://www.w3.org/2000/svg" 
-	xmlns="http://www.w3.org/2000/svg">
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg">
 	<g><circle/></g>
 </svg>`
 			const dom = new DOMParser().parseFromString(svg, 'text/xml')
@@ -138,10 +134,7 @@ describe('XML Serializer', () => {
 		})
 		it('should produce unprefixed svg elements when default namespace comes first', () => {
 			const svg = `
-<svg 
-	xmlns="http://www.w3.org/2000/svg"
-	xmlns:svg="http://www.w3.org/2000/svg" 
-	>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
 	<g><circle/></g>
 </svg>`
 			const dom = new DOMParser().parseFromString(svg, 'text/xml')
