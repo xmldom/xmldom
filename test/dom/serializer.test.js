@@ -120,14 +120,97 @@ describe('XML Serializer', () => {
 		})
 	})
 	describe.only('is insensitive to namespace order', () => {
-		//TODO fill in tests (think of an example as simple as possible that makes sense, doesn't have to be SVG related)
-		it('should preserve prefixes for inner elements and attributes', () => {})
-		it('should preserve missing prefixes for inner prefixed elements and attributes', () => {})
+		it('should preserve prefixes for inner elements and attributes', () => {
+			const NS = 'http://www.w3.org/test'
+			const xml = `
+<xml xmlns="${NS}">
+	<one attr="first"/>
+	<group xmlns:inner="${NS}">
+		<two attr="second"/>
+		<inner:three inner:attr="second"/>
+	</group>
+</xml>
+`.trim()
+			const dom = new DOMParser().parseFromString(xml, 'text/xml')
+			const doc = dom.documentElement
+			const levelOne = doc.childNodes.item(1)
+			expect(levelOne).toMatchObject({
+				localName: 'one',
+				nodeName: 'one',
+				prefix: null,
+				namespaceURI: NS,
+			})
+			const group = doc.childNodes.item(3)
+			expect(group).toMatchObject({
+				localName: 'group',
+				nodeName: 'group',
+				prefix: null,
+				namespaceURI: NS,
+			})
+			const levelTwo = group.childNodes.item(1)
+			expect(levelTwo).toMatchObject({
+				localName: 'two',
+				nodeName: 'two',
+				prefix: null,
+				namespaceURI: NS,
+			})
+			const innerLevelTow = group.childNodes.item(3)
+			expect(innerLevelTow).toMatchObject({
+				localName: 'three',
+				nodeName: 'inner:three',
+				prefix: 'inner',
+				namespaceURI: NS,
+			})
+			expect(new XMLSerializer().serializeToString(dom)).toEqual(xml)
+		})
+		it('should preserve missing prefixes for inner prefixed elements and attributes', () => {
+			const NS = 'http://www.w3.org/test'
+			const xml = `
+<xml xmlns:inner="${NS}">
+	<inner:one attr="first"/>
+	<inner:group xmlns="${NS}">
+		<inner:two attr="second"/>
+		<three attr="second"/>
+	</inner:group>
+</xml>
+`.trim()
+			const dom = new DOMParser().parseFromString(xml, 'text/xml')
+			const doc = dom.documentElement
+			const levelOne = doc.childNodes.item(1)
+			expect(levelOne).toMatchObject({
+				localName: 'one',
+				nodeName: 'inner:one',
+				prefix: 'inner',
+				namespaceURI: NS,
+			})
+			const group = doc.childNodes.item(3)
+			expect(group).toMatchObject({
+				localName: 'group',
+				nodeName: 'inner:group',
+				prefix: 'inner',
+				namespaceURI: NS,
+			})
+			const levelTwo = group.childNodes.item(1)
+			expect(levelTwo).toMatchObject({
+				localName: 'two',
+				nodeName: 'inner:two',
+				prefix: 'inner',
+				namespaceURI: NS,
+			})
+			const innerLevelTow = group.childNodes.item(3)
+			expect(innerLevelTow).toMatchObject({
+				localName: 'three',
+				nodeName: 'three',
+				prefix: null,
+				namespaceURI: NS,
+			})
+			expect(new XMLSerializer().serializeToString(dom)).toEqual(xml)
+		})
 		it('should produce unprefixed svg elements when prefixed namespace comes first', () => {
 			const svg = `
 <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg">
 	<g><circle/></g>
-</svg>`
+</svg>`.trim()
 			const dom = new DOMParser().parseFromString(svg, 'text/xml')
 
 			expect(new XMLSerializer().serializeToString(dom)).toEqual(svg)
@@ -136,7 +219,8 @@ describe('XML Serializer', () => {
 			const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
 	<g><circle/></g>
-</svg>`
+</svg>
+`.trim()
 			const dom = new DOMParser().parseFromString(svg, 'text/xml')
 
 			expect(new XMLSerializer().serializeToString(dom)).toEqual(svg)
