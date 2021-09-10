@@ -119,7 +119,7 @@ describe('XML Serializer', () => {
 			)
 		})
 	})
-	describe.only('is insensitive to namespace order', () => {
+	describe('is insensitive to namespace order', () => {
 		it('should preserve prefixes for inner elements and attributes', () => {
 			const NS = 'http://www.w3.org/test'
 			const xml = `
