@@ -133,8 +133,8 @@ describe('XML Serializer', () => {
 `.trim()
 			const dom = new DOMParser().parseFromString(xml, 'text/xml')
 			const doc = dom.documentElement
-			const levelOne = doc.childNodes.item(1)
-			expect(levelOne).toMatchObject({
+			const one = doc.childNodes.item(1)
+			expect(one).toMatchObject({
 				localName: 'one',
 				nodeName: 'one',
 				prefix: null,
@@ -147,15 +147,15 @@ describe('XML Serializer', () => {
 				prefix: null,
 				namespaceURI: NS,
 			})
-			const levelTwo = group.childNodes.item(1)
-			expect(levelTwo).toMatchObject({
+			const two = group.childNodes.item(1)
+			expect(two).toMatchObject({
 				localName: 'two',
 				nodeName: 'two',
 				prefix: null,
 				namespaceURI: NS,
 			})
-			const innerLevelTow = group.childNodes.item(3)
-			expect(innerLevelTow).toMatchObject({
+			const three = group.childNodes.item(3)
+			expect(three).toMatchObject({
 				localName: 'three',
 				nodeName: 'inner:three',
 				prefix: 'inner',
@@ -176,8 +176,8 @@ describe('XML Serializer', () => {
 `.trim()
 			const dom = new DOMParser().parseFromString(xml, 'text/xml')
 			const doc = dom.documentElement
-			const levelOne = doc.childNodes.item(1)
-			expect(levelOne).toMatchObject({
+			const one = doc.childNodes.item(1)
+			expect(one).toMatchObject({
 				localName: 'one',
 				nodeName: 'inner:one',
 				prefix: 'inner',
@@ -190,15 +190,15 @@ describe('XML Serializer', () => {
 				prefix: 'inner',
 				namespaceURI: NS,
 			})
-			const levelTwo = group.childNodes.item(1)
-			expect(levelTwo).toMatchObject({
+			const two = group.childNodes.item(1)
+			expect(two).toMatchObject({
 				localName: 'two',
 				nodeName: 'inner:two',
 				prefix: 'inner',
 				namespaceURI: NS,
 			})
-			const innerLevelTow = group.childNodes.item(3)
-			expect(innerLevelTow).toMatchObject({
+			const three = group.childNodes.item(3)
+			expect(three).toMatchObject({
 				localName: 'three',
 				nodeName: 'three',
 				prefix: null,
