@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.7.5
+
+[Commits](https://github.com/xmldom/xmldom/compare/0.7.4...0.7.5)
+
+### Fixes:
+
+- Preserve default namespace when serializing [`#319`](https://github.com/xmldom/xmldom/issues/319) / [`#321`](https://github.com/xmldom/xmldom/pull/321)
+  Thank you [@lupestro](https://github.com/lupestro)
+
 ## 0.7.4
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.7.3...0.7.4)
