@@ -227,6 +227,14 @@ describe('XML Serializer', () => {
 		})
 	})
 	describe('properly escapes attribute values', () => {
+		it('should properly convert whitespace literals back to character references', () => {
+			const input = '<xml attr="&#9;&#10;&#13;"/>'
+			const dom = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
+			const attr = dom.documentElement.attributes[0]
+
+			expect(new XMLSerializer().serializeToString(dom)).toBe(input)
+		})
+
 		it('should escape special characters in namespace attributes', () => {
 			const input = `<xml xmlns='<&"' xmlns:attr='"&<'><test attr:test=""/></xml>`
 			const doc = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)

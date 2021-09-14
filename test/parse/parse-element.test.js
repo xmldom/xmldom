@@ -2,6 +2,7 @@
 
 const { getTestParser } = require('../get-test-parser')
 const { DOMParser } = require('../../lib')
+const { MIME_TYPE } = require('../../lib/conventions')
 
 describe('XML Node Parse', () => {
 	describe('no attribute', () => {
@@ -38,7 +39,7 @@ describe('XML Node Parse', () => {
 </bookstore>`)
 	})
 
-	it('nested closing tag with whitespace', () => {
+	it('sibling closing tag with whitespace', () => {
 		const actual = new DOMParser()
 			.parseFromString(`<book></book ><title>Harry Potter</title>`, 'text/xml')
 			.toString()
@@ -70,6 +71,47 @@ describe('XML Node Parse', () => {
 					new DOMParser().parseFromString(input, 'text/xml').toString()
 				).toBe('<xml a="1" b=""/>')
 			})
+		})
+
+		// https://www.w3.org/TR/xml/#AVNormalize
+		describe('containing whitespace', () => {
+			it('should transform whitespace literals into spaces', () => {
+				const { parser } = getTestParser()
+				const dom = parser.parseFromString(
+					// `\r\n` would be replaced by `\n` due to https://www.w3.org/TR/xml/#sec-line-ends
+					'<xml attr=" \t\n\r"/>',
+					MIME_TYPE.XML_TEXT
+				)
+
+				const attr = dom.documentElement.attributes.getNamedItem('attr')
+
+				expect(attr.value).toBe('    ')
+			})
+
+			it.each([
+				['&#x9;', '\t'],
+				['&#9;', '\t'],
+				['&#xA;', '\n'],
+				['&#xa;', '\n'],
+				['&#10;', '\n'],
+				['&#xD;', '\r'],
+				['&#xd;', '\r'],
+				['&#13;', '\r'],
+				['&#x20;', ' '],
+				['&#32;', ' '],
+			])(
+				'should transform whitespace character reference %s to literal',
+				(reference, literal) => {
+					const { parser } = getTestParser()
+					const dom = parser.parseFromString(
+						`<xml attr="${reference}"/>`,
+						MIME_TYPE.XML_TEXT
+					)
+
+					const attr = dom.documentElement.attributes.getNamedItem('attr')
+					expect(attr.value).toBe(literal)
+				}
+			)
 		})
 
 		it('unclosed root tag will be closed', () => {
