@@ -2,6 +2,7 @@
 
 const { getTestParser } = require('../get-test-parser')
 const { DOMImplementation } = require('../../lib/dom')
+const { NAMESPACE } = require('../../lib/conventions')
 
 const INPUT = (first = '', second = '', third = '', fourth = '') => `
 <html >
@@ -88,15 +89,55 @@ describe('Document.prototype', () => {
 			})
 		})
 	})
-	describe('doctype', () => {
-		it('should be added when passed to createDocument', () => {
+	describe('createElement', () => {
+		it('should create elements with exact cased name in an XML document', () => {
 			const impl = new DOMImplementation()
-			const doctype = impl.createDocumentType('name')
-			const doc = impl.createDocument(null, undefined, doctype)
+			const doc = impl.createDocument(null, 'xml')
 
-			expect(doc.doctype === doctype).toBe(true)
-			expect(doctype.ownerDocument === doc).toBe(true)
-			expect(doc.firstChild === doctype).toBe(true)
+			const element = doc.createElement('XmL')
+
+			expect(element.nodeName).toBe('XmL')
+		})
+		it('should create elements with exact cased name in an XHTML document', () => {
+			const impl = new DOMImplementation()
+			const doc = impl.createDocument(NAMESPACE.HTML, '')
+
+			const element = doc.createElement('XmL')
+
+			expect(element.nodeName).toBe('XmL')
+		})
+		it('should create elements with lower cased name in an HTML document', () => {
+			// https://dom.spec.whatwg.org/#dom-document-createelement
+			const impl = new DOMImplementation()
+			const doc = impl.createHTMLDocument(false)
+
+			const element = doc.createElement('XmL')
+
+			expect(element.nodeName).toBe('xml')
+		})
+		it('should create elements with no namespace in an XML document without default namespace', () => {
+			const impl = new DOMImplementation()
+			const doc = impl.createDocument(null, 'xml')
+
+			const element = doc.createElement('XmL')
+
+			expect(element.namespaceURI).toBeNull()
+		})
+		it('should create elements with the HTML namespace in an XML document with HTML namespace', () => {
+			const impl = new DOMImplementation()
+			const doc = impl.createDocument(NAMESPACE.HTML, 'xml')
+
+			const element = doc.createElement('XmL')
+
+			expect(element.namespaceURI).toBe(NAMESPACE.HTML)
+		})
+		it('should create elements with the HTML namespace in an HTML document', () => {
+			const impl = new DOMImplementation()
+			const doc = impl.createHTMLDocument()
+
+			const element = doc.createElement('a')
+
+			expect(element.namespaceURI).toBe(NAMESPACE.HTML)
 		})
 	})
 })
