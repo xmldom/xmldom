@@ -12,31 +12,51 @@ describe('DOMParser', () => {
 			const options = { locator: {} }
 			const it = new DOMParser(options)
 
-			it.parseFromString('<xml/>')
+			const doc = it.parseFromString('<xml/>')
 
 			const expected = {
 				columnNumber: 1,
 				lineNumber: 1,
 			}
-			expect(options.locator).toStrictEqual(expected)
+			expect(doc.documentElement).toMatchObject(expected)
+		})
+		test('should use locator when options is not passed', () => {
+			const it = new DOMParser()
+
+			const doc = it.parseFromString('<xml/>')
+
+			const expected = {
+				columnNumber: 1,
+				lineNumber: 1,
+			}
+			expect(doc.documentElement).toMatchObject(expected)
+		})
+		test("should not use locator when it's not set in options", () => {
+			const options = {}
+			const it = new DOMParser(options)
+
+			const doc = it.parseFromString('<xml/>')
+
+			expect(doc.documentElement).not.toHaveProperty('columnNumber')
+			expect(doc.documentElement).not.toHaveProperty('lineNumber')
 		})
 
 		test('should set the default namespace to null by default', () => {
 			const options = { xmlns: {} }
 			const it = new DOMParser(options)
 
-			it.parseFromString('<xml/>')
+			const doc = it.parseFromString('<xml/>')
 
-			expect(options.xmlns['']).toBeNull()
+			expect(doc.documentElement.namespaceURI).toBeNull()
 		})
 
 		test('should set the default namespace to null by default', () => {
 			const options = { xmlns: {} }
 			const it = new DOMParser(options)
 
-			it.parseFromString('<xml/>')
+			const doc = it.parseFromString('<xml/>')
 
-			expect(options.xmlns['']).toBeNull()
+			expect(doc.documentElement.namespaceURI).toBeNull()
 		})
 
 		test('should store passed options.xmlns for default mime type', () => {
@@ -47,43 +67,47 @@ describe('DOMParser', () => {
 			const actual = it.parseFromString('<xml/>')
 
 			expect(actual.toString()).toBe('<xml xmlns="custom-default-ns"/>')
-			expect(xmlns['']).toBe(NS_CUSTOM)
+			expect(actual.documentElement.namespaceURI).toBe(NS_CUSTOM)
 		})
 
 		test('should store and modify passed options.xmlns for html mime type', () => {
 			const xmlns = { '': NS_CUSTOM }
 			const it = new DOMParser({ xmlns })
 
-			it.parseFromString('<xml/>', 'text/html')
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.HTML)
 
-			expect(xmlns['']).toBe(NAMESPACE.HTML)
+			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.HTML)
+			expect(xmlns['']).toBe(NS_CUSTOM)
 		})
 
 		test('should store the default namespace for html mime type', () => {
 			const xmlns = {}
 			const it = new DOMParser({ xmlns })
 
-			it.parseFromString('<xml/>', 'text/html')
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.HTML)
 
-			expect(xmlns['']).toBe(NAMESPACE.HTML)
+			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.HTML)
+			expect(xmlns).not.toHaveProperty('')
 		})
 
-		test('should store  default namespace for XHTML mime type', () => {
+		test('should store default namespace for XHTML mime type', () => {
 			const xmlns = {}
 			const it = new DOMParser({ xmlns })
 
-			it.parseFromString('<xml/>', MIME_TYPE.XML_XHTML_APPLICATION)
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_XHTML_APPLICATION)
 
-			expect(xmlns['']).toBe(NAMESPACE.HTML)
+			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.HTML)
+			expect(xmlns).not.toHaveProperty('')
 		})
 
-		test('should store and modify default namespace for XHTML mime type', () => {
+		test('should override default namespace for XHTML mime type', () => {
 			const xmlns = { '': NS_CUSTOM }
 			const it = new DOMParser({ xmlns })
 
-			it.parseFromString('<xml/>', MIME_TYPE.XML_XHTML_APPLICATION)
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_XHTML_APPLICATION)
 
-			expect(xmlns['']).toBe(NAMESPACE.HTML)
+			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.HTML)
+			expect(xmlns['']).toBe(NS_CUSTOM)
 		})
 		describe('property assign', () => {
 			const OBJECT_ASSIGN = Object.assign
