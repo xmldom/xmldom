@@ -28,7 +28,7 @@ declare module '@xmldom/xmldom' {
 
 	interface DOMParserOptions {
 		errorHandler?: ErrorHandlerFunction | ErrorHandlerObject
-		locator?: { columnNumber?: number; lineNumber?: number }
+		locator?: boolean
 		normalizeLineEndings?: (source: string) => string
 		xmlns?: Record<string, string | null | undefined>
 	}
