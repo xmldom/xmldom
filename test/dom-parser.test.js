@@ -1,6 +1,10 @@
 'use strict'
 
 const { DOMParser } = require('../lib')
+const { MIME_TYPE, NAMESPACE } = require('../lib/conventions')
+const { __DOMHandler } = require('../lib/dom-parser')
+
+const NS_CUSTOM = 'custom-default-ns'
 
 describe('DOMParser', () => {
 	describe('constructor', () => {
@@ -8,7 +12,6 @@ describe('DOMParser', () => {
 			const options = { locator: {} }
 			const it = new DOMParser(options)
 
-			// TODO: is there a simpler way to test this that doesn't involve invoking parseFromString?
 			it.parseFromString('<xml/>')
 
 			const expected = {
@@ -18,24 +21,69 @@ describe('DOMParser', () => {
 			expect(options.locator).toStrictEqual(expected)
 		})
 
-		test('should store passed options.xmlns for default mime type', () => {
-			const options = { xmlns: { '': 'custom-default-ns' } }
+		test('should set the default namespace to null by default', () => {
+			const options = { xmlns: {} }
 			const it = new DOMParser(options)
 
-			// TODO: is there a simpler way to test this that doesn't involve invoking parseFromString?
+			it.parseFromString('<xml/>')
+
+			expect(options.xmlns['']).toBeNull()
+		})
+
+		test('should set the default namespace to null by default', () => {
+			const options = { xmlns: {} }
+			const it = new DOMParser(options)
+
+			it.parseFromString('<xml/>')
+
+			expect(options.xmlns['']).toBeNull()
+		})
+
+		test('should store passed options.xmlns for default mime type', () => {
+			const xmlns = { '': NS_CUSTOM }
+			const options = { xmlns }
+			const it = new DOMParser(options)
+
 			const actual = it.parseFromString('<xml/>')
 
 			expect(actual.toString()).toBe('<xml xmlns="custom-default-ns"/>')
+			expect(xmlns['']).toBe(NS_CUSTOM)
 		})
 
 		test('should store and modify passed options.xmlns for html mime type', () => {
-			const options = { xmlns: { '': 'custom-default-ns' } }
-			const it = new DOMParser(options)
+			const xmlns = { '': NS_CUSTOM }
+			const it = new DOMParser({ xmlns })
 
-			// TODO: is there a simpler way to test this that doesn't involve invoking parseFromString?
 			it.parseFromString('<xml/>', 'text/html')
 
-			expect(options.xmlns['']).toBe('http://www.w3.org/1999/xhtml')
+			expect(xmlns['']).toBe(NAMESPACE.HTML)
+		})
+
+		test('should store the default namespace for html mime type', () => {
+			const xmlns = {}
+			const it = new DOMParser({ xmlns })
+
+			it.parseFromString('<xml/>', 'text/html')
+
+			expect(xmlns['']).toBe(NAMESPACE.HTML)
+		})
+
+		test('should store  default namespace for XHTML mime type', () => {
+			const xmlns = {}
+			const it = new DOMParser({ xmlns })
+
+			it.parseFromString('<xml/>', MIME_TYPE.XML_XHTML_APPLICATION)
+
+			expect(xmlns['']).toBe(NAMESPACE.HTML)
+		})
+
+		test('should store and modify default namespace for XHTML mime type', () => {
+			const xmlns = { '': NS_CUSTOM }
+			const it = new DOMParser({ xmlns })
+
+			it.parseFromString('<xml/>', MIME_TYPE.XML_XHTML_APPLICATION)
+
+			expect(xmlns['']).toBe(NAMESPACE.HTML)
 		})
 	})
 
@@ -46,6 +94,39 @@ describe('DOMParser', () => {
 			const actual = new DOMParser().parseFromString(XML).toString()
 
 			expect(actual).toBe(XML)
+		})
+
+		test("should create correct DOM for mimeType 'text/html'", () => {
+			const doc = new DOMParser().parseFromString(
+				'<HTML lang="en"></HTML>',
+				MIME_TYPE.HTML
+			)
+			expect(doc.type).toBe('html')
+			expect(doc.contentType).toBe(MIME_TYPE.HTML)
+			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.HTML)
+			expect(doc.documentElement.nodeName).toBe('HTML')
+		})
+
+		test("should create correct DOM for mimeType 'application/xhtml+xml'", () => {
+			const doc = new DOMParser().parseFromString(
+				'<HTML lang="en"></HTML>',
+				MIME_TYPE.XML_XHTML_APPLICATION
+			)
+			expect(doc.type).toBe('xml')
+			expect(doc.contentType).toBe(MIME_TYPE.XML_XHTML_APPLICATION)
+			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.HTML)
+			expect(doc.documentElement.nodeName).toBe('HTML')
+		})
+
+		test("should create correct DOM for mimeType 'image/svg+xml'", () => {
+			const doc = new DOMParser().parseFromString(
+				'<svg/>',
+				MIME_TYPE.XML_SVG_IMAGE
+			)
+			expect(doc.type).toBe('xml')
+			expect(doc.contentType).toBe(MIME_TYPE.XML_SVG_IMAGE)
+			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.SVG)
+			expect(doc.documentElement.nodeName).toBe('svg')
 		})
 
 		test('should provide access to textContent and attribute values', () => {
@@ -79,6 +160,42 @@ describe('DOMParser', () => {
 				expect(textTag.textContent).toBe(expectedText[i])
 				expect(textTag.getAttribute('top')).toBe(`${i}`)
 			}
+		})
+	})
+})
+
+describe('DOMHandler', () => {
+	describe('startDocument', () => {
+		test('should create an XML document when mimeType option is not passed', () => {
+			const handler = new __DOMHandler()
+			expect(handler.mimeType).toBe(MIME_TYPE.XML_APPLICATION)
+			handler.startDocument()
+			expect(handler.doc.childNodes).toHaveLength(0)
+			expect(handler.doc.type).toBe('xml')
+		})
+
+		test.each([
+			undefined,
+			MIME_TYPE.XML_APPLICATION,
+			MIME_TYPE.XML_XHTML_APPLICATION,
+			MIME_TYPE.XML_TEXT,
+			MIME_TYPE.XML_SVG_IMAGE,
+		])(
+			'should create an XML document when mimeType option is %s',
+			(mimeType) => {
+				const handler = new __DOMHandler({ mimeType })
+				expect(handler.mimeType).toBe(mimeType || MIME_TYPE.XML_APPLICATION)
+				handler.startDocument()
+				expect(handler.doc.childNodes).toHaveLength(0)
+				expect(handler.doc.type).toBe('xml')
+			}
+		)
+		test("should create an HTML document when mimeType option is 'text/html'", () => {
+			const handler = new __DOMHandler({ mimeType: MIME_TYPE.HTML })
+			expect(handler.mimeType).toBe(MIME_TYPE.HTML)
+			handler.startDocument()
+			expect(handler.doc.childNodes).toHaveLength(0)
+			expect(handler.doc.type).toBe('html')
 		})
 	})
 })
