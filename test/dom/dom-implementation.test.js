@@ -219,8 +219,9 @@ describe('DOMImplementation', () => {
 			expect(doc.firstChild).toBe(doc.doctype)
 
 			expect(doc.documentElement).not.toBeNull()
+			expect(doc.documentElement.localName).toBe('html')
 			expect(doc.documentElement.nodeName).toBe('html')
-			expect(doc.documentElement.tagName).toBe('html')
+			expect(doc.documentElement.tagName).toBe(doc.documentElement.nodeName)
 			const htmlNode = doc.documentElement
 			expect(htmlNode.firstChild).not.toBeNull()
 			expect(htmlNode.firstChild.nodeName).toBe('head')
@@ -246,8 +247,9 @@ describe('DOMImplementation', () => {
 			expect(doc.firstChild).toBe(doc.doctype)
 
 			expect(doc.documentElement).not.toBeNull()
+			expect(doc.documentElement.localName).toBe('html')
 			expect(doc.documentElement.nodeName).toBe('html')
-			expect(doc.documentElement.tagName).toBe('html')
+			expect(doc.documentElement.tagName).toBe(doc.documentElement.nodeName)
 			const htmlNode = doc.documentElement
 
 			expect(htmlNode.firstChild).not.toBeNull()
@@ -270,8 +272,9 @@ describe('DOMImplementation', () => {
 			expect(doc.type).toBe('html')
 
 			expect(doc.documentElement).not.toBeNull()
+			expect(doc.documentElement.localName).toBe('html')
 			expect(doc.documentElement.nodeName).toBe('html')
-			expect(doc.documentElement.tagName).toBe('html')
+			expect(doc.documentElement.tagName).toBe(doc.documentElement.nodeName)
 			const htmlNode = doc.documentElement
 
 			expect(htmlNode.firstChild).not.toBeNull()

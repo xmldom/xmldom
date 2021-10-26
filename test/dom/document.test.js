@@ -97,6 +97,7 @@ describe('Document.prototype', () => {
 			const element = doc.createElement('XmL')
 
 			expect(element.nodeName).toBe('XmL')
+			expect(element.localName).toBe(element.nodeName)
 		})
 		it('should create elements with exact cased name in an XHTML document', () => {
 			const impl = new DOMImplementation()
@@ -105,6 +106,7 @@ describe('Document.prototype', () => {
 			const element = doc.createElement('XmL')
 
 			expect(element.nodeName).toBe('XmL')
+			expect(element.localName).toBe(element.nodeName)
 		})
 		it('should create elements with lower cased name in an HTML document', () => {
 			// https://dom.spec.whatwg.org/#dom-document-createelement
@@ -113,7 +115,9 @@ describe('Document.prototype', () => {
 
 			const element = doc.createElement('XmL')
 
+			expect(element.localName).toBe('xml')
 			expect(element.nodeName).toBe('xml')
+			expect(element.tagName).toBe(element.nodeName)
 		})
 		it('should create elements with no namespace in an XML document without default namespace', () => {
 			const impl = new DOMImplementation()
@@ -138,6 +142,39 @@ describe('Document.prototype', () => {
 			const element = doc.createElement('a')
 
 			expect(element.namespaceURI).toBe(NAMESPACE.HTML)
+		})
+	})
+	describe('createAttribute', () => {
+		const NAME = 'NaMe'
+		test('should create name as passed in XML documents', () => {
+			const doc = new DOMImplementation().createDocument(null, '')
+
+			const attr = doc.createAttribute(NAME)
+
+			expect(attr.ownerDocument).toBe(doc)
+			expect(attr.name).toBe(NAME)
+			expect(attr.localName).toBe(NAME)
+			expect(attr.nodeName).toBe(NAME)
+		})
+		test('should create name as passed in XHTML documents', () => {
+			const doc = new DOMImplementation().createDocument(NAMESPACE.HTML, '')
+
+			const attr = doc.createAttribute(NAME)
+
+			expect(attr.ownerDocument).toBe(doc)
+			expect(attr.name).toBe(NAME)
+			expect(attr.localName).toBe(NAME)
+			expect(attr.nodeName).toBe(NAME)
+		})
+		test('should create lower cased name when passed in HTML document', () => {
+			const doc = new DOMImplementation().createHTMLDocument(false)
+
+			const attr = doc.createAttribute(NAME)
+
+			expect(attr.ownerDocument).toBe(doc)
+			expect(attr.name).toBe('name')
+			expect(attr.localName).toBe('name')
+			expect(attr.nodeName).toBe('name')
 		})
 	})
 })

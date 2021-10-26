@@ -1,15 +1,58 @@
 'use strict'
 
 const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib')
+const { MIME_TYPE, NAMESPACE } = require('../../lib/conventions')
 const { Element } = require('../../lib/dom')
 
 describe('Document', () => {
 	// See: http://jsfiddle.net/bigeasy/ShcXP/1/
 	describe('getElementsByTagName', () => {
-		it('should return the correct number of elements', () => {
-			const doc = new DOMParser().parseFromString('<a><b/></a>')
-			expect(doc.getElementsByTagName('*')).toHaveLength(2)
-			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(1)
+		it('should return the correct number of elements in XML documents', () => {
+			const doc = new DOMParser().parseFromString(
+				`<xml id="0" lang="en">
+						<head id="1"><title id="2">Title</title></head>
+						<body id="3">
+							<div id="4"><p id="5"></p></div>
+							<html xmlns="${NAMESPACE.HTML}" id="6"><div id="7"></div></html>
+						</body>
+					</xml>`
+			)
+			expect(doc.getElementsByTagName('*')).toHaveLength(8)
+			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7)
+			expect(doc.getElementsByTagName('div')).toHaveLength(2)
+			expect(doc.documentElement.getElementsByTagName('div')).toHaveLength(2)
+
+			// in HTML documents inside the HTML namespace case doesn't have to match,
+			// this is not an HTML document, so no div will be found,
+			// not even the second one inside the HTML namespace
+			expect(doc.getElementsByTagName('DIV')).toHaveLength(0)
+			expect(doc.documentElement.getElementsByTagName('DIV')).toHaveLength(0)
+		})
+
+		it('should return the correct number of elements in HTML documents', () => {
+			const doc = new DOMParser().parseFromString(
+				`<html id="0" lang="en">
+						<head id="1"><title id="2">Title</title></head>
+						<body id="3">
+							<div id="4"><p id="5"></p></div>
+							<xml xmlns="${NAMESPACE.XML}" id="6"><div id="7"></div></xml>
+						</body>
+					</html>`,
+				MIME_TYPE.HTML
+			)
+			expect(doc.getElementsByTagName('*')).toHaveLength(8)
+			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7)
+			expect(doc.getElementsByTagName('div')).toHaveLength(2)
+			expect(doc.documentElement.getElementsByTagName('div')).toHaveLength(2)
+
+			// in HTML documents inside the HTML namespace case doesn't have to match,
+			// but the second one is not in the HTML namespace
+			const documentDIVs = doc.getElementsByTagName('DIV')
+			expect(documentDIVs).toHaveLength(1)
+			expect(documentDIVs.item(0).getAttribute('id')).toBe('4')
+			const elementDIVs = doc.documentElement.getElementsByTagName('DIV')
+			expect(elementDIVs).toHaveLength(1)
+			expect(elementDIVs.item(0).getAttribute('id')).toBe('4')
 		})
 
 		it('should support API on element (this test needs to be split)', () => {
@@ -211,4 +254,66 @@ describe('Document', () => {
 	xit('nested append failed', () => {})
 
 	xit('self append failed', () => {})
+})
+
+describe('Element', () => {
+	const ATTR_MIXED_CASE = 'AttR'
+	const ATTR_LOWER_CASE = 'attr'
+	const VALUE = '2039e2dk'
+	describe('setAttribute', () => {
+		test.each([null, NAMESPACE.HTML])(
+			'should set attribute as is in XML document with namespace %s',
+			(ns) => {
+				const doc = new DOMImplementation().createDocument(ns, 'xml')
+
+				doc.documentElement.setAttribute(ATTR_MIXED_CASE, VALUE)
+
+				expect(doc.documentElement.attributes).toHaveLength(1)
+				expect(doc.documentElement.attributes.item(0)).toMatchObject({
+					name: ATTR_MIXED_CASE,
+					value: VALUE,
+				})
+				expect(doc.documentElement.hasAttribute(ATTR_MIXED_CASE)).toBe(true)
+				expect(doc.documentElement.hasAttribute(ATTR_LOWER_CASE)).toBe(false)
+			}
+		)
+		test('should set attribute lower cased in HTML document', () => {
+			const doc = new DOMImplementation().createHTMLDocument()
+
+			doc.documentElement.setAttribute(ATTR_MIXED_CASE, VALUE)
+
+			expect(doc.documentElement.attributes).toHaveLength(1)
+			expect(doc.documentElement.attributes.item(0)).toMatchObject({
+				name: ATTR_LOWER_CASE,
+				value: VALUE,
+			})
+			// the attribute is accessible with the lower cased name
+			expect(doc.documentElement.hasAttribute(ATTR_LOWER_CASE)).toBe(true)
+			// and with the original name (and any other one that is the same lower case name)
+			expect(doc.documentElement.hasAttribute(ATTR_MIXED_CASE)).toBe(true)
+			// the value is the same for "both" attribute names
+			expect(doc.documentElement.getAttribute(ATTR_MIXED_CASE)).toBe(
+				doc.documentElement.getAttribute(ATTR_LOWER_CASE)
+			)
+			// since it's the same node it resolves to
+			expect(doc.documentElement.getAttributeNode(ATTR_MIXED_CASE)).toBe(
+				doc.documentElement.getAttributeNode(ATTR_LOWER_CASE)
+			)
+		})
+		test('should set attribute as is in HTML document with different namespace', () => {
+			const doc = new DOMImplementation().createHTMLDocument()
+			const nameSpacedElement = doc.createElementNS(NAMESPACE.SVG, 'svg')
+			expect(nameSpacedElement.namespaceURI).toBe(NAMESPACE.SVG)
+
+			nameSpacedElement.setAttribute(ATTR_MIXED_CASE, VALUE)
+
+			expect(nameSpacedElement.attributes).toHaveLength(1)
+			expect(nameSpacedElement.attributes.item(0)).toMatchObject({
+				name: ATTR_MIXED_CASE,
+				value: VALUE,
+			})
+			expect(nameSpacedElement.hasAttribute(ATTR_MIXED_CASE)).toBe(true)
+			expect(doc.documentElement.hasAttribute(ATTR_LOWER_CASE)).toBe(false)
+		})
+	})
 })
