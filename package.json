@@ -38,17 +38,17 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stryker-mutator/core": "^5.5.0",
-    "eslint": "^8.3.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-es5": "^1.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "get-stream": "^6.0.1",
-    "jest": "^27.3.1",
-    "nodemon": "^2.0.14",
-    "prettier": "^2.4.1",
-    "xmltest": "^1.5.0",
-    "yauzl": "^2.10.0"
+    "@stryker-mutator/core": "5.5.0",
+    "eslint": "8.3.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-es5": "1.5.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "get-stream": "6.0.1",
+    "jest": "27.3.1",
+    "nodemon": "2.0.14",
+    "prettier": "2.4.1",
+    "xmltest": "1.5.0",
+    "yauzl": "2.10.0"
   },
   "bugs": {
     "url": "https://github.com/xmldom/xmldom/issues"
