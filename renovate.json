@@ -4,10 +4,10 @@
     ":preserveSemverRanges",
     ":ignoreUnstable",
     ":respectLatest",
-    ":semanticCommits"
+    ":semanticCommits",
+    ":pinAllExceptPeerDependencies",
+    "npm:unpublishSafe"
   ],
-  "commitMessageExtra": "-> {{#if isMajor}}{{{newMajor}}}{{else}}{{#if isSingleVersion}}{{{toVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}} - {{depType}}",
-  "commitMessageTopic": "{{depName}}",
   "dependencyDashboard": true,
   "prHourlyLimit": 0,
   "rangeStrategy": "bump",
