@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0](https://github.com/xmldom/xmldom/compare/0.7.5...0.8.0)
+
+### Fixed
+- Normalize all line endings according to XML specs [1.0](https://w3.org/TR/xml/#sec-line-ends) and [1.1](https://www.w3.org/TR/xml11/#sec-line-ends) \
+  BREAKING CHANGE: Certain combination of line break characters are normalized to a single `\n` before parsing takes place and will no longer be preserved.
+  - [`#303`](https://github.com/xmldom/xmldom/issues/303) / [`#307`](https://github.com/xmldom/xmldom/pull/307)
+  - [`#49`](https://github.com/xmldom/xmldom/issues/49), [`#97`](https://github.com/xmldom/xmldom/issues/97), [`#324`](https://github.com/xmldom/xmldom/issues/324) / [`#314`](https://github.com/xmldom/xmldom/pull/314)
+- XMLSerializer: Preserve whitespace character references [`#284`](https://github.com/xmldom/xmldom/issues/284) / [`#310`](https://github.com/xmldom/xmldom/pull/310) \
+  BREAKING CHANGE: If you relied on the not spec compliant preservation of literal `\t`, `\n` or `\r` in **attribute values**.
+  To preserve those you will have to create XML that instead contains the correct numerical (or hexadecimal) equivalent (e.g. `&#x9;`, `&#xA;`, `&#xD;`).
+- Drop deprecated exports `DOMImplementation` and `XMLSerializer` from `lib/dom-parser.js` [#53](https://github.com/xmldom/xmldom/issues/53) / [`#309`](https://github.com/xmldom/xmldom/pull/309)
+  BREAKING CHANGE: Use the one provided by the main package export.
+- dom: Remove all links as part of `removeChild` [`#343`](https://github.com/xmldom/xmldom/issues/343) / [`#355`](https://github.com/xmldom/xmldom/pull/355)
+
+### Chore
+- ci: Restore latest tested node version to 16.x [`#325`](https://github.com/xmldom/xmldom/pull/325)
+- ci: Split test and lint steps into jobs [`#111`](https://github.com/xmldom/xmldom/issues/111) / [`#304`](https://github.com/xmldom/xmldom/pull/304)
+- Pinned and updated devDependencies
+
+Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://github.com/victorandree), [@mdierolf](https://github.com/mdierolf), [@tsabbay](https://github.com/tsabbay), [@fatihpense](https://github.com/fatihpense) for your contributions
+
 ## 0.7.5
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.7.4...0.7.5)
