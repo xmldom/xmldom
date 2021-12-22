@@ -1,6 +1,7 @@
 'use strict'
 
 const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib')
+const { Element } = require('../../lib/dom')
 
 describe('Document', () => {
 	// See: http://jsfiddle.net/bigeasy/ShcXP/1/
@@ -173,6 +174,38 @@ describe('Document', () => {
 
 			expect(elem.localName === 'foo')
 		})
+	})
+
+	it('appendElement and removeElement', () => {
+		const dom = new DOMParser().parseFromString(`<root><A/><B/><C/></root>`)
+		const doc = dom.documentElement
+		const arr = []
+		while (doc.firstChild) {
+			const node = doc.removeChild(doc.firstChild)
+			arr.push(node)
+			expect(node.parentNode).toBeNull()
+			expect(node.previousSibling).toBeNull()
+			expect(node.nextSibling).toBeNull()
+			expect(node.ownerDocument).toBe(dom)
+			expect(doc.firstChild).not.toBe(node)
+			const expectedLength = 3 - arr.length
+			expect(doc.childNodes).toHaveLength(expectedLength)
+			expect(doc.childNodes.item(expectedLength)).toBeNull()
+		}
+		expect(arr).toHaveLength(3)
+		while (arr.length) {
+			const node = arr.shift()
+			expect(doc.appendChild(node)).toBe(node)
+			expect(node.parentNode).toBe(doc)
+			const expectedLength = 3 - arr.length
+			expect(doc.childNodes).toHaveLength(expectedLength)
+			expect(doc.childNodes.item(expectedLength - 1)).toBe(node)
+			if (expectedLength > 1) {
+				expect(node.previousSibling).toBeInstanceOf(Element)
+				expect(node.previousSibling.nextSibling).toBe(node)
+			}
+		}
+		expect(doc.childNodes.toString()).toBe(`<A/><B/><C/>`)
 	})
 
 	xit('nested append failed', () => {})
