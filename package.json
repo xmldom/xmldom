@@ -31,7 +31,9 @@
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
     "stryker": "stryker run",
     "stryker:dry-run": "stryker run -m '' --reporters progress",
-    "test": "jest"
+    "test": "jest",
+    "version": "./changelog-has-version.sh",
+    "release": "np --no-yarn"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -46,6 +48,7 @@
     "get-stream": "6.0.1",
     "jest": "27.4.5",
     "nodemon": "2.0.15",
+    "np": "7.6.0",
     "prettier": "2.5.1",
     "xmltest": "1.5.0",
     "yauzl": "2.10.0"
