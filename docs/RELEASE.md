@@ -1,9 +1,4 @@
-# Release Management and Roadmap
-
-Currently, the release process is not fully automated, so here is how we do it.
-
-> We are very open for PRs that show how we can automate parts of this process or go for a fully automated process that is able to cover most of this process.
-We are open to discuss things that are redundant in PRs. 
+# Roadmap and Releases
 
 ## Milestones
 
@@ -30,6 +25,13 @@ We always have the following [open milestones](https://github.com/xmldom/xmldom/
   For external contributors: Before creating a PR for these, communicate in the issue, how to go about it. Ideally with a proposal and arguments.
 
 ## How to release
+
+Currently, the release process is not fully automated, so here is how we do it.
+
+> We are very open for PRs that show how we can automate parts of this process or go for a fully automated process that is able to cover most of this process.
+We are open to discuss things that are redundant in PRs.
+ 
+
 ### 0. Prerequisites for a release
 
 - [All changes to be included in the current milestone are landed on the default branch and the related tickets are closed](https://github.com/orgs/xmldom/projects/1/views/5).
