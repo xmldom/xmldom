@@ -10,13 +10,13 @@ We always have the following [open milestones](https://github.com/xmldom/xmldom/
   This milestone might not exist if no patch release is planned yet.\
   If `0.M.0` was released: the upcoming/planned patch bump(s) release(s) for bug fixes.\
   If `0.M.0` was not released: the things to work on right after the next planned minor bump
-- **next breaking/minor release**\
+- **[next breaking/minor release](https://github.com/xmldom/xmldom/milestone/12)** \
   The topics that will be picked up once the milestones with specified versions have been released
-- **before 1.0.0**\
+- **[before 1.0.0](https://github.com/xmldom/xmldom/milestone/5)** \
   The issues in this milestone are going to be worked on.\
   After each minor or patch release we pick topics from this milestone and put them into the "next patch release" or "next minor release" milestones.\
   All of these will be worked on before we consider planning for a 1.0.0 release.
-- **planning 1.0.0**\
+- **[planning 1.0.0](https://github.com/xmldom/xmldom/milestone/4)** \
   There is no timeline for when this is going to happen.\
   For issues in this milestone to become relevant for maintainers we will have to finish all issues in the `before 1.0.0` milestone.\
   In most cases maintainers didn't even invest time to think through, how to handle them.\
@@ -78,7 +78,7 @@ Edit the current milestone:
 
 Create a new milestone named `0.M.0` or `0.M.x` if it doesn't exist yet.\
 Pick and add the issue(s) / pr(s) from (in that order)
-1. [`next breaking/minor release`](https://github.com/xmldom/xmldom/milestone/15) 
+1. [`next breaking/minor release`](https://github.com/xmldom/xmldom/milestone/12) 
 2. [`before 1.0.0`](https://github.com/xmldom/xmldom/milestone/5)
 
 Update the [project board](https://github.com/orgs/xmldom/projects/1/views/5) to point to the new milestone.
