@@ -5,6 +5,31 @@ Currently, the release process is not fully automated, so here is how we do it.
 > We are very open for PRs that show how we can automate parts of this process or go for a fully automated process that is able to cover most of this process.
 We are open to discuss things that are redundant in PRs. 
 
+## Milestones
+
+
+We always have the following [open milestones](https://github.com/xmldom/xmldom/milestones) for transparency regarding priority:
+- 
+- **0.M.0**\
+  the upcoming/planned minor bump release for new features or breaking changes
+- **0.M.x**\
+  This milestone might not exist if no patch release is planned yet
+  If 0.M.0 was released: the upcoming/planned patch bump(s) release(s) for bug fixes, might not exist, if nothing is planed yet.\
+  If 0.M.0 was not released: the things to work on right after the next planned minor bump
+- **next breaking/minor release**\
+  The topics that will be picked up once the milestones with specified versions have been released
+- **before 1.0.0**\
+  The issues in this milestone are going to be worked on.\
+  After each minor or patch release we pick topics from this milestone and put them into the "next patch release" or "next minor release" milestones.
+  All of these will be worked on before we consider planning for a 1.0 release.
+- **planning 1.0.0**\
+  There is no timeline for when this is going to happen.
+  For issues in this milestone to become relevant for maintainers we will have to finish all issues in the "before 1.0.0" milestone.
+  In most cases maintainers didn't even invest time to think through, how to handle them.
+  It might even happen that we decide to not include them into 1.0.0.
+
+  For external contributors: Before creating a PR for these, communicate in the issue, how to go about it. Ideally with a proposal and arguments.
+
 ## Prerequisites
 
 - [All changes to be included in the current milestone are landed on the default branch and the related tickets are closed](https://github.com/orgs/xmldom/projects/1/views/5).
@@ -29,7 +54,7 @@ We are open to discuss things that are redundant in PRs.
   - Mention people that contributed to fixed issues by creating them or commenting
 - Create a PR, review it (read the updated markdown on github once!) and land it
 
-If you skip this step, running `npm run release`/`np` will run the script `changelog-has-version.sh` to make sure the new version is part of the changelog before publishing. If it's not the release is not published.
+`npm run release` ( => `np` => `npm run version` => `changelog-has-version.sh`) asserts that the new version is part of the changelog before publishing.
 
 ## 2. Create and publish the release
 
@@ -40,20 +65,18 @@ If you skip this step, running `npm run release`/`np` will run the script `chang
 - `npm run pack` and upload the new file as a binary
 - If it's a minor bump: Check the box for creating a release discussion
 - If it's a patch bump: update the related release discussion of the minor bump 
-  by adding the changelog to the bottom.
+  by adding the changelog to the bottom and changing the discussion title to have an `x` in the patch part of the version.
 
 ## 3. Update Milestones
 
-- Close the current milestone
+Edit the current milestone:
+- set the due date to the release date and
+- Set the description to the release discussion
+- close it
 
-### For minor bumps
+Create a new milestone named `0.M.0` or `0.M.x` if it doesn't exist yet.
+Pick the issue(s) / pr(s) that should be part of it from
+1. [`next breaking/minor release`](https://github.com/xmldom/xmldom/milestone/15) 
+2. [`before 1.0.0`](https://github.com/xmldom/xmldom/milestone/5)
 
-- rename `next breaking/minor release` to the actual next minor version number
-  - make sure all the tickets in it make sense
-  - if there are no tickets, start the process of picking the next most important breaking change from `before 1.0.0`
-- create a new milestone named `next breaking/minor release`
-  - it doesn't have to contain a ticket yet, but pick from `before 1.0.0`
-
-### For patch bumps
-
-You only need to create a new milestone once you know you are going to release a patch release.
+Update the [project board](https://github.com/orgs/xmldom/projects/1/views/5) to point to the new milestone.
