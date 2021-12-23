@@ -8,19 +8,19 @@ We always have the following [open milestones](https://github.com/xmldom/xmldom/
   the upcoming/planned minor bump release for new features or breaking changes
 - **0.M.x**\
   This milestone might not exist if no patch release is planned yet.\
-  If 0.M.0 was released: the upcoming/planned patch bump(s) release(s) for bug fixes, might not exist, if nothing is planed yet.\
-  If 0.M.0 was not released: the things to work on right after the next planned minor bump
+  If `0.M.0` was released: the upcoming/planned patch bump(s) release(s) for bug fixes.\
+  If `0.M.0` was not released: the things to work on right after the next planned minor bump
 - **next breaking/minor release**\
   The topics that will be picked up once the milestones with specified versions have been released
 - **before 1.0.0**\
   The issues in this milestone are going to be worked on.\
   After each minor or patch release we pick topics from this milestone and put them into the "next patch release" or "next minor release" milestones.\
-  All of these will be worked on before we consider planning for a 1.0 release.
+  All of these will be worked on before we consider planning for a 1.0.0 release.
 - **planning 1.0.0**\
   There is no timeline for when this is going to happen.\
-  For issues in this milestone to become relevant for maintainers we will have to finish all issues in the "before 1.0.0" milestone.\
+  For issues in this milestone to become relevant for maintainers we will have to finish all issues in the `before 1.0.0` milestone.\
   In most cases maintainers didn't even invest time to think through, how to handle them.\
-  It might even happen that we decide to not include them into 1.0.0.
+  It might even happen that we decide to not include them into `1.0.0`.
 
   For external contributors: Before creating a PR for these, communicate in the issue, how to go about it. Ideally with a proposal and arguments.
 
