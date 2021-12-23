@@ -1,4 +1,4 @@
-# How to release
+# Release Management and Roadmap
 
 Currently, the release process is not fully automated, so here is how we do it.
 
@@ -7,9 +7,8 @@ We are open to discuss things that are redundant in PRs.
 
 ## Milestones
 
+We always have the following [open milestones](https://github.com/xmldom/xmldom/milestones) for transparency regarding priority
 
-We always have the following [open milestones](https://github.com/xmldom/xmldom/milestones) for transparency regarding priority:
-- 
 - **0.M.0**\
   the upcoming/planned minor bump release for new features or breaking changes
 - **0.M.x**\
@@ -30,7 +29,8 @@ We always have the following [open milestones](https://github.com/xmldom/xmldom/
 
   For external contributors: Before creating a PR for these, communicate in the issue, how to go about it. Ideally with a proposal and arguments.
 
-## Prerequisites
+## How to release
+### 0. Prerequisites for a release
 
 - [All changes to be included in the current milestone are landed on the default branch and the related tickets are closed](https://github.com/orgs/xmldom/projects/1/views/5).
 - All related PRs are connected to the current milestone
@@ -43,7 +43,7 @@ We always have the following [open milestones](https://github.com/xmldom/xmldom/
     - keep in mind we are not doing any `major` bumps so far!
     - keep in mind we are not using a `v` prefix anywhere! 
 
-## 1. Generate update for CHANGELOG
+### 1. Generate update for CHANGELOG
 
 - `npm run changelog`
 - Tweak the result until it matches the previous entries
@@ -56,7 +56,7 @@ We always have the following [open milestones](https://github.com/xmldom/xmldom/
 
 `npm run release` ( => `np` => `npm run version` => `changelog-has-version.sh`) asserts that the new version is part of the changelog before publishing.
 
-## 2. Create and publish the release
+### 2. Create and publish the release
 
 - `git fetch --all && git checkout -B master upstream/master`
 - `npm run release -- $bump` and follow the instructions
@@ -67,7 +67,7 @@ We always have the following [open milestones](https://github.com/xmldom/xmldom/
 - If it's a patch bump: update the related release discussion of the minor bump 
   by adding the changelog to the bottom and changing the discussion title to have an `x` in the patch part of the version.
 
-## 3. Update Milestones
+### 3. Update Milestones
 
 Edit the current milestone:
 - set the due date to the release date and
