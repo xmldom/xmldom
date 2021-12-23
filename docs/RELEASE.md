@@ -29,6 +29,8 @@ We are open to discuss things that are redundant in PRs.
   - Mention people that contributed to fixed issues by creating them or commenting
 - Create a PR, review it (read the updated markdown on github once!) and land it
 
+If you skip this step, running `npm run release`/`np` will run the script `changelog-has-version.sh` to make sure the new version is part of the changelog before publishing. If it's not the release is not published.
+
 ## 2. Create and publish the release
 
 - `git fetch --all && git checkout -B master upstream/master`
