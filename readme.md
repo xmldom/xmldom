@@ -3,8 +3,9 @@
 ***Since version 0.7.0 this package is published to npm as [`@xmldom/xmldom`](https://www.npmjs.com/package/@xmldom/xmldom) and no longer as [`xmldom`](https://www.npmjs.com/package/xmldom), because [we are no longer able to publish `xmldom`](https://github.com/xmldom/xmldom/issues/271).***  
 *For better readability in the docs we will continue to talk about this library as "xmldom".*
 
-[![license](https://img.shields.io/npm/l/@xmldom/xmldom?color=blue&style=flat-square)](LICENSE)
+[![license(MIT)](https://img.shields.io/npm/l/@xmldom/xmldom?color=blue&style=flat-square)](https://github.com/xmldom/xmldom/blob/master/LICENSE)
 [![npm](https://img.shields.io/npm/v/@xmldom/xmldom?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
+[![snyk.io package health](https://snyk.io/advisor/npm-package/@xmldom/xmldom/badge.svg)](https://snyk.io/advisor/npm-package/@xmldom/xmldom)
 [![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 [![help-wanted issues](https://img.shields.io/github/issues/xmldom/xmldom/help-wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp-wanted)
 [![Mutation report](https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fxmldom%2Fxmldom%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/xmldom/xmldom/master)
