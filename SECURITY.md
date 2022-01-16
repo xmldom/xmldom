@@ -1,5 +1,7 @@
 # Security Policy
 
+The most up-to-date version of this document can be found at <https://github.com/xmldom/xmldom/security/policy>.
+
 ## Supported Versions
 
 This repository contains the code for the libraries `xmldom` and `@xmldom/xmldom` on npm.
