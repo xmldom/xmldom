@@ -41,7 +41,7 @@ Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://gi
 ### Fixes:
 
 - Restore ability to parse `__prototype__` attributes [`#315`](https://github.com/xmldom/xmldom/pull/315)
-  Thank you [@dsimsonOMF](https://github.com/dsimsonOMF)
+  Thank you [@dsimpsonOMF](https://github.com/dsimpsonOMF)
 
 ## 0.7.3
 
