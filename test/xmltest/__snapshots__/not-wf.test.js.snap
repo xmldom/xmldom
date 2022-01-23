@@ -439,7 +439,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 055.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc>",
+  "actual": "<!DOCTYPE doc><doc/>",
 }
 `;
 
@@ -1213,11 +1213,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 159.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:5,col:1]",
-  ],
+  "actual": "<!DOCTYPE doc><doc>&lt;![CDATA[Tim &amp; Michael]]&gt;</doc>",
 }
 `;
 
