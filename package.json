@@ -23,6 +23,7 @@
     "CHANGELOG.md",
     "LICENSE",
     "readme.md",
+    "SECURITY.md",
     "index.d.ts",
     "lib"
   ],
