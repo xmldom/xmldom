@@ -7,4 +7,4 @@ set -xeu
 
 # before trying to release a version we want to make sure the changelog has been updated
 # well at least the headline needs to be there
-grep "### \[$npm_package_version\]" CHANGELOG.md || echo "CHANGELOG.md is missing content for $npm_package_version! Read docs/RELEASE.md" && exit 1
+grep "## \[$npm_package_version\](" CHANGELOG.md || (echo "CHANGELOG.md is missing content for $npm_package_version! Read docs/RELEASE.md" && exit 1)

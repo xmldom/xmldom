@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Docs
 - Add security policy [`#365`](https://github.com/xmldom/xmldom/pull/365)
 - changelog: Correct contributor name and link [`#366`](https://github.com/xmldom/xmldom/pull/366)
-- Describe release/publish steps [`#358`](https://github.com/xmldom/xmldom/pull/358)
+- Describe release/publish steps [`#358`](https://github.com/xmldom/xmldom/pull/358), [`#376`](https://github.com/xmldom/xmldom/pull/376)
 - Add snyk package health badge [`#360`](https://github.com/xmldom/xmldom/pull/360)
 
 
