@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.1](https://github.com/xmldom/xmldom/compare/0.8.0...0.8.1)
+
+### Fixes
+- Only use own properties in entityMap [`#374`](https://github.com/xmldom/xmldom/pull/374)
+
+### Docs
+- Add security policy [`#365`](https://github.com/xmldom/xmldom/pull/365)
+- changelog: Correct contributor name and link [`#366`](https://github.com/xmldom/xmldom/pull/366)
+- Describe release/publish steps [`#358`](https://github.com/xmldom/xmldom/pull/358)
+- Add snyk package health badge [`#360`](https://github.com/xmldom/xmldom/pull/360)
+
+
 ## [0.8.0](https://github.com/xmldom/xmldom/compare/0.7.5...0.8.0)
 
 ### Fixed
