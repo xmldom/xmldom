@@ -38,6 +38,7 @@ We are open to discuss things that are redundant in PRs.
 - All related PRs are connected to the current milestone
 - The default branch is checked out and up to date.
   `git fetch --all && git checkout -B master upstream/master`
+- Make sure all dependencies up-to-date locally: `nvm i 12 && npm ci`
 - determine the upcoming `$NEXT_VERSION` number according to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
     - it should already be reflected in the current milestone
     - if there are any breaking changes or new features: `$bump` is `minor`
