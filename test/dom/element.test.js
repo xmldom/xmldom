@@ -209,16 +209,6 @@ describe('Document', () => {
 		expect(doc.documentElement.toString()).toBe('<test>bye</test>')
 	})
 
-	describe('createElement', () => {
-		it('should set localName', () => {
-			const doc = new DOMImplementation().createDocument(null, 'test', null)
-
-			const elem = doc.createElement('foo')
-
-			expect(elem.localName === 'foo')
-		})
-	})
-
 	it('appendElement and removeElement', () => {
 		const dom = new DOMParser().parseFromString(`<root><A/><B/><C/></root>`)
 		const doc = dom.documentElement
