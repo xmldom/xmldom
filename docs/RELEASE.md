@@ -30,7 +30,7 @@ Currently, the release process is not fully automated, so here is how we do it.
 
 > We are very open for PRs that show how we can automate parts of this process or go for a fully automated process that is able to cover most of this process.
 We are open to discuss things that are redundant in PRs.
- 
+> I can imagine that we could automatically create pre-releases when anything relevant lands on master. Those pre-release versions won't appear in the changelog, but the github release can (automatically) have all the information.
 
 ### 0. Prerequisites for a release
 
@@ -65,7 +65,8 @@ We are open to discuss things that are redundant in PRs.
 - `npm run release -- $bump` and follow the instructions
 - Copy the content of the changelog to the release draft
 - Change the first headline to be just a link with the text `Commits`
-- `npm run pack` and upload the new file as a binary
+- Run `npm pack @xmldom/xmldom` to **download** the published binary 
+  and **upload** the file to the release
 - If it's a minor bump: Check the box for creating a release discussion
 - If it's a patch bump: update the related release discussion of the minor bump 
   by adding the changelog to the bottom and changing the discussion title to have an `x` in the patch part of the version.
