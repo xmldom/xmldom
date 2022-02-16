@@ -57,7 +57,7 @@ const serialized = new XMLSerializer().serializeToString(doc)
 
 Note: in Typescript ~and ES6~(see #316) you can use the `import` approach, as follows:
 
-```javascript
+```typescript
 import { DOMParser } from '@xmldom/xmldom'
 ```
 
