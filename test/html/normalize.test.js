@@ -61,7 +61,9 @@ describe('html normalizer', () => {
 
 		const actual = parser.parseFromString(xml, 'application/xml')
 
-		expect(actual.documentElement.firstChild.textContent).toBe('let message = " & ETH";');
+		expect(actual.documentElement.firstChild.textContent).toBe(
+			'let message = " & ETH";'
+		)
 	})
 	it.each([
 		`<html xmlns="http://www.w3.org/1999/xhtml"><script>let message = " &amp; ETH";</script></html>`,
@@ -71,7 +73,9 @@ describe('html normalizer', () => {
 
 		const actual = parser.parseFromString(xml, 'text/html')
 
-		expect(actual.documentElement.firstChild.textContent).toBe('let message = " &amp; ETH";');
+		expect(actual.documentElement.firstChild.textContent).toBe(
+			'let message = " &amp; ETH";'
+		)
 	})
 
 	it('European entities', () => {
