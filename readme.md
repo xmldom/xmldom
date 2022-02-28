@@ -41,28 +41,23 @@ This project was forked from it's [original source](https://github.com/jindw/xml
 
 ### Example:
 
+[In NodeJS](examples/nodejs/src/index.js)
 ```javascript
-const { DOMParser } = require('@xmldom/xmldom')
+const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
-const doc = new DOMParser().parseFromString(
-    '<xml xmlns="a" xmlns:c="./lite">\n' +
-        '\t<child>test</child>\n' +
-        '\t<child></child>\n' +
-        '\t<child/>\n' +
-        '</xml>',
-    'text/xml'
-)
-doc.documentElement.setAttribute('x', 'y')
-doc.documentElement.setAttributeNS('./lite', 'c:x', 'y2')
-console.info(doc)
+const source = `<xml xmlns="a">
+	<child>test</child>
+	<child/>
+</xml>`
 
-const nsAttr = doc.documentElement.getAttributeNS('./lite', 'x')
-console.info(nsAttr)
+const doc = new DOMParser().parseFromString(source, 'text/xml')
+
+const serialized = new XMLSerializer().serializeToString(doc)
 ```
 
-Note: in Typescript and ES6 you can use the import approach, as follows:
+Note: in Typescript ~and ES6~(see #316) you can use the `import` approach, as follows:
 
-```javascript
+```typescript
 import { DOMParser } from '@xmldom/xmldom'
 ```
 

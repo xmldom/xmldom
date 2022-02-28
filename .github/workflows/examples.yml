@@ -1,0 +1,61 @@
+# This workflow will run the examples provided in the examples folder
+name: examples
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  nodejs:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version:
+        - 10.x
+        - 12.x
+        - 14.x
+        - 16.x
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: examples/nodejs
+    - run: npm run test
+      working-directory: examples/nodejs
+  typescript-node-es6:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ts-version:
+        - 3.8
+        - 4
+        node-version:
+        - 10
+        - 12
+        - 14
+        - 16
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: ./pretest.sh ${{ matrix.ts-version }}
+      working-directory: examples/typescript-node-es6
+    - run: node --experimental-modules dist/index.js
+      if: ${{ matrix.node-version == 12 }}
+      working-directory: examples/typescript-node-es6
+    - run: node dist/index.js
+      if: ${{ matrix.node-version > 12 }}
+      working-directory: examples/typescript-node-es6
