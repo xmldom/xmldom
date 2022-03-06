@@ -44,6 +44,10 @@ describe('html normalizer', () => {
 			'<script>alert(a<b&&c?"<br/>":">>");</script>',
 			'<script src="./test.js"/>',
 			'<textarea>alert(a<b&&c?"<br>":">>");</textarea>',
+			'<input type="button" disabled></input>',
+			'<input type="checkbox" checked></input>',
+			'<option selected></option>',
+			,
 		])(`${mimeType}: script %s`, (xml) => {
 			const { errors, parser } = getTestParser()
 

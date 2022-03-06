@@ -20,8 +20,6 @@ Object {
   "warning": Array [
     "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
 @#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"b\\" missed value!! \\"b\\" instead!!
-@#[line:1,col:1]",
   ],
 }
 `;
@@ -31,10 +29,6 @@ Object {
   "actual": "<div a=\\"&amp;\\" bb=\\"bb\\" c=\\"c\\" d=\\"123&amp;&amp;456\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
   "warning": Array [
     "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
-@#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"bb\\" missed value!! \\"bb\\" instead2!!
-@#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"c\\" missed value!! \\"c\\" instead2!!
 @#[line:1,col:1]",
     "[xmldom warning]	attribute \\"123&&456\\" missed quot(\\")!
 @#[line:1,col:1]",
@@ -110,6 +104,24 @@ Object {
 }
 `;
 
+exports[`html normalizer text/html: script <input type="button" disabled></input> 1`] = `
+Object {
+  "actual": "<input type=\\"button\\" disabled=\\"disabled\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+}
+`;
+
+exports[`html normalizer text/html: script <input type="checkbox" checked></input> 1`] = `
+Object {
+  "actual": "<input type=\\"checkbox\\" checked=\\"checked\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+}
+`;
+
+exports[`html normalizer text/html: script <option selected></option> 1`] = `
+Object {
+  "actual": "<option selected=\\"selected\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></option>",
+}
+`;
+
 exports[`html normalizer text/html: script <script src="./test.js"/> 1`] = `
 Object {
   "actual": "<script src=\\"./test.js\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></script>",
@@ -131,6 +143,36 @@ Object {
 exports[`html normalizer text/html: script <textarea>alert(a<b&&c?"<br>":">>");</textarea> 1`] = `
 Object {
   "actual": "<textarea xmlns=\\"http://www.w3.org/1999/xhtml\\">alert(a&lt;b&amp;&amp;c?\\"&lt;br>\\":\\">>\\");</textarea>",
+}
+`;
+
+exports[`html normalizer text/xml: script <input type="button" disabled></input> 1`] = `
+Object {
+  "actual": "<input type=\\"button\\" disabled=\\"disabled\\"/>",
+  "warning": Array [
+    "[xmldom warning]	attribute \\"disabled\\" missed value!! \\"disabled\\" instead!!
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`html normalizer text/xml: script <input type="checkbox" checked></input> 1`] = `
+Object {
+  "actual": "<input type=\\"checkbox\\" checked=\\"checked\\"/>",
+  "warning": Array [
+    "[xmldom warning]	attribute \\"checked\\" missed value!! \\"checked\\" instead!!
+@#[line:1,col:1]",
+  ],
+}
+`;
+
+exports[`html normalizer text/xml: script <option selected></option> 1`] = `
+Object {
+  "actual": "<option selected=\\"selected\\"/>",
+  "warning": Array [
+    "[xmldom warning]	attribute \\"selected\\" missed value!! \\"selected\\" instead!!
+@#[line:1,col:1]",
+  ],
 }
 `;
 
@@ -201,10 +243,6 @@ Object {
 exports[`html normalizer unclosed html <html title/> 1`] = `
 Object {
   "actual": "<html title=\\"title\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"title\\" missed value!! \\"title\\" instead!!
-@#[line:1,col:1]",
-  ],
 }
 `;
 

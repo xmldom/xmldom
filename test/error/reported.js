@@ -223,6 +223,7 @@ const REPORTED = {
 		source: '<xml attr ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead!!/.test(msg),
+		skippedInHtml: true,
 	},
 	/**
 	 * Triggered by lib/sax.js:376
@@ -236,6 +237,7 @@ const REPORTED = {
 		source: '<xml attr attr2 ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead2!!/.test(msg),
+		skippedInHtml: true,
 	},
 }
 
