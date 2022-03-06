@@ -7,6 +7,8 @@ const source = `<xml xmlns="a">
 
 const doc = new DOMParser().parseFromString(source, 'text/xml')
 
+if (!doc) throw 'expected Document but was undefined'
+
 const serialized = new XMLSerializer().serializeToString(doc)
 
 if (source !== serialized) {
