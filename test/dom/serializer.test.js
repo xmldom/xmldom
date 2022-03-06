@@ -83,19 +83,19 @@ describe('XML Serializer', () => {
 			const doc = new DOMParser().parseFromString(str, MIME_TYPE.HTML)
 
 			const child = doc.createElementNS('AAA', 'child')
-			expect(new XMLSerializer().serializeToString(child, true)).toBe(
+			expect(new XMLSerializer().serializeToString(child)).toBe(
 				'<child xmlns="AAA"></child>'
 			)
 			doc.documentElement.appendChild(child)
-			expect(new XMLSerializer().serializeToString(doc, true)).toBe(
+			expect(new XMLSerializer().serializeToString(doc)).toBe(
 				'<a:foo xmlns:a="AAA"><child xmlns="AAA"></child></a:foo>'
 			)
 			const nested = doc.createElementNS('AAA', 'nested')
-			expect(new XMLSerializer().serializeToString(nested, true)).toBe(
+			expect(new XMLSerializer().serializeToString(nested)).toBe(
 				'<nested xmlns="AAA"></nested>'
 			)
 			child.appendChild(nested)
-			expect(new XMLSerializer().serializeToString(doc, true)).toBe(
+			expect(new XMLSerializer().serializeToString(doc)).toBe(
 				'<a:foo xmlns:a="AAA"><child xmlns="AAA"><nested></nested></child></a:foo>'
 			)
 		})

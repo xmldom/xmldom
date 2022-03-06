@@ -17,7 +17,7 @@ describe('XML Namespace Parse', () => {
 		const el = doc.getElementsByTagName('c:var')[0]
 		expect(el.namespaceURI).toBe('http://www.xidea.org/lite/core')
 		expect(doc.toString()).toBe(
-			'<html xmlns="http://www.w3.org/1999/xhtml"><body><c:var name="a" value="${1}" xmlns:c="http://www.xidea.org/lite/core"></c:var></body></html>'
+			'<html xmlns="http://www.w3.org/1999/xhtml"><body><c:var name="a" value="${1}" xmlns:c="http://www.xidea.org/lite/core"/></body></html>'
 		)
 	})
 
@@ -25,12 +25,7 @@ describe('XML Namespace Parse', () => {
 		const w3 = 'http://www.w3.org/1999/xhtml'
 		const n1 = 'http://www.frankston.com/public'
 		const n2 = 'http://rmf.vc/n2'
-		const hx =
-			'<html test="a" xmlns="' +
-			w3 +
-			'" xmlns:rmf="' +
-			n1 +
-			'"><rmf:foo hello="asdfa"/></html>'
+		const hx = `<html test="a" xmlns="${w3}" xmlns:rmf="${n1}"><rmf:foo hello="asdfa"/></html>`
 
 		const doc = new DOMParser().parseFromString(hx, 'text/xml')
 		const els = [].slice.call(
@@ -39,17 +34,19 @@ describe('XML Namespace Parse', () => {
 		for (let _i = 0, els_1 = els; _i < els_1.length; _i++) {
 			const el = els_1[_i]
 
-			const te = doc.createElementNS(n1, 'test')
-			te.setAttributeNS(n1, 'bar', 'valx')
-			expect(te.toString()).toBe('<test xmlns="' + n1 + '" bar="valx"/>')
-			el.appendChild(te)
-			const tx = doc.createElementNS(n2, 'test')
-			tx.setAttributeNS(n2, 'bar', 'valx')
-			expect(tx.toString()).toBe('<test xmlns="' + n2 + '" bar="valx"/>')
-			el.appendChild(tx)
+			const n1_test = doc.createElementNS(n1, 'test')
+			n1_test.setAttribute('xmlns', n1)
+			n1_test.setAttributeNS(n1, 'bar', 'valx')
+			expect(n1_test.toString()).toBe('<test xmlns="' + n1 + '" bar="valx"/>')
+			el.appendChild(n1_test)
+			const n2_test = doc.createElementNS(n2, 'test')
+			n2_test.setAttribute('xmlns', n2)
+			n2_test.setAttributeNS(n2, 'bar', 'valx')
+			expect(n2_test.toString()).toBe('<test xmlns="' + n2 + '" bar="valx"/>')
+			el.appendChild(n2_test)
 		}
 		expect(doc.toString()).toBe(
-			'<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" bar="valx"></test><test xmlns="http://rmf.vc/n2" bar="valx"></test></rmf:foo></html>'
+			'<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" bar="valx"/><test xmlns="http://rmf.vc/n2" bar="valx"/></rmf:foo></html>'
 		)
 	})
 })

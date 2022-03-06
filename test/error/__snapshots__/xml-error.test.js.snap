@@ -48,7 +48,7 @@ Object {
   -->
 
   <state id=\\"start\\" name=\\"start\\">
-    <transition event=\\"init\\" name=\\"init\\" target=\\"main_state\\"/>
+    <transition event=\\"init\\" name=\\"init\\" target=\\"main_state\\"></transition>
   </state>
 
   </scxml>",

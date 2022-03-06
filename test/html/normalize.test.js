@@ -47,7 +47,7 @@ describe('html normalizer', () => {
 			'<input type="button" disabled></input>',
 			'<input type="checkbox" checked></input>',
 			'<option selected></option>',
-			,
+			'<ul><li>abc<li>def</ul>',
 		])(`${mimeType}: script %s`, (xml) => {
 			const { errors, parser } = getTestParser()
 
