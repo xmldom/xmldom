@@ -90,16 +90,17 @@ describe('HTML_RAW_TEXT_ELEMENTS', () => {
 })
 describe('isHTMLRawTextElement', () => {
 	Object.keys(HTML_RAW_TEXT_ELEMENTS).forEach((key) => {
-		it(`should detect attribute '${key}'`, () => {
-			expect(isHTMLRawTextElement(key)).toBe(true)
+		const expected = HTML_RAW_TEXT_ELEMENTS[key] === false
+		it(`should detect attribute '${key}' as ${expected}`, () => {
+			expect(isHTMLRawTextElement(key)).toBe(expected)
 		})
 		const upperKey = key.toUpperCase()
-		it(`should detect attribute '${upperKey}'`, () => {
-			expect(isHTMLRawTextElement(upperKey)).toBe(true)
+		it(`should detect attribute '${upperKey}' as ${expected}`, () => {
+			expect(isHTMLRawTextElement(upperKey)).toBe(expected)
 		})
 		const mixedKey = key[0].toUpperCase() + key.substring(1)
-		it(`should detect attribute '${mixedKey}'`, () => {
-			expect(isHTMLRawTextElement(mixedKey)).toBe(true)
+		it(`should detect attribute '${mixedKey}' as ${expected}`, () => {
+			expect(isHTMLRawTextElement(mixedKey)).toBe(expected)
 		})
 	})
 	it('should not detect prototype properties', () => {
