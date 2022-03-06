@@ -36,12 +36,12 @@ describe('isHTMLBooleanAttribute', () => {
 			expect(isHTMLBooleanAttribute(mixedKey)).toBe(true)
 		})
 	})
-	it("should not detect prototype properties", () => {
+	it('should not detect prototype properties', () => {
 		expect(isHTMLBooleanAttribute('hasOwnProperty')).toBe(false)
 		expect(isHTMLBooleanAttribute('constructor')).toBe(false)
 		expect(isHTMLBooleanAttribute('prototype')).toBe(false)
 		expect(isHTMLBooleanAttribute('__proto__')).toBe(false)
-	});
+	})
 })
 describe('HTML_VOID_ELEMENTS', () => {
 	Object.keys(HTML_VOID_ELEMENTS).forEach((key) => {
@@ -69,12 +69,12 @@ describe('isHTMLVoidElement', () => {
 			expect(isHTMLVoidElement(mixedKey)).toBe(true)
 		})
 	})
-	it("should not detect prototype properties", () => {
+	it('should not detect prototype properties', () => {
 		expect(isHTMLVoidElement('hasOwnProperty')).toBe(false)
 		expect(isHTMLVoidElement('constructor')).toBe(false)
 		expect(isHTMLVoidElement('prototype')).toBe(false)
 		expect(isHTMLVoidElement('__proto__')).toBe(false)
-	});
+	})
 })
 describe('HTML_RAW_TEXT_ELEMENTS', () => {
 	Object.keys(HTML_RAW_TEXT_ELEMENTS).forEach((key) => {
@@ -102,12 +102,12 @@ describe('isHTMLRawTextElement', () => {
 			expect(isHTMLRawTextElement(mixedKey)).toBe(true)
 		})
 	})
-	it("should not detect prototype properties", () => {
+	it('should not detect prototype properties', () => {
 		expect(isHTMLRawTextElement('hasOwnProperty')).toBe(false)
 		expect(isHTMLRawTextElement('constructor')).toBe(false)
 		expect(isHTMLRawTextElement('prototype')).toBe(false)
 		expect(isHTMLRawTextElement('__proto__')).toBe(false)
-	});
+	})
 })
 describe('isHTMLEscapableRawTextElement', () => {
 	Object.keys(HTML_RAW_TEXT_ELEMENTS).forEach((key) => {
@@ -124,10 +124,10 @@ describe('isHTMLEscapableRawTextElement', () => {
 			expect(isHTMLEscapableRawTextElement(mixedKey)).toBe(expected)
 		})
 	})
-	it("should not detect prototype properties", () => {
+	it('should not detect prototype properties', () => {
 		expect(isHTMLEscapableRawTextElement('hasOwnProperty')).toBe(false)
 		expect(isHTMLEscapableRawTextElement('constructor')).toBe(false)
 		expect(isHTMLEscapableRawTextElement('prototype')).toBe(false)
 		expect(isHTMLEscapableRawTextElement('__proto__')).toBe(false)
-	});
+	})
 })
