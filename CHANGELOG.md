@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.2](https://github.com/xmldom/xmldom/compare/0.8.1...0.8.2)
+
+### Fixed
+- fix(dom): Serialize `&gt;` as specified (#395) [`#58`](https://github.com/xmldom/xmldom/issues/58)
+
+### Other
+- docs: Add `nodeType` values to public interface description [`#396`](https://github.com/xmldom/xmldom/pull/396)
+- test: Add executable examples for node and typescript [`#317`](https://github.com/xmldom/xmldom/pull/317)
+- fix(dom): Serialize `&gt;` as specified [`#395`](https://github.com/xmldom/xmldom/pull/395)
+- chore: Add minimal `Object.assign` ponyfill [`#379`](https://github.com/xmldom/xmldom/pull/379)
+- docs: Refine release documentation [`#378`](https://github.com/xmldom/xmldom/pull/378)
+- chore: update various dev dependencies
+
+Thank you [@niklasl](https://github.com/niklasl), [@cburatto](https://github.com/cburatto), [@SheetJSDev](https://github.com/SheetJSDev), [@pyrsmk](https://github.com/pyrsmk) for your contributions
+
 ## [0.8.1](https://github.com/xmldom/xmldom/compare/0.8.0...0.8.1)
 
 ### Fixes
