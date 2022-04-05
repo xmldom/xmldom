@@ -23,7 +23,7 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 002.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>
-&lt;.doc>
+&lt;.doc&gt;
 </doc>",
   "error": Array [
     "[xmldom error]	element parse error: Error: invalid tagName:.doc
@@ -40,7 +40,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 004.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&lt;?target some data></doc>",
+  "actual": "<doc>&lt;?target some data&gt;</doc>",
 }
 `;
 
@@ -112,7 +112,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 014.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"&lt;foo>\\"/>",
+  "actual": "<doc a1=\\"&lt;foo&gt;\\"/>",
 }
 `;
 
@@ -193,7 +193,7 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 024.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>
-&lt;123>
+&lt;123&gt;
 </doc>",
   "error": Array [
     "[xmldom error]	element parse error: Error: invalid tagName:123
@@ -1369,7 +1369,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 182.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;--></doc>",
+  "actual": "<doc>&amp;e;--&gt;</doc>",
   "error": Array [
     "[xmldom error]	entity not found:&e;
 @#[line:1,col:1]",

@@ -50,7 +50,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 008.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;&lt;>\\"'</doc>",
+  "actual": "<doc>&amp;&lt;&gt;\\"'</doc>",
   "expected": "<doc>&amp;&lt;&gt;&quot;'</doc>",
 }
 `;
@@ -293,7 +293,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 040.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"&quot;&lt;&amp;>'\\"/>",
+  "actual": "<doc a1=\\"&quot;&lt;&amp;&gt;'\\"/>",
   "expected": "<doc a1=\\"&quot;&lt;&amp;&gt;'\\"></doc>",
 }
 `;
@@ -359,7 +359,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 049.xml with snapshot 1`] = `
 Object {
-  "actual": "{!0!}/{!0!}d{!0!}o{!0!}c{!0!}>{!0!}
+  "actual": "{!0!}/{!0!}d{!0!}o{!0!}c{!0!}&gt;{!0!}
 {!0!}
 {!0!}",
   "error": Array [
@@ -378,7 +378,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 050.xml with snapshot 1`] = `
 Object {
-  "actual": "{!0!}/{!0!}d{!0!}o{!0!}c{!0!}>{!0!}
+  "actual": "{!0!}/{!0!}d{!0!}o{!0!}c{!0!}&gt;{!0!}
 {!0!}
 {!0!}",
   "error": Array [
@@ -397,7 +397,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 051.xml with snapshot 1`] = `
 Object {
-  "actual": "{!0!}/{!0!}@!*L>{!0!}
+  "actual": "{!0!}/{!0!}@!*L&gt;{!0!}
 {!0!}
 {!0!}",
   "error": Array [
@@ -816,8 +816,7 @@ Object {
 
 exports[`xmltest/valid standalone should match 103.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&lt;doc></doc>",
-  "expected": "<doc>&lt;doc&gt;</doc>",
+  "actual": "<doc>&lt;doc&gt;</doc>",
 }
 `;
 
