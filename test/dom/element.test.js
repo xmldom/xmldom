@@ -208,6 +208,87 @@ describe('Document', () => {
 		expect(doc.childNodes.toString()).toBe(`<A/><B/><C/>`)
 	})
 
+	it('ElementTraversal', () => {
+		const doc = new DOMParser().parseFromString(`<A><B/></A>`)
+		const aElement = doc.firstChild
+		const bElement = doc.firstChild.firstChild
+
+		expect(aElement.childElementCount).toBe(1)
+		expect(aElement.firstElementChild === bElement).toBe(true)
+		expect(aElement.lastElementChild === bElement).toBe(true)
+		expect(aElement.previousElementSibling).toBeNull()
+		expect(aElement.nextElementSibling).toBeNull()
+
+		// verify that we correctly initialize
+		expect(bElement.childElementCount).toBe(0)
+		expect(bElement.firstElementChild).toBeNull()
+		expect(bElement.lastElementChild).toBeNull()
+		expect(bElement.previousElementSibling).toBeNull()
+		expect(bElement.nextElementSibling).toBeNull()
+
+		const cElement = doc.createElement('C')
+		aElement.appendChild(cElement)
+
+		expect(aElement.childElementCount).toBe(2)
+		expect(aElement.firstElementChild === bElement).toBe(true)
+		expect(aElement.lastElementChild === cElement).toBe(true)
+
+		expect(bElement.previousElementSibling).toBeNull()
+		expect(bElement.nextElementSibling === cElement).toBe(true)
+
+		expect(cElement.previousElementSibling === bElement).toBe(true)
+		expect(cElement.nextElementSibling).toBeNull()
+
+		const dElement = doc.createElement('D')
+		aElement.appendChild(dElement)
+
+		expect(aElement.childElementCount).toBe(3)
+		expect(aElement.firstElementChild === bElement).toBe(true)
+		expect(aElement.lastElementChild === dElement).toBe(true)
+
+		expect(bElement.previousElementSibling).toBeNull()
+		expect(bElement.nextElementSibling === cElement).toBe(true)
+
+		expect(cElement.previousElementSibling === bElement).toBe(true)
+		expect(cElement.nextElementSibling === dElement).toBe(true)
+
+		expect(dElement.previousElementSibling === cElement).toBe(true)
+		expect(dElement.nextElementSibling).toBeNull()
+
+		// remove the element in the middle
+		aElement.removeChild(cElement)
+
+		expect(aElement.childElementCount).toBe(2)
+		expect(aElement.firstElementChild === bElement).toBe(true)
+		expect(aElement.lastElementChild === dElement).toBe(true)
+
+		expect(bElement.previousElementSibling).toBeNull()
+		expect(bElement.nextElementSibling === dElement).toBe(true)
+
+		expect(dElement.previousElementSibling === bElement).toBe(true)
+		expect(dElement.nextElementSibling).toBeNull()
+
+		// verify that we correctly reset XXXElementSiblings attributes
+		expect(cElement.previousElementSibling).toBeNull()
+		expect(cElement.nextElementSibling).toBeNull()
+
+		// remove first element
+		aElement.removeChild(bElement)
+		expect(aElement.childElementCount).toBe(1)
+		expect(aElement.firstElementChild === dElement).toBe(true)
+		expect(aElement.lastElementChild === dElement).toBe(true)
+
+		expect(dElement.previousElementSibling).toBeNull()
+		expect(dElement.nextElementSibling).toBeNull()
+
+		// remove last element
+		aElement.removeChild(dElement)
+
+		expect(aElement.childElementCount).toBe(0)
+		expect(aElement.firstElementChild).toBeNull()
+		expect(aElement.lastElementChild).toBeNull()
+	})
+
 	xit('nested append failed', () => {})
 
 	xit('self append failed', () => {})
