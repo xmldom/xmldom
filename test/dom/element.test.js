@@ -214,17 +214,17 @@ describe('Document', () => {
 			const aElement = doc.firstChild
 
 			expect(aElement.childElementCount).toBe(0)
-			expect(aElement.firstElementChild === bElement).toBe(true)
-			expect(aElement.lastElementChild === bElement).toBe(true)
+			expect(aElement.firstElementChild).toBeNull()
+			expect(aElement.lastElementChild).toBeNull()
 			expect(aElement.previousElementSibling).toBeNull()
 			expect(aElement.nextElementSibling).toBeNull()
 		})
 
 		it('append one element and remove', () => {
-			const doc = new DOMParser().parseFromString(`<A><B/></A>`)
+			const doc = new DOMParser().parseFromString(`<A></A>`)
 			const aElement = doc.firstChild
 			const bElement = doc.createElement('B')
-			aElement.appendChild(cElement)
+			aElement.appendChild(bElement)
 
 			expect(aElement.childElementCount).toBe(1)
 			expect(aElement.firstElementChild === bElement).toBe(true)
@@ -235,8 +235,8 @@ describe('Document', () => {
 			aElement.removeChild(bElement)
 
 			expect(aElement.childElementCount).toBe(0)
-			expect(aElement.firstElementChild === bElement).toBe(true)
-			expect(aElement.lastElementChild === bElement).toBe(true)
+			expect(aElement.firstElementChild).toBeNull()
+			expect(aElement.lastElementChild).toBeNull()
 		})
 
 		it('append second element at the end and remove it', () => {
@@ -257,7 +257,7 @@ describe('Document', () => {
 
 			aElement.removeChild(cElement)
 
-			expect(aElement.childElementCount).toBe(0)
+			expect(aElement.childElementCount).toBe(1)
 			expect(aElement.firstElementChild === bElement).toBe(true)
 			expect(aElement.lastElementChild === bElement).toBe(true)
 			expect(bElement.previousElementSibling).toBeNull()
@@ -275,7 +275,7 @@ describe('Document', () => {
 
 			aElement.removeChild(cElement)
 			expect(bElement.previousElementSibling).toBeNull()
-			expect(bElement.nextElementSibling === cElement).toBe(true)
+			expect(bElement.nextElementSibling === dElement).toBe(true)
 			expect(dElement.previousElementSibling === bElement).toBe(true)
 			expect(dElement.nextElementSibling).toBeNull()
 		})
