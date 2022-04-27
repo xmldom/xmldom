@@ -253,4 +253,96 @@ describe('XML Serializer', () => {
 			)
 		})
 	})
+	describe('pretty print', () => {
+		it('should be off, if falsy', () => {
+			const input = '<xml xmlns="a"><child>test</child></xml>'
+			const dom = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
+
+			expect(dom.toString()).toBe(input)
+		})
+		it('should be on, if truthy (default indent: 2 spaces)', () => {
+			const input = '<xml xmlns="a"><child>test<child/></child></xml>'
+			const dom = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
+
+			const indent = '  '
+			const isHTML = false
+			const nodeFilter = null
+			const pretty = true
+			const output = dom.toString(isHTML, nodeFilter, pretty)
+
+			const expected = `
+<xml xmlns="a">
+${indent}<child>
+${indent}${indent}test
+${indent}${indent}<child/>
+${indent}</child>
+</xml>
+`
+			expect(output.trim()).toBe(expected.trim())
+		})
+		it('should accept optional indent', () => {
+			const input = '<xml xmlns="a"><child>test</child></xml>'
+			const dom = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
+
+			const indent = '\t'
+			const pretty = { indent }
+			const output = dom.toString(false, false, pretty)
+
+			const expected = `
+<xml xmlns="a">
+${indent}<child>
+${indent}${indent}test
+${indent}</child>
+</xml>
+`
+			expect(output.trim()).toBe(expected.trim())
+		})
+		it('should prettify siblings', () => {
+			const input = [
+				'<xml xmlns="a"><siblings>text node</siblings>',
+				'<siblings>text node</siblings><siblings /></xml>',
+			].join('')
+			const dom = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
+
+			const indent = '  '
+			const pretty = { indent }
+			const output = dom.toString(false, false, pretty)
+
+			const expected = `
+<xml xmlns="a">
+${indent}<siblings>
+${indent}${indent}text node
+${indent}</siblings>
+${indent}<siblings>
+${indent}${indent}text node
+${indent}</siblings>
+${indent}<siblings/>
+</xml>
+`
+			expect(output.trim()).toBe(expected.trim())
+		})
+		it('should prettify nested', () => {
+			const input = [
+				'<xml xmlns="a"><nested><nested>text node</nested>',
+				'</nested></xml>',
+			].join('')
+
+			const dom = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
+
+			const indent = '  '
+			const pretty = { indent }
+			const output = dom.toString(false, false, pretty)
+
+			const expected = `
+<xml xmlns="a">
+${indent}<nested>
+${indent}${indent}<nested>
+${indent}${indent}${indent}text node
+${indent}${indent}</nested>
+${indent}</nested>
+</xml>
+`
+			expect(output.trim()).toBe(expected.trim())
+		})
+	})
 })
