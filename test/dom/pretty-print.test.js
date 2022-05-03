@@ -82,7 +82,7 @@ ${indent}</parent>
     <child attr="two">
 text node
     </child>
-<child attr="three" >text</child>
+<child attr="three" >text</child><child />
 <child attr="four" >text
                 </child>
 
@@ -101,6 +101,7 @@ ${indent}${indent}</child>
 ${indent}${indent}<child attr="three">
 ${indent}${indent}${indent}text
 ${indent}${indent}</child>
+${indent}${indent}<child/>
 ${indent}${indent}<child attr="four">
 ${indent}${indent}${indent}text
 ${indent}${indent}</child>
