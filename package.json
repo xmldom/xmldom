@@ -50,7 +50,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "get-stream": "6.0.1",
     "jest": "27.5.1",
-    "nodemon": "2.0.16",
+    "nodemon": "2.0.18",
     "np": "7.6.1",
     "prettier": "2.6.2",
     "xmltest": "1.5.0",
