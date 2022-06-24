@@ -29,7 +29,7 @@ Object {
 
 exports[`parse unclosed inner 1`] = `
 Object {
-  "actual": "<r><Page><Label/></Page>  <Page/></r>",
+  "actual": "<r><Page><Label/></Page></r>",
   "error": Array [
     "[xmldom error]	end tag name: Page maybe not complete
 @#[line:1,col:10]",
