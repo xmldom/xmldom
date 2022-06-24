@@ -46,6 +46,14 @@ describe('XML Node Parse', () => {
 		expect(actual).toBe(`<book/><title>Harry Potter</title>`)
 	})
 
+	it('multiline sanitization', () => {
+		// disabling error logger to keep test log clean
+		const actual = new DOMParser({ errorHandler: { error: () => {} } })
+			.parseFromString(`<xml><child></child <injected></xml>`, 'text/xml')
+			.toString()
+		expect(actual).toBe(`<xml><child/></xml>`)
+	})
+
 	describe('simple attributes', () => {
 		describe('nothing special', () => {
 			it.each([
