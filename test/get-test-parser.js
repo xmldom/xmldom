@@ -14,18 +14,17 @@ const { DOMParser } = require('../lib/dom-parser')
  * - `errors`: the object for the `errorHandler` to use,
  * 						is also returned with the same name for later assertions,
  * 						default is an empty object
- * - `locator`: The `locator` to pass to DOMParser constructor options,
- * 			  		 default is an empty object
+ * - `locator`: Whether to record node locations in the XML string, default is true
  *
  * @param options {{
  * 					errorHandler?: function (key: ErrorLevel, msg: string)
  * 				  							| Partial<Record<ErrorLevel, function(msg:string)>>,
  * 					errors?: Partial<Record<ErrorLevel, string[]>>,
- * 					locator?: Object
+ * 					locator?: boolean
  *				}}
  * @returns {{parser: DOMParser, errors: Partial<Record<ErrorLevel, string[]>>}}
  */
-function getTestParser({ errorHandler, errors = {}, locator = {} } = {}) {
+function getTestParser({ errorHandler, errors = {}, locator = true } = {}) {
 	errorHandler =
 		errorHandler ||
 		((key, msg) => {

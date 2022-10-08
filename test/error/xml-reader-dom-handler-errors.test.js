@@ -56,26 +56,25 @@ function noop() {}
  *
  * The `methods` property provides the list of all mocks.
  */
-class StubDOMHandler extends __DOMHandler {
-	constructor(throwingMethod, ErrorClass) {
-		super()
-		this.methods = []
-		DOMHandlerMethods.forEach((method) => {
-			const impl = jest.fn(
-				method === throwingMethod
-					? () => {
-							throw new (ErrorClass || ParseError)(
-								`StubDOMHandler throwing in ${throwingMethod}`
-							)
-					  }
-					: noop
-			)
-			impl.mockName(method)
-			this[method] = impl
-			this.methods.push(impl)
-		})
-	}
+function StubDOMHandlerWith(throwingMethod, ErrorClass) {
+	class StubDOMHandler extends __DOMHandler {}
+	StubDOMHandler.methods = DOMHandlerMethods.map((method) => {
+		const impl = jest.fn(
+			method === throwingMethod
+				? () => {
+						throw new (ErrorClass || ParseError)(
+							`StubDOMHandler throwing in ${throwingMethod}`
+						)
+				  }
+				: noop()
+		)
+		impl.mockName(method)
+		StubDOMHandler.prototype[method] = impl
+		return impl
+	})
+	return StubDOMHandler
 }
+
 /**
  * This sample is triggering all method calls from XMLReader to DOMHandler at least once.
  * This is verified in a test.
@@ -102,13 +101,13 @@ const ALL_METHODS = `<?xml ?>
 
 describe('methods called in DOMHandler', () => {
 	it('should call "all possible" methods when using StubDOMHandler', () => {
-		const domBuilder = new StubDOMHandler()
-		const parser = new DOMParser({ domBuilder, locator: {} })
-		expect(domBuilder.methods).toHaveLength(DOMHandlerMethods.length)
+		const domHandler = StubDOMHandlerWith()
+		const parser = new DOMParser({ domHandler, locator: true })
+		expect(domHandler.methods).toHaveLength(DOMHandlerMethods.length)
 
 		parser.parseFromString(ALL_METHODS)
 
-		const uncalledMethodNames = domBuilder.methods
+		const uncalledMethodNames = domHandler.methods
 			.filter((m) => m.mock.calls.length === 0)
 			.map((m) => m.getMockName())
 		expect(uncalledMethodNames).toEqual([...UNCALLED_METHODS.values()].sort())
@@ -117,8 +116,8 @@ describe('methods called in DOMHandler', () => {
 		'when DOMHandler.%s throws',
 		(throwing) => {
 			it('should not catch ParserError', () => {
-				const domBuilder = new StubDOMHandler(throwing, ParseError)
-				const parser = new DOMParser({ domBuilder, locator: {} })
+				const domHandler = StubDOMHandlerWith(throwing, ParseError)
+				const parser = new DOMParser({ domHandler, locator: true })
 
 				expect(() => parser.parseFromString(ALL_METHODS)).toThrow(ParseError)
 			})
@@ -126,8 +125,8 @@ describe('methods called in DOMHandler', () => {
 			it(`${
 				isUncaughtMethod ? 'does not' : 'should'
 			} catch other Error`, () => {
-				const domBuilder = new StubDOMHandler(throwing, Error)
-				const parser = new DOMParser({ domBuilder, locator: {} })
+				const domHandler = StubDOMHandlerWith(throwing, Error)
+				const parser = new DOMParser({ domHandler, locator: true })
 
 				if (isUncaughtMethod) {
 					expect(() => parser.parseFromString(ALL_METHODS)).toThrow()

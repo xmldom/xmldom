@@ -34,3 +34,10 @@ Array [
   "application/xhtml+xml",
 ]
 `;
+
+exports[`MIME_TYPE should contain immutable hasDefaultHTMLNamespace with correct value 1`] = `
+Array [
+  "hasDefaultHTMLNamespace",
+  [Function],
+]
+`;

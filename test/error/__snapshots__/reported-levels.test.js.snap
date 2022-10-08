@@ -352,20 +352,6 @@ Array [
 ]
 `;
 
-exports[`WF_AttributeMissingValue with mimeType text/html should be reported as warning 1`] = `
-Array [
-  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead!!
-@#[line:1,col:1]",
-]
-`;
-
-exports[`WF_AttributeMissingValue with mimeType text/html should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
-Array [
-  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead!!||@#[line:1,col:1]
-    at parseElementStartPart (lib/sax.js:#15)",
-]
-`;
-
 exports[`WF_AttributeMissingValue with mimeType text/xml should be reported as warning 1`] = `
 Array [
   "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead!!
@@ -377,22 +363,6 @@ exports[`WF_AttributeMissingValue with mimeType text/xml should escalate Error t
 Array [
   "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead!!||@#[line:1,col:1]
     at parseElementStartPart (lib/sax.js:#15)",
-]
-`;
-
-exports[`WF_AttributeMissingValue2 with mimeType text/html should be reported as warning 1`] = `
-Array [
-  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead2!!
-@#[line:1,col:1]",
-  "[xmldom warning]	attribute \\"attr2\\" missed value!! \\"attr2\\" instead!!
-@#[line:1,col:1]",
-]
-`;
-
-exports[`WF_AttributeMissingValue2 with mimeType text/html should escalate Error thrown in errorHandler.warning to errorHandler.error 1`] = `
-Array [
-  "[xmldom warning]	attribute \\"attr\\" missed value!! \\"attr\\" instead2!!||@#[line:1,col:1]
-    at parseElementStartPart (lib/sax.js:#18)",
 ]
 `;
 

@@ -35,7 +35,7 @@ function xss(html) {
 	const dom = new DOMParser({
 		xmlns: { '': 'http://www.w3.org/1999/xhtml' },
 	}).parseFromString(html, 'text/html')
-	return dom.documentElement.toString(true, function (node) {
+	return dom.documentElement.toString(function (node) {
 		switch (node.nodeType) {
 			case 1: //element
 				const tagName = node.tagName
