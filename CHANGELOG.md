@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-beta.1](https://github.com/xmldom/xmldom/compare/0.8.2...0.9.0-beta.1)
+
+### Fixed
+
+**Only use HTML rules if mimeType matches** [`#338`](https://github.com/xmldom/xmldom/pull/338), fixes [`#203`](https://github.com/xmldom/xmldom/issues/203)
+
+In the living specs for parsing XML and HTML, that this library is trying to implement,
+there is a distinction between the different types of documents being parsed:
+There are quite some rules that are different for parsing, constructing and serializing XML vs HTML documents.
+
+So far xmldom was always "detecting" whether "the HTML rules should be applied" by looking at the current namespace. So from the first time an the HTML default namespace (`http://www.w3.org/1999/xhtml`) was found, every node was treated as being part of an HTML document. This misconception is the root cause for quite some reported bugs.
+
+BREAKING CHANGE: HTML rules are no longer applied just because of the namespace, but require the `mimeType` argument passed to `DOMParser.parseFromString(source, mimeType)` to match `'text/html'`. Doing so implies all rules for handling casing for tag and attribute names when parsing, creation of nodes and searching nodes.
+
+BREAKING CHANGE: Correct the return type of `DOMParser.parseFromString` to `Document | undefined`. In case of parsing errors it was always possible that "the returned `Document`" has not been created. In case you are using Typescript you now need to handle those cases.
+
+BREAKING CHANGE: The instance property `DOMParser.options` is no longer available, instead use the individual `readonly` property per option (`assign`, `domHandler`, `errorHandler`, `normalizeLineEndings`, `locator`, `xmlns`). Those also provides the default value if the option was not passed. The 'locator' option is now just a boolean (default remains `true`).
+
+BREAKING CHANGE: The following methods no longer allow a (non spec compliant) boolean argument to toggle "HTML rules":
+- `XMLSerializer.serializeToString`
+- `Node.toString`
+- `Document.toString`
+
+The following interfaces have been implemented:
+`DOMImplementation` now implements all methods defined in the DOM spec, but not all of the behavior is implemented (see docstring):
+- `createDocument` creates an "XML Document" (prototype: `Document`, property `type` is `'xml'`)
+- `createHTMLDocument` creates an "HTML Document" (type/prototype: `Document`, property `type` is `'html'`).
+  - when no argument is passed or the first argument is a string, the basic nodes for an HTML structure are created, as specified
+  - when the first argument is `false` no child nodes are created
+
+`Document` now has two new readonly properties as specified in the DOM spec:
+- `contentType` which is the mime-type that was used to create the document
+- `type` which is either the string literal `'xml'` or `'html'`
+
+`MIME_TYPE` (`/lib/conventions.js`):
+- `hasDefaultHTMLNamespace` test if the provided string is one of the miem types that implies the default HTML namespace: `text/html` or `application/xhtml+xml`
+
+Thank you [@weiwu-zhang](https://github.com/weiwu-zhang) for your contributions
+
+### Chore
+
+- update multiple devDependencies
+
 ## [0.8.2](https://github.com/xmldom/xmldom/compare/0.8.1...0.8.2)
 
 ### Fixed
