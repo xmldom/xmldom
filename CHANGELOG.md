@@ -4,8 +4,22 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.3](https://github.com/xmldom/xmldom/compare/0.8.3...0.8.2)
+
+### Fixed
+- Avoid iterating over prototype properties [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
+
+Thank you, [@Supraja9726](https://github.com/Supraja9726) for your contributions
+
+
 ## [0.9.0-beta.2](https://github.com/xmldom/xmldom/compare/0.9.0-beta.1...0.9.0-beta.2)
 
+
+### Fixed
+- Avoid iterating over prototype properties [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
+
+Thank you, [@Supraja9726](https://github.com/Supraja9726) for your contributions
+## [0.8.3](https://github.com/xmldom/xmldom/compare/0.8.3...0.8.2)
 
 ### Fixed
 - Avoid iterating over prototype properties [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
