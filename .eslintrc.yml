@@ -5,11 +5,14 @@ env:
   node: true
 plugins:
   - es5
+  - anti-trojan-source
 # FUTURE TBD:
 # extends: 'eslint:recommended'
 parserOptions:
   ecmaVersion: 11
 rules:
+  "anti-trojan-source/no-bidi":
+    - error
   # FUTURE TBD:
   # indent:
   #   - error
