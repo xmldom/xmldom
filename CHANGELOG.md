@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.6](https://github.com/xmldom/xmldom/compare/0.7.5...0.7.6)
+
+### Fixed
+- Avoid iterating over prototype properties [`#441`](https://github.com/xmldom/xmldom/pull/441) / [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
+
+Thank you, [@jftanner](https://github.com/jftanner), [@Supraja9726](https://github.com/Supraja9726) for your contributions
+
 ## 0.7.5
 
 [Commits](https://github.com/xmldom/xmldom/compare/0.7.4...0.7.5)
@@ -11,7 +18,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixes:
 
 - Preserve default namespace when serializing [`#319`](https://github.com/xmldom/xmldom/issues/319) / [`#321`](https://github.com/xmldom/xmldom/pull/321)
-  Thank you [@lupestro](https://github.com/lupestro)
+  Thank you, [@lupestro](https://github.com/lupestro)
 
 ## 0.7.4
 
@@ -20,7 +27,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixes:
 
 - Restore ability to parse `__prototype__` attributes [`#315`](https://github.com/xmldom/xmldom/pull/315)
-  Thank you [@dsimsonOMF](https://github.com/dsimsonOMF)
+  Thank you, [@dsimpsonOMF](https://github.com/dsimpsonOMF)
 
 ## 0.7.3
 
@@ -30,7 +37,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Add doctype when parsing from string [`#277`](https://github.com/xmldom/xmldom/issues/277) / [`#301`](https://github.com/xmldom/xmldom/pull/301)
 - Correct typo in error message [`#294`](https://github.com/xmldom/xmldom/pull/294)
-  Thank you [@rrthomas](https://github.com/rrthomas)
+  Thank you, [@rrthomas](https://github.com/rrthomas)
 
 ### Refactor:
 
@@ -55,7 +62,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixes:
 
 - Types: Add index.d.ts to packaged files [`#288`](https://github.com/xmldom/xmldom/pull/288)
-  Thank you [@forty](https://github.com/forty)
+  Thank you, [@forty](https://github.com/forty)
 
 ## 0.7.1
 
@@ -64,7 +71,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixes:
 
 - Types: Copy types from DefinitelyTyped [`#283`](https://github.com/xmldom/xmldom/pull/283)
-  Thank you [@kachkaev](https://github.com/kachkaev)
+  Thank you, [@kachkaev](https://github.com/kachkaev)
 
 ### Chore:
 - package.json: remove author, maintainers, etc. [`#279`](https://github.com/xmldom/xmldom/pull/279)
@@ -81,7 +88,7 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 ### Fixes:
 
 - Security: Misinterpretation of malicious XML input [`CVE-2021-32796`](https://github.com/xmldom/xmldom/security/advisories/GHSA-5fg8-2547-mr8q)
-- Implement `Document.getElementsByClassName` as specified [`#213`](https://github.com/xmldom/xmldom/pull/213), thank you [@ChALkeR](https://github.com/ChALkeR)
+- Implement `Document.getElementsByClassName` as specified [`#213`](https://github.com/xmldom/xmldom/pull/213), thank you, [@ChALkeR](https://github.com/ChALkeR)
 - Inherit namespace prefix from parent when required [`#268`](https://github.com/xmldom/xmldom/pull/268)
 - Handle whitespace in closing tags [`#267`](https://github.com/xmldom/xmldom/pull/267)
 - Update `DOMImplementation` according to recent specs [`#210`](https://github.com/xmldom/xmldom/pull/210)  
@@ -89,7 +96,7 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 - No longer serializes any namespaces with an empty URI [`#244`](https://github.com/xmldom/xmldom/pull/244)   
   (related to [`#168`](https://github.com/xmldom/xmldom/pull/168) released in 0.6.0)  
   BREAKING CHANGE: Only if you rely on ["unsetting" a namespace prefix](https://github.com/xmldom/xmldom/pull/168#issuecomment-886984994) by setting it to an empty string 
-- Set `localName` as part of `Document.createElement` [`#229`](https://github.com/xmldom/xmldom/pull/229), thank you [@rrthomas](https://github.com/rrthomas)
+- Set `localName` as part of `Document.createElement` [`#229`](https://github.com/xmldom/xmldom/pull/229), thank you, [@rrthomas](https://github.com/rrthomas)
 
 ### CI
 
@@ -108,7 +115,7 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 
 - Stop serializing empty namespace values like `xmlns:ds=""` [`#168`](https://github.com/xmldom/xmldom/pull/168)  
   BREAKING CHANGE: If your code expected empty namespaces attributes to be serialized.  
-  Thank you [@pdecat](https://github.com/pdecat) and [@FranckDepoortere](https://github.com/FranckDepoortere)
+  Thank you, [@pdecat](https://github.com/pdecat) and [@FranckDepoortere](https://github.com/FranckDepoortere)
 - Escape `<` to `&lt;` when serializing attribute values [`#198`](https://github.com/xmldom/xmldom/issues/198) / [`#199`](https://github.com/xmldom/xmldom/pull/199)
 
 ## 0.5.0
