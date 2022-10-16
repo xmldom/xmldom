@@ -63,9 +63,12 @@ We are open to discuss things that are redundant in PRs.
 
 - `git fetch --all && git checkout -B master upstream/master`
 - `npm run release -- $bump` and follow the instructions
+  - to release an update to an oder minor version from a `release-0.N.x` branch, you have to use `npm run release -- $bump --branch release-0.N.x`.
+    The script doesn't exist in the `release-0.7.x` branch, replace `npm run release` with `npx np -no-yarn`.
+  - When releasing versions on older release branches, make sure that the `latest` dist tag points to the right current version, by using `npm dist-tag ls @xmldom/xmldom` and `npm dist-tag add @xmldom/xmldom@VERSION latest`
 - Copy the content of the changelog to the release draft
 - Change the first headline to be just a link with the text `Commits`
-- Run `npm pack @xmldom/xmldom` to **download** the published binary 
+- Run `npm pack @xmldom/xmldom[@version-or-dist-tag]` to **download** the published binary 
   and **upload** the file to the release
 - If it's a minor bump: Check the box for creating a release discussion
 - If it's a patch bump: update the related release discussion of the minor bump 
