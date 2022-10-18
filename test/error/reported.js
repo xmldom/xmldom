@@ -67,6 +67,7 @@ const REPORTED = {
 	SYNTAX_EndTagMaybeNotComplete: {
 		source: '<xml><inner></inner </xml>',
 		level: 'error',
+		skippedInHtml: true,
 		match: (msg) => /end tag name/.test(msg) && /maybe not complete/.test(msg),
 	},
 	/**

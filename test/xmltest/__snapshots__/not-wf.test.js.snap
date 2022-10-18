@@ -23,8 +23,8 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 002.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>
-&lt;.doc&gt;
-</doc>",
+&lt;.doc&gt;</doc>
+",
   "error": Array [
     "[xmldom error]	element parse error: Error: invalid tagName:.doc
 @#[line:2,col:1]",
@@ -152,7 +152,7 @@ exports[`xmltest/not-wellformed standalone should match 019.xml with snapshot 1`
 Object {
   "actual": "<doc/>",
   "error": Array [
-    "[xmldom error]	end tag name: > is not complete:undefined
+    "[xmldom error]	end tag name: doc is not complete
 @#[line:1,col:1]",
   ],
   "warning": Array [
@@ -193,8 +193,8 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 024.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>
-&lt;123&gt;
-</doc>",
+&lt;123&gt;</doc>
+",
   "error": Array [
     "[xmldom error]	element parse error: Error: invalid tagName:123
 @#[line:2,col:1]",
