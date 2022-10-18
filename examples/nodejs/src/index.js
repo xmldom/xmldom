@@ -1,3 +1,4 @@
+'use strict';
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom');
 
 const source = `<xml xmlns="a">
