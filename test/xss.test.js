@@ -27,9 +27,9 @@ const excludeTags = new RegExp(
 		')$',
 	'i'
 )
-const excludeAttrs = /^on|style/i
-const urlAttrs = /(?:href|src)/i
-const invalidURL = /^(data|javascript|vbscript|ftp)\:/
+const excludeAttrs = /^(?:on|style)/i
+const urlAttrs = /href|src/i
+const invalidURL = /^(data|javascript|vbscript|ftp):/
 
 function xss(html) {
 	const dom = new DOMParser({
