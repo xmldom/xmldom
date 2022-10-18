@@ -36,6 +36,16 @@ describe('parse', () => {
 		expect({ actual, ...errors }).toMatchSnapshot()
 	})
 
+	it('unclosed root followed by another tag', () => {
+		const { errors, parser } = getTestParser()
+
+		const actual = parser
+			.parseFromString('<Page></Page  <hello></hello>', 'text/xml')
+			.toString()
+
+		expect({ actual, ...errors }).toMatchSnapshot()
+	})
+
 	it('svg test', () => {
 		const svgCase = [
 			'<svg>',

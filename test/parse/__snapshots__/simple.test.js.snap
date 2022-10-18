@@ -29,7 +29,7 @@ Object {
 
 exports[`parse unclosed inner 1`] = `
 Object {
-  "actual": "<r><Page><Label/></Page>  <Page/></r>",
+  "actual": "<r><Page><Label/></Page></r>",
   "error": Array [
     "[xmldom error]	end tag name: Page maybe not complete
 @#[line:1,col:10]",
@@ -41,8 +41,18 @@ exports[`parse unclosed root 1`] = `
 Object {
   "actual": "<Page><Label class=\\"title\\"/></Page>  1",
   "error": Array [
-    "[xmldom error]	end tag name: Page is not complete:Page
+    "[xmldom error]	end tag name: Page is not complete
 @#[line:1,col:20]",
+  ],
+}
+`;
+
+exports[`parse unclosed root followed by another tag 1`] = `
+Object {
+  "actual": "<Page/>",
+  "error": Array [
+    "[xmldom error]	end tag name: Page maybe not complete
+@#[line:1,col:1]",
   ],
 }
 `;
