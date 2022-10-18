@@ -1,5 +1,5 @@
-'use strict'
-const { DOMParser } = require('../lib/dom-parser')
+'use strict';
+const { DOMParser } = require('../lib/dom-parser');
 
 /**
  * @typedef ErrorLevel {'warn' | 'error' | 'fatalError'}
@@ -28,15 +28,15 @@ function getTestParser({ errorHandler, errors = {}, locator = true } = {}) {
 	errorHandler =
 		errorHandler ||
 		((key, msg) => {
-			if (!errors[key]) errors[key] = []
-			errors[key].push(msg)
-		})
+			if (!errors[key]) errors[key] = [];
+			errors[key].push(msg);
+		});
 	return {
 		errors,
 		parser: new DOMParser({ errorHandler, locator }),
-	}
+	};
 }
 
 module.exports = {
 	getTestParser: getTestParser,
-}
+};

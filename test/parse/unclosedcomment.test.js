@@ -1,13 +1,13 @@
-'use strict'
+'use strict';
 
-const { getTestParser } = require('../get-test-parser')
+const { getTestParser } = require('../get-test-parser');
 
 describe('errorHandle', () => {
 	it('unclosedcomment', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString('<!--', 'text/xml').toString()
+		const actual = parser.parseFromString('<!--', 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
-})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
+});

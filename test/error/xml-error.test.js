@@ -1,41 +1,37 @@
-'use strict'
+'use strict';
 
-const { getTestParser } = require('../get-test-parser')
+const { getTestParser } = require('../get-test-parser');
 
 describe('html vs xml:', () => {
 	it.each(['text/html', 'text/xml'])('unclosed document in %s', (mimeType) => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString('<img>', mimeType).toString()
+		const actual = parser.parseFromString('<img>', mimeType).toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it.each([
 		['<test><!--', '<test/>'],
 		['<r', '<r/>'],
 	])('invalid xml node "%s"', (input, expected) => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser
-			.parseFromString(input, 'text/xml')
-			.documentElement.toString()
+		const actual = parser.parseFromString(input, 'text/xml').documentElement.toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot({ actual: expected })
-	})
+		expect({ actual, ...errors }).toMatchSnapshot({ actual: expected });
+	});
 
 	it('html attribute (miss quote)', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser
-			.parseFromString('<img attr=1/>', 'text/html')
-			.toString()
+		const actual = parser.parseFromString('<img attr=1/>', 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it.each(['text/html', 'text/xml'])('%s attribute (missing =)', (mimeType) => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 		const xml = [
 			'<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0"',
 			'       profile="ecmascript" id="scxmlRoot" initial="start">',
@@ -51,10 +47,10 @@ describe('html vs xml:', () => {
 			'  </state>',
 			'',
 			'  </scxml>',
-		].join('\n')
+		].join('\n');
 
-		const actual = parser.parseFromString(xml, mimeType).toString()
+		const actual = parser.parseFromString(xml, mimeType).toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
-})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
+});

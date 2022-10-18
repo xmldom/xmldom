@@ -1,22 +1,22 @@
 {
-  "name": "@xmldom/xmldom-example-typescript-node-es6",
-  "private": true,
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "tsc": "tsc",
-    "test": "node dist/index.js"
-  },
-  "keywords": [
-    "test",
-    "typescript"
-  ],
-  "license": "MIT",
-  "devDependencies": {
-    "typescript": "*"
-  },
-  "dependencies": {
-    "@xmldom/xmldom": "file:../.."
-  }
+	"name": "@xmldom/xmldom-example-typescript-node-es6",
+	"private": true,
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"tsc": "tsc",
+		"test": "node dist/index.js"
+	},
+	"keywords": [
+		"test",
+		"typescript"
+	],
+	"license": "MIT",
+	"devDependencies": {
+		"typescript": "*"
+	},
+	"dependencies": {
+		"@xmldom/xmldom": "file:../.."
+	}
 }
