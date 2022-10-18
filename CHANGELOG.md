@@ -4,12 +4,29 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-beta.3](https://github.com/xmldom/xmldom/compare/0.9.0-beta.2...0.9.0-beta.3)
+
+### Fixed
+
+- fix: Stop adding tags after incomplete closing tag [`#445`](https://github.com/xmldom/xmldom/pull/445) / [`#416`](https://github.com/xmldom/xmldom/pull/416)
+  BREAKING CHANGE: It no longer reports an error when parsing HTML containing incomplete closing tags, to align the behavior with the one in the browser.
+  BREAKING CHANGE: If your code relied on not well-formed XML to be parsed and include subsequent tags, this will no longer work.
+- fix: Avoid bidirectional characters in source code [`#440`](https://github.com/xmldom/xmldom/pull/440)
+
+### Other
+
+- ci: Add CodeQL scan [`#444`](https://github.com/xmldom/xmldom/pull/444)
+
+Thank you, [@ACN-kck](https://github.com/ACN-kck), [@mgerlach](https://github.com/mgerlach) for your contributions
+
+
 ## [0.7.6](https://github.com/xmldom/xmldom/compare/0.7.5...0.7.6)
 
 ### Fixed
 - Avoid iterating over prototype properties [`#441`](https://github.com/xmldom/xmldom/pull/441) / [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
 
 Thank you, [@jftanner](https://github.com/jftanner), [@Supraja9726](https://github.com/Supraja9726) for your contributions
+
 
 ## [0.8.3](https://github.com/xmldom/xmldom/compare/0.8.3...0.8.2)
 
@@ -21,17 +38,11 @@ Thank you, [@Supraja9726](https://github.com/Supraja9726) for your contributions
 
 ## [0.9.0-beta.2](https://github.com/xmldom/xmldom/compare/0.9.0-beta.1...0.9.0-beta.2)
 
-
 ### Fixed
 - Avoid iterating over prototype properties [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
 
 Thank you, [@Supraja9726](https://github.com/Supraja9726) for your contributions
-## [0.8.3](https://github.com/xmldom/xmldom/compare/0.8.3...0.8.2)
 
-### Fixed
-- Avoid iterating over prototype properties [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
-
-Thank you, [@Supraja9726](https://github.com/Supraja9726) for your contributions
 
 ## [0.9.0-beta.1](https://github.com/xmldom/xmldom/compare/0.8.2...0.9.0-beta.1)
 
@@ -75,6 +86,7 @@ Thank you [@weiwu-zhang](https://github.com/weiwu-zhang) for your contributions
 ### Chore
 
 - update multiple devDependencies
+
 
 ## [0.8.2](https://github.com/xmldom/xmldom/compare/0.8.1...0.8.2)
 
