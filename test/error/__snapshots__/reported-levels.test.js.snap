@@ -84,22 +84,6 @@ Array [
 ]
 `;
 
-exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/html should be reported as error 1`] = `
-Array [
-  "[xmldom error]	end tag name: inner maybe not complete
-@#[line:1,col:6]",
-]
-`;
-
-exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
-Array [
-  "[xmldom error]	end tag name: inner maybe not complete||@#[line:1,col:6]
-    at parse (lib/sax.js:#2)",
-  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: inner maybe not complete||@#[line:1,col:6]||@#[line:1,col:6]
-    at parse (lib/sax.js:#5)",
-]
-`;
-
 exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/xml should be reported as error 1`] = `
 Array [
   "[xmldom error]	end tag name: inner maybe not complete
@@ -118,32 +102,32 @@ Array [
 
 exports[`SYNTAX_EndTagNotComplete with mimeType text/html should be reported as error 1`] = `
 Array [
-  "[xmldom error]	end tag name: xml is not complete:xml
+  "[xmldom error]	end tag name: xml is not complete
 @#[line:1,col:1]",
 ]
 `;
 
 exports[`SYNTAX_EndTagNotComplete with mimeType text/html should not catch Error thrown in errorHandler.error 1`] = `
 Array [
-  "[xmldom error]	end tag name: xml is not complete:xml||@#[line:1,col:1]
+  "[xmldom error]	end tag name: xml is not complete||@#[line:1,col:1]
     at parse (lib/sax.js:#1)",
-  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: xml is not complete:xml||@#[line:1,col:1]||@#[line:1,col:1]
+  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: xml is not complete||@#[line:1,col:1]||@#[line:1,col:1]
     at parse (lib/sax.js:#5)",
 ]
 `;
 
 exports[`SYNTAX_EndTagNotComplete with mimeType text/xml should be reported as error 1`] = `
 Array [
-  "[xmldom error]	end tag name: xml is not complete:xml
+  "[xmldom error]	end tag name: xml is not complete
 @#[line:1,col:1]",
 ]
 `;
 
 exports[`SYNTAX_EndTagNotComplete with mimeType text/xml should not catch Error thrown in errorHandler.error 1`] = `
 Array [
-  "[xmldom error]	end tag name: xml is not complete:xml||@#[line:1,col:1]
+  "[xmldom error]	end tag name: xml is not complete||@#[line:1,col:1]
     at parse (lib/sax.js:#1)",
-  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: xml is not complete:xml||@#[line:1,col:1]||@#[line:1,col:1]
+  "[xmldom error]	element parse error: Error: [xmldom error]	end tag name: xml is not complete||@#[line:1,col:1]||@#[line:1,col:1]
     at parse (lib/sax.js:#5)",
 ]
 `;
