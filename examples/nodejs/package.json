@@ -1,19 +1,19 @@
 {
-  "name": "@xmldom/xmldom-example-nodejs",
-  "private": true,
-  "description": "Show how to use xmldom in a nodejs project",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "node src/index.js"
-  },
-  "keywords": [
-    "test",
-    "commonjs",
-    "nodejs"
-  ],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@xmldom/xmldom": "file:../.."
-  }
+	"name": "@xmldom/xmldom-example-nodejs",
+	"private": true,
+	"description": "Show how to use xmldom in a nodejs project",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "node src/index.js"
+	},
+	"keywords": [
+		"test",
+		"commonjs",
+		"nodejs"
+	],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"@xmldom/xmldom": "file:../.."
+	}
 }

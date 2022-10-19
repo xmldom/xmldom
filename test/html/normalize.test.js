@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const { getTestParser } = require('../get-test-parser')
+const { getTestParser } = require('../get-test-parser');
 
 describe('html normalizer', () => {
 	it.each([
@@ -17,12 +17,12 @@ describe('html normalizer', () => {
 		'<r><Label onClick="doClick..>Hello, World</Label></r>',
 		'<Label onClick=doClick..">Hello, World</Label>',
 	])('%s', (xml) => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString(xml, 'text/html').toString()
+		const actual = parser.parseFromString(xml, 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it.each([
 		'<html><meta><link><img><br><hr><input></html>',
@@ -31,12 +31,12 @@ describe('html normalizer', () => {
 		'<html title = 1/>',
 		'<html title/>',
 	])('unclosed html %s', (xml) => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString(xml, 'text/html').toString()
+		const actual = parser.parseFromString(xml, 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	Array.from(['text/xml', 'text/html']).forEach((mimeType) => {
 		it.each([
@@ -49,70 +49,66 @@ describe('html normalizer', () => {
 			'<option selected></option>',
 			'<ul><li>abc<li>def</ul>',
 		])(`${mimeType}: script %s`, (xml) => {
-			const { errors, parser } = getTestParser()
+			const { errors, parser } = getTestParser();
 
-			const actual = parser.parseFromString(xml, mimeType).toString()
+			const actual = parser.parseFromString(xml, mimeType).toString();
 
-			expect({ actual, ...errors }).toMatchSnapshot()
-		})
-	})
+			expect({ actual, ...errors }).toMatchSnapshot();
+		});
+	});
 
 	it.each([
 		`<html xmlns="http://www.w3.org/1999/xhtml"><script>let message = " &amp; ETH";</script></html>`,
 		`<html><script>let message = " &amp; ETH";</script></html>`,
 	])(`should map entity in %s`, (xml) => {
-		const { parser } = getTestParser()
+		const { parser } = getTestParser();
 
-		const actual = parser.parseFromString(xml, 'application/xml')
+		const actual = parser.parseFromString(xml, 'application/xml');
 
-		expect(actual.documentElement.firstChild.textContent).toBe(
-			'let message = " & ETH";'
-		)
-	})
+		expect(actual.documentElement.firstChild.textContent).toBe('let message = " & ETH";');
+	});
 	it.each([
 		`<html xmlns="http://www.w3.org/1999/xhtml"><script>let message = " &amp; ETH";</script></html>`,
 		`<html><script>let message = " &amp; ETH";</script></html>`,
 	])(`should not map entity in %s`, (xml) => {
-		const { parser } = getTestParser()
+		const { parser } = getTestParser();
 
-		const actual = parser.parseFromString(xml, 'text/html')
+		const actual = parser.parseFromString(xml, 'text/html');
 
-		expect(actual.documentElement.firstChild.textContent).toBe(
-			'let message = " &amp; ETH";'
-		)
-	})
+		expect(actual.documentElement.firstChild.textContent).toBe('let message = " &amp; ETH";');
+	});
 
 	it('European entities', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
 		const actual = parser
 			.parseFromString(
 				'<div>&Auml;&auml;&Aring;&aring;&AElig;&aelig;&Ouml;&ouml;&Oslash;&oslash;&szlig;&Uuml;&uuml;&euro;</div>',
 				'text/html'
 			)
-			.toString()
+			.toString();
 
 		expect({ actual, ...errors }).toMatchObject({
 			// For the future, it may be nicer to use \uxxxx in the assert strings
 			// rather than pasting in multi-byte UTF-8 Unicode characters
 			actual: '<div xmlns="http://www.w3.org/1999/xhtml">ÄäÅåÆæÖöØøßÜü€</div>',
-		})
-	})
+		});
+	});
 	it('European entities xml', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
 		const actual = parser
 			.parseFromString(
 				'<div>&Auml;&auml;&Aring;&aring;&AElig;&aelig;&Ouml;&ouml;&Oslash;&oslash;&szlig;&Uuml;&uuml;&euro;</div>',
 				'text/xml'
 			)
-			.toString()
+			.toString();
 
 		expect({ actual, ...errors }).toMatchObject({
 			// For the future, it may be nicer to use \uxxxx in the assert strings
 			// rather than pasting in multi-byte UTF-8 Unicode characters
 			actual:
 				'<div>&amp;Auml;&amp;auml;&amp;Aring;&amp;aring;&amp;AElig;&amp;aelig;&amp;Ouml;&amp;ouml;&amp;Oslash;&amp;oslash;&amp;szlig;&amp;Uuml;&amp;uuml;&amp;euro;</div>',
-		})
-	})
-})
+		});
+	});
+});

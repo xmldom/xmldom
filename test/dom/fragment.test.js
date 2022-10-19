@@ -1,15 +1,15 @@
-'use strict'
+'use strict';
 
-const { DOMParser } = require('../../lib')
+const { DOMParser } = require('../../lib');
 
 describe('DOM DocumentFragment', () => {
 	// see: http://jsfiddle.net/9Wmh2/1/
 	it('append empty fragment', () => {
-		const document = new DOMParser().parseFromString('<p id="p"/>')
-		const fragment = document.createDocumentFragment()
-		document.getElementById('p').insertBefore(fragment, null)
-		fragment.appendChild(document.createTextNode('a'))
-		document.getElementById('p').insertBefore(fragment, null)
-		expect(document.toString()).toBe('<p id="p">a</p>')
-	})
-})
+		const document = new DOMParser().parseFromString('<p id="p"/>');
+		const fragment = document.createDocumentFragment();
+		document.getElementById('p').insertBefore(fragment, null);
+		fragment.appendChild(document.createTextNode('a'));
+		document.getElementById('p').insertBefore(fragment, null);
+		expect(document.toString()).toBe('<p id="p">a</p>');
+	});
+});

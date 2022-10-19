@@ -1,31 +1,31 @@
-'use strict'
+'use strict';
 
-const { getTestParser } = require('../get-test-parser')
+const { getTestParser } = require('../get-test-parser');
 
 describe('errorHandle', () => {
 	it('unclosed tag', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString('<foo').toString()
+		const actual = parser.parseFromString('<foo').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it('document source', () => {
-		const testSource = '<?xml version="1.0"?>\n<!--test-->\n<xml/>'
-		const { errors, parser } = getTestParser()
+		const testSource = '<?xml version="1.0"?>\n<!--test-->\n<xml/>';
+		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString(testSource, 'text/xml').toString()
+		const actual = parser.parseFromString(testSource, 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it('should encode < literal when not part of a tag', () => {
-		const description = '<p>populaciji (< 0.1%), te se</p>'
-		const { errors, parser } = getTestParser()
+		const description = '<p>populaciji (< 0.1%), te se</p>';
+		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString(description, 'text/html').toString()
+		const actual = parser.parseFromString(description, 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
-})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
+});

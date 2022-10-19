@@ -1,14 +1,14 @@
-'use strict'
+'use strict';
 
-const { ParseError } = require('../../lib/sax')
-const { __DOMHandler, DOMParser } = require('../../lib/dom-parser')
+const { ParseError } = require('../../lib/sax');
+const { __DOMHandler, DOMParser } = require('../../lib/dom-parser');
 
 /**
  * All methods implemented on the DOMHandler prototype.
  *
  * @type {string[]}
  */
-const DOMHandlerMethods = Object.keys(__DOMHandler.prototype).sort()
+const DOMHandlerMethods = Object.keys(__DOMHandler.prototype).sort();
 
 /**
  * XMLReader is currently not calling all methods "implemented" by DOMHandler (some are just empty),
@@ -29,7 +29,7 @@ const UNCALLED_METHODS = new Set([
 	'skippedEntity',
 	'startEntity',
 	'unparsedEntityDecl',
-])
+]);
 
 /**
  * Some of the methods DOMParser/XMLReader call during parsing are not guarded by try/catch,
@@ -39,13 +39,7 @@ const UNCALLED_METHODS = new Set([
  *
  * @type {Set<string>}
  */
-const UNCAUGHT_METHODS = new Set([
-	'characters',
-	'endDocument',
-	'error',
-	'setDocumentLocator',
-	'startDocument',
-])
+const UNCAUGHT_METHODS = new Set(['characters', 'endDocument', 'error', 'setDocumentLocator', 'startDocument']);
 
 function noop() {}
 
@@ -62,17 +56,15 @@ function StubDOMHandlerWith(throwingMethod, ErrorClass) {
 		const impl = jest.fn(
 			method === throwingMethod
 				? () => {
-						throw new (ErrorClass || ParseError)(
-							`StubDOMHandler throwing in ${throwingMethod}`
-						)
+						throw new (ErrorClass || ParseError)(`StubDOMHandler throwing in ${throwingMethod}`);
 				  }
 				: noop()
-		)
-		impl.mockName(method)
-		StubDOMHandler.prototype[method] = impl
-		return impl
-	})
-	return StubDOMHandler
+		);
+		impl.mockName(method);
+		StubDOMHandler.prototype[method] = impl;
+		return impl;
+	});
+	return StubDOMHandler;
 }
 
 /**
@@ -97,43 +89,36 @@ const ALL_METHODS = `<?xml ?>
   <element duplicate="" duplicate="fatal"></mismatch>
 </root>
 <!--
-`
+`;
 
 describe('methods called in DOMHandler', () => {
 	it('should call "all possible" methods when using StubDOMHandler', () => {
-		const domHandler = StubDOMHandlerWith()
-		const parser = new DOMParser({ domHandler, locator: true })
-		expect(domHandler.methods).toHaveLength(DOMHandlerMethods.length)
+		const domHandler = StubDOMHandlerWith();
+		const parser = new DOMParser({ domHandler, locator: true });
+		expect(domHandler.methods).toHaveLength(DOMHandlerMethods.length);
 
-		parser.parseFromString(ALL_METHODS)
+		parser.parseFromString(ALL_METHODS);
 
-		const uncalledMethodNames = domHandler.methods
-			.filter((m) => m.mock.calls.length === 0)
-			.map((m) => m.getMockName())
-		expect(uncalledMethodNames).toEqual([...UNCALLED_METHODS.values()].sort())
-	})
-	describe.each(DOMHandlerMethods.filter((m) => !UNCALLED_METHODS.has(m)))(
-		'when DOMHandler.%s throws',
-		(throwing) => {
-			it('should not catch ParserError', () => {
-				const domHandler = StubDOMHandlerWith(throwing, ParseError)
-				const parser = new DOMParser({ domHandler, locator: true })
+		const uncalledMethodNames = domHandler.methods.filter((m) => m.mock.calls.length === 0).map((m) => m.getMockName());
+		expect(uncalledMethodNames).toEqual([...UNCALLED_METHODS.values()].sort());
+	});
+	describe.each(DOMHandlerMethods.filter((m) => !UNCALLED_METHODS.has(m)))('when DOMHandler.%s throws', (throwing) => {
+		it('should not catch ParserError', () => {
+			const domHandler = StubDOMHandlerWith(throwing, ParseError);
+			const parser = new DOMParser({ domHandler, locator: true });
 
-				expect(() => parser.parseFromString(ALL_METHODS)).toThrow(ParseError)
-			})
-			const isUncaughtMethod = UNCAUGHT_METHODS.has(throwing)
-			it(`${
-				isUncaughtMethod ? 'does not' : 'should'
-			} catch other Error`, () => {
-				const domHandler = StubDOMHandlerWith(throwing, Error)
-				const parser = new DOMParser({ domHandler, locator: true })
+			expect(() => parser.parseFromString(ALL_METHODS)).toThrow(ParseError);
+		});
+		const isUncaughtMethod = UNCAUGHT_METHODS.has(throwing);
+		it(`${isUncaughtMethod ? 'does not' : 'should'} catch other Error`, () => {
+			const domHandler = StubDOMHandlerWith(throwing, Error);
+			const parser = new DOMParser({ domHandler, locator: true });
 
-				if (isUncaughtMethod) {
-					expect(() => parser.parseFromString(ALL_METHODS)).toThrow()
-				} else {
-					expect(() => parser.parseFromString(ALL_METHODS)).not.toThrow()
-				}
-			})
-		}
-	)
-})
+			if (isUncaughtMethod) {
+				expect(() => parser.parseFromString(ALL_METHODS)).toThrow();
+			} else {
+				expect(() => parser.parseFromString(ALL_METHODS)).not.toThrow();
+			}
+		});
+	});
+});

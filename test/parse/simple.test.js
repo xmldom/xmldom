@@ -1,50 +1,39 @@
-'use strict'
+'use strict';
 
-const { getTestParser } = require('../get-test-parser')
+const { getTestParser } = require('../get-test-parser');
 
 describe('parse', () => {
 	it('simple', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser
-			.parseFromString('<html><body title="1<2"></body></html>', 'text/html')
-			.toString()
+		const actual = parser.parseFromString('<html><body title="1<2"></body></html>', 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it('unclosed inner', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser
-			.parseFromString(
-				'<r><Page><Label /></Page  <Page></Page></r>',
-				'text/xml'
-			)
-			.toString()
+		const actual = parser.parseFromString('<r><Page><Label /></Page  <Page></Page></r>', 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it('unclosed root', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser
-			.parseFromString('<Page><Label class="title"/></Page  1', 'text/xml')
-			.toString()
+		const actual = parser.parseFromString('<Page><Label class="title"/></Page  1', 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it('unclosed root followed by another tag', () => {
-		const { errors, parser } = getTestParser()
+		const { errors, parser } = getTestParser();
 
-		const actual = parser
-			.parseFromString('<Page></Page  <hello></hello>', 'text/xml')
-			.toString()
+		const actual = parser.parseFromString('<Page></Page  <hello></hello>', 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it('svg test', () => {
 		const svgCase = [
@@ -54,13 +43,13 @@ describe('parse', () => {
 			'  <path id="path4" d="M 68.589358,...-6.363961,-6.363964 z" />',
 			'  <path id="path4" d="M 68.589358,...-6.363961,-6.363964 z" /></defs>',
 			'</svg>',
-		].join('\n')
-		const { errors, parser } = getTestParser({ locator: {} })
+		].join('\n');
+		const { errors, parser } = getTestParser({ locator: {} });
 
-		const actual = parser.parseFromString(svgCase, 'text/xml').toString()
+		const actual = parser.parseFromString(svgCase, 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	it('line error', () => {
 		const xmlLineError = [
@@ -72,19 +61,19 @@ describe('parse', () => {
 			'         packageVersion="1">',
 			'  <co id="0" binds="1">',
 			'</package>',
-		].join('\r\n')
-		const { errors, parser } = getTestParser({ locator: {} })
+		].join('\r\n');
+		const { errors, parser } = getTestParser({ locator: {} });
 
-		const dom = parser.parseFromString(xmlLineError, 'text/xml')
+		const dom = parser.parseFromString(xmlLineError, 'text/xml');
 
 		expect({
 			lineNumber: dom.documentElement.firstChild.nextSibling.lineNumber,
 			...errors,
-		}).toMatchSnapshot()
-	})
+		}).toMatchSnapshot();
+	});
 
 	it('wrong closing tag', () => {
-		const { errors, parser } = getTestParser({ locator: {} })
+		const { errors, parser } = getTestParser({ locator: {} });
 
 		const actual = parser
 			.parseFromString(
@@ -92,10 +81,10 @@ describe('parse', () => {
 				'<html><body title="1<2"><table>&lt;;test</body></body></html>',
 				'text/html'
 			)
-			.toString()
+			.toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot()
-	})
+		expect({ actual, ...errors }).toMatchSnapshot();
+	});
 
 	describe('invalid input', () => {
 		it.each([
@@ -104,21 +93,19 @@ describe('parse', () => {
 			['number', 12345],
 			['null', null],
 		])('%s', (msg, testValue) => {
-			const { parser } = getTestParser(rethrowErrorHandler())
+			const { parser } = getTestParser(rethrowErrorHandler());
 
-			expect(() => parser.parseFromString(testValue)).toThrow(
-				/^\[xmldom error\][\s]*invalid doc source[\s\S]*$/
-			)
-		})
-	})
-})
+			expect(() => parser.parseFromString(testValue)).toThrow(/^\[xmldom error\][\s]*invalid doc source[\s\S]*$/);
+		});
+	});
+});
 
 function rethrowErrorHandler() {
 	return {
 		errorHandler: {
 			error: function (errorMessage) {
-				throw errorMessage
+				throw errorMessage;
 			},
 		},
-	}
+	};
 }
