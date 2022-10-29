@@ -41,10 +41,10 @@ describe('XML Node Parse', () => {
 
 	it('sibling closing tag with whitespace', () => {
 		const actual = new DOMParser()
-			.parseFromString(`<book></book ><title>Harry Potter</title>`, 'text/xml')
-			.toString()
-		expect(actual).toBe(`<book/><title>Harry Potter</title>`)
-	})
+			.parseFromString(`<xml><book></book ><title>Harry Potter</title></xml>`, 'text/xml')
+			.toString();
+		expect(actual).toBe(`<xml><book/><title>Harry Potter</title></xml>`);
+	});
 
 	describe('simple attributes', () => {
 		describe('nothing special', () => {
