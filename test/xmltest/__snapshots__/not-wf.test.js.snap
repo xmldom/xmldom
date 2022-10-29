@@ -316,14 +316,22 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 040.xml with snapshot 1`] = `
 Object {
   "actual": "<doc/>
-<doc/>",
+&lt;doc>",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: Hierarchy request error: Only one element can be added and only after doctype
+@#[line:2,col:1]",
+  ],
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 041.xml with snapshot 1`] = `
 Object {
   "actual": "<doc/>
-<doc/>",
+&lt;doc>",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: Hierarchy request error: Only one element can be added and only after doctype
+@#[line:2,col:1]",
+  ],
 }
 `;
 
@@ -343,7 +351,12 @@ Illegal data
 
 exports[`xmltest/not-wellformed standalone should match 044.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/><doc/>",
+  "actual": "<doc/>&lt;doc/>
+",
+  "error": Array [
+    "[xmldom error]	element parse error: Error: Hierarchy request error: Only one element can be added and only after doctype
+@#[line:1,col:7]",
+  ],
 }
 `;
 
