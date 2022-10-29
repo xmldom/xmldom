@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-beta.4](https://github.com/xmldom/xmldom/compare/0.9.0-beta.3...0.9.0-beta.4)
+
+### Fixed
+
+- Security: Prevent inserting DOM nodes when they are not well-formed [`CVE-2022-39353`](https://github.com/xmldom/xmldom/security/advisories/GHSA-crh6-fp67-6883)
+  In case such a DOM would be created, the part that is not well-formed will be transformed into text nodes, in which xml specific characters like `<` and `>` are encoded accordingly.
+  In the upcoming version 0.9.0 those text nodes will no longer be added and an error will be thrown instead.
+  This change can break your code, if you relied on this behavior, e.g. multiple root elements in the past. We consider it more important to align with the specs that we want to be aligned with, considering the potential security issues that might derive from people not being aware of the difference in behavior.
+  Related Spec: <https://dom.spec.whatwg.org/#concept-node-ensure-pre-insertion-validity>
+
+### Chore
+
+- update multiple devDependencies
+- Add eslint-plugin-node for `lib` [`#448`](https://github.com/xmldom/xmldom/pull/448) / [`#190`](https://github.com/xmldom/xmldom/issues/190)
+- style: Apply prettier to all code [`#447`](https://github.com/xmldom/xmldom/pull/447) / [`#29`](https://github.com/xmldom/xmldom/issues/29) / [`#130`](https://github.com/xmldom/xmldom/issues/130)
+
+Thank you, [@XhmikosR](https://github.com/XhmikosR), [@awwright](https://github.com/awwright), [@frumioj](https://github.com/frumioj), [@cjbarth](https://github.com/cjbarth), [@markgollnick](https://github.com/markgollnick) for your contributions
+
 ## [0.9.0-beta.3](https://github.com/xmldom/xmldom/compare/0.9.0-beta.2...0.9.0-beta.3)
 
 ### Fixed
