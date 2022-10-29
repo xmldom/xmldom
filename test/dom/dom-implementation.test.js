@@ -29,6 +29,7 @@ describe('DOMImplementation', () => {
 
 			expect(doc.nodeType).toBe(Node.DOCUMENT_NODE);
 			expect(doc.implementation).toBe(impl);
+			expect(doc.ownerDocument).toBe(doc);
 			expect(doc.doctype).toBe(null);
 			expect(doc.childNodes).toBeInstanceOf(NodeList);
 			expect(doc.documentElement).toBe(null);
@@ -193,6 +194,7 @@ describe('DOMImplementation', () => {
 			expect(doc.childNodes.length).toBe(0);
 			expect(doc.doctype).toBeNull();
 			expect(doc.documentElement).toBeNull();
+			expect(doc.ownerDocument).toBe(doc);
 		});
 		it('should create an HTML document with minimum specified elements when title not provided', () => {
 			const impl = new DOMImplementation();

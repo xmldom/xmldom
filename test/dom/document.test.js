@@ -1,16 +1,16 @@
 'use strict';
 
 const { getTestParser } = require('../get-test-parser');
-const { DOMImplementation } = require('../../lib/dom');
+const { DOMImplementation, DOMException } = require('../../lib/dom');
 const { NAMESPACE } = require('../../lib/conventions');
 
 const INPUT = (first = '', second = '', third = '', fourth = '') => `
 <html >
-	<body id="body">
-		<p id="p1" class=" quote first   odd ${first} ">Lorem ipsum</p>
-		<p id="p2" class=" quote second  even ${second} ">Lorem ipsum</p>
-		<p id="p3" class=" quote third   odd ${third} ">Lorem ipsum</p>
-		<p id="p4" class=" quote fourth  even ${fourth} ">Lorem ipsum</p>
+	<body id='body'>
+		<p id='p1' class=' quote first   odd ${first} '>Lorem ipsum</p>
+		<p id='p2' class=' quote second  even ${second} '>Lorem ipsum</p>
+		<p id='p3' class=' quote third   odd ${third} '>Lorem ipsum</p>
+		<p id='p4' class=' quote fourth  even ${fourth} '>Lorem ipsum</p>
 	</body>
 </html>
 `;
@@ -164,6 +164,70 @@ describe('Document.prototype', () => {
 			expect(attr.name).toBe('name');
 			expect(attr.localName).toBe('name');
 			expect(attr.nodeName).toBe('name');
+		});
+	});
+	describe('insertBefore', () => {
+		it('should insert the first element and set `documentElement`', () => {
+			const doc = new DOMImplementation().createDocument(null, '');
+			expect(doc.childNodes).toHaveLength(0);
+			expect(doc.documentElement).toBeNull();
+			const root = doc.createElement('root');
+			doc.insertBefore(root);
+			expect(doc.documentElement).toBe(root);
+			expect(doc.childNodes).toHaveLength(1);
+			expect(doc.childNodes.item(0)).toBe(root);
+		});
+		it('should prevent inserting a second element', () => {
+			const doc = new DOMImplementation().createDocument(null, '');
+			const root = doc.createElement('root');
+			const second = doc.createElement('second');
+			doc.insertBefore(root);
+			expect(() => doc.insertBefore(second)).toThrow(DOMException);
+			expect(doc.documentElement).toBe(root);
+			expect(doc.childNodes).toHaveLength(1);
+		});
+		it('should prevent inserting an element before a doctype', () => {
+			const impl = new DOMImplementation();
+			const doctype = impl.createDocumentType('DT');
+			const doc = impl.createDocument(null, '', doctype);
+			expect(doc.childNodes).toHaveLength(1);
+			const root = doc.createElement('root');
+			expect(() => doc.insertBefore(root, doctype)).toThrow(DOMException);
+			expect(doc.documentElement).toBeNull();
+			expect(doc.childNodes).toHaveLength(1);
+			expect(root.parentNode).toBeNull();
+		});
+		it('should prevent inserting a second doctype', () => {
+			const impl = new DOMImplementation();
+			const doctype = impl.createDocumentType('DT');
+			const doctype2 = impl.createDocumentType('DT2');
+			const doc = impl.createDocument(null, '', doctype);
+			expect(doc.childNodes).toHaveLength(1);
+			expect(() => doc.insertBefore(doctype2)).toThrow(DOMException);
+			expect(doc.childNodes).toHaveLength(1);
+		});
+		it('should prevent inserting a doctype after an element', () => {
+			const impl = new DOMImplementation();
+			const doc = impl.createDocument(null, '');
+			const root = doc.createElement('root');
+			doc.insertBefore(root);
+			const doctype = impl.createDocumentType('DT');
+			expect(doc.childNodes).toHaveLength(1);
+
+			expect(() => doc.insertBefore(doctype)).toThrow(DOMException);
+
+			expect(doc.childNodes).toHaveLength(1);
+		});
+		it('should prevent inserting before an child which is not a child of parent', () => {
+			const doc = new DOMImplementation().createDocument(null, '');
+			const root = doc.createElement('root');
+			const withoutParent = doc.createElement('second');
+
+			expect(() => doc.insertBefore(root, withoutParent)).toThrow(DOMException);
+
+			expect(doc.documentElement).toBeNull();
+			expect(doc.childNodes).toHaveLength(0);
+			expect(root.parentNode).toBeNull();
 		});
 	});
 });
