@@ -18,7 +18,7 @@ describe('xmltest/not-wellformed', () => {
 				const { errors, parser } = getTestParser();
 
 				// for 050.xml the result is undefined so be careful
-				const actual = parser.parseFromString(input);
+				const actual = parser.parseFromString(input, 'text/xml');
 
 				expect(generateSnapshot(actual, errors)).toMatchSnapshot();
 			});

@@ -11,8 +11,6 @@ const fs = require('fs');
 /**
  * A collection of XML samples and related information that cause the XMLReader
  * to call methods on `errorHandler`.
- *
- * @type {Record<string, ErrorReport>}}
  */
 const REPORTED = {
 	/**

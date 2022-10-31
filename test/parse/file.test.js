@@ -16,7 +16,7 @@ describe('from file', () => {
 			.replace(/\r\n?/g, '\n');
 		// fs.writeFileSync(__dirname+'/file-test1.result.xml',result)
 
-		const actual = new DOMParser().parseFromString(data).toString();
+		const actual = new DOMParser().parseFromString(data, 'text/xml').toString();
 
 		expect(actual).toStrictEqual(expexted);
 	});

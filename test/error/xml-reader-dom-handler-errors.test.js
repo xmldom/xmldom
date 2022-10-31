@@ -8,7 +8,9 @@ const { __DOMHandler, DOMParser } = require('../../lib/dom-parser');
  *
  * @type {string[]}
  */
-const DOMHandlerMethods = Object.keys(__DOMHandler.prototype).sort();
+const DOMHandlerMethods = Object.keys(__DOMHandler.prototype)
+	.filter((methodName) => methodName !== 'fatalError')
+	.sort();
 
 /**
  * XMLReader is currently not calling all methods "implemented" by DOMHandler (some are just empty),
@@ -32,7 +34,7 @@ const UNCALLED_METHODS = new Set([
 ]);
 
 /**
- * Some of the methods DOMParser/XMLReader call during parsing are not guarded by try/catch,
+ * Some methods DOMParser/XMLReader calls during parsing are not guarded by try/catch,
  * hence an error happening in those will stop the parsing process.
  * There is a test to verify this error handling.
  * If it changes this list might need to be changed as well
@@ -40,6 +42,8 @@ const UNCALLED_METHODS = new Set([
  * @type {Set<string>}
  */
 const UNCAUGHT_METHODS = new Set(['characters', 'endDocument', 'error', 'setDocumentLocator', 'startDocument']);
+
+class TestError extends Error {}
 
 function noop() {}
 
@@ -52,13 +56,19 @@ function noop() {}
  */
 function StubDOMHandlerWith(throwingMethod, ErrorClass) {
 	class StubDOMHandler extends __DOMHandler {}
+
 	StubDOMHandler.methods = DOMHandlerMethods.map((method) => {
 		const impl = jest.fn(
 			method === throwingMethod
 				? () => {
 						throw new (ErrorClass || ParseError)(`StubDOMHandler throwing in ${throwingMethod}`);
 				  }
-				: noop()
+				: method === 'warning' || method === 'error'
+				? noop // prevent log output
+				: // use default implementation
+				  function (...args) {
+						return __DOMHandler.prototype[method].apply(this, args);
+				  }
 		);
 		impl.mockName(method);
 		StubDOMHandler.prototype[method] = impl;
@@ -86,7 +96,7 @@ const ALL_METHODS = `<?xml ?>
   <element xmlns:x="http://test" x:a="" warning>
     character
   </element>
-  <element duplicate="" duplicate="fatal"></mismatch>
+  <element attribute=""></mismatch>
 </root>
 <!--
 `;
@@ -97,7 +107,7 @@ describe('methods called in DOMHandler', () => {
 		const parser = new DOMParser({ domHandler, locator: true });
 		expect(domHandler.methods).toHaveLength(DOMHandlerMethods.length);
 
-		parser.parseFromString(ALL_METHODS);
+		parser.parseFromString(ALL_METHODS, 'text/xml');
 
 		const uncalledMethodNames = domHandler.methods.filter((m) => m.mock.calls.length === 0).map((m) => m.getMockName());
 		expect(uncalledMethodNames).toEqual([...UNCALLED_METHODS.values()].sort());
@@ -107,17 +117,17 @@ describe('methods called in DOMHandler', () => {
 			const domHandler = StubDOMHandlerWith(throwing, ParseError);
 			const parser = new DOMParser({ domHandler, locator: true });
 
-			expect(() => parser.parseFromString(ALL_METHODS)).toThrow(ParseError);
+			expect(() => parser.parseFromString(ALL_METHODS, 'text/xml')).toThrow(ParseError);
 		});
 		const isUncaughtMethod = UNCAUGHT_METHODS.has(throwing);
-		it(`${isUncaughtMethod ? 'does not' : 'should'} catch other Error`, () => {
-			const domHandler = StubDOMHandlerWith(throwing, Error);
+		it(`${isUncaughtMethod ? 'does not' : 'should'} catch custom Error`, () => {
+			const domHandler = StubDOMHandlerWith(throwing, TestError);
 			const parser = new DOMParser({ domHandler, locator: true });
 
 			if (isUncaughtMethod) {
-				expect(() => parser.parseFromString(ALL_METHODS)).toThrow();
+				expect(() => parser.parseFromString(ALL_METHODS, 'text/xml')).toThrow();
 			} else {
-				expect(() => parser.parseFromString(ALL_METHODS)).not.toThrow();
+				expect(() => parser.parseFromString(ALL_METHODS, 'text/xml')).not.toThrow(TestError);
 			}
 		});
 	});

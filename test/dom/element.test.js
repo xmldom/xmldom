@@ -15,7 +15,8 @@ describe('Document', () => {
 							<div id="4"><p id="5"></p></div>
 							<html xmlns="${NAMESPACE.HTML}" id="6"><div id="7"></div></html>
 						</body>
-					</xml>`
+					</xml>`,
+				'text/xml'
 			);
 			expect(doc.getElementsByTagName('*')).toHaveLength(8);
 			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7);
@@ -82,7 +83,7 @@ describe('Document', () => {
 			}
 			expect(childs3).toHaveLength(7);
 
-			const feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>');
+			const feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>', 'text/xml');
 			const entries = feed.documentElement.getElementsByTagName('entry');
 			expect(entries).toHaveLength(1);
 			expect(entries[0].nodeName).toBe('entry');
@@ -184,7 +185,7 @@ describe('Document', () => {
 	});
 
 	it('can properly set textContent', () => {
-		const doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>');
+		const doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>', 'text/xml');
 		const a = doc.documentElement.firstChild;
 		const b = a.nextSibling;
 		a.textContent = 'hello';
@@ -198,7 +199,7 @@ describe('Document', () => {
 	});
 
 	it('appendElement and removeElement', () => {
-		const dom = new DOMParser().parseFromString(`<root><A/><B/><C/></root>`);
+		const dom = new DOMParser().parseFromString(`<root><A/><B/><C/></root>`, 'text/xml');
 		const doc = dom.documentElement;
 		const arr = [];
 		while (doc.firstChild) {

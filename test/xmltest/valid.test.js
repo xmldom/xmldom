@@ -19,7 +19,7 @@ describe('xmltest/valid', () => {
 
 				const { errors, parser } = getTestParser();
 
-				const actual = parser.parseFromString(input).toString();
+				const actual = parser.parseFromString(input, 'text/xml').toString();
 
 				expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
 			});

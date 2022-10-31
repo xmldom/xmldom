@@ -11,7 +11,7 @@ describe('doctype', () => {
 		])('should parse single line DOCTYPE with mixed quotes (%s)', (_, source, idValue) => {
 			const { errors, parser } = getTestParser();
 
-			const actual = parser.parseFromString(source).firstChild;
+			const actual = parser.parseFromString(source, 'text/xml').firstChild;
 
 			expect({
 				[idType]: idType === 'SYSTEM' ? actual.systemId : actual.publicId,
@@ -27,7 +27,7 @@ describe('doctype', () => {
 	describe('sets Document.doctype', () => {
 		it('should set it for XML documents', () => {
 			const { parser } = getTestParser();
-			const doc = parser.parseFromString('<!DOCTYPE name><X/>');
+			const doc = parser.parseFromString('<!DOCTYPE name><X/>', 'text/xml');
 
 			expect(doc.doctype).toBeTruthy();
 			expect(doc.doctype.ownerDocument === doc).toBe(true);

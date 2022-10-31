@@ -5,7 +5,7 @@ const { DOMParser } = require('../../lib');
 describe('DOM DocumentFragment', () => {
 	// see: http://jsfiddle.net/9Wmh2/1/
 	it('append empty fragment', () => {
-		const document = new DOMParser().parseFromString('<p id="p"/>');
+		const document = new DOMParser().parseFromString('<p id="p"/>', 'text/xml');
 		const fragment = document.createDocumentFragment();
 		document.getElementById('p').insertBefore(fragment, null);
 		fragment.appendChild(document.createTextNode('a'));

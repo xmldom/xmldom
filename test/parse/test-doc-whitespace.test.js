@@ -6,7 +6,7 @@ describe('errorHandle', () => {
 	it('unclosed tag', () => {
 		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString('<foo').toString();
+		const actual = parser.parseFromString('<foo', 'text/xml').toString();
 
 		expect({ actual, ...errors }).toMatchSnapshot();
 	});

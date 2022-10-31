@@ -83,6 +83,10 @@ Object {
 @#[line:1,col:1]",
   ],
   "expected": "<doc :=\\"v1\\"></doc>",
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:2]",
+  ],
 }
 `;
 
@@ -373,6 +377,10 @@ Object {
 @#[line:7,col:14]",
   ],
   "expected": "<doc>£</doc>",
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:7,col:14]",
+  ],
 }
 `;
 
@@ -392,6 +400,10 @@ Object {
 @#[line:7,col:22]",
   ],
   "expected": "<doc>เจมส์</doc>",
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:7,col:22]",
+  ],
 }
 `;
 
@@ -411,6 +423,10 @@ Object {
 @#[line:7,col:16]",
   ],
   "expected": "<เจมส์></เจมส์>",
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:7,col:16]",
+  ],
 }
 `;
 

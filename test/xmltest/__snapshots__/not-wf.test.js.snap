@@ -107,6 +107,10 @@ Object {
     "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
 @#[line:1,col:1]",
   ],
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:2]",
+  ],
 }
 `;
 
@@ -123,6 +127,10 @@ Object {
     "[xmldom error]	element parse error: Error: attribute value missed!!
 @#[line:1,col:1]",
   ],
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:2]",
+  ],
 }
 `;
 
@@ -132,6 +140,10 @@ Object {
   "error": Array [
     "[xmldom error]	element parse error: Error: attribute value must after \\"=\\"
 @#[line:1,col:1]",
+  ],
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:2]",
   ],
 }
 `;
@@ -186,6 +198,10 @@ Object {
   "error": Array [
     "[xmldom error]	element parse error: Error: invalid attribute:12
 @#[line:1,col:1]",
+  ],
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:2]",
   ],
 }
 `;
@@ -410,9 +426,9 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 050.xml with snapshot 1`] = `
 Object {
-  "actual": undefined,
-  "error": Array [
-    "[xmldom error]	invalid doc source
+  "actual": "",
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
 @#[line:0,col:undefined]",
   ],
 }
@@ -453,6 +469,10 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 055.xml with snapshot 1`] = `
 Object {
   "actual": "<!DOCTYPE doc>",
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:2,col:2]",
+  ],
 }
 `;
 
@@ -698,6 +718,10 @@ Object {
     "[xmldom error]	entity not found:&e;
 @#[line:1,col:1]",
   ],
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:2]",
+  ],
 }
 `;
 
@@ -856,6 +880,10 @@ exports[`xmltest/not-wellformed standalone should match 109.xml with snapshot 1`
 Object {
   "actual": "&amp;e;
 ",
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:0,col:undefined]",
+  ],
 }
 `;
 
@@ -877,6 +905,10 @@ Object {
 @#[line:1,col:1]",
     "[xmldom error]	entity not found:&e;
 @#[line:1,col:1]",
+  ],
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:2]",
   ],
   "warning": Array [
     "[xmldom warning]	attribute \\"&e;\\" missed value!! \\"&e;\\" instead!!
@@ -1354,6 +1386,10 @@ Object {
   "error": Array [
     "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
 @#[line:1,col:1]",
+  ],
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:2]",
   ],
 }
 `;

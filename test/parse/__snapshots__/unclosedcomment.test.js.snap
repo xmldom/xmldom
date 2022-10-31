@@ -7,5 +7,9 @@ Object {
     "[xmldom error]	Unclosed comment
 @#[line:1,col:1]",
   ],
+  "fatalError": Array [
+    "[xmldom fatalError]	missing root element
+@#[line:1,col:1]",
+  ],
 }
 `;

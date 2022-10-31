@@ -30,19 +30,19 @@ const NON_HTML_WHITESPACE =
 describe('Document.prototype', () => {
 	describe('getElementsByClassName', () => {
 		it('should be able to resolve [] as a class name', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT('[]'));
+			const doc = getTestParser().parser.parseFromString(INPUT('[]'), 'text/xml');
 			expect(doc.getElementsByClassName('[]')).toHaveLength(1);
 		});
 		it('should be able to resolve [ as a class name', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT('['));
+			const doc = getTestParser().parser.parseFromString(INPUT('['), 'text/xml');
 			expect(doc.getElementsByClassName('[')).toHaveLength(1);
 		});
 		it('should be able to resolve multiple class names in a different order', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT());
+			const doc = getTestParser().parser.parseFromString(INPUT(), 'text/xml');
 			expect(doc.getElementsByClassName('odd quote')).toHaveLength(2);
 		});
 		it('should be able to resolve non html whitespace as classname', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT());
+			const doc = getTestParser().parser.parseFromString(INPUT(), 'text/xml');
 			const firstP = doc.documentElement.getElementsByTagName('body')[0].getElementsByTagName('p')[0];
 			expect(firstP).toBeDefined();
 
@@ -55,23 +55,23 @@ describe('Document.prototype', () => {
 			const matching = 'aaaaa';
 			expect(new RegExp(search).test(matching)).toBe(true);
 
-			const doc = getTestParser().parser.parseFromString(INPUT(search, matching, search));
+			const doc = getTestParser().parser.parseFromString(INPUT(search, matching, search), 'text/xml');
 
 			expect(doc.getElementsByClassName(search)).toHaveLength(2);
 		});
 		it('should return an empty collection when no class names or are passed', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT());
+			const doc = getTestParser().parser.parseFromString(INPUT(), 'text/xml');
 
 			expect(doc.getElementsByClassName('')).toHaveLength(0);
 		});
 		it('should return an empty collection when only spaces are passed', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT(' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t'));
+			const doc = getTestParser().parser.parseFromString(INPUT(' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t'), 'text/xml');
 
 			expect(doc.getElementsByClassName(' \f\n\r\t')).toHaveLength(0);
 		});
 		it('should return only the case insensitive matching names', () => {
 			const MIXED_CASES = ['AAA', 'AAa', 'AaA', 'aAA'];
-			const doc = getTestParser().parser.parseFromString(INPUT(...MIXED_CASES));
+			const doc = getTestParser().parser.parseFromString(INPUT(...MIXED_CASES), 'text/xml');
 
 			MIXED_CASES.forEach((className) => {
 				expect(doc.getElementsByClassName(className)).toHaveLength(1);

@@ -34,7 +34,7 @@ describe('custom errorHandler', () => {
 
 		parser.parseFromString(REPORTED.WF_AttributeMissingQuote.source, 'text/xml');
 		parser.parseFromString(REPORTED.SYNTAX_AttributeEqualMissingValue.source, 'text/xml');
-		parser.parseFromString(REPORTED.WF_DuplicateAttribute.source, 'text/xml');
+		// parser.parseFromString(REPORTED.WF_DuplicateAttribute.source, 'text/xml');
 
 		expect(errors).toMatchObject([/\[xmldom warning]/, /\[xmldom error]/, /\[xmldom fatalError]/]);
 	});

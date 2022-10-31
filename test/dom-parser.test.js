@@ -12,7 +12,7 @@ describe('DOMParser', () => {
 			const options = { locator: {} };
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>');
+			const doc = it.parseFromString('<xml/>', 'text/xml');
 
 			const expected = {
 				columnNumber: 1,
@@ -23,7 +23,7 @@ describe('DOMParser', () => {
 		test('should use locator when options is not passed', () => {
 			const it = new DOMParser();
 
-			const doc = it.parseFromString('<xml/>');
+			const doc = it.parseFromString('<xml/>', 'text/xml');
 
 			const expected = {
 				columnNumber: 1,
@@ -35,7 +35,7 @@ describe('DOMParser', () => {
 			const options = {};
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>');
+			const doc = it.parseFromString('<xml/>', 'text/xml');
 
 			expect(doc.documentElement).not.toHaveProperty('columnNumber');
 			expect(doc.documentElement).not.toHaveProperty('lineNumber');
@@ -45,7 +45,7 @@ describe('DOMParser', () => {
 			const options = { xmlns: {} };
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>');
+			const doc = it.parseFromString('<xml/>', 'text/xml');
 
 			expect(doc.documentElement.namespaceURI).toBeNull();
 		});
@@ -54,7 +54,7 @@ describe('DOMParser', () => {
 			const options = { xmlns: {} };
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>');
+			const doc = it.parseFromString('<xml/>', 'text/xml');
 
 			expect(doc.documentElement.namespaceURI).toBeNull();
 		});
@@ -64,7 +64,7 @@ describe('DOMParser', () => {
 			const options = { xmlns };
 			const it = new DOMParser(options);
 
-			const actual = it.parseFromString('<xml/>');
+			const actual = it.parseFromString('<xml/>', 'text/xml');
 
 			expect(actual.toString()).toBe('<xml xmlns="custom-default-ns"/>');
 			expect(actual.documentElement.namespaceURI).toBe(NS_CUSTOM);
@@ -157,7 +157,7 @@ describe('DOMParser', () => {
 		test('should use minimal entity map for default mime type', () => {
 			const XML = '<xml attr="&quot;">&lt; &amp;</xml>';
 
-			const actual = new DOMParser().parseFromString(XML).toString();
+			const actual = new DOMParser().parseFromString(XML, 'text/xml').toString();
 
 			expect(actual).toBe(XML);
 		});
@@ -202,7 +202,7 @@ describe('DOMParser', () => {
 			 TODO: again this is the "simples and most readable way,
 			  but it also means testing it over and over
 			*/
-			const document = new DOMParser().parseFromString(XML);
+			const document = new DOMParser().parseFromString(XML, 'text/xml');
 			/*
 			 FIXME: from here we are actually testing the Document/Element/Node API
 			 maybe this should be split?

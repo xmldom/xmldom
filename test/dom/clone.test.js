@@ -11,11 +11,12 @@ describe('XML Namespace Parse', () => {
 	});
 
 	it('can properly import', () => {
-		const doc1 = new DOMParser().parseFromString("<doc2 attr='2'/>");
+		const doc1 = new DOMParser().parseFromString("<doc2 attr='2'/>", 'text/xml');
 		const doc2 = new DOMParser().parseFromString("<doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1>", 'text/xml');
 
 		const doc3 = new DOMParser().parseFromString(
-			"<doc2 attr='2'><doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1></doc2>"
+			"<doc2 attr='2'><doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1></doc2>",
+			'text/xml'
 		);
 		const n = doc1.importNode(doc2.documentElement, true);
 		doc1.documentElement.appendChild(n);

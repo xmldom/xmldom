@@ -15,7 +15,7 @@ const expectNeighbours = (first, second, ...nodes) => {
 
 describe('XML Node Parse', () => {
 	it('element', () => {
-		const dom = new DOMParser().parseFromString('<xml><child/></xml>');
+		const dom = new DOMParser().parseFromString('<xml><child/></xml>', 'text/xml');
 
 		expect(dom.documentElement.nodeType).toStrictEqual(Node.ELEMENT_NODE);
 		expect(dom.documentElement.firstChild.nodeType).toStrictEqual(Node.ELEMENT_NODE);
@@ -38,7 +38,7 @@ describe('XML Node Parse', () => {
 	});
 
 	it('text', () => {
-		const { firstChild } = new DOMParser().parseFromString('<xml>start center end</xml>').documentElement;
+		const { firstChild } = new DOMParser().parseFromString('<xml>start center end</xml>', 'text/xml').documentElement;
 
 		expect(firstChild.nodeType).toStrictEqual(Node.TEXT_NODE);
 		expect(firstChild).toMatchObject({
@@ -49,7 +49,8 @@ describe('XML Node Parse', () => {
 
 	it('cdata', () => {
 		const { documentElement } = new DOMParser().parseFromString(
-			'<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>'
+			'<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>',
+			'text/xml'
 		);
 		expect(documentElement.firstChild).toMatchObject({
 			data: 'start ',
@@ -65,14 +66,14 @@ describe('XML Node Parse', () => {
 	});
 
 	it('cdata empty', () => {
-		const { documentElement } = new DOMParser().parseFromString('<xml><![CDATA[]]>start <![CDATA[]]> end</xml>');
+		const { documentElement } = new DOMParser().parseFromString('<xml><![CDATA[]]>start <![CDATA[]]> end</xml>', 'text/xml');
 		expect(documentElement).toMatchObject({
 			textContent: 'start  end',
 		});
 	});
 
 	it('comment', () => {
-		const { documentElement } = new DOMParser().parseFromString('<xml><!-- comment&>< --></xml>');
+		const { documentElement } = new DOMParser().parseFromString('<xml><!-- comment&>< --></xml>', 'text/xml');
 
 		expect(documentElement.firstChild).toMatchObject({
 			nodeValue: ' comment&>< ',
@@ -80,7 +81,10 @@ describe('XML Node Parse', () => {
 	});
 
 	it('cdata comment', () => {
-		const { documentElement } = new DOMParser().parseFromString('<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>');
+		const { documentElement } = new DOMParser().parseFromString(
+			'<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>',
+			'text/xml'
+		);
 
 		expect(documentElement.firstChild).toMatchObject({
 			nodeName: '#text', // 0
@@ -106,7 +110,7 @@ describe('XML Node Parse', () => {
 
 	describe('appendChild', () => {
 		it('returns the argument', () => {
-			const dom = new DOMParser().parseFromString('<xml/>');
+			const dom = new DOMParser().parseFromString('<xml/>', 'text/xml');
 
 			const child = dom.createElement('child');
 
@@ -114,7 +118,7 @@ describe('XML Node Parse', () => {
 		});
 
 		it('appends as firstChild', () => {
-			const dom = new DOMParser().parseFromString('<xml/>');
+			const dom = new DOMParser().parseFromString('<xml/>', 'text/xml');
 			const child = dom.createElement('child');
 
 			dom.documentElement.appendChild(child);
@@ -122,7 +126,7 @@ describe('XML Node Parse', () => {
 			expect(dom.documentElement.firstChild).toStrictEqual(child);
 		});
 		it('subsequent calls append in order', () => {
-			const dom = new DOMParser().parseFromString('<xml />');
+			const dom = new DOMParser().parseFromString('<xml />', 'text/xml');
 			const fragment = dom.createDocumentFragment();
 
 			expect(fragment.nodeType).toStrictEqual(Node.DOCUMENT_FRAGMENT_NODE);
@@ -138,7 +142,7 @@ describe('XML Node Parse', () => {
 
 	describe('insertBefore', () => {
 		it('places created element before existing element', () => {
-			const dom = new DOMParser().parseFromString('<xml><child/></xml>');
+			const dom = new DOMParser().parseFromString('<xml><child/></xml>', 'text/xml');
 			const inserted = dom.createElement('sibling');
 			const child = dom.documentElement.firstChild;
 
@@ -147,7 +151,7 @@ describe('XML Node Parse', () => {
 			expectNeighbours(inserted, child);
 		});
 		it('inserts all elements in DocumentFragment', () => {
-			const dom = new DOMParser().parseFromString('<xml><child/></xml>');
+			const dom = new DOMParser().parseFromString('<xml><child/></xml>', 'text/xml');
 			const child = dom.documentElement.firstChild;
 
 			const fragment = dom.createDocumentFragment();

@@ -93,17 +93,17 @@ describe('parse', () => {
 			['number', 12345],
 			['null', null],
 		])('%s', (msg, testValue) => {
-			const { parser } = getTestParser(rethrowErrorHandler());
+			const { parser } = getTestParser(rethrowFatalErrorHandler());
 
-			expect(() => parser.parseFromString(testValue)).toThrow(/^\[xmldom error\][\s]*invalid doc source[\s\S]*$/);
+			expect(() => parser.parseFromString(testValue, 'text/xml')).toThrow(/^\[xmldom fatalError\][\s\S]*$/);
 		});
 	});
 });
 
-function rethrowErrorHandler() {
+function rethrowFatalErrorHandler() {
 	return {
 		errorHandler: {
-			error: function (errorMessage) {
+			fatalError: function (errorMessage) {
 				throw errorMessage;
 			},
 		},
