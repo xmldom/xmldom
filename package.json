@@ -35,9 +35,9 @@
     "stryker": "stryker run",
     "stryker:dry-run": "stryker run -m '' --reporters progress",
     "test": "jest",
-    "testrelease": "npm test && npm run lint",
+    "testrelease": "npm test && eslint lib",
     "version": "./changelog-has-version.sh",
-    "release": "np --no-yarn --test-script testrelease"
+    "release": "np --no-yarn --test-script testrelease --branch release-0.8.x patch"
   },
   "engines": {
     "node": ">=10.0.0"
