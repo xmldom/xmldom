@@ -29,6 +29,7 @@
   ],
   "scripts": {
     "lint": "eslint lib test",
+    "format": "prettier --write test",
     "changelog": "auto-changelog --unreleased-only",
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
     "stryker": "stryker run",
