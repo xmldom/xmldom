@@ -33,7 +33,7 @@
     "stryker:dry-run": "stryker run -m '' --reporters progress",
     "test": "jest",
     "testrelease": "npm test && eslint lib",
-    "release": "np --no-yarn --test-script testrelease --branch release-0.7.x --tag lts"
+    "release": "np --no-yarn --test-script testrelease --branch release-0.7.x --tag lts patch"
   },
   "engines": {
     "node": ">=10.0.0"
