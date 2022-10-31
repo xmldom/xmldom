@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [0.9.0-beta.5](https://github.com/xmldom/xmldom/compare/0.9.0-beta.4...0.9.0-beta.5)
 
-### Merged
+### Fixed
 
 - fix: Restore ES5 compatibility [`#452`](https://github.com/xmldom/xmldom/pull/452) / [`#453`](https://github.com/xmldom/xmldom/issues/453)
 
@@ -15,7 +15,7 @@ Thank you, [@fengxinming](https://github.com/fengxinming), for your contribution
 
 ## [0.8.5](https://github.com/xmldom/xmldom/compare/0.8.4...0.8.5)
 
-### Merged
+### Fixed
 
 - fix: Restore ES5 compatibility [`#452`](https://github.com/xmldom/xmldom/pull/452) / [`#453`](https://github.com/xmldom/xmldom/issues/453)
 
@@ -24,7 +24,7 @@ Thank you, [@fengxinming](https://github.com/fengxinming), for your contribution
 
 ## [0.7.8](https://github.com/xmldom/xmldom/compare/0.7.7...0.7.8)
 
-### Merged
+### Fixed
 
 - fix: Restore ES5 compatibility [`#452`](https://github.com/xmldom/xmldom/pull/452) / [`#453`](https://github.com/xmldom/xmldom/issues/453)
 
