@@ -18,10 +18,10 @@ const { DOMParser } = require('../lib/dom-parser');
  *
  * @param options {{
  * 					onError?: function (level:string, msg:string, context:DOMHandler),
- * 					errors?: [string, string, object][],
+ * 					errors?: [ErrorLevel, string, object][],
  * 					locator?: boolean
  *				}}
- * @returns {{parser: DOMParser, errors: [string, object][]}}
+ * @returns {{parser: DOMParser, errors: [ErrorLevel, string, object][]}}
  */
 function getTestParser({ onError, errors = [], locator = true } = {}) {
 	onError =
