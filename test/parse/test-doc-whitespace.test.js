@@ -8,7 +8,7 @@ describe('errorHandle', () => {
 
 		const actual = parser.parseFromString('<foo', 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it('document source', () => {
@@ -17,7 +17,7 @@ describe('errorHandle', () => {
 
 		const actual = parser.parseFromString(testSource, 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it('should encode < literal when not part of a tag', () => {
@@ -26,6 +26,6 @@ describe('errorHandle', () => {
 
 		const actual = parser.parseFromString(description, 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 });

@@ -1,6 +1,7 @@
 'use strict';
 
 const xmltest = require('xmltest');
+const { ParseError } = require('../../lib/conventions');
 const { getTestParser } = require('../get-test-parser');
 const { generateSnapshot } = require('./generate-snapshot');
 
@@ -17,10 +18,12 @@ describe('xmltest/not-wellformed', () => {
 
 				const { errors, parser } = getTestParser();
 
-				// for 050.xml the result is undefined so be careful
-				const actual = parser.parseFromString(input, 'text/xml');
-
-				expect(generateSnapshot(actual, errors)).toMatchSnapshot();
+				try {
+					const actual = parser.parseFromString(input, 'text/xml');
+					expect(generateSnapshot(actual, errors)).toMatchSnapshot();
+				} catch (e) {
+					expect(e).toBeInstanceOf(ParseError);
+				}
 			});
 		});
 	});

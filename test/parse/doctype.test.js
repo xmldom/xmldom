@@ -16,7 +16,7 @@ describe('doctype', () => {
 			expect({
 				[idType]: idType === 'SYSTEM' ? actual.systemId : actual.publicId,
 				name: actual.name,
-				...errors,
+				...(errors.length ? { errors } : undefined),
 			}).toEqual({
 				[idType]: idValue,
 				name: 'x',

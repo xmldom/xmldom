@@ -12,7 +12,6 @@ describe('html normalizer', () => {
 		'<div test="alert(\'<br/>\')"/>',
 		'<div test="a<b&&a< c && a>d"></div>',
 		'<div a=& bb c d=123&&456/>',
-		'<div a=& a="&\'\'" b/>',
 		'<html test="123"/>',
 		'<r><Label onClick="doClick..>Hello, World</Label></r>',
 		'<Label onClick=doClick..">Hello, World</Label>',
@@ -21,7 +20,7 @@ describe('html normalizer', () => {
 
 		const actual = parser.parseFromString(xml, 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it.each([
@@ -35,7 +34,7 @@ describe('html normalizer', () => {
 
 		const actual = parser.parseFromString(xml, 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	Array.from(['text/xml', 'text/html']).forEach((mimeType) => {
@@ -53,7 +52,7 @@ describe('html normalizer', () => {
 
 			const actual = parser.parseFromString(xml, mimeType).toString();
 
-			expect({ actual, ...errors }).toMatchSnapshot();
+			expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 		});
 	});
 
@@ -88,7 +87,7 @@ describe('html normalizer', () => {
 			)
 			.toString();
 
-		expect({ actual, ...errors }).toMatchObject({
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchObject({
 			// For the future, it may be nicer to use \uxxxx in the assert strings
 			// rather than pasting in multi-byte UTF-8 Unicode characters
 			actual: '<div xmlns="http://www.w3.org/1999/xhtml">ÄäÅåÆæÖöØøßÜü€</div>',
@@ -104,7 +103,7 @@ describe('html normalizer', () => {
 			)
 			.toString();
 
-		expect({ actual, ...errors }).toMatchObject({
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchObject({
 			// For the future, it may be nicer to use \uxxxx in the assert strings
 			// rather than pasting in multi-byte UTF-8 Unicode characters
 			actual:

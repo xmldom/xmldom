@@ -95,7 +95,7 @@ describe('DOMLocator', () => {
 
 		const doc = parser.parseFromString(xml, 'text/html');
 
-		expect({ actual: doc.toString(), ...errors }).toMatchSnapshot();
+		expect({ actual: doc.toString(), ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 
 		const attr = doc.documentElement.firstChild.attributes.item(0);
 

@@ -17,23 +17,21 @@ const { DOMParser } = require('../lib/dom-parser');
  * - `locator`: Whether to record node locations in the XML string, default is true
  *
  * @param options {{
- * 					errorHandler?: function (key: ErrorLevel, msg: string)
- * 				  							| Partial<Record<ErrorLevel, function(msg:string)>>,
- * 					errors?: Partial<Record<ErrorLevel, string[]>>,
+ * 					onError?: function (level:string, msg:string, context:DOMHandler),
+ * 					errors?: [string, string, object][],
  * 					locator?: boolean
  *				}}
- * @returns {{parser: DOMParser, errors: Partial<Record<ErrorLevel, string[]>>}}
+ * @returns {{parser: DOMParser, errors: [string, object][]}}
  */
-function getTestParser({ errorHandler, errors = {}, locator = true } = {}) {
-	errorHandler =
-		errorHandler ||
-		((key, msg) => {
-			if (!errors[key]) errors[key] = [];
-			errors[key].push(msg);
+function getTestParser({ onError, errors = [], locator = true } = {}) {
+	onError =
+		onError ||
+		((level, msg, { locator }) => {
+			errors.push([level, msg, locator]);
 		});
 	return {
 		errors,
-		parser: new DOMParser({ errorHandler, locator }),
+		parser: new DOMParser({ onError, locator }),
 	};
 }
 

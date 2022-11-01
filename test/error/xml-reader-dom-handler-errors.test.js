@@ -1,6 +1,6 @@
 'use strict';
 
-const { ParseError } = require('../../lib/sax');
+const { ParseError } = require('../../lib/conventions');
 const { __DOMHandler, DOMParser } = require('../../lib/dom-parser');
 
 /**
@@ -27,6 +27,7 @@ const UNCALLED_METHODS = new Set([
 	'ignorableWhitespace',
 	'internalEntityDecl',
 	'notationDecl',
+	'reportError',
 	'resolveEntity',
 	'skippedEntity',
 	'startEntity',
@@ -113,7 +114,7 @@ describe('methods called in DOMHandler', () => {
 		expect(uncalledMethodNames).toEqual([...UNCALLED_METHODS.values()].sort());
 	});
 	describe.each(DOMHandlerMethods.filter((m) => !UNCALLED_METHODS.has(m)))('when DOMHandler.%s throws', (throwing) => {
-		it('should not catch ParserError', () => {
+		it('should not catch ParseError', () => {
 			const domHandler = StubDOMHandlerWith(throwing, ParseError);
 			const parser = new DOMParser({ domHandler, locator: true });
 

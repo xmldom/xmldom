@@ -3,23 +3,15 @@
 exports[`html normalizer <Label onClick=doClick..">Hello, World</Label> 1`] = `
 Object {
   "actual": "<Label onClick=\\"doClick..\\" xmlns=\\"http://www.w3.org/1999/xhtml\\">Hello, World</Label>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"onClick\\" missed start quot(\\")!!
-@#[line:1,col:1]",
-  ],
-}
-`;
-
-exports[`html normalizer <div a=& a="&''" b/> 1`] = `
-Object {
-  "actual": "<div a=\\"&amp;''\\" b=\\"b\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
-  "fatalError": Array [
-    "[xmldom fatalError]	Attribute a redefined
-@#[line:1,col:1]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"onClick\\" missed start quot(\\")!!",
+      Object {
+        "columnNumber": 27,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -27,11 +19,23 @@ Object {
 exports[`html normalizer <div a=& bb c d=123&&456/> 1`] = `
 Object {
   "actual": "<div a=\\"&amp;\\" bb=\\"bb\\" c=\\"c\\" d=\\"123&amp;&amp;456\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
-@#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"123&&456\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"&\\" missed quot(\\")!!",
+      Object {
+        "columnNumber": 17,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "warning",
+      "attribute \\"123&&456\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 17,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -51,9 +55,15 @@ Object {
 exports[`html normalizer <div>&amp;&lt;123&456<789;&&</div> 1`] = `
 Object {
   "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">&amp;&lt;123&amp;456&lt;789;&amp;&amp;</div>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:789;&&<
-@#[line:1,col:22]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:789;&&<",
+      Object {
+        "columnNumber": 23,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -67,11 +77,23 @@ Object {
 exports[`html normalizer <div><123e>&<a<br/></div> 1`] = `
 Object {
   "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">&lt;123e&gt;&amp;&lt;a<br/></div>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:123e
-@#[line:1,col:6]",
-    "[xmldom error]	element parse error: Error: invalid tagName:a<br
-@#[line:1,col:13]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:123e",
+      Object {
+        "columnNumber": 15,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:a<br",
+      Object {
+        "columnNumber": 15,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -97,9 +119,15 @@ Object {
 exports[`html normalizer <r><Label onClick="doClick..>Hello, World</Label></r> 1`] = `
 Object {
   "actual": "<r xmlns=\\"http://www.w3.org/1999/xhtml\\">&lt;Label onClick=\\"doClick..&gt;Hello, World</r>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
-@#[line:1,col:4]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: attribute value no end '\\"' match",
+      Object {
+        "columnNumber": 5,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -155,9 +183,15 @@ Object {
 exports[`html normalizer text/xml: script <input type="button" disabled></input> 1`] = `
 Object {
   "actual": "<input type=\\"button\\" disabled=\\"disabled\\"/>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"disabled\\" missed value!! \\"disabled\\" instead!!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"disabled\\" missed value!! \\"disabled\\" instead!!",
+      Object {
+        "columnNumber": 22,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -165,9 +199,15 @@ Object {
 exports[`html normalizer text/xml: script <input type="checkbox" checked></input> 1`] = `
 Object {
   "actual": "<input type=\\"checkbox\\" checked=\\"checked\\"/>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"checked\\" missed value!! \\"checked\\" instead!!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"checked\\" missed value!! \\"checked\\" instead!!",
+      Object {
+        "columnNumber": 24,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -175,9 +215,15 @@ Object {
 exports[`html normalizer text/xml: script <option selected></option> 1`] = `
 Object {
   "actual": "<option selected=\\"selected\\"/>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"selected\\" missed value!! \\"selected\\" instead!!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"selected\\" missed value!! \\"selected\\" instead!!",
+      Object {
+        "columnNumber": 9,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -191,9 +237,15 @@ Object {
 exports[`html normalizer text/xml: script <script>alert(a<b&&c?"<br/>":">>");</script> 1`] = `
 Object {
   "actual": "<script>alert(a&lt;b&amp;&amp;c?\\"<br/>\\":\\"&gt;&gt;\\");</script>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: attribute value must after \\"=\\"
-@#[line:1,col:16]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 28,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -201,13 +253,23 @@ Object {
 exports[`html normalizer text/xml: script <script>alert(a<b&&c?"<br>":">>");</script> 1`] = `
 Object {
   "actual": "<script>alert(a&lt;b&amp;&amp;c?\\"<br/>\\":\\"&gt;&gt;\\");</script>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: attribute value must after \\"=\\"
-@#[line:1,col:16]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:23]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 27,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "warning",
+      "unclosed xml attribute",
+      Object {
+        "columnNumber": 27,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -215,13 +277,23 @@ Object {
 exports[`html normalizer text/xml: script <textarea>alert(a<b&&c?"<br>":">>");</textarea> 1`] = `
 Object {
   "actual": "<textarea>alert(a&lt;b&amp;&amp;c?\\"<br/>\\":\\"&gt;&gt;\\");</textarea>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: attribute value must after \\"=\\"
-@#[line:1,col:18]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:25]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 29,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "warning",
+      "unclosed xml attribute",
+      Object {
+        "columnNumber": 29,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -229,11 +301,23 @@ Object {
 exports[`html normalizer text/xml: script <ul><li>abc<li>def</ul> 1`] = `
 Object {
   "actual": "<ul><li/>abc<li/>def</ul>",
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:5]",
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:12]",
+  "errors": Array [
+    Array [
+      "warning",
+      "unclosed xml attribute",
+      Object {
+        "columnNumber": 16,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "warning",
+      "unclosed xml attribute",
+      Object {
+        "columnNumber": 16,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -241,9 +325,15 @@ Object {
 exports[`html normalizer unclosed html <html title = 1/> 1`] = `
 Object {
   "actual": "<html title=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 15,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -251,9 +341,15 @@ Object {
 exports[`html normalizer unclosed html <html title =1/2></html> 1`] = `
 Object {
   "actual": "<html title=\\"1/2\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"1/2\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"1/2\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -267,9 +363,15 @@ Object {
 exports[`html normalizer unclosed html <html title= 1/> 1`] = `
 Object {
   "actual": "<html title=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;

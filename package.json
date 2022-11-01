@@ -35,6 +35,7 @@
     "stryker": "stryker run",
     "stryker:dry-run": "stryker run -m '' --reporters progress",
     "test": "jest",
+    "test:types": "cd examples/typescript-node-es6 && ./pretest.sh 3.8 && ./pretest.sh 4 && node --experimental-modules dist/index.js",
     "testrelease": "npm test && eslint lib",
     "version": "./changelog-has-version.sh",
     "release": "np --no-yarn --test-script testrelease"

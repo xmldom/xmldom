@@ -16,6 +16,6 @@ describe('entity replacement ignores js prototype chain', () => {
 
 		const actual = parser.parseFromString(source, MIME_TYPE.XML_TEXT).toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 });

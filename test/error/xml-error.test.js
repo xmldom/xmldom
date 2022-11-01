@@ -8,7 +8,7 @@ describe('html vs xml:', () => {
 
 		const actual = parser.parseFromString('<img>', mimeType).toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it.each([
@@ -19,7 +19,7 @@ describe('html vs xml:', () => {
 
 		const actual = parser.parseFromString(input, 'text/xml').documentElement.toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot({ actual: expected });
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot({ actual: expected });
 	});
 
 	it('html attribute (miss quote)', () => {
@@ -27,7 +27,7 @@ describe('html vs xml:', () => {
 
 		const actual = parser.parseFromString('<img attr=1/>', 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it.each(['text/html', 'text/xml'])('%s attribute (missing =)', (mimeType) => {
@@ -51,6 +51,6 @@ describe('html vs xml:', () => {
 
 		const actual = parser.parseFromString(xml, mimeType).toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 });

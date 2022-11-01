@@ -1,5 +1,5 @@
 'use strict';
-const { ParseError } = require('../../lib/sax');
+const { ParseError } = require('../../lib/conventions');
 
 describe('ParseError', () => {
 	it('should have name ParseError', () => {

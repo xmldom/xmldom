@@ -96,7 +96,7 @@ describe('XML Node Parse', () => {
 
 			const actual = parser.parseFromString('<xml a="1" b="2/">', 'text/xml').toString();
 
-			expect({ actual, ...errors }).toMatchSnapshot();
+			expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 		});
 
 		it('should be able to have `constructor` attribute', () => {
@@ -104,7 +104,7 @@ describe('XML Node Parse', () => {
 
 			const actual = parser.parseFromString('<xml constructor=""/>', 'text/xml').toString();
 
-			expect({ actual, ...errors }).toMatchSnapshot();
+			expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 		});
 
 		it('should be able to have `__prototype__` attribute', () => {
@@ -112,7 +112,7 @@ describe('XML Node Parse', () => {
 
 			const actual = parser.parseFromString('<xml __prototype__=""/>', 'text/xml').toString();
 
-			expect({ actual, ...errors }).toMatchSnapshot();
+			expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 		});
 	});
 
@@ -132,7 +132,7 @@ describe('XML Node Parse', () => {
 
 			const actual = parser.parseFromString('<xml xmlns="1" xmlns:a="2" a:test="3/">', 'text/xml').toString();
 
-			expect({ actual, ...errors }).toMatchSnapshot();
+			expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 		});
 	});
 });

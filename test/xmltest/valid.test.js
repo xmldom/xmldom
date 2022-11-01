@@ -18,10 +18,13 @@ describe('xmltest/valid', () => {
 				const expected = await xmltest.getContent(xmltest.RELATED.out(pathInZip));
 
 				const { errors, parser } = getTestParser();
+				try {
+					const actual = parser.parseFromString(input, 'text/xml').toString();
 
-				const actual = parser.parseFromString(input, 'text/xml').toString();
-
-				expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
+					expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
+				} catch (e) {
+					expect([errors, e]).toMatchSnapshot();
+				}
 			});
 		});
 	});

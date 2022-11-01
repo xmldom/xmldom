@@ -1,6 +1,7 @@
 'use strict';
 
 const { getTestParser } = require('../get-test-parser');
+const { ParseError } = require('../../lib/conventions');
 
 describe('parse', () => {
 	it('simple', () => {
@@ -8,7 +9,7 @@ describe('parse', () => {
 
 		const actual = parser.parseFromString('<html><body title="1<2"></body></html>', 'text/html').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it('unclosed inner', () => {
@@ -16,7 +17,7 @@ describe('parse', () => {
 
 		const actual = parser.parseFromString('<r><Page><Label /></Page  <Page></Page></r>', 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it('unclosed root', () => {
@@ -24,7 +25,7 @@ describe('parse', () => {
 
 		const actual = parser.parseFromString('<Page><Label class="title"/></Page  1', 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it('unclosed root followed by another tag', () => {
@@ -32,7 +33,7 @@ describe('parse', () => {
 
 		const actual = parser.parseFromString('<Page></Page  <hello></hello>', 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it('svg test', () => {
@@ -48,7 +49,7 @@ describe('parse', () => {
 
 		const actual = parser.parseFromString(svgCase, 'text/xml').toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	it('line error', () => {
@@ -68,7 +69,7 @@ describe('parse', () => {
 
 		expect({
 			lineNumber: dom.documentElement.firstChild.nextSibling.lineNumber,
-			...errors,
+			...(errors.length ? { errors } : undefined),
 		}).toMatchSnapshot();
 	});
 
@@ -83,7 +84,7 @@ describe('parse', () => {
 			)
 			.toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
 	describe('invalid input', () => {
@@ -93,19 +94,9 @@ describe('parse', () => {
 			['number', 12345],
 			['null', null],
 		])('%s', (msg, testValue) => {
-			const { parser } = getTestParser(rethrowFatalErrorHandler());
+			const { parser } = getTestParser();
 
-			expect(() => parser.parseFromString(testValue, 'text/xml')).toThrow(/^\[xmldom fatalError\][\s\S]*$/);
+			expect(() => parser.parseFromString(testValue, 'text/xml')).toThrow(ParseError);
 		});
 	});
 });
-
-function rethrowFatalErrorHandler() {
-	return {
-		errorHandler: {
-			fatalError: function (errorMessage) {
-				throw errorMessage;
-			},
-		},
-	};
-}

@@ -73,7 +73,7 @@ const REPORTED = {
 	 * In the browser it is reported as `error on line 1 at column 6: Comment not terminated`.
 	 */
 	SYNTAX_UnclosedComment: {
-		source: '<!--',
+		source: '<xml></xml><!--',
 		level: 'error',
 		match: (msg) => /Unclosed comment/.test(msg),
 	},
@@ -87,7 +87,7 @@ const REPORTED = {
 	 *
 	 */
 	SYNTAX_InvalidTagName: {
-		source: '<123 />',
+		source: '<xml><123 /></xml>',
 		level: 'error',
 		match: (msg) => /invalid tagName/.test(msg),
 	},
@@ -100,7 +100,7 @@ const REPORTED = {
 	 * - as HTML it is accepted as attribute name
 	 */
 	SYNTAX_InvalidAttributeName: {
-		source: '<xml 123=""/>',
+		source: '<xml><child 123=""/></xml>',
 		level: 'error',
 		match: (msg) => /invalid attribute/.test(msg),
 	},
@@ -167,7 +167,7 @@ const REPORTED = {
 	 * - for HTML nothing is added to the DOM.
 	 */
 	SYNTAX_AttributeMissingEndingQuote: {
-		source: '<xml attr="value />',
+		source: '<xml><child attr="value /></xml>',
 		level: 'error',
 		match: (msg) => /attribute value no end .* match/.test(msg),
 	},
@@ -208,7 +208,7 @@ const REPORTED = {
 	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-Attribute
 	 */
 	SYNTAX_AttributeEqualMissingValue: {
-		source: '<doc a1=></doc>',
+		source: '<doc><child a1=></child></doc>',
 		level: 'error',
 		match: (msg) => /attribute value missed!!/.test(msg),
 	},

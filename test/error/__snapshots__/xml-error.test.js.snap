@@ -3,9 +3,15 @@
 exports[`html vs xml: html attribute (miss quote) 1`] = `
 Object {
   "actual": "<img attr=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 11,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -13,13 +19,23 @@ Object {
 exports[`html vs xml: invalid xml node "<r" 1`] = `
 Object {
   "actual": "<r/>",
-  "error": Array [
-    "[xmldom error]	unexpected end of input
-@#[line:1,col:1]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "unexpected end of input",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "warning",
+      "unclosed xml attribute",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -27,13 +43,23 @@ Object {
 exports[`html vs xml: invalid xml node "<test><!--" 1`] = `
 Object {
   "actual": "<test/>",
-  "error": Array [
-    "[xmldom error]	Unclosed comment
-@#[line:1,col:7]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "unclosed xml attribute",
+      Object {
+        "columnNumber": 7,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
+      "Unclosed comment",
+      Object {
+        "columnNumber": 7,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -52,9 +78,15 @@ Object {
   </state>
 
   </scxml>",
-  "warning": Array [
-    "[xmldom warning]	attribute value must after \\"=\\"
-@#[line:10,col:5]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 11,
+        "lineNumber": 11,
+      },
+    ],
   ],
 }
 `;
@@ -73,9 +105,15 @@ Object {
   </state>
 
   </scxml>",
-  "warning": Array [
-    "[xmldom warning]	attribute value must after \\"=\\"
-@#[line:10,col:5]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 11,
+        "lineNumber": 11,
+      },
+    ],
   ],
 }
 `;
@@ -89,9 +127,15 @@ Object {
 exports[`html vs xml: unclosed document in text/xml 1`] = `
 Object {
   "actual": "<img/>",
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "unclosed xml attribute",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;

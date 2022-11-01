@@ -76,18 +76,27 @@ Object {
 `;
 
 exports[`xmltest/valid standalone should match 012.xml with snapshot 1`] = `
-Object {
-  "actual": "",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid attribute::
-@#[line:1,col:1]",
+Array [
+  Array [
+    Array [
+      "error",
+      "element parse error: Error: invalid attribute::",
+      Object {
+        "columnNumber": 2,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "fatalError",
+      "missing root element",
+      Object {
+        "columnNumber": 2,
+        "lineNumber": 1,
+      },
+    ],
   ],
-  "expected": "<doc :=\\"v1\\"></doc>",
-  "fatalError": Array [
-    "[xmldom fatalError]	missing root element
-@#[line:1,col:2]",
-  ],
-}
+  [ParseError: missing root element],
+]
 `;
 
 exports[`xmltest/valid standalone should match 013.xml with snapshot 1`] = `
@@ -161,9 +170,15 @@ Object {
 exports[`xmltest/valid standalone should match 023.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc></doc>",
 }
@@ -172,9 +187,15 @@ Object {
 exports[`xmltest/valid standalone should match 024.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc><foo></foo></doc>",
 }
@@ -362,72 +383,147 @@ Object {
 `;
 
 exports[`xmltest/valid standalone should match 049.xml with snapshot 1`] = `
-Object {
-  "actual": "{!0!}/{!0!}d{!0!}o{!0!}c{!0!}&gt;{!0!}
-{!0!}
-{!0!}",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:1,col:3]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:3,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:14]",
+Array [
+  Array [
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "fatalError",
+      "missing root element",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 7,
+      },
+    ],
   ],
-  "expected": "<doc>£</doc>",
-  "fatalError": Array [
-    "[xmldom fatalError]	missing root element
-@#[line:7,col:14]",
-  ],
-}
+  [ParseError: missing root element],
+]
 `;
 
 exports[`xmltest/valid standalone should match 050.xml with snapshot 1`] = `
-Object {
-  "actual": "{!0!}/{!0!}d{!0!}o{!0!}c{!0!}&gt;{!0!}
-{!0!}
-{!0!}",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:1,col:3]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:3,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:22]",
+Array [
+  Array [
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 22,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 22,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 22,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 22,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "fatalError",
+      "missing root element",
+      Object {
+        "columnNumber": 22,
+        "lineNumber": 7,
+      },
+    ],
   ],
-  "expected": "<doc>เจมส์</doc>",
-  "fatalError": Array [
-    "[xmldom fatalError]	missing root element
-@#[line:7,col:22]",
-  ],
-}
+  [ParseError: missing root element],
+]
 `;
 
 exports[`xmltest/valid standalone should match 051.xml with snapshot 1`] = `
-Object {
-  "actual": "{!0!}/{!0!}@!*L&gt;{!0!}
-{!0!}
-{!0!}",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:1,col:3]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:3,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:16]",
+Array [
+  Array [
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 16,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 16,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 16,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 16,
+        "lineNumber": 7,
+      },
+    ],
+    Array [
+      "fatalError",
+      "missing root element",
+      Object {
+        "columnNumber": 16,
+        "lineNumber": 7,
+      },
+    ],
   ],
-  "expected": "<เจมส์></เจมส์>",
-  "fatalError": Array [
-    "[xmldom fatalError]	missing root element
-@#[line:7,col:16]",
-  ],
-}
+  [ParseError: missing root element],
+]
 `;
 
 exports[`xmltest/valid standalone should match 052.xml with snapshot 1`] = `
@@ -439,9 +535,15 @@ Object {
 exports[`xmltest/valid standalone should match 053.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc><e></e></doc>",
 }
@@ -536,9 +638,15 @@ Object {
 exports[`xmltest/valid standalone should match 066.xml with snapshot 1`] = `
 Object {
   "actual": "<doc a1=\\"&amp;e1;\\"/>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e1;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e1;",
+      Object {
+        "columnNumber": 9,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc a1=\\"&quot;\\"></doc>",
 }
@@ -555,9 +663,15 @@ Object {
 exports[`xmltest/valid standalone should match 068.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc>&#13;</doc>",
 }
@@ -678,9 +792,15 @@ Object {
 exports[`xmltest/valid standalone should match 085.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc></doc>",
 }
@@ -689,9 +809,15 @@ Object {
 exports[`xmltest/valid standalone should match 086.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc></doc>",
 }
@@ -700,9 +826,15 @@ Object {
 exports[`xmltest/valid standalone should match 087.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc><foo></foo></doc>",
 }
@@ -711,9 +843,15 @@ Object {
 exports[`xmltest/valid standalone should match 088.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc>&lt;foo&gt;</doc>",
 }
@@ -722,9 +860,15 @@ Object {
 exports[`xmltest/valid standalone should match 089.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc>𐀀􏿽􏿿</doc>",
 }
@@ -867,9 +1011,15 @@ Object {
 exports[`xmltest/valid standalone should match 108.xml with snapshot 1`] = `
 Object {
   "actual": "<doc a=\\"x&amp;e;y\\"/>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 8,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc a=\\"x y\\"></doc>",
 }
@@ -885,9 +1035,15 @@ Object {
 exports[`xmltest/valid standalone should match 110.xml with snapshot 1`] = `
 Object {
   "actual": "<doc a=\\"x&amp;e;y\\"/>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 8,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc a=\\"x  y\\"></doc>",
 }
@@ -917,9 +1073,15 @@ Object {
 exports[`xmltest/valid standalone should match 114.xml with snapshot 1`] = `
 Object {
   "actual": "<!DOCTYPE doc><doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:5,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>&amp;foo;</doc>",
 }
@@ -928,9 +1090,15 @@ Object {
 exports[`xmltest/valid standalone should match 115.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;e1;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e1;
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e1;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
   ],
   "expected": "<doc>v</doc>",
 }
@@ -947,9 +1115,15 @@ Object {
 exports[`xmltest/valid standalone should match 117.xml with snapshot 1`] = `
 Object {
   "actual": "<!DOCTYPE doc><doc>&amp;rsqb;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&rsqb;
-@#[line:5,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&rsqb;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>]</doc>",
 }
@@ -958,9 +1132,15 @@ Object {
 exports[`xmltest/valid standalone should match 118.xml with snapshot 1`] = `
 Object {
   "actual": "<!DOCTYPE doc><doc>&amp;rsqb;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&rsqb;
-@#[line:5,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&rsqb;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>]]</doc>",
 }
