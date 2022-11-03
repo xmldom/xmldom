@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.6](https://github.com/xmldom/xmldom/compare/0.8.5...0.8.6)
+
+### Fixed
+
+- Properly check nodes before replacement [`#457`](https://github.com/xmldom/xmldom/pull/457) / [`#455`](https://github.com/xmldom/xmldom/issues/455) / [`#456`](https://github.com/xmldom/xmldom/issues/456)
+
+Thank you, [@edemaine](https://github.com/edemaine), [@pedro-l9](https://github.com/pedro-l9), for your contributions
+
+
 ## [0.8.5](https://github.com/xmldom/xmldom/compare/0.8.4...0.8.5)
 
 ### Fixed
