@@ -128,7 +128,7 @@ describe('Document', () => {
 		expect(doc.getElementById('root')).not.toBeNull();
 		expect(doc.getElementById('a1').getAttribute('title')).toBe('1');
 		expect(doc.getElementById('a2').getAttribute('title')).toBe('2');
-		expect(doc.getElementById('a2').getAttribute('title2')).toBe('');
+		expect(doc.getElementById('a2').getAttribute('title2')).toBe(null);
 	});
 
 	it('can properly append exist child', () => {
