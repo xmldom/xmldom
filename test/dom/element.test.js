@@ -121,14 +121,15 @@ describe('Document', () => {
 	it('supports getElementById', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
-				'<child id="a1" title="1"><child id="a2"  title="2"/></child>' +
+				'<child id="a1" title="1"><child id="a2"  title="2" empty-title=""/></child>' +
 				'<child id="a1"   title="3"/></xml>',
 			'text/xml'
 		);
 		expect(doc.getElementById('root')).not.toBeNull();
 		expect(doc.getElementById('a1').getAttribute('title')).toBe('1');
 		expect(doc.getElementById('a2').getAttribute('title')).toBe('2');
-		expect(doc.getElementById('a2').getAttribute('title2')).toBe('');
+		expect(doc.getElementById('a2').getAttribute('empty-title')).toBe('');
+		expect(doc.getElementById('a2').getAttribute('title2')).toBe(null);
 	});
 
 	it('can properly append exist child', () => {
