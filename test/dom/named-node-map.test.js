@@ -67,7 +67,6 @@ describe('NamedNodeMap', () => {
 			it[0] = first;
 
 			const second = new Attr();
-			// second.namespaceURI = null;
 			second.localName = 'second';
 			it[1] = second;
 
@@ -77,6 +76,25 @@ describe('NamedNodeMap', () => {
 			it.length = 3;
 			expect(it.getNamedItemNS(null, second.localName)).toBe(second);
 			expect(it.getNamedItemNS('', second.localName)).toBe(second);
+		});
+		it('should return first matching attr by nodeName and namespaceURI', () => {
+			const it = new NamedNodeMap();
+			const first = new Attr();
+			first.localName = 'first';
+			it[0] = first;
+
+			const second = new Attr();
+			second.namespaceURI = 'A';
+			second.localName = 'second';
+			it[1] = second;
+
+			const third = new Attr();
+			third.namespaceURI = 'B';
+			third.localName = second.localName;
+			it[2] = third;
+			it.length = 3;
+			expect(it.getNamedItemNS('A', second.localName)).toBe(second);
+			expect(it.getNamedItemNS('B', second.localName)).toBe(third);
 		});
 		it('should return null for attr with different case nodeName', () => {
 			const it = new NamedNodeMap();
@@ -207,6 +225,111 @@ describe('NamedNodeMap', () => {
 			expect(it[0]).toBe(attr);
 			expect(it[1]).toBe(upper);
 			expect(it.length).toBe(2);
+		});
+	});
+	describe('removeNamedItem', () => {
+		it('should throw when no attribute is found', () => {
+			const it = new NamedNodeMap();
+			expect(() => it.removeNamedItem('a')).toThrow(new DOMException(DOMException.NOT_FOUND_ERR, 'a'));
+		});
+		it('should remove first matching attr by nodeName', () => {
+			const it = new NamedNodeMap();
+			const first = new Attr();
+			first.nodeName = 'first';
+			it[0] = first;
+			const second = new Attr();
+			second.nodeName = 'second';
+			it[1] = second;
+			const third = new Attr();
+			third.nodeName = second.nodeName;
+			it[2] = third;
+			it.length = 3;
+			expect(it.removeNamedItem(second.nodeName)).toBe(second);
+			expect(it[0]).toBe(first);
+			expect(it[1]).toBe(third);
+			expect(it.length).toBe(2);
+		});
+		it('should remove first matching attr by lowercase nodeName in HTML', () => {
+			const it = new NamedNodeMap();
+			it._ownerElement = HTML_OWNER_ELEMENT;
+			const first = new Attr();
+			first.nodeName = 'first';
+			it[0] = first;
+			const second = new Attr();
+			second.nodeName = 'second';
+			second.ownerElement = it._ownerElement;
+			it[1] = second;
+			const third = new Attr();
+			third.nodeName = second.nodeName;
+			it[2] = third;
+			it.length = 3;
+			expect(it.removeNamedItem(second.nodeName.toUpperCase())).toBe(second);
+			expect(second.ownerElement).toBeNull();
+			expect(it[0]).toBe(first);
+			expect(it[1]).toBe(third);
+			expect(it.length).toBe(2);
+		});
+		it('should throw for attr with different case nodeName in XML', () => {
+			const it = new NamedNodeMap();
+			it._ownerElement = XML_OWNER_ELEMENT;
+			const first = new Attr();
+			first.nodeName = 'first';
+			it[0] = first;
+			const second = new Attr();
+			second.nodeName = 'second';
+			it[1] = second;
+			it.length = 2;
+			const localName = second.nodeName.toUpperCase();
+			expect(() => it.removeNamedItem(localName)).toThrow(new DOMException(DOMException.NOT_FOUND_ERR, localName));
+		});
+	});
+	describe('removeNamedItemNS', () => {
+		it('should throw when no attribute is found', () => {
+			const it = new NamedNodeMap();
+			expect(() => it.removeNamedItemNS(null, 'a')).toThrow(new DOMException(DOMException.NOT_FOUND_ERR, 'a'));
+			expect(() => it.removeNamedItemNS('', 'a')).toThrow(new DOMException(DOMException.NOT_FOUND_ERR, 'a'));
+			expect(() => it.removeNamedItemNS('x', 'a')).toThrow(new DOMException(DOMException.NOT_FOUND_ERR, 'x : a'));
+		});
+		it('should remove first matching attr by nodeName', () => {
+			const it = new NamedNodeMap();
+			it._ownerElement = XML_OWNER_ELEMENT;
+			const first = new Attr();
+			first.localName = 'first';
+			it[0] = first;
+
+			const second = new Attr();
+			second.localName = 'second';
+			second.ownerElement = it._ownerElement;
+			it[1] = second;
+
+			const third = new Attr();
+			third.localName = second.localName;
+			third.ownerElement = it._ownerElement;
+			it[2] = third;
+			it.length = 3;
+			expect(it.removeNamedItemNS(null, second.localName)).toBe(second);
+			expect(second.ownerElement).toBeNull();
+			expect(it[0]).toBe(first);
+			expect(it[1]).toBe(third);
+			expect(it[2]).toBe(undefined);
+			expect(it.length).toBe(2);
+			expect(it.removeNamedItemNS('', second.localName)).toBe(third);
+			expect(second.ownerElement).toBeNull();
+			expect(it[0]).toBe(first);
+			expect(it[1]).toBe(undefined);
+			expect(it.length).toBe(1);
+		});
+		it('should throw for attr with different case nodeName', () => {
+			const it = new NamedNodeMap();
+			const first = new Attr();
+			first.localName = 'first';
+			it[0] = first;
+			const second = new Attr();
+			second.localName = 'second';
+			it[1] = second;
+			it.length = 2;
+			const localName = second.localName.toUpperCase();
+			expect(() => it.removeNamedItemNS(null, localName)).toThrow(new DOMException(DOMException.NOT_FOUND_ERR, localName));
 		});
 	});
 });
