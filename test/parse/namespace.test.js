@@ -44,7 +44,7 @@ describe('XML Namespace Parse', () => {
 		expect(uniqArray(firstChild.nextSibling.namespaceURI, firstChild.nextSibling.lookupNamespaceURI('p2'))).toMatchObject([
 			'http://p2.com',
 		]);
-		expect(firstChild.getAttributeNode('attr')).toBeUndefined();
+		expect(firstChild.getAttributeNode('attr')).toBeNull();
 	});
 
 	it('after prefix namespace', () => {
