@@ -39,6 +39,29 @@ describe('XML Node Parse', () => {
 		expect(actual).toBe(`<xml><book/><title>Harry Potter</title></xml>`);
 	});
 
+	it('without attribute values', () => {
+		const actual = new DOMParser()
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy />
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		console.log(actual);
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+
 	describe('simple attributes', () => {
 		describe('nothing special', () => {
 			it.each(['<xml a="1" b="2"></xml>', '<xml a="1" b="2" ></xml>', '<xml a="1" b="2" />'])('%s', (input) => {
