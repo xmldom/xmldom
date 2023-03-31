@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.10](https://github.com/xmldom/xmldom/compare/0.7.9...0.7.10)
+
+### Fixed
+
+- properly parse closing where the last attribute has no value [`#485`](https://github.com/xmldom/xmldom/pull/485) / [`#486`](https://github.com/xmldom/xmldom/issues/486)
+
+Thank you, [@bulandent](https://github.com/bulandent), for your contributions
+
+
 ## [0.7.9](https://github.com/xmldom/xmldom/compare/0.7.8...0.7.9)
 
 ### Fixed
