@@ -165,31 +165,31 @@ describe('Document.prototype', () => {
 	})
 	describe('replaceChild', () => {
 		it('should remove the only element and add the new one', () => {
-			const doc = new DOMImplementation().createDocument('', 'xml');
-			const initialFirstChild = doc.firstChild;
-			const replacement = doc.createElement('replaced');
+			const doc = new DOMImplementation().createDocument('', 'xml')
+			const initialFirstChild = doc.firstChild
+			const replacement = doc.createElement('replaced')
 
-			doc.replaceChild(replacement, doc.firstChild);
+			doc.replaceChild(replacement, doc.firstChild)
 
-			expect(doc.childNodes).toHaveLength(1);
-			expect(initialFirstChild.parentNode).toBeNull();
-			expect(doc.documentElement.name).toBe(replacement.name);
-		});
-	});
+			expect(doc.childNodes).toHaveLength(1)
+			expect(initialFirstChild.parentNode).toBeNull()
+			expect(doc.documentElement.name).toBe(replacement.name)
+		})
+	})
 	describe('removeChild', () => {
 		it('should remove all connections to node', () => {
-			const doc = new DOMImplementation().createDocument('', 'xml');
-			doc.insertBefore(doc.createComment('just a comment'), doc.firstChild);
-			expect(doc.childNodes).toHaveLength(2);
-			const initialElement = doc.firstChild;
+			const doc = new DOMImplementation().createDocument('', 'xml')
+			doc.insertBefore(doc.createComment('just a comment'), doc.firstChild)
+			expect(doc.childNodes).toHaveLength(2)
+			const initialElement = doc.firstChild
 
-			doc.removeChild(initialElement);
+			doc.removeChild(initialElement)
 
 			// expect(doc.documentElement).toBeNull();
-			expect(initialElement.parentNode).toBeNull();
-			expect(initialElement.nextSibling).toBeNull();
+			expect(initialElement.parentNode).toBeNull()
+			expect(initialElement.nextSibling).toBeNull()
 			// expect(initialElement.previousSibling).toBeNull();
-			expect(doc.childNodes).toHaveLength(1);
-		});
-	});
+			expect(doc.childNodes).toHaveLength(1)
+		})
+	})
 })
