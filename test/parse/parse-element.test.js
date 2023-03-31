@@ -39,7 +39,7 @@ describe('XML Node Parse', () => {
 		expect(actual).toBe(`<xml><book/><title>Harry Potter</title></xml>`);
 	});
 
-	it('without attribute values', () => {
+	it('closing tag without attribute value', () => {
 		const actual = new DOMParser()
 			.parseFromString(
 				`<template>
@@ -51,11 +51,99 @@ describe('XML Node Parse', () => {
 				'text/xml'
 			)
 			.toString();
-		console.log(actual);
 		expect(actual).toBe(
 			`<template>
 	<view>
 		<image lazy="lazy"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+	it('closing tag with unquoted value following /', () => {
+		const actual = new DOMParser()
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy=lazy/>
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+	it('closing tag with unquoted value following space and /', () => {
+		const actual = new DOMParser()
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy=lazy />
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+	it('closing tag with unquoted value including /  followed by space /', () => {
+		const { errors, parser } = getTestParser();
+		const actual = parser
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy=lazy/ />
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(errors).toMatchSnapshot();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy/"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+	it('closing tag with unquoted value ending with //', () => {
+		const { errors, parser } = getTestParser();
+
+		const actual = parser
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy=lazy//>
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(errors).toMatchSnapshot();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy/"/>
 		<image/>
 	</view>
 </template>`
