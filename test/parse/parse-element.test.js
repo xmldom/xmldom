@@ -40,7 +40,8 @@ describe('XML Node Parse', () => {
 	});
 
 	it('closing tag without attribute value', () => {
-		const actual = new DOMParser()
+		const { errors, parser } = getTestParser();
+		const actual = parser
 			.parseFromString(
 				`<template>
 	<view>
@@ -51,6 +52,7 @@ describe('XML Node Parse', () => {
 				'text/xml'
 			)
 			.toString();
+		expect(errors).toMatchSnapshot();
 		expect(actual).toBe(
 			`<template>
 	<view>
@@ -61,7 +63,8 @@ describe('XML Node Parse', () => {
 		);
 	});
 	it('closing tag with unquoted value following /', () => {
-		const actual = new DOMParser()
+		const { errors, parser } = getTestParser();
+		const actual = parser
 			.parseFromString(
 				`<template>
 	<view>
@@ -72,6 +75,7 @@ describe('XML Node Parse', () => {
 				'text/xml'
 			)
 			.toString();
+		expect(errors).toMatchSnapshot();
 		expect(actual).toBe(
 			`<template>
 	<view>
@@ -82,7 +86,8 @@ describe('XML Node Parse', () => {
 		);
 	});
 	it('closing tag with unquoted value following space and /', () => {
-		const actual = new DOMParser()
+		const { errors, parser } = getTestParser();
+		const actual = parser
 			.parseFromString(
 				`<template>
 	<view>
@@ -93,6 +98,7 @@ describe('XML Node Parse', () => {
 				'text/xml'
 			)
 			.toString();
+		expect(errors).toMatchSnapshot();
 		expect(actual).toBe(
 			`<template>
 	<view>
