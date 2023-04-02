@@ -9,10 +9,37 @@ Object {
 }
 `;
 
+exports[`XML Node Parse closing tag with unquoted value following / 1`] = `
+Object {
+  "warning": Array [
+    "[xmldom warning]	attribute \\"lazy\\" missed quot(\\")!
+@#[line:3,col:3]",
+  ],
+}
+`;
+
+exports[`XML Node Parse closing tag with unquoted value following space and / 1`] = `
+Object {
+  "warning": Array [
+    "[xmldom warning]	attribute \\"lazy\\" missed quot(\\")!!
+@#[line:3,col:3]",
+  ],
+}
+`;
+
 exports[`XML Node Parse closing tag with unquoted value including /  followed by space / 1`] = `
 Object {
   "warning": Array [
     "[xmldom warning]	attribute \\"lazy/\\" missed quot(\\")!!
+@#[line:3,col:3]",
+  ],
+}
+`;
+
+exports[`XML Node Parse closing tag without attribute value 1`] = `
+Object {
+  "warning": Array [
+    "[xmldom warning]	attribute \\"lazy\\" missed value!! \\"lazy\\" instead!!
 @#[line:3,col:3]",
   ],
 }
