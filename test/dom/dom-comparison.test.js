@@ -30,52 +30,61 @@ describe('DOM position comparison', () => {
                 expect(text.compareDocumentPosition(text));
         });
 	it('Step 5 2 1 1', async () => {
-                expect(bar.compareDocumentPosition(foo)).toBe(34);
+                let result = x0.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC + x0.DOCUMENT_POSITION_PRECEDING;
+                expect(bar.compareDocumentPosition(foo)).toBe(result);
         });
 	it('Step 5 2 1 2', async () => {
-                expect(foo.compareDocumentPosition(bar)).toBe(36);
+                let result = x0.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC + x0.DOCUMENT_POSITION_FOLLOWING;
+                expect(foo.compareDocumentPosition(bar)).toBe(result);
         });
 	it('Step 6', () => {
+                let result = x0.DOCUMENT_POSITION_DISCONNECTED + x0.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC;
+                let resPre = result + x0.DOCUMENT_POSITION_PRECEDING;
+                let resFol = result + x0.DOCUMENT_POSITION_FOLLOWING;
 	        const root = dp.parseFromString('<xml><baz abaz="y"></baz></xml>', 'text/xml').documentElement;
                 const baz = root.childNodes[0];
                 const abaz = baz.attributes[0];
                 // This ensures the comparison is stable.
-                let comp = x0.compareDocumentPosition(root) === 35;
-                expect(x0.compareDocumentPosition(root)).toBe(comp ? 35 : 37);
-                expect(root.compareDocumentPosition(x0)).toBe(comp ? 37 : 35);
-                expect(x1.compareDocumentPosition(baz)).toBe(comp ? 35 : 37);
-                expect(baz.compareDocumentPosition(x1)).toBe(comp ? 37 : 35);
-                expect(foo.compareDocumentPosition(abaz)).toBe(comp ? 35 : 37);
-                expect(abaz.compareDocumentPosition(foo)).toBe(comp ? 37 : 35);
+                let comp = x0.compareDocumentPosition(root) === resPre;
+                expect(x0.compareDocumentPosition(root)).toBe(comp ? resPre : resFol);
+                expect(root.compareDocumentPosition(x0)).toBe(comp ? resFol : resPre);
+                expect(x1.compareDocumentPosition(baz)).toBe(comp ? resPre : resFol);
+                expect(baz.compareDocumentPosition(x1)).toBe(comp ? resFol : resPre);
+                expect(foo.compareDocumentPosition(abaz)).toBe(comp ? resPre : resFol);
+                expect(abaz.compareDocumentPosition(foo)).toBe(comp ? resFol : resPre);
         });
         it('Step 7', () => {
-                expect(x1.compareDocumentPosition(x0)).toBe(10);
-                expect(x2.compareDocumentPosition(x0)).toBe(10);
-                expect(x2.compareDocumentPosition(x1)).toBe(10);
-                expect(foo.compareDocumentPosition(x0)).toBe(10);
+                let result = x0.DOCUMENT_POSITION_CONTAINS + x0.DOCUMENT_POSITION_PRECEDING;
+                expect(x1.compareDocumentPosition(x0)).toBe(result);
+                expect(x2.compareDocumentPosition(x0)).toBe(result);
+                expect(x2.compareDocumentPosition(x1)).toBe(result);
+                expect(foo.compareDocumentPosition(x0)).toBe(result);
         });
         it('Step 8', () => {
+                let result = x0.DOCUMENT_POSITION_CONTAINED_BY + x0.DOCUMENT_POSITION_FOLLOWING;
                 expect(x0.compareDocumentPosition(x1)).toBe(20);
                 expect(x0.compareDocumentPosition(x2)).toBe(20);
                 expect(x1.compareDocumentPosition(x2)).toBe(20);
                 expect(x0.compareDocumentPosition(foo)).toBe(20);
         });
         it('Step 9', () => {
-                expect(y1.compareDocumentPosition(x1)).toBe(2);
-                expect(y1.compareDocumentPosition(x2)).toBe(2);
-                expect(z2.compareDocumentPosition(x2)).toBe(2);
-                expect(z2.compareDocumentPosition(x1)).toBe(2);
-                expect(y1.compareDocumentPosition(x1.attributes[0])).toBe(2);
-                expect(x1.attributes[0].compareDocumentPosition(foo)).toBe(2);
-                expect(y1.attributes[0].compareDocumentPosition(foo)).toBe(2);
+                let result = x0.DOCUMENT_POSITION_PRECEDING;
+                expect(y1.compareDocumentPosition(x1)).toBe(result);
+                expect(y1.compareDocumentPosition(x2)).toBe(result);
+                expect(z2.compareDocumentPosition(x2)).toBe(result);
+                expect(z2.compareDocumentPosition(x1)).toBe(result);
+                expect(y1.compareDocumentPosition(x1.attributes[0])).toBe(result);
+                expect(x1.attributes[0].compareDocumentPosition(foo)).toBe(result);
+                expect(y1.attributes[0].compareDocumentPosition(foo)).toBe(result);
         });
         it('Step 10', () => {
-                expect(x1.compareDocumentPosition(y1)).toBe(4);
-                expect(x2.compareDocumentPosition(y1)).toBe(4);
-                expect(x2.compareDocumentPosition(z2)).toBe(4);
-                expect(x1.compareDocumentPosition(z2)).toBe(4);
-                expect(x1.attributes[0].compareDocumentPosition(y1)).toBe(4);
-                expect(foo.compareDocumentPosition(x1.attributes[0])).toBe(4);
-                expect(foo.compareDocumentPosition(y1.attributes[0])).toBe(4);
+                let result = x0.DOCUMENT_POSITION_FOLLOWING;
+                expect(x1.compareDocumentPosition(y1)).toBe(result);
+                expect(x2.compareDocumentPosition(y1)).toBe(result);
+                expect(x2.compareDocumentPosition(z2)).toBe(result);
+                expect(x1.compareDocumentPosition(z2)).toBe(result);
+                expect(x1.attributes[0].compareDocumentPosition(y1)).toBe(result);
+                expect(foo.compareDocumentPosition(x1.attributes[0])).toBe(result);
+                expect(foo.compareDocumentPosition(y1.attributes[0])).toBe(result);
         });
 });
