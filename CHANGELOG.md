@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.8](https://github.com/xmldom/xmldom/compare/0.8.7...0.8.8)
+
+### Fixed
+
+- extend list of HTML entities [`#489`](https://github.com/xmldom/xmldom/pull/489)
+
+Thank you, [@zorkow](https://github.com/zorkow), for your contributions
+
 ## [0.8.7](https://github.com/xmldom/xmldom/compare/0.8.6...0.8.7)
 
 ### Fixed
