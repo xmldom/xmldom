@@ -2,7 +2,6 @@
 
 const { DOMParser } = require('../../lib');
 
-// Create a Test Suite
 describe('XML Namespace Parse', () => {
 	it('supports testlitecns', () => {
 		const doc = new DOMParser({

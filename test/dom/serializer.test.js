@@ -20,7 +20,7 @@ describe('XML Serializer', () => {
 	describe('does not serialize namespaces with an empty URI', () => {
 		// for more details see the comments in lib/dom.js:needNamespaceDefine
 		it('that are used in a node', () => {
-			const source = '<w:p><w:r>test1</w:r><w:r>test2</w:r></w:p>';
+			const source = '<w:p xmlns:w="namespace"><w:r>test1</w:r><w:r>test2</w:r></w:p>';
 			const { documentElement } = new DOMParser().parseFromString(source, 'text/xml');
 
 			expect(documentElement.firstChild.firstChild).toMatchObject({
@@ -34,7 +34,7 @@ describe('XML Serializer', () => {
 		});
 
 		it('that are used in an attribute', () => {
-			const source = '<w:p w:attr="val"/>';
+			const source = '<w:p xmlns:w="namespace" w:attr="val"/>';
 			const { documentElement } = new DOMParser().parseFromString(source, 'text/xml');
 
 			expect(documentElement.toString()).toStrictEqual(source);

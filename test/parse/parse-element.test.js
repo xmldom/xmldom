@@ -39,6 +39,123 @@ describe('XML Node Parse', () => {
 		expect(actual).toBe(`<xml><book/><title>Harry Potter</title></xml>`);
 	});
 
+	it('closing tag without attribute value', () => {
+		const { errors, parser } = getTestParser();
+		const actual = parser
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy />
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(errors).toMatchSnapshot();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+	it('closing tag with unquoted value following /', () => {
+		const { errors, parser } = getTestParser();
+		const actual = parser
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy=lazy/>
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(errors).toMatchSnapshot();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+	it('closing tag with unquoted value following space and /', () => {
+		const { errors, parser } = getTestParser();
+		const actual = parser
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy=lazy />
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(errors).toMatchSnapshot();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+	it('closing tag with unquoted value including /  followed by space /', () => {
+		const { errors, parser } = getTestParser();
+		const actual = parser
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy=lazy/ />
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(errors).toMatchSnapshot();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy/"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+	it('closing tag with unquoted value ending with //', () => {
+		const { errors, parser } = getTestParser();
+
+		const actual = parser
+			.parseFromString(
+				`<template>
+	<view>
+		<image lazy=lazy//>
+		<image></image>
+	</view>
+</template>`,
+				'text/xml'
+			)
+			.toString();
+		expect(errors).toMatchSnapshot();
+		expect(actual).toBe(
+			`<template>
+	<view>
+		<image lazy="lazy/"/>
+		<image/>
+	</view>
+</template>`
+		);
+	});
+
 	describe('simple attributes', () => {
 		describe('nothing special', () => {
 			it.each(['<xml a="1" b="2"></xml>', '<xml a="1" b="2" ></xml>', '<xml a="1" b="2" />'])('%s', (input) => {

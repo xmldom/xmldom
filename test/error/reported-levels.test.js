@@ -1,4 +1,5 @@
 'use strict';
+// wallaby:file.skip since stacktrace detection is not working in instrumented files
 
 const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
 const { getTestParser } = require('../get-test-parser');

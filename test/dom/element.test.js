@@ -2,136 +2,9 @@
 
 const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib');
 const { MIME_TYPE, NAMESPACE } = require('../../lib/conventions');
-const { Element } = require('../../lib/dom');
+const { Element, DOMException } = require('../../lib/dom');
 
-describe('Document', () => {
-	// See: http://jsfiddle.net/bigeasy/ShcXP/1/
-	describe('getElementsByTagName', () => {
-		it('should return the correct number of elements in XML documents', () => {
-			const doc = new DOMParser().parseFromString(
-				`<xml id="0" lang="en">
-						<head id="1"><title id="2">Title</title></head>
-						<body id="3">
-							<div id="4"><p id="5"></p></div>
-							<html xmlns="${NAMESPACE.HTML}" id="6"><div id="7"></div></html>
-						</body>
-					</xml>`,
-				'text/xml'
-			);
-			expect(doc.getElementsByTagName('*')).toHaveLength(8);
-			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7);
-			expect(doc.getElementsByTagName('div')).toHaveLength(2);
-			expect(doc.documentElement.getElementsByTagName('div')).toHaveLength(2);
-
-			// in HTML documents inside the HTML namespace case doesn't have to match,
-			// this is not an HTML document, so no div will be found,
-			// not even the second one inside the HTML namespace
-			expect(doc.getElementsByTagName('DIV')).toHaveLength(0);
-			expect(doc.documentElement.getElementsByTagName('DIV')).toHaveLength(0);
-		});
-
-		it('should return the correct number of elements in HTML documents', () => {
-			const doc = new DOMParser().parseFromString(
-				`<html id="0" lang="en">
-						<head id="1"><title id="2">Title</title></head>
-						<body id="3">
-							<div id="4"><p id="5"></p></div>
-							<xml xmlns="${NAMESPACE.XML}" id="6"><div id="7"></div></xml>
-						</body>
-					</html>`,
-				MIME_TYPE.HTML
-			);
-			expect(doc.getElementsByTagName('*')).toHaveLength(8);
-			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7);
-			expect(doc.getElementsByTagName('div')).toHaveLength(2);
-			expect(doc.documentElement.getElementsByTagName('div')).toHaveLength(2);
-
-			// in HTML documents inside the HTML namespace case doesn't have to match,
-			// but the second one is not in the HTML namespace
-			const documentDIVs = doc.getElementsByTagName('DIV');
-			expect(documentDIVs).toHaveLength(1);
-			expect(documentDIVs.item(0).getAttribute('id')).toBe('4');
-			const elementDIVs = doc.documentElement.getElementsByTagName('DIV');
-			expect(elementDIVs).toHaveLength(1);
-			expect(elementDIVs.item(0).getAttribute('id')).toBe('4');
-		});
-
-		it('should support API on element (this test needs to be split)', () => {
-			const doc = new DOMParser().parseFromString(
-				'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
-					'<t:test/><test/><t2:test/>' +
-					'<child attr="1"><test><child attr="2"/></test></child>' +
-					'<child attr="3"/></xml>',
-				'text/xml'
-			);
-
-			const childs1 = doc.documentElement.getElementsByTagName('child');
-			expect(childs1.item(0).getAttribute('attr')).toBe('1');
-			expect(childs1.item(1).getAttribute('attr')).toBe('2');
-			expect(childs1.item(2).getAttribute('attr')).toBe('3');
-			expect(childs1).toHaveLength(3);
-
-			const childs2 = doc.getElementsByTagName('child');
-			expect(childs2.item(0).getAttribute('attr')).toBe('1');
-			expect(childs2.item(1).getAttribute('attr')).toBe('2');
-			expect(childs2.item(2).getAttribute('attr')).toBe('3');
-			expect(childs2).toHaveLength(3);
-
-			const childs3 = doc.documentElement.getElementsByTagName('*');
-			for (let i = 0, buf = []; i < childs3.length; i++) {
-				buf.push(childs3[i].tagName);
-			}
-			expect(childs3).toHaveLength(7);
-
-			const feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>', 'text/xml');
-			const entries = feed.documentElement.getElementsByTagName('entry');
-			expect(entries).toHaveLength(1);
-			expect(entries[0].nodeName).toBe('entry');
-			expect(feed.documentElement.childNodes.item(0).nodeName).toBe('entry');
-		});
-	});
-
-	it('supports getElementsByTagNameNS', () => {
-		const doc = new DOMParser().parseFromString(
-			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
-				'<t:test/><test/><t2:test/>' +
-				'<child attr="1"><test><child attr="2"/></test></child>' +
-				'<child attr="3"/></xml>',
-			'text/xml'
-		);
-
-		const childs1 = doc.documentElement.getElementsByTagNameNS('http://test.com', '*');
-		expect(childs1).toHaveLength(6);
-
-		const childs2 = doc.getElementsByTagNameNS('http://test.com', '*');
-		expect(childs2).toHaveLength(7);
-
-		const childs3 = doc.documentElement.getElementsByTagNameNS('http://test.com', 'test');
-		expect(childs3).toHaveLength(3);
-
-		const childs4 = doc.getElementsByTagNameNS('http://test.com', 'test');
-		expect(childs4).toHaveLength(3);
-
-		const childs5 = doc.getElementsByTagNameNS('*', 'test');
-		expect(childs5).toHaveLength(4);
-
-		const childs6 = doc.documentElement.getElementsByTagNameNS('*', 'test');
-		expect(childs6).toHaveLength(4);
-	});
-
-	it('supports getElementById', () => {
-		const doc = new DOMParser().parseFromString(
-			'<xml xmlns="http://test.com" id="root">' +
-				'<child id="a1" title="1"><child id="a2"  title="2"/></child>' +
-				'<child id="a1"   title="3"/></xml>',
-			'text/xml'
-		);
-		expect(doc.getElementById('root')).not.toBeNull();
-		expect(doc.getElementById('a1').getAttribute('title')).toBe('1');
-		expect(doc.getElementById('a2').getAttribute('title')).toBe('2');
-		expect(doc.getElementById('a2').getAttribute('title2')).toBe('');
-	});
-
+describe('documentElement', () => {
 	it('can properly append exist child', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
@@ -239,6 +112,10 @@ describe('Element', () => {
 	const ATTR_MIXED_CASE = 'AttR';
 	const ATTR_LOWER_CASE = 'attr';
 	const VALUE = '2039e2dk';
+	describe('getAttribute', () => {
+		const doc = new DOMImplementation().createDocument(null, 'xml');
+		expect(doc.documentElement.getAttribute('no')).toBeNull();
+	});
 	describe('setAttribute', () => {
 		test.each([null, NAMESPACE.HTML])('should set attribute as is in XML document with namespace %s', (ns) => {
 			const doc = new DOMImplementation().createDocument(ns, 'xml');
@@ -252,6 +129,11 @@ describe('Element', () => {
 			});
 			expect(doc.documentElement.hasAttribute(ATTR_MIXED_CASE)).toBe(true);
 			expect(doc.documentElement.hasAttribute(ATTR_LOWER_CASE)).toBe(false);
+
+			const attr = doc.documentElement.getAttributeNode(ATTR_MIXED_CASE);
+			doc.documentElement.setAttribute(ATTR_MIXED_CASE, VALUE + VALUE);
+			expect(doc.documentElement.getAttributeNode(ATTR_MIXED_CASE)).toBe(attr);
+			expect(doc.documentElement.getAttribute(ATTR_MIXED_CASE)).toBe(VALUE + VALUE);
 		});
 		test('should set attribute lower cased in HTML document', () => {
 			const doc = new DOMImplementation().createHTMLDocument();
@@ -271,6 +153,11 @@ describe('Element', () => {
 			expect(doc.documentElement.getAttribute(ATTR_MIXED_CASE)).toBe(doc.documentElement.getAttribute(ATTR_LOWER_CASE));
 			// since it's the same node it resolves to
 			expect(doc.documentElement.getAttributeNode(ATTR_MIXED_CASE)).toBe(doc.documentElement.getAttributeNode(ATTR_LOWER_CASE));
+
+			const attr = doc.documentElement.getAttributeNode(ATTR_MIXED_CASE);
+			doc.documentElement.setAttribute(ATTR_LOWER_CASE, VALUE + VALUE);
+			expect(doc.documentElement.getAttributeNode(ATTR_LOWER_CASE)).toBe(attr);
+			expect(doc.documentElement.getAttribute(ATTR_MIXED_CASE)).toBe(VALUE + VALUE);
 		});
 		test('should set attribute as is in HTML document with different namespace', () => {
 			const doc = new DOMImplementation().createHTMLDocument();
@@ -286,6 +173,55 @@ describe('Element', () => {
 			});
 			expect(nameSpacedElement.hasAttribute(ATTR_MIXED_CASE)).toBe(true);
 			expect(doc.documentElement.hasAttribute(ATTR_LOWER_CASE)).toBe(false);
+		});
+	});
+	describe('setAttributeNS', () => {
+		it('can properly set ns attribute', () => {
+			const root = new DOMParser().parseFromString(
+				"<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",
+				'text/xml'
+			).documentElement;
+
+			const child = root.firstChild;
+			child.setAttributeNS('a', 'a:a', 'a:a');
+			child.setAttributeNS('b', 'b:b', 'b:b');
+			child.setAttributeNS('b', 'b:a', 'b:a');
+			const attrB = child.getAttributeNodeNS('b', 'b');
+			expect(attrB).not.toBeNull();
+			expect(child.getAttributeNS('b', 'b')).toBe('b:b');
+			expect(child.attributes.length).toBe(3);
+			child.setAttribute('a', 1);
+			child.setAttributeNS('b', 'b:b', 'b:b-updated');
+			expect(child.getAttributeNS('b', 'b')).toBe('b:b-updated');
+			expect(child.getAttributeNodeNS('b', 'b')).toBe(attrB);
+			expect(child.attributes.length).toBe(4);
+
+			const c = root.ownerDocument.createElement('c');
+			expect(() => {
+				c.setAttributeNodeNS(root.attributes.item(0));
+			}).toThrow(new DOMException(DOMException.INUSE_ATTRIBUTE_ERR));
+		});
+
+		it('can properly override attribute', () => {
+			const root = new DOMParser().parseFromString(
+				"<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",
+				'text/xml'
+			).documentElement;
+			root.setAttributeNS('a', 'a:a', '1');
+			const attr = root.getAttributeNode('a:a');
+			expect(attr).not.toBeNull();
+			// getAttributeNS and getAttributeNodeNS expect the localName, not the qualified one!
+			expect(root.getAttributeNS('a', 'a')).toBe('1');
+			expect(root.getAttributeNodeNS('a', 'a')).toBe(attr);
+			root.setAttributeNS('a', 'a:a', '2');
+			expect(root.getAttributeNS('a', 'a')).toBe('2');
+			expect(root.getAttributeNodeNS('a', 'a')).toBe(attr);
+			expect(root.attributes.length).toBe(4);
+		});
+
+		it('properly supports attribute namespace', () => {
+			const root = new DOMParser().parseFromString("<xml xmlns:a='a' xmlns:b='b' a:b='e'></xml>", 'text/xml').documentElement;
+			expect(root.getAttributeNS('a', 'b')).toBe('e');
 		});
 	});
 });
