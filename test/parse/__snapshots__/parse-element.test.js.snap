@@ -1,48 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`XML Node Parse closing tag with unquoted value ending with // 1`] = `
-Object {
-  "warning": Array [
-    "[xmldom warning]	attribute \\"lazy/\\" missed quot(\\")!
-@#[line:3,col:3]",
+Array [
+  Array [
+    "warning",
+    "attribute \\"lazy/\\" missed quot(\\")!",
+    Object {
+      "columnNumber": 9,
+      "lineNumber": 5,
+    },
   ],
-}
+]
 `;
 
 exports[`XML Node Parse closing tag with unquoted value following / 1`] = `
-Object {
-  "warning": Array [
-    "[xmldom warning]	attribute \\"lazy\\" missed quot(\\")!
-@#[line:3,col:3]",
+Array [
+  Array [
+    "warning",
+    "attribute \\"lazy\\" missed quot(\\")!",
+    Object {
+      "columnNumber": 9,
+      "lineNumber": 5,
+    },
   ],
-}
+]
 `;
 
 exports[`XML Node Parse closing tag with unquoted value following space and / 1`] = `
-Object {
-  "warning": Array [
-    "[xmldom warning]	attribute \\"lazy\\" missed quot(\\")!!
-@#[line:3,col:3]",
+Array [
+  Array [
+    "warning",
+    "attribute \\"lazy\\" missed quot(\\")!!",
+    Object {
+      "columnNumber": 9,
+      "lineNumber": 5,
+    },
   ],
-}
+]
 `;
 
 exports[`XML Node Parse closing tag with unquoted value including /  followed by space / 1`] = `
-Object {
-  "warning": Array [
-    "[xmldom warning]	attribute \\"lazy/\\" missed quot(\\")!!
-@#[line:3,col:3]",
+Array [
+  Array [
+    "warning",
+    "attribute \\"lazy/\\" missed quot(\\")!!",
+    Object {
+      "columnNumber": 9,
+      "lineNumber": 5,
+    },
   ],
-}
+]
 `;
 
 exports[`XML Node Parse closing tag without attribute value 1`] = `
-Object {
-  "warning": Array [
-    "[xmldom warning]	attribute \\"lazy\\" missed value!! \\"lazy\\" instead!!
-@#[line:3,col:3]",
+Array [
+  Array [
+    "warning",
+    "attribute \\"lazy\\" missed value!! \\"lazy\\" instead!!",
+    Object {
+      "columnNumber": 9,
+      "lineNumber": 5,
+    },
   ],
-}
+]
 `;
 
 exports[`XML Node Parse namespaced attributes unclosed root tag will be closed 1`] = `

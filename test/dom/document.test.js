@@ -101,7 +101,8 @@ describe('Document.prototype', () => {
 							<div id="4"><p id="5"></p></div>
 							<html xmlns="${NAMESPACE.HTML}" id="6"><div id="7"></div></html>
 						</body>
-					</xml>`
+					</xml>`,
+				MIME_TYPE.XML_TEXT
 			);
 			expect(doc.getElementsByTagName('*')).toHaveLength(8);
 			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7);
@@ -168,7 +169,7 @@ describe('Document.prototype', () => {
 			}
 			expect(childs3).toHaveLength(7);
 
-			const feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>');
+			const feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>', MIME_TYPE.XML_TEXT);
 			const entries = feed.documentElement.getElementsByTagName('entry');
 			expect(entries).toHaveLength(1);
 			expect(entries[0].nodeName).toBe('entry');
@@ -388,7 +389,7 @@ describe('Document.prototype', () => {
 				<a><x/></a>
 				<b><y/></b>
 			</xml>`;
-			const dom = new DOMParser().parseFromString(ISSUE_CHECK);
+			const dom = new DOMParser().parseFromString(ISSUE_CHECK, MIME_TYPE.XML_TEXT);
 			const ys = dom.getElementsByTagName('y');
 			const as = dom.getElementsByTagName('a');
 
