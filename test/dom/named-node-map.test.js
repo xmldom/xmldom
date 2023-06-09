@@ -1,6 +1,6 @@
 'use strict';
 const { describe, it, expect } = require('@jest/globals');
-const { Attr, DOMException, NamedNodeMap } = require('../../lib/dom');
+const { Attr, DOMException, NamedNodeMap, DOMImplementation } = require('../../lib/dom');
 
 const HTML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => true };
 const XML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => false };
@@ -178,6 +178,7 @@ describe('NamedNodeMap', () => {
 		});
 		it('should only add the same attribute (instance) once', () => {
 			const it = new NamedNodeMap();
+			XML_OWNER_ELEMENT.ownerDocument = new DOMImplementation().createDocument(null, 'xml');
 			it._ownerElement = XML_OWNER_ELEMENT;
 			const attr = new Attr();
 			attr.ownerElement = it._ownerElement;
@@ -226,6 +227,24 @@ describe('NamedNodeMap', () => {
 			expect(it[1]).toBe(upper);
 			expect(it.length).toBe(2);
 		});
+		it('should override an existing attribute', () => {
+			const it = new NamedNodeMap();
+			it._ownerElement = XML_OWNER_ELEMENT;
+			XML_OWNER_ELEMENT.ownerDocument = new DOMImplementation().createDocument(null, 'xml');
+
+			const attr = new Attr();
+			attr.localName = 'attr';
+			attr.ownerElement = it._ownerElement;
+			expect(it.setNamedItemNS(attr)).toBeNull();
+
+			const replacing = new Attr();
+			replacing.localName = attr.localName;
+			replacing.ownerElement = it._ownerElement;
+			expect(it.setNamedItemNS(replacing)).toBe(attr);
+
+			expect(it[0]).toBe(replacing);
+			expect(it.length).toBe(1);
+		})
 	});
 	describe('removeNamedItem', () => {
 		it('should throw when no attribute is found', () => {
