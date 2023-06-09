@@ -379,8 +379,21 @@ describe('Document.prototype', () => {
 			// expect(doc.documentElement).toBeNull();
 			expect(initialElement.parentNode).toBeNull();
 			expect(initialElement.nextSibling).toBeNull();
-			// expect(initialElement.previousSibling).toBeNull();
+			expect(initialElement.previousSibling).toBeNull();
 			expect(doc.childNodes).toHaveLength(1);
+		});
+
+		it('Remove child from non-parent node throws', async () => {
+			const ISSUE_CHECK = `<xml>
+				<a><x/></a>
+				<b><y/></b>
+			</xml>`;
+			const dom = new DOMParser().parseFromString(ISSUE_CHECK);
+			const ys = dom.getElementsByTagName('y');
+			const as = dom.getElementsByTagName('a');
+
+			expect(() => as[0].removeChild(ys[0])).toThrow(DOMException);
+			expect(dom.toString()).toBe(ISSUE_CHECK);
 		});
 	});
 });
