@@ -108,144 +108,54 @@ describe('NamedNodeMap', () => {
 			expect(it.getNamedItemNS(null, second.localName.toUpperCase())).toBeNull();
 		});
 	});
-	describe('setNamedItem', () => {
-		it('should throw error if attr.ownerElement is set and not the same', () => {
-			const it = new NamedNodeMap();
-			it._ownerElement = {};
-			const attr = new Attr();
-			attr.ownerElement = {};
+	['setNamedItem', 'setNamedItemNS'].forEach((setNamedItemMethod) => {
+		describe(setNamedItemMethod, () => {
+			it('should throw error if attr.ownerElement is set and not the same', () => {
+				const it = new NamedNodeMap();
+				it._ownerElement = {};
+				const attr = new Attr();
+				attr.ownerElement = {};
 
-			expect(() => it.setNamedItem(attr)).toThrow(new DOMException(DOMException.INUSE_ATTRIBUTE_ERR));
-		});
-		it('should only add the same attribute (instance) once', () => {
-			const it = new NamedNodeMap();
-			it._ownerElement = XML_OWNER_ELEMENT;
-			const attr = new Attr();
-			attr.ownerElement = it._ownerElement;
+				expect(() => it[setNamedItemMethod](attr)).toThrow(new DOMException(DOMException.INUSE_ATTRIBUTE_ERR));
+			});
+			it('should only add the same attribute (instance) once', () => {
+				const it = new NamedNodeMap();
+				it._ownerElement = XML_OWNER_ELEMENT;
+				const attr = new Attr();
+				attr.nodeName = attr.localName = 'attr';
+				attr.ownerElement = it._ownerElement;
 
-			expect(it.setNamedItem(attr)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it.length).toBe(1);
+				expect(it[setNamedItemMethod](attr)).toBeNull();
+				expect(it[0]).toBe(attr);
+				expect(it.length).toBe(1);
 
-			expect(it.setNamedItem(attr)).toBe(attr);
-		});
-		it('should replace the attribute in HTML according to lowercase node name', () => {
-			const it = new NamedNodeMap();
-			it._ownerElement = HTML_OWNER_ELEMENT;
-			const attr = new Attr();
-			attr.nodeName = 'attr';
-			attr.ownerElement = it._ownerElement;
+				const namedItem = it[setNamedItemMethod](attr);
 
-			expect(it.setNamedItem(attr)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it.length).toBe(1);
+				expect(it.length).toBe(1);
+				expect(namedItem).toBe(attr);
+			});
+			it('should add the attribute with different case in nodeName', () => {
+				const it = new NamedNodeMap();
+				it._ownerElement = {};
+				const attr = new Attr();
+				attr.nodeName = attr.localName = 'attr';
+				attr.ownerElement = it._ownerElement;
 
-			const same = new Attr();
-			same.nodeName = attr.nodeName.toUpperCase();
+				expect(it[setNamedItemMethod](attr)).toBeNull();
+				expect(it[0]).toBe(attr);
+				expect(it.length).toBe(1);
 
-			expect(it.setNamedItem(same)).toBe(attr);
-			expect(it[0]).toBe(same);
-			expect(it.length).toBe(1);
-		});
-		it('should add the attribute with different case in nodeName in XML', () => {
-			const it = new NamedNodeMap();
-			it._ownerElement = XML_OWNER_ELEMENT;
-			const attr = new Attr();
-			attr.nodeName = 'attr';
-			attr.ownerElement = it._ownerElement;
+				const upper = new Attr();
+				upper.nodeName = attr.nodeName.toUpperCase();
 
-			expect(it.setNamedItem(attr)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it.length).toBe(1);
-
-			const upper = new Attr();
-			upper.nodeName = attr.nodeName.toUpperCase();
-
-			expect(it.setNamedItem(upper)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it[1]).toBe(upper);
-			expect(it.length).toBe(2);
+				expect(it[setNamedItemMethod](upper)).toBeNull();
+				expect(it[0]).toBe(attr);
+				expect(it[1]).toBe(upper);
+				expect(it.length).toBe(2);
+			});
 		});
 	});
-	describe('setNamedItemNS', () => {
-		it('should throw error if attr.ownerElement is set and not the same', () => {
-			const it = new NamedNodeMap();
-			it._ownerElement = {};
-			const attr = new Attr();
-			attr.ownerElement = {};
 
-			expect(() => it.setNamedItemNS(attr)).toThrow(new DOMException(DOMException.INUSE_ATTRIBUTE_ERR));
-		});
-		it('should only add the same attribute (instance) once', () => {
-			const it = new NamedNodeMap();
-			XML_OWNER_ELEMENT.ownerDocument = new DOMImplementation().createDocument(null, 'xml');
-			it._ownerElement = XML_OWNER_ELEMENT;
-			const attr = new Attr();
-			attr.ownerElement = it._ownerElement;
-
-			expect(it.setNamedItemNS(attr)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it.length).toBe(1);
-
-			expect(it.setNamedItemNS(attr)).toBe(attr);
-		});
-		it('should add the attribute with different case in localName in HTML', () => {
-			const it = new NamedNodeMap();
-			it._ownerElement = HTML_OWNER_ELEMENT;
-			const attr = new Attr();
-			attr.localName = 'attr';
-			attr.ownerElement = it._ownerElement;
-
-			expect(it.setNamedItemNS(attr)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it.length).toBe(1);
-
-			const upper = new Attr();
-			upper.localName = attr.localName.toUpperCase();
-
-			expect(it.setNamedItemNS(upper)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it[1]).toBe(upper);
-			expect(it.length).toBe(2);
-		});
-		it('should add the attribute with different case in localName in XML', () => {
-			const it = new NamedNodeMap();
-			it._ownerElement = XML_OWNER_ELEMENT;
-			const attr = new Attr();
-			attr.localName = 'attr';
-			attr.ownerElement = it._ownerElement;
-
-			expect(it.setNamedItemNS(attr)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it.length).toBe(1);
-
-			const upper = new Attr();
-			upper.localName = attr.localName.toUpperCase();
-
-			expect(it.setNamedItemNS(upper)).toBeNull();
-			expect(it[0]).toBe(attr);
-			expect(it[1]).toBe(upper);
-			expect(it.length).toBe(2);
-		});
-		it('should override an existing attribute', () => {
-			const it = new NamedNodeMap();
-			it._ownerElement = XML_OWNER_ELEMENT;
-			XML_OWNER_ELEMENT.ownerDocument = new DOMImplementation().createDocument(null, 'xml');
-
-			const attr = new Attr();
-			attr.localName = 'attr';
-			attr.ownerElement = it._ownerElement;
-			expect(it.setNamedItemNS(attr)).toBeNull();
-
-			const replacing = new Attr();
-			replacing.localName = attr.localName;
-			replacing.ownerElement = it._ownerElement;
-			expect(it.setNamedItemNS(replacing)).toBe(attr);
-
-			expect(it[0]).toBe(replacing);
-			expect(it.length).toBe(1);
-		})
-	});
 	describe('removeNamedItem', () => {
 		it('should throw when no attribute is found', () => {
 			const it = new NamedNodeMap();

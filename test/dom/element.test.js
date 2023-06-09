@@ -112,6 +112,10 @@ describe('Element', () => {
 	const ATTR_MIXED_CASE = 'AttR';
 	const ATTR_LOWER_CASE = 'attr';
 	const VALUE = '2039e2dk';
+	describe('getAttribute', () => {
+		const doc = new DOMImplementation().createDocument(null, 'xml');
+		expect(doc.documentElement.getAttribute('no')).toBeNull();
+	});
 	describe('setAttribute', () => {
 		test.each([null, NAMESPACE.HTML])('should set attribute as is in XML document with namespace %s', (ns) => {
 			const doc = new DOMImplementation().createDocument(ns, 'xml');
@@ -125,6 +129,11 @@ describe('Element', () => {
 			});
 			expect(doc.documentElement.hasAttribute(ATTR_MIXED_CASE)).toBe(true);
 			expect(doc.documentElement.hasAttribute(ATTR_LOWER_CASE)).toBe(false);
+
+			const attr = doc.documentElement.getAttributeNode(ATTR_MIXED_CASE);
+			doc.documentElement.setAttribute(ATTR_MIXED_CASE, VALUE + VALUE);
+			expect(doc.documentElement.getAttributeNode(ATTR_MIXED_CASE)).toBe(attr);
+			expect(doc.documentElement.getAttribute(ATTR_MIXED_CASE)).toBe(VALUE + VALUE);
 		});
 		test('should set attribute lower cased in HTML document', () => {
 			const doc = new DOMImplementation().createHTMLDocument();
@@ -144,6 +153,11 @@ describe('Element', () => {
 			expect(doc.documentElement.getAttribute(ATTR_MIXED_CASE)).toBe(doc.documentElement.getAttribute(ATTR_LOWER_CASE));
 			// since it's the same node it resolves to
 			expect(doc.documentElement.getAttributeNode(ATTR_MIXED_CASE)).toBe(doc.documentElement.getAttributeNode(ATTR_LOWER_CASE));
+
+			const attr = doc.documentElement.getAttributeNode(ATTR_MIXED_CASE);
+			doc.documentElement.setAttribute(ATTR_LOWER_CASE, VALUE + VALUE);
+			expect(doc.documentElement.getAttributeNode(ATTR_LOWER_CASE)).toBe(attr);
+			expect(doc.documentElement.getAttribute(ATTR_MIXED_CASE)).toBe(VALUE + VALUE);
 		});
 		test('should set attribute as is in HTML document with different namespace', () => {
 			const doc = new DOMImplementation().createHTMLDocument();

@@ -24,7 +24,7 @@ describe('XML Namespace Parse', () => {
 				documentElement.firstChild.lookupNamespaceURI('')
 			)
 		).toMatchObject(['http://test.com']);
-		expect(documentElement.firstChild.getAttributeNode('attr').namespaceURI).toBeUndefined();
+		expect(documentElement.firstChild.getAttributeNode('attr').namespaceURI).toBeNull();
 	});
 
 	it('prefix namespace', () => {
