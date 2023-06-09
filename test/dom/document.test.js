@@ -3,7 +3,7 @@
 const { getTestParser } = require('../get-test-parser');
 const { DOMImplementation, DOMException } = require('../../lib/dom');
 const { NAMESPACE, MIME_TYPE } = require('../../lib/conventions');
-const { DOMParser } = require('../../lib')
+const { DOMParser } = require('../../lib');
 
 const INPUT = (first = '', second = '', third = '', fourth = '') => `
 <html >
@@ -82,8 +82,8 @@ describe('Document.prototype', () => {
 	it('getElementById', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
-			'<child id="a1" title="1"><child id="a2"  title="2" empty-title=""/></child>' +
-			'<child id="a1"   title="3"/></xml>',
+				'<child id="a1" title="1"><child id="a2"  title="2" empty-title=""/></child>' +
+				'<child id="a1"   title="3"/></xml>',
 			'text/xml'
 		);
 		expect(doc.getElementById('root')).not.toBeNull();
@@ -144,9 +144,9 @@ describe('Document.prototype', () => {
 		it('should support API on element (this test needs to be split)', () => {
 			const doc = new DOMParser().parseFromString(
 				'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
-				'<t:test/><test/><t2:test/>' +
-				'<child attr="1"><test><child attr="2"/></test></child>' +
-				'<child attr="3"/></xml>',
+					'<t:test/><test/><t2:test/>' +
+					'<child attr="1"><test><child attr="2"/></test></child>' +
+					'<child attr="3"/></xml>',
 				'text/xml'
 			);
 
@@ -178,9 +178,9 @@ describe('Document.prototype', () => {
 	it('getElementsByTagNameNS', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
-			'<t:test/><test/><t2:test/>' +
-			'<child attr="1"><test><child attr="2"/></test></child>' +
-			'<child attr="3"/></xml>',
+				'<t:test/><test/><t2:test/>' +
+				'<child attr="1"><test><child attr="2"/></test></child>' +
+				'<child attr="3"/></xml>',
 			'text/xml'
 		);
 
