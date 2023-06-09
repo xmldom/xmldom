@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-beta.7](https://github.com/xmldom/xmldom/compare/0.9.0-beta.6...0.9.0-beta.7)
+
+### Feature
+
+- Add `compareDocumentPosition` method from level 3 spec. [`#488`](https://github.com/xmldom/xmldom/pull/488)
+
+### Fixed
+
+- `getAttribute` and `getAttributeNS` should return `null` (#477) [`#46`](https://github.com/xmldom/xmldom/issues/46)
+- several issues in NamedNodeMap and Element (#482) [`#46`](https://github.com/xmldom/xmldom/issues/46)
+- properly parse closing where the last attribute has no value [`#485`](https://github.com/xmldom/xmldom/pull/485) / [`#486`](https://github.com/xmldom/xmldom/issues/486)
+- extend list of HTML entities [`#489`](https://github.com/xmldom/xmldom/pull/489)
+
+BREAKING CHANGE: Iteration over attributes now happens in the right order and non-existing attributes now return `null` instead of undefined. THe same is true for the `namepsaceURI` and `prefix` of Attr nodes.
+All of the changes are fixing misalignment with the DOM specs, so if you expected it to work as specified,
+nothing should break for you.
+
+### Chore
+
+- update multiple devDependencies
+- Configure jest (correctly) and wallaby [`#481`](https://github.com/xmldom/xmldom/pull/481) / [`#483`](https://github.com/xmldom/xmldom/pull/483)
+
+Thank you, [@bulandent](https://github.com/bulandent), [@zorkow](https://github.com/zorkow), for your contributions
+
+
 ## [0.8.8](https://github.com/xmldom/xmldom/compare/0.8.7...0.8.8)
 
 ### Fixed
