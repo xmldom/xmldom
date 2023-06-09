@@ -1,6 +1,6 @@
 'use strict';
 const { describe, it, expect } = require('@jest/globals');
-const { Attr, DOMException, NamedNodeMap, DOMImplementation } = require('../../lib/dom');
+const { Attr, DOMException, NamedNodeMap } = require('../../lib/dom');
 
 const HTML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => true };
 const XML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => false };

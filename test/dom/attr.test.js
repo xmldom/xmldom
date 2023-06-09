@@ -1,5 +1,5 @@
 'use strict';
-const { DOMParser, XMLSerializer } = require('../../lib');
+const { DOMParser } = require('../../lib');
 const { DOMException } = require('../../lib/dom');
 
 describe('XML attrs', () => {
