@@ -2,7 +2,8 @@
 
 const { getTestParser } = require('../get-test-parser');
 const { DOMImplementation, DOMException } = require('../../lib/dom');
-const { NAMESPACE } = require('../../lib/conventions');
+const { NAMESPACE, MIME_TYPE } = require('../../lib/conventions');
+const { DOMParser } = require('../../lib');
 
 const INPUT = (first = '', second = '', third = '', fourth = '') => `
 <html >
@@ -77,6 +78,129 @@ describe('Document.prototype', () => {
 				expect(doc.getElementsByClassName(className)).toHaveLength(1);
 			});
 		});
+	});
+	it('getElementById', () => {
+		const doc = new DOMParser().parseFromString(
+			'<xml xmlns="http://test.com" id="root">' +
+				'<child id="a1" title="1"><child id="a2"  title="2" empty-title=""/></child>' +
+				'<child id="a1"   title="3"/></xml>',
+			'text/xml'
+		);
+		expect(doc.getElementById('root')).not.toBeNull();
+		expect(doc.getElementById('a1').getAttribute('title')).toBe('1');
+		expect(doc.getElementById('a2').getAttribute('title')).toBe('2');
+		expect(doc.getElementById('a2').getAttribute('empty-title')).toBe('');
+		expect(doc.getElementById('a2').getAttribute('title2')).toBe(null);
+	});
+	describe('getElementsByTagName', () => {
+		it('should return the correct number of elements in XML documents', () => {
+			const doc = new DOMParser().parseFromString(
+				`<xml id="0" lang="en">
+						<head id="1"><title id="2">Title</title></head>
+						<body id="3">
+							<div id="4"><p id="5"></p></div>
+							<html xmlns="${NAMESPACE.HTML}" id="6"><div id="7"></div></html>
+						</body>
+					</xml>`
+			);
+			expect(doc.getElementsByTagName('*')).toHaveLength(8);
+			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7);
+			expect(doc.getElementsByTagName('div')).toHaveLength(2);
+			expect(doc.documentElement.getElementsByTagName('div')).toHaveLength(2);
+
+			// in HTML documents inside the HTML namespace case doesn't have to match,
+			// this is not an HTML document, so no div will be found,
+			// not even the second one inside the HTML namespace
+			expect(doc.getElementsByTagName('DIV')).toHaveLength(0);
+			expect(doc.documentElement.getElementsByTagName('DIV')).toHaveLength(0);
+		});
+
+		it('should return the correct number of elements in HTML documents', () => {
+			const doc = new DOMParser().parseFromString(
+				`<html id="0" lang="en">
+						<head id="1"><title id="2">Title</title></head>
+						<body id="3">
+							<div id="4"><p id="5"></p></div>
+							<xml xmlns="${NAMESPACE.XML}" id="6"><div id="7"></div></xml>
+						</body>
+					</html>`,
+				MIME_TYPE.HTML
+			);
+			expect(doc.getElementsByTagName('*')).toHaveLength(8);
+			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7);
+			expect(doc.getElementsByTagName('div')).toHaveLength(2);
+			expect(doc.documentElement.getElementsByTagName('div')).toHaveLength(2);
+
+			// in HTML documents inside the HTML namespace case doesn't have to match,
+			// but the second one is not in the HTML namespace
+			const documentDIVs = doc.getElementsByTagName('DIV');
+			expect(documentDIVs).toHaveLength(1);
+			expect(documentDIVs.item(0).getAttribute('id')).toBe('4');
+			const elementDIVs = doc.documentElement.getElementsByTagName('DIV');
+			expect(elementDIVs).toHaveLength(1);
+			expect(elementDIVs.item(0).getAttribute('id')).toBe('4');
+		});
+
+		it('should support API on element (this test needs to be split)', () => {
+			const doc = new DOMParser().parseFromString(
+				'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
+					'<t:test/><test/><t2:test/>' +
+					'<child attr="1"><test><child attr="2"/></test></child>' +
+					'<child attr="3"/></xml>',
+				'text/xml'
+			);
+
+			const childs1 = doc.documentElement.getElementsByTagName('child');
+			expect(childs1.item(0).getAttribute('attr')).toBe('1');
+			expect(childs1.item(1).getAttribute('attr')).toBe('2');
+			expect(childs1.item(2).getAttribute('attr')).toBe('3');
+			expect(childs1).toHaveLength(3);
+
+			const childs2 = doc.getElementsByTagName('child');
+			expect(childs2.item(0).getAttribute('attr')).toBe('1');
+			expect(childs2.item(1).getAttribute('attr')).toBe('2');
+			expect(childs2.item(2).getAttribute('attr')).toBe('3');
+			expect(childs2).toHaveLength(3);
+
+			const childs3 = doc.documentElement.getElementsByTagName('*');
+			for (let i = 0, buf = []; i < childs3.length; i++) {
+				buf.push(childs3[i].tagName);
+			}
+			expect(childs3).toHaveLength(7);
+
+			const feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>');
+			const entries = feed.documentElement.getElementsByTagName('entry');
+			expect(entries).toHaveLength(1);
+			expect(entries[0].nodeName).toBe('entry');
+			expect(feed.documentElement.childNodes.item(0).nodeName).toBe('entry');
+		});
+	});
+	it('getElementsByTagNameNS', () => {
+		const doc = new DOMParser().parseFromString(
+			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
+				'<t:test/><test/><t2:test/>' +
+				'<child attr="1"><test><child attr="2"/></test></child>' +
+				'<child attr="3"/></xml>',
+			'text/xml'
+		);
+
+		const childs1 = doc.documentElement.getElementsByTagNameNS('http://test.com', '*');
+		expect(childs1).toHaveLength(6);
+
+		const childs2 = doc.getElementsByTagNameNS('http://test.com', '*');
+		expect(childs2).toHaveLength(7);
+
+		const childs3 = doc.documentElement.getElementsByTagNameNS('http://test.com', 'test');
+		expect(childs3).toHaveLength(3);
+
+		const childs4 = doc.getElementsByTagNameNS('http://test.com', 'test');
+		expect(childs4).toHaveLength(3);
+
+		const childs5 = doc.getElementsByTagNameNS('*', 'test');
+		expect(childs5).toHaveLength(4);
+
+		const childs6 = doc.documentElement.getElementsByTagNameNS('*', 'test');
+		expect(childs6).toHaveLength(4);
 	});
 	describe('createElement', () => {
 		it('should create elements with exact cased name in an XML document', () => {
