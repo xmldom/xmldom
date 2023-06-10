@@ -8,7 +8,8 @@
 [![snyk.io package health](https://snyk.io/advisor/npm-package/@xmldom/xmldom/badge.svg)](https://snyk.io/advisor/npm-package/@xmldom/xmldom)
 
 [![npm:latest](https://img.shields.io/npm/v/@xmldom/xmldom/latest?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
-[![npm:next](https://img.shields.io/npm/v/@xmldom/xmldom/next?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
+[![npm:next](https://img.shields.io/npm/v/@xmldom/xmldom/next?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom?activeTab=versions)
+[![npm:lts](https://img.shields.io/npm/v/@xmldom/xmldom/lts?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom?activeTab=versions)
 
 [![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 [![help-wanted issues](https://img.shields.io/github/issues/xmldom/xmldom/help-wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp-wanted)
