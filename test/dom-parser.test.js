@@ -110,42 +110,22 @@ describe('DOMParser', () => {
 			expect(xmlns['']).toBe(NS_CUSTOM);
 		});
 		describe('property assign', () => {
-			const OBJECT_ASSIGN = Object.assign;
-			beforeAll(() => {
-				expect(OBJECT_ASSIGN).toBeDefined();
-				expect(typeof OBJECT_ASSIGN).toBe('function');
-			});
-			afterEach(() => {
-				Object.assign = OBJECT_ASSIGN;
-			});
-			afterAll(() => {
-				expect(Object.assign).toBeDefined();
-				expect(typeof Object.assign).toBe('function');
-			});
 			test('should use `options.assign` when passed', () => {
-				const stub = (t, s) => t;
+				const stub = (t) => t;
 				const it = new DOMParser({ assign: stub });
 
 				expect(it.assign).toBe(stub);
 			});
 
-			test('should use `Object.assign` when `options.assign` is undefined', () => {
+			test('should use `conventions.assign` when `options.assign` is undefined', () => {
 				expect(Object.assign).toBeDefined();
 				const it = new DOMParser({ assign: undefined });
 
-				expect(it.assign).toBe(Object.assign);
+				expect(it.assign).toBe(assign);
 			});
 
-			test('should use `Object.assign` when `options` is undefined', () => {
+			test('should use `conventions.assign` when `options` is undefined', () => {
 				expect(Object.assign).toBeDefined();
-				const it = new DOMParser();
-
-				expect(it.assign).toBe(Object.assign);
-			});
-
-			test('should use `conventions.assign` when `Object.assign` is undefined', () => {
-				Object.assign = undefined; // is reset by afterEach
-
 				const it = new DOMParser();
 
 				expect(it.assign).toBe(assign);

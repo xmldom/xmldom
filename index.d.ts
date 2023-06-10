@@ -157,27 +157,21 @@ declare module '@xmldom/xmldom' {
 		 * `Document` is created.
 		 *
 		 * __It behaves different from the description in the living standard__:
-		 * - Only allows the first argument to be a string (calls `error` handler otherwise.)
 		 * - Uses the `options` passed to the `DOMParser` constructor to modify the
-		 *   behavior/implementation.
-		 * - Instead of creating a Document containing the error message,
-		 *   it triggers `errorHandler`(s) when unexpected input is found.
-		 *   All error handlers can throw an `Error`. By default, only the `fatalError` handler throws
-		 * (a `ParseError`).
-		 * - All errors thrown during the parsing that are not a `ParseError` are caught and reported
-		 * using the `error` handler.
-		 * - If no `Document` was created (because no valid node was ever parsed
-		 * - If no `ParseError` is thrown, this method returns the `DOMHandler.doc`,
-		 *   which most is the `Document` that has been created during parsing.
-		 *   __**Warning: By configuring a faulty DOMHandler implementation,
-		 *   the specified behavior can completely be broken.**__
+		 *   behavior.
+		 * - Any unexpected input is reported to `onError` with either a `warning`, `error` or `fatalError` level.
+		 *   - Any `fatalError` throws a `ParseError` which prevents further processing.
+		 *   - Any error thrown by `onError` is converted to a `ParseError` which prevents further processing
+		 * - If no `Document` was created during parsing it is reported as a `fatalError`.
+		 * __**Warning: By configuring a faulty DOMHandler implementation,
+		 * the specified behavior can completely be broken.**__
 		 *
 		 * @param {string} source Only string input is possible!
 		 * @param {string} [mimeType='application/xml']
 		 *        the mimeType or contentType of the document to be created
 		 *        determines the `type` of document created (XML or HTML)
-		 * @throws ParseError for specific errors depending on the configured `errorHandler`s and/or
-		 *   `domBuilder`
+		 * @returns the `Document` (if no `ParseError` was thrown)
+		 * @throws ParseError for any `fatalError` or anything that is thrown by `onError`
 		 *
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
 		 * @see https://html.spec.whatwg.org/#dom-domparser-parsefromstring-dev
@@ -203,8 +197,8 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * For internal testing: The class for creating an instance for handling events from the SAX
 		 * parser.
-		 * __**Warning: By configuring a faulty implementation, the specified behavior can completely
-		 * be broken.**__
+		 * __**Warning: By configuring a faulty implementation,
+		 * the specified behavior can completely be broken.**__
 		 *
 		 * @readonly
 		 * @private
@@ -242,18 +236,24 @@ declare module '@xmldom/xmldom' {
 		normalizeLineEndings?: (source: string) => string;
 		/**
 		 * A function that is invoked for every error that occurs during parsing.
-		 * It receives an error message as the first parameter,
-		 * and the `DOMHandler` as the second parameter.
-		 * When it is provided, errors are not logged to the console.
-		 * When it throws, a `ParseError` is thrown to cancel any further parsing.
 		 *
-		 * @param level the error level as reported by the SAXParser, should be ignored
+		 * If it is not provided, all errors are reported to `console.error`
+		 * and only `fatalError`s are thrown as a `ParseError`,
+		 * which prevents any further processing.
+		 * If the provided method throws, a `ParserError` is thrown,
+		 * which prevents any further processing.
+		 *
+		 * Be aware that many `warning`s are considered an error
+		 * that prevents further processing in most implementations.
+		 *
+		 * @param level the error level as reported by the SAXParser
 		 * @param message the error message
 		 * @param context the DOMHandler instance used for parsing
 		 */
 		onError?: ErrorHandlerFunction;
 
 		/**
+		 * The XML namespaces that should be assumed when parsing.
 		 * The default namespace can be provided by the key that is the empty string.
 		 * When the `mimeType` for HTML, XHTML or SVG are passed to `parseFromString`,
 		 * the default namespace that will be used,
