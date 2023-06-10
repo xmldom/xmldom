@@ -15,10 +15,12 @@ jobs:
     strategy:
       matrix:
         node-version:
-        - 10.x
-        - 12.x
-        - 14.x
-        - 16.x
+        - 10
+        - 12
+        - 14
+        - 16
+        - 18
+        - 20
 
     steps:
     - uses: actions/checkout@v3
@@ -37,13 +39,17 @@ jobs:
     strategy:
       matrix:
         ts-version:
-        - 3.8
+        - 3
         - 4
+        - 5.0 # requires node version 12.20
+        # starting with typescript 5.1 the minimum required node version is 14.17
+        # so current versions have a separate job without node v12
         node-version:
-        - 10
         - 12
         - 14
         - 16
+        - 18
+        - 20
 
     steps:
     - uses: actions/checkout@v3
@@ -58,4 +64,29 @@ jobs:
       working-directory: examples/typescript-node-es6
     - run: node dist/index.js
       if: ${{ matrix.node-version > 12 }}
+      working-directory: examples/typescript-node-es6
+  typescript51-node-es6:
+    # starting with typescript 5.1 the minimum required node version is 14.17
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ts-version:
+        - 5
+        node-version:
+        - 14
+        - 16
+        - 18
+        - 20
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: ./pretest.sh ${{ matrix.ts-version }}
+      working-directory: examples/typescript-node-es6
+    - run: node dist/index.js
       working-directory: examples/typescript-node-es6

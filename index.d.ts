@@ -249,6 +249,9 @@ declare module '@xmldom/xmldom' {
 		 * @param level the error level as reported by the SAXParser
 		 * @param message the error message
 		 * @param context the DOMHandler instance used for parsing
+		 *
+		 * @see onErrorStopParsing
+		 * @see onWarningStopParsing
 		 */
 		onError?: ErrorHandlerFunction;
 
@@ -267,4 +270,21 @@ declare module '@xmldom/xmldom' {
 	interface ErrorHandlerFunction {
 		(level: 'warn' | 'error' | 'fatalError', msg: string, context: any): void;
 	}
+
+	/**
+	 * A method that prevents any further parsing when an `error`
+	 * with level `error` is reported during parsing.
+	 *
+	 * @see DOMParserOptions.onError
+	 * @see onWarningStopParsing
+	 */
+	function onErrorStopParsing(): void|never;
+	/**
+	 * A method that prevents any further parsing when an `error`
+	 * with any level is reported during parsing.
+	 *
+	 * @see DOMParserOptions.onError
+	 * @see onErrorStopParsing
+	 */
+	function onWarningStopParsing(): never;
 }
