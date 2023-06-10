@@ -30,9 +30,6 @@ declare module '@xmldom/xmldom' {
 		 * - There is no interface/class `XMLDocument`, it returns a `Document` instance (with it's
 		 * `type` set to `'xml'`).
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
-		 * - The methods provided by this implementation are not validating names or qualified names.
-		 *   (They are only validated by the SAX parser when calling `DOMParser.parseFromString`)
-		 * -
 		 *
 		 * @param {string | null} namespaceURI
 		 * @param {string} qualifiedName
@@ -45,10 +42,6 @@ declare module '@xmldom/xmldom' {
 		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocument DOM
 		 *   Level 2 Core (initial)
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument  DOM Level 2 Core
-		 *
-		 * @see https://dom.spec.whatwg.org/#validate-and-extract DOM: Validate and extract
-		 * @see https://www.w3.org/TR/xml/#NT-NameStartChar XML Spec: Names
-		 * @see https://www.w3.org/TR/xml-names/#ns-qualnames XML Namespaces: Qualified names
 		 */
 		createDocument(
 			namespaceURI: string | null,
@@ -60,8 +53,6 @@ declare module '@xmldom/xmldom' {
 		 * Returns a doctype, with the given `qualifiedName`, `publicId`, and `systemId`.
 		 *
 		 * __This behavior is slightly different from the in the specs__:
-		 * - this implementation is not validating names or qualified names
-		 *   (when parsing XML strings, the SAX parser takes care of that)
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
 		 * @param {string} qualifiedName
@@ -77,10 +68,6 @@ declare module '@xmldom/xmldom' {
 		 *   Level 2 Core
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocumenttype DOM Living
 		 *   Standard
-		 *
-		 * @see https://dom.spec.whatwg.org/#validate-and-extract DOM: Validate and extract
-		 * @see https://www.w3.org/TR/xml/#NT-NameStartChar XML Spec: Names
-		 * @see https://www.w3.org/TR/xml-names/#ns-qualnames XML Namespaces: Qualified names
 		 */
 		createDocumentType(
 			qualifiedName: string,
