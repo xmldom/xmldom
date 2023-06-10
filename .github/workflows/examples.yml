@@ -41,7 +41,7 @@ jobs:
         ts-version:
         - 3
         - 4
-        - 5.0 # requires node version 12.20
+        - "5.0" # requires node version 12.20
         # starting with typescript 5.1 the minimum required node version is 14.17
         # so current versions have a separate job without node v12
         node-version:
