@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-beta.8](https://github.com/xmldom/xmldom/compare/0.9.0-beta.7...0.9.0-beta.8)
+
+### Fixed
+
+- fix: Throw DOMException when calling removeChild with invalid parameter [`#494`](https://github.com/xmldom/xmldom/pull/494) / [`#135`](https://github.com/xmldom/xmldom/issues/135)
+
+BREAKING CHANGE: Previously it was possible (but not documented) to call `Node.removeChild` with any node in the tree,
+and with certain exceptions, it would work. This is no longer the case: calling `Node.removeChild` with an argument that is not a direct child of the node that it is called from, will throw a NotFoundError DOMException, as it is described by the specs.
+
+Thank you, [@noseworthy](https://github.com/noseworthy), [@davidmc24](https://github.com/davidmc24), for your contributions
+
+
 ## [0.9.0-beta.7](https://github.com/xmldom/xmldom/compare/0.9.0-beta.6...0.9.0-beta.7)
 
 ### Feature
