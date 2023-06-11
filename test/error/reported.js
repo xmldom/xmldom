@@ -286,10 +286,7 @@ function parseErrorLines(fileNameInKey) {
 		// ignore lines that contain console.error,
 		// sometimes happened even when they have been commented out,
 		// when stryker puts code on the line before the comment
-		if (errorType.startsWith('console.')) return;
-
-		// ignore errors that have been added by stryker
-		if (message.includes('Stryker:')) return;
+		// if (errorType.startsWith('console.')) return;
 
 		// the first line is line 1, not line 0!
 		LINE_TO_ERROR_INDEX[`${fileNameInKey}:${lineNumber + 1}`] = {

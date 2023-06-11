@@ -8,8 +8,6 @@
 [![snyk.io package health](https://snyk.io/advisor/npm-package/@xmldom/xmldom/badge.svg)](https://snyk.io/advisor/npm-package/@xmldom/xmldom)
 [![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 [![help-wanted issues](https://img.shields.io/github/issues/xmldom/xmldom/help-wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp-wanted)
-[![Mutation report](https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fxmldom%2Fxmldom%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/xmldom/xmldom/master)
-
 
 xmldom is a javascript [ponyfill](https://ponyfill.com/) to provide the following APIs [that are present in modern browsers](https://caniuse.com/xml-serializer) to other runtimes:
 - convert an XML string into a DOM tree

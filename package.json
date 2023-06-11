@@ -32,8 +32,6 @@
     "format": "prettier --write examples lib test",
     "changelog": "auto-changelog --unreleased-only",
     "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
-    "stryker": "stryker run",
-    "stryker:dry-run": "stryker run -m '' --reporters progress",
     "test": "jest",
     "testrelease": "npm test && eslint lib",
     "version": "./changelog-has-version.sh",
@@ -44,7 +42,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stryker-mutator/core": "5.6.1",
     "auto-changelog": "2.4.0",
     "eslint": "8.42.0",
     "eslint-config-prettier": "8.8.0",
