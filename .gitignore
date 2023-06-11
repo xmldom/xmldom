@@ -6,3 +6,5 @@
 /test/error/reported.json
 
 docs/*.jar
+
+coverage

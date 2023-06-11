@@ -1,8 +1,9 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
 const { DOMParser } = require('../lib');
-const { assign, MIME_TYPE, NAMESPACE } = require('../lib/conventions');
-const { __DOMHandler } = require('../lib/dom-parser');
+const { assign, MIME_TYPE, NAMESPACE, ParseError } = require('../lib/conventions');
+const { __DOMHandler, onErrorStopParsing, onWarningStopParsing } = require('../lib/dom-parser');
 
 const NS_CUSTOM = 'custom-default-ns';
 
@@ -131,13 +132,81 @@ describe('DOMParser', () => {
 				expect(it.assign).toBe(assign);
 			});
 		});
+		describe('property onError', () => {
+			test('should be passed to DOMHandler and called for level warning', () => {
+				const onError = jest.fn();
+				const parser = new DOMParser({ onError });
+
+				parser.parseFromString('<xml>', MIME_TYPE.XML_TEXT);
+
+				expect(onError).toHaveBeenCalledTimes(1);
+				expect(onError).toHaveBeenCalledWith('warning', expect.stringContaining('unclosed'), expect.any(__DOMHandler));
+			});
+			test('should be passed to DOMHandler and called for level error', () => {
+				const onError = jest.fn();
+				const parser = new DOMParser({ onError });
+
+				parser.parseFromString('<xml', MIME_TYPE.XML_TEXT);
+
+				expect(onError).toHaveBeenCalledWith('error', expect.stringContaining('end'), expect.any(__DOMHandler));
+				expect(onError).toHaveBeenCalledWith('warning', expect.stringContaining('unclosed'), expect.any(__DOMHandler));
+				expect(onError).toHaveBeenCalledTimes(2);
+			});
+			test('should be passed to DOMHandler and called for level fatalError', () => {
+				const onError = jest.fn();
+				const parser = new DOMParser({ onError });
+
+				expect(() => parser.parseFromString('', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+
+				expect(onError).toHaveBeenCalledTimes(1);
+				expect(onError).toHaveBeenCalledWith('fatalError', expect.stringContaining('root'), expect.any(__DOMHandler));
+			});
+			test('should throw for level error when using onErrorStopParsing', () => {
+				const parser = new DOMParser({ onError: onErrorStopParsing });
+
+				// warning
+				expect(() => parser.parseFromString('<xml>', MIME_TYPE.XML_TEXT)).not.toThrow();
+				// error
+				expect(() => parser.parseFromString('<xml', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				// fatalError
+				expect(() => parser.parseFromString('', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+			});
+			test('should throw for level error when using onWarningStopParsing', () => {
+				const parser = new DOMParser({ onError: onWarningStopParsing });
+
+				// warning
+				expect(() => parser.parseFromString('<xml>', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				// error
+				expect(() => parser.parseFromString('<xml', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				// fatalError
+				expect(() => parser.parseFromString('', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+			});
+			test('should throw when errorHandler is not a function', () => {
+				expect(() => new DOMParser({ errorHandler: {} })).toThrow(TypeError);
+			});
+			test('should warn when errorHandler is a function', () => {
+				var errorHandler = jest.fn();
+				new DOMParser({ errorHandler });
+
+				expect(errorHandler).toBeCalledWith('warning', expect.stringContaining('onError'));
+			});
+		});
 	});
 
 	describe('parseFromString', () => {
-		test('should use minimal entity map for default mime type', () => {
+		test('should throw on missing mime type', () => {
+			expect(() => new DOMParser().parseFromString('')).toThrow(TypeError);
+		});
+		Object.values(MIME_TYPE).forEach((mimeType) => {
+			test(`should allow mime type ${mimeType}`, () => {
+				const onError = jest.fn();
+				expect(() => new DOMParser({ onError }).parseFromString('<xml/>', mimeType)).not.toThrow(TypeError);
+			});
+		});
+		test('should use minimal entity map for mime type text/xml', () => {
 			const XML = '<xml attr="&quot;">&lt; &amp;</xml>';
 
-			const actual = new DOMParser().parseFromString(XML, 'text/xml').toString();
+			const actual = new DOMParser().parseFromString(XML, MIME_TYPE.XML_TEXT).toString();
 
 			expect(actual).toBe(XML);
 		});
@@ -172,9 +241,9 @@ describe('DOMParser', () => {
 			<pdf2xml producer="poppler" version="0.26.5">
 				<page number="1" position="absolute" top="0" left="0" height="1262" width="892">
 					<fontspec id="0" size="14" family="Times" color="#000000"/>
-					<text top="0" >first</text>
-					<text top="1" >second</text>
-					<text top="2" >last</text>
+					<text tabindex="0" >first</text>
+					<text tabindex="1" >second</text>
+					<text tabindex="2" >last</text>
 				</page>
 			</pdf2xml>
 `;
@@ -195,8 +264,13 @@ describe('DOMParser', () => {
 			for (let i = 0; i < textTags.length; i++) {
 				const textTag = textTags[i];
 				expect(textTag.textContent).toBe(expectedText[i]);
-				expect(textTag.getAttribute('top')).toBe(`${i}`);
+				expect(textTag.getAttribute('tabindex')).toBe(`${i}`);
 			}
+		});
+		test('should report fatalError when no documentElement is present', () => {
+			const onError = jest.fn();
+			expect(() => new DOMParser({ onError }).parseFromString('<!-- only comment -->', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+			expect(onError).toHaveBeenCalledWith('fatalError', expect.stringContaining('root'), expect.any(__DOMHandler));
 		});
 	});
 });
