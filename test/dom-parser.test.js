@@ -188,7 +188,7 @@ describe('DOMParser', () => {
 				var errorHandler = jest.fn();
 				new DOMParser({ errorHandler });
 
-				expect(errorHandler).toBeCalledWith('warning', expect.stringContaining('onError'));
+				expect(errorHandler).toBeCalledWith('warning', expect.stringContaining('onError'), expect.anything());
 			});
 		});
 	});
