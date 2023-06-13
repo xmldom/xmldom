@@ -3,6 +3,16 @@
 declare module '@xmldom/xmldom' {
 	// START ./lib/conventions.js
 	/**
+	 * Since xmldom can not rely on `Object.assign`,
+	 * it uses/provides a simplified version that is sufficient for its needs.
+	 *
+	 * @throws TypeError if target is not an object
+	 *
+	 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+	 * @see https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object.assign
+	 */
+	function assign<T, S>(target:T, source:S): T & S;
+	/**
 	 * Only returns true if `value` matches MIME_TYPE.HTML, which indicates an HTML document.
 	 *
 	 * @see https://www.iana.org/assignments/media-types/text/html
@@ -13,8 +23,6 @@ declare module '@xmldom/xmldom' {
 	function isHtmlMimeType(mimeType: string): mimeType is MIME_TYPE.HTML;
 	/**
 	 * Only returns true if `mimeType` is one of the allowed values for `DOMParser.parseFromString`.
-	 * @param {string} mimeType
-	 * @returns {mimeType is 'application/xhtml+xml' | 'application/xml' | 'image/svg+xml' |  'text/html' | 'text/xml'}
 	 */
 	function isValidMimeType(mimeType: string): mimeType is MIME_TYPE;
 
@@ -29,7 +37,6 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * `text/html`, the only mime type that triggers treating an XML document as HTML.
 		 *
-		 * @see DOMParser.SupportedType.isHTML
 		 * @see https://www.iana.org/assignments/media-types/text/html IANA MimeType registration
 		 * @see https://en.wikipedia.org/wiki/HTML Wikipedia
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString MDN
@@ -105,10 +112,6 @@ declare module '@xmldom/xmldom' {
 
 	/**
 	 * A custom error that will not be caught by XMLReader aka the SAX parser.
-	 *
-	 * @param {string} message
-	 * @param {any?} locator Optional, can provide details about the location in the source
-	 * @constructor
 	 */
 	class ParseError extends Error {
 		constructor(message:string, locator?:any);
@@ -153,12 +156,9 @@ declare module '@xmldom/xmldom' {
 		 * `type` set to `'xml'`).
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
-		 * @param {string | null} namespaceURI
-		 * @param {string} qualifiedName
-		 * @param {DocumentType | null} [doctype=null]
 		 * @returns {Document} the XML document
 		 *
-		 * @see #createHTMLDocument
+		 * @see DOMImplementation.createHTMLDocument
 		 *
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createDocument MDN
 		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocument DOM
@@ -177,9 +177,6 @@ declare module '@xmldom/xmldom' {
 		 * __This behavior is slightly different from the in the specs__:
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
-		 * @param {string} qualifiedName
-		 * @param {string} [publicId]
-		 * @param {string} [systemId]
 		 * @returns {DocumentType} which can either be used with `DOMImplementation.createDocument`
 		 *   upon document creation or can be put into the document via methods like
 		 *   `Node.insertBefore()` or `Node.replaceChild()`
@@ -205,8 +202,7 @@ declare module '@xmldom/xmldom' {
 		 * omitted)
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
-		 * @param {string | false} [title]
-		 * @returns {Document} The HTML document
+		 * @see DOMImplementation.createDocument
 		 *
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument
 		 * @see https://dom.spec.whatwg.org/#html-document
@@ -220,10 +216,6 @@ declare module '@xmldom/xmldom' {
 		 * true, where the functionality was accurate and in use.
 		 *
 		 * @deprecated It is deprecated and modern browsers return true in all cases.
-		 *
-		 * @param {string} feature
-		 * @param {string} [version]
-		 * @returns {boolean} always true
 		 *
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/hasFeature MDN
 		 * @see https://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#ID-5CED94D7 DOM Level 1 Core
@@ -257,13 +249,6 @@ declare module '@xmldom/xmldom' {
 		new (options?: DOMParserOptions): DOMParser;
 	}
 
-	type MIME_TYPE =
-		| 'application/xhtml+xml'
-		| 'application/xml'
-		| 'image/svg+xml'
-		| 'text/html'
-		| 'text/xml';
-
 	/**
 	 * The DOMParser interface provides the ability to parse XML or HTML source code
 	 * from a string into a DOM `Document`.
@@ -288,17 +273,14 @@ declare module '@xmldom/xmldom' {
 		 *   - Any error thrown by `onError` is converted to a `ParseError` which prevents further processing
 		 * - If no `Document` was created during parsing it is reported as a `fatalError`.
 		 *
-		 * @param {string} source Only string input is possible!
-		 * @param {string} [mimeType='application/xml']
-		 *        the mimeType or contentType of the document to be created
-		 *        determines the `type` of document created (XML or HTML)
-		 * @returns the `Document` (if no `ParseError` was thrown)
 		 * @throws ParseError for any `fatalError` or anything that is thrown by `onError`
+		 * @throws TypeError for any invalid `mimeType`
+		 * @returns the `Document` node
 		 *
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
 		 * @see https://html.spec.whatwg.org/#dom-domparser-parsefromstring-dev
 		 */
-		parseFromString(source: string, mimeType: MIME_TYPE): Document;
+		parseFromString(source: string, mimeType: MIME_TYPE = MIME_TYPE.XML_TEXT): Document;
 	}
 
 	interface XMLSerializer {
@@ -310,22 +292,19 @@ declare module '@xmldom/xmldom' {
 		 * The method to use instead of `Object.assign` (defaults to `conventions.assign`),
 		 * which is used to copy values from the options before they are used for parsing.
 		 *
-		 * @type {function (target: object, source: object | null | undefined): object}
-		 * @readonly
 		 * @private
 		 * @see conventions.assign
 		 */
-		assign?: typeof Object.assign;
+		readonly assign?: typeof Object.assign;
 		/**
 		 * For internal testing: The class for creating an instance for handling events from the SAX
 		 * parser.
 		 * __**Warning: By configuring a faulty implementation,
 		 * the specified behavior can completely be broken.**__
 		 *
-		 * @readonly
 		 * @private
 		 */
-		domHandler?: unknown;
+		readonly domHandler?: unknown;
 
 		/**
 		 * DEPRECATED: Use `onError` instead!
@@ -336,26 +315,21 @@ declare module '@xmldom/xmldom' {
 		 * @throws If it is an object.
 		 * @deprecated
 		 */
-		errorHandler?: ErrorHandlerFunction;
+		readonly errorHandler?: ErrorHandlerFunction;
 
 		/**
 		 * Configures if the nodes created during parsing
 		 * will have a `lineNumber` and a `columnNumber` attribute
 		 * describing their location in the XML string.
 		 * Default is true.
-		 * @type {boolean}
-		 * @readonly
 		 */
-		locator?: boolean;
+		readonly locator?: boolean;
 
 		/**
 		 * used to replace line endings before parsing, defaults to `normalizeLineEndings`,
 		 * which normalizes line endings according to <https://www.w3.org/TR/xml11/#sec-line-ends>.
-		 *
-		 * @type {(string) => string}
-		 * @readonly
 		 */
-		normalizeLineEndings?: (source: string) => string;
+		readonly normalizeLineEndings?: (source: string) => string;
 		/**
 		 * A function that is invoked for every error that occurs during parsing.
 		 *
@@ -375,7 +349,7 @@ declare module '@xmldom/xmldom' {
 		 * @see onErrorStopParsing
 		 * @see onWarningStopParsing
 		 */
-		onError?: ErrorHandlerFunction;
+		readonly onError?: ErrorHandlerFunction;
 
 		/**
 		 * The XML namespaces that should be assumed when parsing.
@@ -383,10 +357,8 @@ declare module '@xmldom/xmldom' {
 		 * When the `mimeType` for HTML, XHTML or SVG are passed to `parseFromString`,
 		 * the default namespace that will be used,
 		 * will be overridden according to the specification.
-		 * @type {Readonly<object>}
-		 * @readonly
 		 */
-		xmlns?: Record<string, string | null | undefined>;
+		readonly xmlns?: Readonly<Record<string, string | null | undefined>>;
 	}
 
 	interface ErrorHandlerFunction {
