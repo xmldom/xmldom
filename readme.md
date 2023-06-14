@@ -68,18 +68,18 @@ import { DOMParser } from '@xmldom/xmldom'
 
 ## API Reference
 
- * [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser):
+* [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser):
 
-	```javascript
-	parseFromString(xmlsource, mimeType)
-	```
-	* **options extension** _by xmldom_ (not DOM standard!!)
+   ```javascript
+   parseFromString(xmlsource, mimeType)
+   ```
+   * **options extension** _by xmldom_ (not DOM standard!!)
 
-	```javascript
-	// the options argument canbeused ot modify behavior
-    // for more details check the documentation on the code or type definition  
-	new DOMParser(options)
-	```
+   ```javascript
+   // the options argument can be used to modify behavior
+   // for more details check the documentation on the code or type definition  
+   new DOMParser(options)
+   ```
 
  * [XMLSerializer](https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer)
  
