@@ -9,9 +9,12 @@ describe('isHTMLMimeType', () => {
 	test('should return true for MIME_TYPE.HTML', () => {
 		expect(isHTMLMimeType(MIME_TYPE.HTML)).toBe(true);
 	});
-	test.each([undefined, null, 0, 1, false, true, '', MIME_TYPE.XML_XHTML_APPLICATION])("should return false for '%s'", (value) => {
-		expect(isHTMLMimeType(value)).toBe(false);
-	});
+	test.each([undefined, null, 0, 1, false, true, '', MIME_TYPE.XML_XHTML_APPLICATION])(
+		"should return false for '%s'",
+		(value) => {
+			expect(isHTMLMimeType(value)).toBe(false);
+		}
+	);
 });
 describe('hasDefaultHTMLNamespace', () => {
 	test("should return true for 'text/html'", () => {

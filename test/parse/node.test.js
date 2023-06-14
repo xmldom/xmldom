@@ -68,7 +68,10 @@ describe('XML Node Parse', () => {
 	});
 
 	test('cdata empty', () => {
-		const { documentElement } = new DOMParser().parseFromString('<xml><![CDATA[]]>start <![CDATA[]]> end</xml>', MIME_TYPE.XML_TEXT);
+		const { documentElement } = new DOMParser().parseFromString(
+			'<xml><![CDATA[]]>start <![CDATA[]]> end</xml>',
+			MIME_TYPE.XML_TEXT
+		);
 		expect(documentElement).toMatchObject({
 			textContent: 'start  end',
 		});

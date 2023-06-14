@@ -220,7 +220,10 @@ describe('Element', () => {
 		});
 
 		test('properly supports attribute namespace', () => {
-			const root = new DOMParser().parseFromString("<xml xmlns:a='a' xmlns:b='b' a:b='e'></xml>", MIME_TYPE.XML_TEXT).documentElement;
+			const root = new DOMParser().parseFromString(
+				"<xml xmlns:a='a' xmlns:b='b' a:b='e'></xml>",
+				MIME_TYPE.XML_TEXT
+			).documentElement;
 			expect(root.getAttributeNS('a', 'b')).toBe('e');
 		});
 	});

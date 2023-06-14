@@ -66,7 +66,10 @@ describe('Document.prototype', () => {
 			expect(doc.getElementsByClassName('')).toHaveLength(0);
 		});
 		test('should return an empty collection when only spaces are passed', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT(' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t'), MIME_TYPE.XML_TEXT);
+			const doc = getTestParser().parser.parseFromString(
+				INPUT(' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t'),
+				MIME_TYPE.XML_TEXT
+			);
 
 			expect(doc.getElementsByClassName(' \f\n\r\t')).toHaveLength(0);
 		});

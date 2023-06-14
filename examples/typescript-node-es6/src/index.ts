@@ -1,4 +1,9 @@
-import { DOMParser, MIME_TYPE, onWarningStopParsing, XMLSerializer } from '@xmldom/xmldom';
+import {
+	DOMParser,
+	MIME_TYPE,
+	onWarningStopParsing,
+	XMLSerializer,
+} from '@xmldom/xmldom';
 
 const source = `<xml xmlns="a">
 	<child>test</child>

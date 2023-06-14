@@ -35,7 +35,9 @@ describe('XML Node Parse', () => {
 	});
 
 	test('sibling closing tag with whitespace', () => {
-		const actual = new DOMParser().parseFromString(`<xml><book></book ><title>Harry Potter</title></xml>`, MIME_TYPE.XML_TEXT).toString();
+		const actual = new DOMParser()
+			.parseFromString(`<xml><book></book ><title>Harry Potter</title></xml>`, MIME_TYPE.XML_TEXT)
+			.toString();
 		expect(actual).toBe(`<xml><book/><title>Harry Potter</title></xml>`);
 	});
 
