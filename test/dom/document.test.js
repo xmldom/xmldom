@@ -30,20 +30,20 @@ const NON_HTML_WHITESPACE =
 
 describe('Document.prototype', () => {
 	describe('getElementsByClassName', () => {
-		it('should be able to resolve [] as a class name', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT('[]'));
+		test('should be able to resolve [] as a class name', () => {
+			const doc = getTestParser().parser.parseFromString(INPUT('[]'), MIME_TYPE.XML_TEXT);
 			expect(doc.getElementsByClassName('[]')).toHaveLength(1);
 		});
-		it('should be able to resolve [ as a class name', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT('['));
+		test('should be able to resolve [ as a class name', () => {
+			const doc = getTestParser().parser.parseFromString(INPUT('['), MIME_TYPE.XML_TEXT);
 			expect(doc.getElementsByClassName('[')).toHaveLength(1);
 		});
-		it('should be able to resolve multiple class names in a different order', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT());
+		test('should be able to resolve multiple class names in a different order', () => {
+			const doc = getTestParser().parser.parseFromString(INPUT(), MIME_TYPE.XML_TEXT);
 			expect(doc.getElementsByClassName('odd quote')).toHaveLength(2);
 		});
-		it('should be able to resolve non html whitespace as classname', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT());
+		test('should be able to resolve non html whitespace as classname', () => {
+			const doc = getTestParser().parser.parseFromString(INPUT(), MIME_TYPE.XML_TEXT);
 			const firstP = doc.documentElement.getElementsByTagName('body')[0].getElementsByTagName('p')[0];
 			expect(firstP).toBeDefined();
 
@@ -51,40 +51,43 @@ describe('Document.prototype', () => {
 
 			expect(doc.getElementsByClassName(`quote ${NON_HTML_WHITESPACE}`)).toHaveLength(1);
 		});
-		it('should not allow regular expression in argument', () => {
+		test('should not allow regular expression in argument', () => {
 			const search = '(((a||||)+)+)+';
 			const matching = 'aaaaa';
 			expect(new RegExp(search).test(matching)).toBe(true);
 
-			const doc = getTestParser().parser.parseFromString(INPUT(search, matching, search));
+			const doc = getTestParser().parser.parseFromString(INPUT(search, matching, search), MIME_TYPE.XML_TEXT);
 
 			expect(doc.getElementsByClassName(search)).toHaveLength(2);
 		});
-		it('should return an empty collection when no class names or are passed', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT());
+		test('should return an empty collection when no class names or are passed', () => {
+			const doc = getTestParser().parser.parseFromString(INPUT(), MIME_TYPE.XML_TEXT);
 
 			expect(doc.getElementsByClassName('')).toHaveLength(0);
 		});
-		it('should return an empty collection when only spaces are passed', () => {
-			const doc = getTestParser().parser.parseFromString(INPUT(' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t'));
+		test('should return an empty collection when only spaces are passed', () => {
+			const doc = getTestParser().parser.parseFromString(
+				INPUT(' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t', ' \f\n\r\t'),
+				MIME_TYPE.XML_TEXT
+			);
 
 			expect(doc.getElementsByClassName(' \f\n\r\t')).toHaveLength(0);
 		});
-		it('should return only the case insensitive matching names', () => {
+		test('should return only the case insensitive matching names', () => {
 			const MIXED_CASES = ['AAA', 'AAa', 'AaA', 'aAA'];
-			const doc = getTestParser().parser.parseFromString(INPUT(...MIXED_CASES));
+			const doc = getTestParser().parser.parseFromString(INPUT(...MIXED_CASES), MIME_TYPE.XML_TEXT);
 
 			MIXED_CASES.forEach((className) => {
 				expect(doc.getElementsByClassName(className)).toHaveLength(1);
 			});
 		});
 	});
-	it('getElementById', () => {
+	test('getElementById', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
 				'<child id="a1" title="1"><child id="a2"  title="2" empty-title=""/></child>' +
 				'<child id="a1"   title="3"/></xml>',
-			'text/xml'
+			MIME_TYPE.XML_TEXT
 		);
 		expect(doc.getElementById('root')).not.toBeNull();
 		expect(doc.getElementById('a1').getAttribute('title')).toBe('1');
@@ -93,7 +96,7 @@ describe('Document.prototype', () => {
 		expect(doc.getElementById('a2').getAttribute('title2')).toBe(null);
 	});
 	describe('getElementsByTagName', () => {
-		it('should return the correct number of elements in XML documents', () => {
+		test('should return the correct number of elements in XML documents', () => {
 			const doc = new DOMParser().parseFromString(
 				`<xml id="0" lang="en">
 						<head id="1"><title id="2">Title</title></head>
@@ -101,7 +104,8 @@ describe('Document.prototype', () => {
 							<div id="4"><p id="5"></p></div>
 							<html xmlns="${NAMESPACE.HTML}" id="6"><div id="7"></div></html>
 						</body>
-					</xml>`
+					</xml>`,
+				MIME_TYPE.XML_TEXT
 			);
 			expect(doc.getElementsByTagName('*')).toHaveLength(8);
 			expect(doc.documentElement.getElementsByTagName('*')).toHaveLength(7);
@@ -115,7 +119,7 @@ describe('Document.prototype', () => {
 			expect(doc.documentElement.getElementsByTagName('DIV')).toHaveLength(0);
 		});
 
-		it('should return the correct number of elements in HTML documents', () => {
+		test('should return the correct number of elements in HTML documents', () => {
 			const doc = new DOMParser().parseFromString(
 				`<html id="0" lang="en">
 						<head id="1"><title id="2">Title</title></head>
@@ -141,13 +145,13 @@ describe('Document.prototype', () => {
 			expect(elementDIVs.item(0).getAttribute('id')).toBe('4');
 		});
 
-		it('should support API on element (this test needs to be split)', () => {
+		test('should support API on element (this test needs to be split)', () => {
 			const doc = new DOMParser().parseFromString(
 				'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
 					'<t:test/><test/><t2:test/>' +
 					'<child attr="1"><test><child attr="2"/></test></child>' +
 					'<child attr="3"/></xml>',
-				'text/xml'
+				MIME_TYPE.XML_TEXT
 			);
 
 			const childs1 = doc.documentElement.getElementsByTagName('child');
@@ -168,20 +172,20 @@ describe('Document.prototype', () => {
 			}
 			expect(childs3).toHaveLength(7);
 
-			const feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>');
+			const feed = new DOMParser().parseFromString('<feed><entry>foo</entry></feed>', MIME_TYPE.XML_TEXT);
 			const entries = feed.documentElement.getElementsByTagName('entry');
 			expect(entries).toHaveLength(1);
 			expect(entries[0].nodeName).toBe('entry');
 			expect(feed.documentElement.childNodes.item(0).nodeName).toBe('entry');
 		});
 	});
-	it('getElementsByTagNameNS', () => {
+	test('getElementsByTagNameNS', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" xmlns:t="http://test.com" xmlns:t2="http://test2.com">' +
 				'<t:test/><test/><t2:test/>' +
 				'<child attr="1"><test><child attr="2"/></test></child>' +
 				'<child attr="3"/></xml>',
-			'text/xml'
+			MIME_TYPE.XML_TEXT
 		);
 
 		const childs1 = doc.documentElement.getElementsByTagNameNS('http://test.com', '*');
@@ -203,7 +207,7 @@ describe('Document.prototype', () => {
 		expect(childs6).toHaveLength(4);
 	});
 	describe('createElement', () => {
-		it('should create elements with exact cased name in an XML document', () => {
+		test('should create elements with exact cased name in an XML document', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(null, 'xml');
 
@@ -212,7 +216,7 @@ describe('Document.prototype', () => {
 			expect(element.nodeName).toBe('XmL');
 			expect(element.localName).toBe(element.nodeName);
 		});
-		it('should create elements with exact cased name in an XHTML document', () => {
+		test('should create elements with exact cased name in an XHTML document', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(NAMESPACE.HTML, '');
 
@@ -221,7 +225,7 @@ describe('Document.prototype', () => {
 			expect(element.nodeName).toBe('XmL');
 			expect(element.localName).toBe(element.nodeName);
 		});
-		it('should create elements with lower cased name in an HTML document', () => {
+		test('should create elements with lower cased name in an HTML document', () => {
 			// https://dom.spec.whatwg.org/#dom-document-createelement
 			const impl = new DOMImplementation();
 			const doc = impl.createHTMLDocument(false);
@@ -232,7 +236,7 @@ describe('Document.prototype', () => {
 			expect(element.nodeName).toBe('xml');
 			expect(element.tagName).toBe(element.nodeName);
 		});
-		it('should create elements with no namespace in an XML document without default namespace', () => {
+		test('should create elements with no namespace in an XML document without default namespace', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(null, 'xml');
 
@@ -240,7 +244,7 @@ describe('Document.prototype', () => {
 
 			expect(element.namespaceURI).toBeNull();
 		});
-		it('should create elements with the HTML namespace in an XML document with HTML namespace', () => {
+		test('should create elements with the HTML namespace in an XML document with HTML namespace', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(NAMESPACE.HTML, 'xml');
 
@@ -248,7 +252,7 @@ describe('Document.prototype', () => {
 
 			expect(element.namespaceURI).toBe(NAMESPACE.HTML);
 		});
-		it('should create elements with the HTML namespace in an HTML document', () => {
+		test('should create elements with the HTML namespace in an HTML document', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createHTMLDocument();
 
@@ -291,7 +295,7 @@ describe('Document.prototype', () => {
 		});
 	});
 	describe('insertBefore', () => {
-		it('should insert the first element and set `documentElement`', () => {
+		test('should insert the first element and set `documentElement`', () => {
 			const doc = new DOMImplementation().createDocument(null, '');
 			expect(doc.childNodes).toHaveLength(0);
 			expect(doc.documentElement).toBeNull();
@@ -301,7 +305,7 @@ describe('Document.prototype', () => {
 			expect(doc.childNodes).toHaveLength(1);
 			expect(doc.childNodes.item(0)).toBe(root);
 		});
-		it('should prevent inserting a second element', () => {
+		test('should prevent inserting a second element', () => {
 			const doc = new DOMImplementation().createDocument(null, '');
 			const root = doc.createElement('root');
 			const second = doc.createElement('second');
@@ -310,7 +314,7 @@ describe('Document.prototype', () => {
 			expect(doc.documentElement).toBe(root);
 			expect(doc.childNodes).toHaveLength(1);
 		});
-		it('should prevent inserting an element before a doctype', () => {
+		test('should prevent inserting an element before a doctype', () => {
 			const impl = new DOMImplementation();
 			const doctype = impl.createDocumentType('DT');
 			const doc = impl.createDocument(null, '', doctype);
@@ -321,7 +325,7 @@ describe('Document.prototype', () => {
 			expect(doc.childNodes).toHaveLength(1);
 			expect(root.parentNode).toBeNull();
 		});
-		it('should prevent inserting a second doctype', () => {
+		test('should prevent inserting a second doctype', () => {
 			const impl = new DOMImplementation();
 			const doctype = impl.createDocumentType('DT');
 			const doctype2 = impl.createDocumentType('DT2');
@@ -330,7 +334,7 @@ describe('Document.prototype', () => {
 			expect(() => doc.insertBefore(doctype2)).toThrow(DOMException);
 			expect(doc.childNodes).toHaveLength(1);
 		});
-		it('should prevent inserting a doctype after an element', () => {
+		test('should prevent inserting a doctype after an element', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(null, '');
 			const root = doc.createElement('root');
@@ -342,7 +346,7 @@ describe('Document.prototype', () => {
 
 			expect(doc.childNodes).toHaveLength(1);
 		});
-		it('should prevent inserting before an child which is not a child of parent', () => {
+		test('should prevent inserting before an child which is not a child of parent', () => {
 			const doc = new DOMImplementation().createDocument(null, '');
 			const root = doc.createElement('root');
 			const withoutParent = doc.createElement('second');
@@ -355,7 +359,7 @@ describe('Document.prototype', () => {
 		});
 	});
 	describe('replaceChild', () => {
-		it('should remove the only element and add the new one', () => {
+		test('should remove the only element and add the new one', () => {
 			const doc = new DOMImplementation().createDocument('', 'xml');
 			const initialFirstChild = doc.firstChild;
 			const replacement = doc.createElement('replaced');
@@ -368,7 +372,7 @@ describe('Document.prototype', () => {
 		});
 	});
 	describe('removeChild', () => {
-		it('should remove all connections to node', () => {
+		test('should remove all connections to node', () => {
 			const doc = new DOMImplementation().createDocument('', 'xml');
 			doc.insertBefore(doc.createComment('just a comment'), doc.firstChild);
 			expect(doc.childNodes).toHaveLength(2);
@@ -383,12 +387,12 @@ describe('Document.prototype', () => {
 			expect(doc.childNodes).toHaveLength(1);
 		});
 
-		it('Remove child from non-parent node throws', async () => {
+		test('Remove child from non-parent node throws', async () => {
 			const ISSUE_CHECK = `<xml>
 				<a><x/></a>
 				<b><y/></b>
 			</xml>`;
-			const dom = new DOMParser().parseFromString(ISSUE_CHECK);
+			const dom = new DOMParser().parseFromString(ISSUE_CHECK, MIME_TYPE.XML_TEXT);
 			const ys = dom.getElementsByTagName('y');
 			const as = dom.getElementsByTagName('a');
 

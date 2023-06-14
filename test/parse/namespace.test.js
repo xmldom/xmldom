@@ -1,6 +1,8 @@
 'use strict';
 
-const { DOMParser } = require('../../lib');
+const { describe, expect, test } = require('@jest/globals');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMParser } = require('../../lib/dom-parser');
 
 /**
  * Returns an array containing only one occurrence of every sting in `values` (like in a Set).
@@ -10,10 +12,10 @@ const { DOMParser } = require('../../lib');
 const uniqArray = (...values) => [...new Set(values)];
 
 describe('XML Namespace Parse', () => {
-	it('default namespace', () => {
+	test('default namespace', () => {
 		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com"><child attr="1"/></xml>',
-			'text/xml'
+			MIME_TYPE.XML_TEXT
 		);
 
 		expect(
@@ -27,10 +29,10 @@ describe('XML Namespace Parse', () => {
 		expect(documentElement.firstChild.getAttributeNode('attr').namespaceURI).toBeNull();
 	});
 
-	it('prefix namespace', () => {
+	test('prefix namespace', () => {
 		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns:p1="http://p1.com" xmlns:p2="http://p2.com"><p1:child a="1" p1:attr="1" b="2"/><p2:child/></xml>',
-			'text/xml'
+			MIME_TYPE.XML_TEXT
 		);
 		const firstChild = documentElement.firstChild;
 
@@ -47,10 +49,10 @@ describe('XML Namespace Parse', () => {
 		expect(firstChild.getAttributeNode('attr')).toBeNull();
 	});
 
-	it('after prefix namespace', () => {
+	test('after prefix namespace', () => {
 		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns:p="http://test.com"><p:child xmlns:p="http://p.com"/><p:child/></xml>',
-			'text/xml'
+			MIME_TYPE.XML_TEXT
 		);
 
 		expect(documentElement.firstChild.namespaceURI).toStrictEqual('http://p.com');

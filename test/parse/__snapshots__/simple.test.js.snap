@@ -2,11 +2,17 @@
 
 exports[`parse line error 1`] = `
 Object {
-  "lineNumber": 7,
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:7,col:3]",
+  "errors": Array [
+    Array [
+      "warning",
+      "unclosed xml attribute",
+      Object {
+        "columnNumber": 24,
+        "lineNumber": 7,
+      },
+    ],
   ],
+  "lineNumber": 7,
 }
 `;
 
@@ -30,9 +36,15 @@ Object {
 exports[`parse unclosed inner 1`] = `
 Object {
   "actual": "<r><Page><Label/></Page></r>",
-  "error": Array [
-    "[xmldom error]	end tag name: Page maybe not complete
-@#[line:1,col:10]",
+  "errors": Array [
+    Array [
+      "error",
+      "end tag name: Page maybe not complete",
+      Object {
+        "columnNumber": 10,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -40,9 +52,15 @@ Object {
 exports[`parse unclosed root 1`] = `
 Object {
   "actual": "<Page><Label class=\\"title\\"/></Page>  1",
-  "error": Array [
-    "[xmldom error]	end tag name: Page is not complete
-@#[line:1,col:20]",
+  "errors": Array [
+    Array [
+      "error",
+      "end tag name: Page is not complete",
+      Object {
+        "columnNumber": 20,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -50,9 +68,15 @@ Object {
 exports[`parse unclosed root followed by another tag 1`] = `
 Object {
   "actual": "<Page/>",
-  "error": Array [
-    "[xmldom error]	end tag name: Page maybe not complete
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "end tag name: Page maybe not complete",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;

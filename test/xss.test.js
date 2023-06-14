@@ -62,7 +62,7 @@ function xss(html) {
 }
 
 describe('xss test', () => {
-	it('documentElement.toString(true, callback)', () => {
+	test('documentElement.toString(true, callback)', () => {
 		const html = '<div onclick="alert(123)" title="32323"><script>alert(123)</script></div>';
 
 		const actual = xss(html);

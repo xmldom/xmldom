@@ -7,10 +7,14 @@ Object {
 `;
 
 exports[`DOMLocator logs error positions 1`] = `
-Object {
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:err<
-@#[line:2,col:2]",
+Array [
+  Array [
+    "error",
+    "element parse error: Error: invalid tagName:err<",
+    Object {
+      "columnNumber": 3,
+      "lineNumber": 2,
+    },
   ],
-}
+]
 `;

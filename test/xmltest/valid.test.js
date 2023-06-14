@@ -1,6 +1,8 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
 const xmltest = require('xmltest');
+const { MIME_TYPE } = require('../../lib/conventions');
 const { getTestParser } = require('../get-test-parser');
 const { generateSnapshot } = require('./generate-snapshot');
 
@@ -10,18 +12,18 @@ describe('xmltest/valid', () => {
 
 		Object.entries(entries).forEach(([pathInZip, filename]) => {
 			test(`should match ${filename} with snapshot`, async () => {
-				const input = (await xmltest.getContent(pathInZip))
-					// TODO: The DOCTYPE totally confuses xmldom :sic:
-					// for now we remove it and any newlines after it so we have reasonable tests
-					.replace(/^<!DOCTYPE doc \[[^\]]+]>[\r\n]*/m, '');
+				const input = await xmltest.getContent(pathInZip);
 
 				const expected = await xmltest.getContent(xmltest.RELATED.out(pathInZip));
 
 				const { errors, parser } = getTestParser();
+				try {
+					const actual = parser.parseFromString(input, MIME_TYPE.XML_TEXT).toString();
 
-				const actual = parser.parseFromString(input).toString();
-
-				expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
+					expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
+				} catch (e) {
+					expect([errors, e]).toMatchSnapshot();
+				}
 			});
 		});
 	});

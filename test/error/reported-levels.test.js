@@ -1,76 +1,57 @@
 'use strict';
 // wallaby:file.skip since stacktrace detection is not working in instrumented files
+const { describe, expect, test } = require('@jest/globals');
 
 const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
-const { getTestParser } = require('../get-test-parser');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMParser } = require('../../lib/dom-parser');
 const { ParseError } = require('../../lib/sax');
-const { DOMParser } = require('../../lib');
+const { getTestParser } = require('../get-test-parser');
 
 describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, skippedInHtml }) => {
-	describe.each(['text/xml', 'text/html'])('with mimeType %s', (mimeType) => {
+	describe.each([MIME_TYPE.XML_TEXT, 'text/html'])('with mimeType %s', (mimeType) => {
 		const isHtml = mimeType === 'text/html';
 		if (isHtml && skippedInHtml) {
-			it(`should not be reported as ${level}`, () => {
+			test(`should not be reported`, () => {
 				const { errors, parser } = getTestParser();
 
 				parser.parseFromString(source, mimeType);
 
-				// if no report was triggered, the key is not present on `errors`
-				expect(errors[level]).toBeUndefined();
+				expect(errors).toHaveLength(0);
 			});
 		} else {
-			it(`should be reported as ${level}`, () => {
-				const { errors, parser } = getTestParser();
-
-				parser.parseFromString(source, mimeType);
-
-				const reported = errors[level];
-				// store the snapshot, so any change in message can be inspected in the git diff
-				expect(reported).toMatchSnapshot();
-				// if a match has been defined, filter messages
-				expect(match ? (reported || []).filter(match) : reported).toHaveLength(1);
-			});
 			if (level === 'fatalError') {
-				it(`should throw ParseError in errorHandler.fatalError`, () => {
-					const parser = new DOMParser();
+				test(`should throw ParseError in errorHandler.fatalError`, () => {
+					const onError = jest.fn();
+					const parser = new DOMParser({ onError });
 
 					expect(() => parser.parseFromString(source, mimeType)).toThrow(ParseError);
-				});
-			} else if (level === 'error') {
-				it(`should not catch Error thrown in errorHandler.${level}`, () => {
-					let thrown = [];
-					const errorHandler = {
-						[level]: jest.fn((message) => {
-							const toThrow = new Error(message);
-							thrown.push(toThrow);
-							throw toThrow;
-						}),
-					};
-					const { parser } = getTestParser({ errorHandler });
 
-					expect(() => parser.parseFromString(source, mimeType)).toThrow(Error);
-					expect(thrown.map((error) => toErrorSnapshot(error, 'lib/sax.js'))).toMatchSnapshot();
-					match && expect(match(thrown[0].toString())).toBe(true);
+					expect(onError).toHaveBeenCalledTimes(1);
 				});
-			} else if (level === 'warning') {
-				it('should escalate Error thrown in errorHandler.warning to errorHandler.error', () => {
-					let thrown = [];
-					const errorHandler = {
-						warning: jest.fn((message) => {
-							const toThrow = new Error(message);
-							thrown.push(toThrow);
-							throw toThrow;
-						}),
-						error: jest.fn(),
-					};
-					const { parser } = getTestParser({ errorHandler });
+			} else {
+				test(`should be reported`, () => {
+					const { errors, parser } = getTestParser();
 
 					parser.parseFromString(source, mimeType);
 
-					expect(errorHandler.warning).toHaveBeenCalledTimes(1);
-					expect(errorHandler.error).toHaveBeenCalledTimes(1);
+					// store the snapshot, so any change in message can be inspected in the git diff
+					expect(errors).toMatchSnapshot();
+					// if a match has been defined, filter messages
+					expect(match ? (errors || []).filter(match) : errors).toHaveLength(1);
+				});
+				test(`should escalate Error thrown in onError to ParseError`, () => {
+					let thrown = [];
+					const onError = jest.fn((level, message) => {
+						const toThrow = new Error(level + ': ' + message);
+						thrown.push(toThrow);
+						throw toThrow;
+					});
+					const { parser } = getTestParser({ onError });
+
+					expect(() => parser.parseFromString(source, mimeType)).toThrow(ParseError);
 					expect(thrown.map((error) => toErrorSnapshot(error, 'lib/sax.js'))).toMatchSnapshot();
-					match && expect(match(thrown[0].message)).toBe(true);
+					match && expect(match(thrown[0].toString())).toBe(true);
 				});
 			}
 		}

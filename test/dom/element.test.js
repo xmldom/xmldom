@@ -5,12 +5,12 @@ const { MIME_TYPE, NAMESPACE } = require('../../lib/conventions');
 const { Element, DOMException } = require('../../lib/dom');
 
 describe('documentElement', () => {
-	it('can properly append exist child', () => {
+	test('can properly append exist child', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
 				'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
 				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
-			'text/xml'
+			MIME_TYPE.XML_TEXT
 		);
 
 		const doc1 = doc;
@@ -31,12 +31,12 @@ describe('documentElement', () => {
 		expect(str3.length).toBe(str4.length);
 	});
 
-	it('can properly append exist other child', () => {
+	test('can properly append exist other child', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
 				'<child1 id="a1" title="1"><child11 id="a2"  title="2"><child/></child11></child1>' +
 				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
-			'text/xml'
+			MIME_TYPE.XML_TEXT
 		);
 
 		const doc1 = doc;
@@ -51,14 +51,14 @@ describe('documentElement', () => {
 		expect(doc2.documentElement.lastChild.childNodes).toHaveLength(1);
 		expect(str1).not.toBe(str2);
 		expect(str1).not.toHaveLength(str2.length);
-		const doc3 = new DOMParser().parseFromString(str2, 'text/xml');
+		const doc3 = new DOMParser().parseFromString(str2, MIME_TYPE.XML_TEXT);
 		doc3.documentElement.firstChild.appendChild(doc3.documentElement.lastChild);
 		const str3 = new XMLSerializer().serializeToString(doc3);
 		expect(str1).toBe(str3);
 	});
 
-	it('can properly set textContent', () => {
-		const doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>');
+	test('can properly set textContent', () => {
+		const doc = new DOMParser().parseFromString('<test><a/><b><c/></b></test>', MIME_TYPE.XML_TEXT);
 		const a = doc.documentElement.firstChild;
 		const b = a.nextSibling;
 		a.textContent = 'hello';
@@ -71,8 +71,8 @@ describe('documentElement', () => {
 		expect(doc.documentElement.toString()).toBe('<test>bye</test>');
 	});
 
-	it('appendElement and removeElement', () => {
-		const dom = new DOMParser().parseFromString(`<root><A/><B/><C/></root>`);
+	test('appendElement and removeElement', () => {
+		const dom = new DOMParser().parseFromString(`<root><A/><B/><C/></root>`, MIME_TYPE.XML_TEXT);
 		const doc = dom.documentElement;
 		const arr = [];
 		while (doc.firstChild) {
@@ -176,10 +176,10 @@ describe('Element', () => {
 		});
 	});
 	describe('setAttributeNS', () => {
-		it('can properly set ns attribute', () => {
+		test('can properly set ns attribute', () => {
 			const root = new DOMParser().parseFromString(
 				"<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",
-				'text/xml'
+				MIME_TYPE.XML_TEXT
 			).documentElement;
 
 			const child = root.firstChild;
@@ -202,10 +202,10 @@ describe('Element', () => {
 			}).toThrow(new DOMException(DOMException.INUSE_ATTRIBUTE_ERR));
 		});
 
-		it('can properly override attribute', () => {
+		test('can properly override attribute', () => {
 			const root = new DOMParser().parseFromString(
 				"<xml xmlns:a='a' xmlns:b='b' xmlns='e'><child/></xml>",
-				'text/xml'
+				MIME_TYPE.XML_TEXT
 			).documentElement;
 			root.setAttributeNS('a', 'a:a', '1');
 			const attr = root.getAttributeNode('a:a');
@@ -219,8 +219,11 @@ describe('Element', () => {
 			expect(root.attributes.length).toBe(4);
 		});
 
-		it('properly supports attribute namespace', () => {
-			const root = new DOMParser().parseFromString("<xml xmlns:a='a' xmlns:b='b' a:b='e'></xml>", 'text/xml').documentElement;
+		test('properly supports attribute namespace', () => {
+			const root = new DOMParser().parseFromString(
+				"<xml xmlns:a='a' xmlns:b='b' a:b='e'></xml>",
+				MIME_TYPE.XML_TEXT
+			).documentElement;
 			expect(root.getAttributeNS('a', 'b')).toBe('e');
 		});
 	});

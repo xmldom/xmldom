@@ -4,7 +4,7 @@ const { getTestParser } = require('../get-test-parser');
 const { MIME_TYPE } = require('../../lib/conventions');
 
 describe('entity replacement ignores js prototype chain', () => {
-	it("should not pick up 'entities' from the prototype chain", () => {
+	test("should not pick up 'entities' from the prototype chain", () => {
 		const source = `
 		<xml>
 			<hasOwnProperty>&hasOwnProperty;</hasOwnProperty> 
@@ -16,6 +16,6 @@ describe('entity replacement ignores js prototype chain', () => {
 
 		const actual = parser.parseFromString(source, MIME_TYPE.XML_TEXT).toString();
 
-		expect({ actual, ...errors }).toMatchSnapshot();
+		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 });

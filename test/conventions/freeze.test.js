@@ -3,7 +3,7 @@
 const { freeze } = require('../../lib/conventions');
 
 describe('freeze', () => {
-	it('should return the frozen object (works in node)', () => {
+	test('should return the frozen object (works in node)', () => {
 		const input = { k: 'v' };
 		const actual = freeze(input);
 		expect(actual).toBe(input);
@@ -19,17 +19,17 @@ describe('freeze', () => {
 		}
 		expect(actual).toEqual(input);
 	});
-	it('should return `input` if `Object.freeze` is not available', () => {
+	test('should return `input` if `Object.freeze` is not available', () => {
 		const input = { k: 'v' };
 		const actual = freeze(input, {});
 		expect(actual).toBe(input);
 	});
-	it('should return input if Object is not available', () => {
+	test('should return input if Object is not available', () => {
 		const input = { k: 'v' };
 		const actual = freeze(input, null);
 		expect(actual).toBe(input);
 	});
-	it('should use the custom ObjectConstructor correctly', () => {
+	test('should use the custom ObjectConstructor correctly', () => {
 		const input = { k: 'v' };
 		const frozen = { ...input };
 		const freezeStub = jest.fn(() => frozen);

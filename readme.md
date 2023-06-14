@@ -4,8 +4,13 @@
 *For better readability in the docs we will continue to talk about this library as "xmldom".*
 
 [![license(MIT)](https://img.shields.io/npm/l/@xmldom/xmldom?color=blue&style=flat-square)](https://github.com/xmldom/xmldom/blob/master/LICENSE)
-[![npm](https://img.shields.io/npm/v/@xmldom/xmldom?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@xmldom/xmldom)](https://socket.dev/npm/package/@xmldom/xmldom)
 [![snyk.io package health](https://snyk.io/advisor/npm-package/@xmldom/xmldom/badge.svg)](https://snyk.io/advisor/npm-package/@xmldom/xmldom)
+
+[![npm:latest](https://img.shields.io/npm/v/@xmldom/xmldom/latest?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
+[![npm:next](https://img.shields.io/npm/v/@xmldom/xmldom/next?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom?activeTab=versions)
+[![npm:lts](https://img.shields.io/npm/v/@xmldom/xmldom/lts?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom?activeTab=versions)
+
 [![bug issues](https://img.shields.io/github/issues/xmldom/xmldom/bug?color=red&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 [![help-wanted issues](https://img.shields.io/github/issues/xmldom/xmldom/help-wanted?color=darkgreen&style=flat-square)](https://github.com/xmldom/xmldom/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp-wanted)
 [![Mutation report](https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fxmldom%2Fxmldom%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/xmldom/xmldom/master)
@@ -55,7 +60,7 @@ const doc = new DOMParser().parseFromString(source, 'text/xml')
 const serialized = new XMLSerializer().serializeToString(doc)
 ```
 
-Note: in Typescript ~and ES6~(see #316) you can use the `import` approach, as follows:
+Note: in Typescript ~~and ES6~~ (see [#316](https://github.com/xmldom/xmldom/issues/316)) you can use the `import` approach, as follows:
 
 ```typescript
 import { DOMParser } from '@xmldom/xmldom'
@@ -63,33 +68,18 @@ import { DOMParser } from '@xmldom/xmldom'
 
 ## API Reference
 
- * [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser):
+* [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser):
 
-	```javascript
-	parseFromString(xmlsource,mimeType)
-	```
-	* **options extension** _by xmldom_ (not DOM standard!!)
+   ```javascript
+   parseFromString(xmlsource, mimeType)
+   ```
+   * **options extension** _by xmldom_ (not DOM standard!!)
 
-	```javascript
-	//added the options argument
-	new DOMParser(options)
-	
-	//errorHandler is supported
-	new DOMParser({
-		/**
-		 * locator is always need for error position info
-		 */
-		locator:{},
-		/**
-		 * you can override the errorHandler for xml parser
-		 * @link http://www.saxproject.org/apidoc/org/xml/sax/ErrorHandler.html
-		 */
-		errorHandler:{warning:function(w){console.warn(w)},error:callback,fatalError:callback}
-		//only callback model
-		//errorHandler:function(level,msg){console.log(level,msg)}
-	})
-		
-	```
+   ```javascript
+   // the options argument can be used to modify behavior
+   // for more details check the documentation on the code or type definition  
+   new DOMParser(options)
+   ```
 
  * [XMLSerializer](https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer)
  
@@ -160,7 +150,7 @@ import { DOMParser } from '@xmldom/xmldom'
 * [DOMImplementation](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-102161490)
 
   method:
-  - `hasFeature(feature, version)`
+  - `hasFeature(feature, version)` (deprecated)
   - `createDocumentType(qualifiedName, publicId, systemId)`
   - `createDocument(namespaceURI, qualifiedName, doctype)`
 
@@ -318,24 +308,26 @@ Note: [The latest version of this spec](https://w3c.github.io/DOM-Parsing/) has 
 ### DOM
 
 The original author claims that xmldom implements [DOM Level 2] in a "fully compatible" way and some parts of [DOM Level 3], but there are not enough tests to prove this. Both Specifications are now superseded by the [DOM Level 4 aka Living standard] wich has a much broader scope than xmldom.
+In the past there have been multiple (even breaking) changes to align xmldom with the living standard,
+so if you find a difference that is not documented, any contribution to resolve the difference is very welcome (even just reporting it as an issue). 
 
-xmldom implements the following interfaces (most constructors are currently not exposed):
-- `Attr`
+xmldom implements the following interfaces (only the ones marked with `*` are currently exposed):
+- `Attr` *
 - `CDATASection`
 - `CharacterData`
 - `Comment`
-- `Document`
+- `Document` *
 - `DocumentFragment`
-- `DocumentType`
-- `DOMException` (constructor exposed) 
-- `DOMImplementation` (constructor exposed)
-- `Element`
+- `DocumentType` *
+- `DOMException` * 
+- `DOMImplementation` *
+- `Element` *
 - `Entity`
 - `EntityReference`
 - `LiveNodeList`
-- `NamedNodeMap`
-- `Node` (constructor exposed)
-- `NodeList`
+- `NamedNodeMap` *
+- `Node` *
+- `NodeList` *
 - `Notation`
 - `ProcessingInstruction`
 - `Text`
@@ -344,8 +336,7 @@ more details are available in the (incomplete) [API Reference](#api-reference) s
 
 ### HTML
 
-xmldom does not have any goal of supporting the full spec, but it has some capability to parse, report and serialize things differently when "detecting HTML" (by checking the default namespace).
-There is an upcoming change to better align the implementation with the latest specs, related to <https://github.com/xmldom/xmldom/issues/203>.
+xmldom does not have any goal of supporting the full spec, but it has some capability to parse, report and serialize things differently when it is told to parse HTML (by passing the HTML namespace).
 
 ### SAX, XML, XMLNS
 

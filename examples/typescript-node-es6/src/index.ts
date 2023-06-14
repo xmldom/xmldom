@@ -1,13 +1,17 @@
-import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
+import {
+	DOMParser,
+	MIME_TYPE,
+	onWarningStopParsing,
+	XMLSerializer,
+} from '@xmldom/xmldom';
 
 const source = `<xml xmlns="a">
 	<child>test</child>
 	<child/>
 </xml>`;
-
-const doc = new DOMParser().parseFromString(source, 'text/xml');
-
-if (!doc) throw 'expected Document but was undefined';
+const doc = new DOMParser({
+	onError: onWarningStopParsing,
+}).parseFromString(source, MIME_TYPE.XML_TEXT);
 
 const serialized = new XMLSerializer().serializeToString(doc);
 

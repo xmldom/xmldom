@@ -1,6 +1,7 @@
 'use strict';
 
-const { ParseError } = require('../../lib/sax');
+const { describe, expect, test } = require('@jest/globals');
+const { MIME_TYPE, ParseError } = require('../../lib/conventions');
 const { __DOMHandler, DOMParser } = require('../../lib/dom-parser');
 
 /**
@@ -21,10 +22,12 @@ const UNCALLED_METHODS = new Set([
 	'elementDecl',
 	'endEntity',
 	'externalEntityDecl',
+	'fatalError',
 	'getExternalSubset',
 	'ignorableWhitespace',
 	'internalEntityDecl',
 	'notationDecl',
+	'reportError',
 	'resolveEntity',
 	'skippedEntity',
 	'startEntity',
@@ -32,14 +35,16 @@ const UNCALLED_METHODS = new Set([
 ]);
 
 /**
- * Some of the methods DOMParser/XMLReader call during parsing are not guarded by try/catch,
+ * Some methods DOMParser/XMLReader calls during parsing are not guarded by try/catch,
  * hence an error happening in those will stop the parsing process.
  * There is a test to verify this error handling.
  * If it changes this list might need to be changed as well
  *
  * @type {Set<string>}
  */
-const UNCAUGHT_METHODS = new Set(['characters', 'endDocument', 'error', 'setDocumentLocator', 'startDocument']);
+const UNCAUGHT_METHODS = new Set(['characters', 'endDocument', 'error', 'fatalError', 'setDocumentLocator', 'startDocument']);
+
+class TestError extends Error {}
 
 function noop() {}
 
@@ -52,13 +57,19 @@ function noop() {}
  */
 function StubDOMHandlerWith(throwingMethod, ErrorClass) {
 	class StubDOMHandler extends __DOMHandler {}
+
 	StubDOMHandler.methods = DOMHandlerMethods.map((method) => {
 		const impl = jest.fn(
 			method === throwingMethod
 				? () => {
 						throw new (ErrorClass || ParseError)(`StubDOMHandler throwing in ${throwingMethod}`);
 				  }
-				: noop()
+				: method === 'warning' || method === 'error' || method === 'fatalError'
+				? noop // prevent log output
+				: // use default implementation
+				  function (...args) {
+						return __DOMHandler.prototype[method].apply(this, args);
+				  }
 		);
 		impl.mockName(method);
 		StubDOMHandler.prototype[method] = impl;
@@ -86,39 +97,43 @@ const ALL_METHODS = `<?xml ?>
   <element xmlns:x="http://test" x:a="" warning>
     character
   </element>
-  <element duplicate="" duplicate="fatal"></mismatch>
+  <element attribute=""></mismatch>
 </root>
 <!--
 `;
 
 describe('methods called in DOMHandler', () => {
-	it('should call "all possible" methods when using StubDOMHandler', () => {
+	test('should call "all possible" methods when using StubDOMHandler', () => {
 		const domHandler = StubDOMHandlerWith();
 		const parser = new DOMParser({ domHandler, locator: true });
 		expect(domHandler.methods).toHaveLength(DOMHandlerMethods.length);
 
-		parser.parseFromString(ALL_METHODS);
+		parser.parseFromString(ALL_METHODS, MIME_TYPE.XML_TEXT);
 
 		const uncalledMethodNames = domHandler.methods.filter((m) => m.mock.calls.length === 0).map((m) => m.getMockName());
 		expect(uncalledMethodNames).toEqual([...UNCALLED_METHODS.values()].sort());
 	});
 	describe.each(DOMHandlerMethods.filter((m) => !UNCALLED_METHODS.has(m)))('when DOMHandler.%s throws', (throwing) => {
-		it('should not catch ParserError', () => {
+		test('should not catch ParseError', () => {
 			const domHandler = StubDOMHandlerWith(throwing, ParseError);
 			const parser = new DOMParser({ domHandler, locator: true });
 
-			expect(() => parser.parseFromString(ALL_METHODS)).toThrow(ParseError);
+			expect(() => parser.parseFromString(ALL_METHODS, MIME_TYPE.XML_TEXT)).toThrow(ParseError);
 		});
-		const isUncaughtMethod = UNCAUGHT_METHODS.has(throwing);
-		it(`${isUncaughtMethod ? 'does not' : 'should'} catch other Error`, () => {
-			const domHandler = StubDOMHandlerWith(throwing, Error);
-			const parser = new DOMParser({ domHandler, locator: true });
+		if (UNCAUGHT_METHODS.has(throwing)) {
+			test(`does not catch custom Error`, () => {
+				const domHandler = StubDOMHandlerWith(throwing, TestError);
+				const parser = new DOMParser({ domHandler, locator: true });
 
-			if (isUncaughtMethod) {
-				expect(() => parser.parseFromString(ALL_METHODS)).toThrow();
-			} else {
-				expect(() => parser.parseFromString(ALL_METHODS)).not.toThrow();
-			}
-		});
+				expect(() => parser.parseFromString(ALL_METHODS, MIME_TYPE.XML_TEXT)).toThrow();
+			});
+		} else {
+			test(`should catch custom Error`, () => {
+				const domHandler = StubDOMHandlerWith(throwing, TestError);
+				const parser = new DOMParser({ domHandler, locator: true });
+
+				expect(() => parser.parseFromString(ALL_METHODS, MIME_TYPE.XML_TEXT)).not.toThrow(TestError);
+			});
+		}
 	});
 });
