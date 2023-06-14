@@ -1,15 +1,17 @@
 'use strict';
 
-const { DOMParser } = require('../../lib');
+const { describe, expect, test } = require('@jest/globals');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMParser } = require('../../lib/dom-parser');
 
 describe('XML Namespace Parse', () => {
-	it('supports testlitecns', () => {
+	test('supports testlitecns', () => {
 		const doc = new DOMParser({
 			xmlns: {
 				c: 'http://www.xidea.org/lite/core',
 				'': 'http://www.w3.org/1999/xhtml',
 			},
-		}).parseFromString('<html><body><c:var name="a" value="${1}"/></body></html>', 'text/xml');
+		}).parseFromString('<html><body><c:var name="a" value="${1}"/></body></html>', MIME_TYPE.XML_TEXT);
 		const el = doc.getElementsByTagName('c:var')[0];
 		expect(el.namespaceURI).toBe('http://www.xidea.org/lite/core');
 		expect(doc.toString()).toBe(
@@ -17,13 +19,13 @@ describe('XML Namespace Parse', () => {
 		);
 	});
 
-	it('should ignore default prefix xml attribute', () => {
+	test('should ignore default prefix xml attribute', () => {
 		const w3 = 'http://www.w3.org/1999/xhtml';
 		const n1 = 'http://www.frankston.com/public';
 		const n2 = 'http://rmf.vc/n2';
 		const hx = `<html test="a" xmlns="${w3}" xmlns:rmf="${n1}"><rmf:foo hello="asdfa"/></html>`;
 
-		const doc = new DOMParser().parseFromString(hx, 'text/xml');
+		const doc = new DOMParser().parseFromString(hx, MIME_TYPE.XML_TEXT);
 		const els = [].slice.call(doc.documentElement.getElementsByTagNameNS(n1, 'foo'));
 		for (let _i = 0, els_1 = els; _i < els_1.length; _i++) {
 			const el = els_1[_i];

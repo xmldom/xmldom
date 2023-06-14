@@ -13,7 +13,7 @@ describe('DOMParser', () => {
 			const options = { locator: {} };
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>', 'text/xml');
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
 
 			const expected = {
 				columnNumber: 1,
@@ -24,7 +24,7 @@ describe('DOMParser', () => {
 		test('should use locator when options is not passed', () => {
 			const it = new DOMParser();
 
-			const doc = it.parseFromString('<xml/>', 'text/xml');
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
 
 			const expected = {
 				columnNumber: 1,
@@ -36,7 +36,7 @@ describe('DOMParser', () => {
 			const options = {};
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>', 'text/xml');
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
 
 			expect(doc.documentElement).not.toHaveProperty('columnNumber');
 			expect(doc.documentElement).not.toHaveProperty('lineNumber');
@@ -46,7 +46,7 @@ describe('DOMParser', () => {
 			const options = { xmlns: {} };
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>', 'text/xml');
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
 
 			expect(doc.documentElement.namespaceURI).toBeNull();
 		});
@@ -55,7 +55,7 @@ describe('DOMParser', () => {
 			const options = { xmlns: {} };
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>', 'text/xml');
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
 
 			expect(doc.documentElement.namespaceURI).toBeNull();
 		});
@@ -65,7 +65,7 @@ describe('DOMParser', () => {
 			const options = { xmlns };
 			const it = new DOMParser(options);
 
-			const actual = it.parseFromString('<xml/>', 'text/xml');
+			const actual = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
 
 			expect(actual.toString()).toBe('<xml xmlns="custom-default-ns"/>');
 			expect(actual.documentElement.namespaceURI).toBe(NS_CUSTOM);
@@ -251,7 +251,7 @@ describe('DOMParser', () => {
 			 TODO: again this is the "simples and most readable way,
 			  but it also means testing it over and over
 			*/
-			const document = new DOMParser().parseFromString(XML, 'text/xml');
+			const document = new DOMParser().parseFromString(XML, MIME_TYPE.XML_TEXT);
 			/*
 			 FIXME: from here we are actually testing the Document/Element/Node API
 			 maybe this should be split?

@@ -1,6 +1,8 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
 const xmltest = require('xmltest');
+const { MIME_TYPE } = require('../../lib/conventions');
 const { getTestParser } = require('../get-test-parser');
 const { generateSnapshot } = require('./generate-snapshot');
 
@@ -16,7 +18,7 @@ describe('xmltest/valid', () => {
 
 				const { errors, parser } = getTestParser();
 				try {
-					const actual = parser.parseFromString(input, 'text/xml').toString();
+					const actual = parser.parseFromString(input, MIME_TYPE.XML_TEXT).toString();
 
 					expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
 				} catch (e) {

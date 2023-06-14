@@ -9,10 +9,10 @@ const NS = 'NS';
 
 describe('DOMImplementation', () => {
 	describe('hasFeature (deprecated)', () => {
-		it.each(['', '0', 'feature'])("should return true when called with ('%s')", (f) => {
+		test.each(['', '0', 'feature'])("should return true when called with ('%s')", (f) => {
 			expect(new DOMImplementation().hasFeature(f)).toBe(true);
 		});
-		it.each([
+		test.each([
 			['', ''],
 			['0', '1'],
 			['feature', ''],
@@ -23,7 +23,7 @@ describe('DOMImplementation', () => {
 	});
 
 	describe('createDocument', () => {
-		it('should create a Document with basic mandatory arguments', () => {
+		test('should create a Document with basic mandatory arguments', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(null, '');
 
@@ -37,7 +37,7 @@ describe('DOMImplementation', () => {
 			expect(doc.type).toBe('xml');
 		});
 
-		it('should create a Document with only a doc type', () => {
+		test('should create a Document with only a doc type', () => {
 			const impl = new DOMImplementation();
 			const doctype = impl.createDocumentType('test');
 			const doc = impl.createDocument(null, '', doctype);
@@ -49,7 +49,7 @@ describe('DOMImplementation', () => {
 			expect(doc.type).toBe('xml');
 		});
 
-		it('should create a Document with root element without a namespace', () => {
+		test('should create a Document with root element without a namespace', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(null, NAME);
 
@@ -66,7 +66,7 @@ describe('DOMImplementation', () => {
 			expect(doc.type).toBe('xml');
 		});
 
-		it('should create a Document with root element in a default namespace', () => {
+		test('should create a Document with root element in a default namespace', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(NS, NAME);
 
@@ -84,7 +84,7 @@ describe('DOMImplementation', () => {
 			expect(doc.type).toBe('xml');
 		});
 
-		it('should create a Document with root element in a named namespace', () => {
+		test('should create a Document with root element in a named namespace', () => {
 			const impl = new DOMImplementation();
 			const qualifiedName = `${PREFIX}:${NAME}`;
 			const doc = impl.createDocument(NS, qualifiedName);
@@ -103,7 +103,7 @@ describe('DOMImplementation', () => {
 			expect(doc.type).toBe('xml');
 		});
 
-		it('should create a Document with root element in a named namespace', () => {
+		test('should create a Document with root element in a named namespace', () => {
 			const impl = new DOMImplementation();
 			const qualifiedName = `${PREFIX}:${NAME}`;
 			const doc = impl.createDocument(NS, qualifiedName);
@@ -122,7 +122,7 @@ describe('DOMImplementation', () => {
 			expect(doc.type).toBe('xml');
 		});
 
-		it('should create a Document with namespaced root element and doctype', () => {
+		test('should create a Document with namespaced root element and doctype', () => {
 			const impl = new DOMImplementation();
 			const qualifiedName = `${PREFIX}:${NAME}`;
 			const doctype = impl.createDocumentType('test');
@@ -146,14 +146,14 @@ describe('DOMImplementation', () => {
 			expect(doc.type).toBe('xml');
 		});
 
-		it('should create SVG document from the SVG namespace', () => {
+		test('should create SVG document from the SVG namespace', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(NAMESPACE.SVG, 'svg');
 			expect(doc.contentType).toBe(MIME_TYPE.XML_SVG_IMAGE);
 			expect(doc.type).toBe('xml');
 		});
 
-		it('should create XHTML document from the HTML namespace', () => {
+		test('should create XHTML document from the HTML namespace', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(NAMESPACE.HTML, 'svg');
 			expect(doc.contentType).toBe(MIME_TYPE.XML_XHTML_APPLICATION);
@@ -162,7 +162,7 @@ describe('DOMImplementation', () => {
 	});
 
 	describe('createDocumentType', () => {
-		it('should create a DocumentType with only a name', () => {
+		test('should create a DocumentType with only a name', () => {
 			const impl = new DOMImplementation();
 			const doctype = impl.createDocumentType(NAME);
 
@@ -174,7 +174,7 @@ describe('DOMImplementation', () => {
 			expect(doctype.systemId).toBe('');
 		});
 
-		it('should create a DocumentType with name, publicId and systemId', () => {
+		test('should create a DocumentType with name, publicId and systemId', () => {
 			const impl = new DOMImplementation();
 			const doctype = impl.createDocumentType(NAME, '"PUBLIC"', '"SYSTEM"');
 
@@ -184,7 +184,7 @@ describe('DOMImplementation', () => {
 		});
 	});
 	describe('createHTMLDocument', () => {
-		it('should create an empty HTML document without any elements', () => {
+		test('should create an empty HTML document without any elements', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createHTMLDocument(false);
 
@@ -196,7 +196,7 @@ describe('DOMImplementation', () => {
 			expect(doc.documentElement).toBeNull();
 			expect(doc.ownerDocument).toBe(doc);
 		});
-		it('should create an HTML document with minimum specified elements when title not provided', () => {
+		test('should create an HTML document with minimum specified elements when title not provided', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createHTMLDocument();
 
@@ -224,7 +224,7 @@ describe('DOMImplementation', () => {
 			expect(htmlNode.lastChild.nodeName).toBe('body');
 			expect(htmlNode.lastChild.childNodes).toHaveLength(0);
 		});
-		it('should create an HTML document with specified elements including an empty title', () => {
+		test('should create an HTML document with specified elements including an empty title', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createHTMLDocument('');
 
@@ -256,7 +256,7 @@ describe('DOMImplementation', () => {
 			expect(headNode.firstChild.firstChild.nodeType).toBe(Node.TEXT_NODE);
 			expect(headNode.firstChild.firstChild.nodeValue).toBe('');
 		});
-		it('should create an HTML document with specified elements including an provided title', () => {
+		test('should create an HTML document with specified elements including an provided title', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createHTMLDocument('eltiT');
 

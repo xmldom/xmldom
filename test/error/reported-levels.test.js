@@ -1,16 +1,18 @@
 'use strict';
 // wallaby:file.skip since stacktrace detection is not working in instrumented files
+const { describe, expect, test } = require('@jest/globals');
 
 const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
-const { getTestParser } = require('../get-test-parser');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMParser } = require('../../lib/dom-parser');
 const { ParseError } = require('../../lib/sax');
-const { DOMParser } = require('../../lib');
+const { getTestParser } = require('../get-test-parser');
 
 describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, skippedInHtml }) => {
-	describe.each(['text/xml', 'text/html'])('with mimeType %s', (mimeType) => {
+	describe.each([MIME_TYPE.XML_TEXT, 'text/html'])('with mimeType %s', (mimeType) => {
 		const isHtml = mimeType === 'text/html';
 		if (isHtml && skippedInHtml) {
-			it(`should not be reported`, () => {
+			test(`should not be reported`, () => {
 				const { errors, parser } = getTestParser();
 
 				parser.parseFromString(source, mimeType);
@@ -19,7 +21,7 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 			});
 		} else {
 			if (level === 'fatalError') {
-				it(`should throw ParseError in errorHandler.fatalError`, () => {
+				test(`should throw ParseError in errorHandler.fatalError`, () => {
 					const onError = jest.fn();
 					const parser = new DOMParser({ onError });
 
@@ -28,7 +30,7 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 					expect(onError).toHaveBeenCalledTimes(1);
 				});
 			} else {
-				it(`should be reported`, () => {
+				test(`should be reported`, () => {
 					const { errors, parser } = getTestParser();
 
 					parser.parseFromString(source, mimeType);
@@ -38,7 +40,7 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 					// if a match has been defined, filter messages
 					expect(match ? (errors || []).filter(match) : errors).toHaveLength(1);
 				});
-				it(`should escalate Error thrown in onError to ParseError`, () => {
+				test(`should escalate Error thrown in onError to ParseError`, () => {
 					let thrown = [];
 					const onError = jest.fn((level, message) => {
 						const toThrow = new Error(level + ': ' + message);

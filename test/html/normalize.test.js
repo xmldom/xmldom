@@ -1,9 +1,11 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
+const { MIME_TYPE } = require('../../lib/conventions');
 const { getTestParser } = require('../get-test-parser');
 
 describe('html normalizer', () => {
-	it.each([
+	test.each([
 		'<div>&amp;&lt;123&456<789;&&</div>',
 		'<div><123e>&<a<br/></div>',
 		'<div>&nbsp;&copy;&nbsp&copy</div>',
@@ -23,7 +25,7 @@ describe('html normalizer', () => {
 		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
-	it.each([
+	test.each([
 		'<html><meta><link><img><br><hr><input></html>',
 		'<html title =1/2></html>',
 		'<html title= 1/>',
@@ -37,8 +39,8 @@ describe('html normalizer', () => {
 		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
-	Array.from(['text/xml', 'text/html']).forEach((mimeType) => {
-		it.each([
+	Array.from([MIME_TYPE.XML_TEXT, 'text/html']).forEach((mimeType) => {
+		test.each([
 			'<script>alert(a<b&&c?"<br>":">>");</script>',
 			'<script>alert(a<b&&c?"<br/>":">>");</script>',
 			'<script src="./test.js"/>',
@@ -56,7 +58,7 @@ describe('html normalizer', () => {
 		});
 	});
 
-	it.each([
+	test.each([
 		`<html xmlns="http://www.w3.org/1999/xhtml"><script>let message = " &amp; ETH";</script></html>`,
 		`<html><script>let message = " &amp; ETH";</script></html>`,
 	])(`should map entity in %s`, (xml) => {
@@ -66,7 +68,7 @@ describe('html normalizer', () => {
 
 		expect(actual.documentElement.firstChild.textContent).toBe('let message = " & ETH";');
 	});
-	it.each([
+	test.each([
 		`<html xmlns="http://www.w3.org/1999/xhtml"><script>let message = " &amp; ETH";</script></html>`,
 		`<html><script>let message = " &amp; ETH";</script></html>`,
 	])(`should not map entity in %s`, (xml) => {
@@ -77,7 +79,7 @@ describe('html normalizer', () => {
 		expect(actual.documentElement.firstChild.textContent).toBe('let message = " &amp; ETH";');
 	});
 
-	it('European entities', () => {
+	test('European entities', () => {
 		const { errors, parser } = getTestParser();
 
 		const actual = parser
@@ -93,13 +95,13 @@ describe('html normalizer', () => {
 			actual: '<div xmlns="http://www.w3.org/1999/xhtml">ÄäÅåÆæÖöØøßÜü€</div>',
 		});
 	});
-	it('European entities xml', () => {
+	test('European entities xml', () => {
 		const { errors, parser } = getTestParser();
 
 		const actual = parser
 			.parseFromString(
 				'<div>&Auml;&auml;&Aring;&aring;&AElig;&aelig;&Ouml;&ouml;&Oslash;&oslash;&szlig;&Uuml;&uuml;&euro;</div>',
-				'text/xml'
+				MIME_TYPE.XML_TEXT
 			)
 			.toString();
 

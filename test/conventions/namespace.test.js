@@ -5,7 +5,7 @@ const { NAMESPACE } = require('../../lib/conventions');
 describe('NAMESPACE', () => {
 	Object.keys(NAMESPACE).forEach((key) => {
 		const value = NAMESPACE[key];
-		it(`should contain immutable ${key} with correct value`, () => {
+		test(`should contain immutable ${key} with correct value`, () => {
 			expect([key, value]).toMatchSnapshot();
 			try {
 				NAMESPACE[key] = 'boo';

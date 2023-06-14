@@ -3,7 +3,7 @@
 const { find } = require('../../lib/conventions');
 
 describe('find', () => {
-	it('should work in node without pasing an ArrayConstructor', () => {
+	test('should work in node without pasing an ArrayConstructor', () => {
 		const predicate = jest.fn((item) => item === 'b');
 		const list = ['a', 'b', 'c'];
 
@@ -12,7 +12,7 @@ describe('find', () => {
 		expect(predicate).toHaveBeenCalledWith('a', 0, list);
 		expect(predicate).toHaveBeenCalledWith('b', 1, list);
 	});
-	it('should work when ArrayConstructor does not provide find', () => {
+	test('should work when ArrayConstructor does not provide find', () => {
 		const predicate = jest.fn((item) => item === 'b');
 		const list = ['a', 'b', 'c'];
 
