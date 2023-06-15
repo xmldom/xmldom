@@ -44,4 +44,17 @@ describe('doctype', () => {
 			expect(doc.childNodes.length).toBe(2);
 		});
 	});
+
+	test('sets the internalSubset', () => {
+		const internalSubset =
+			'\n' + '  <!ENTITY foo "foo">\n' + '  <!ENTITY bar "bar">\n' + '  <!ENTITY bar "bar2">\n' + '  <!ENTITY % baz "baz">\n';
+
+		const doctypeString = '<!DOCTYPE name [' + internalSubset + ']><name/>';
+
+		const { parser } = getTestParser();
+		const doc = parser.parseFromString(doctypeString, MIME_TYPE.XML_TEXT);
+
+		expect(doc.doctype).toBeTruthy();
+		expect(doc.doctype.internalSubset).toBe(internalSubset);
+	});
 });
