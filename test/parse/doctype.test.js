@@ -49,7 +49,7 @@ describe('doctype', () => {
 		const internalSubset =
 			'\n' + '  <!ENTITY foo "foo">\n' + '  <!ENTITY bar "bar">\n' + '  <!ENTITY bar "bar2">\n' + '  <!ENTITY % baz "baz">\n';
 
-		const doctypeString = '<!DOCTYPE name [' + internalSubset + ']><name/>';
+		const doctypeString = '<?xml version="1.0"><!DOCTYPE name PUBLIC "identifier" "url" [' + internalSubset + ']><name/>';
 
 		const { parser } = getTestParser();
 		const doc = parser.parseFromString(doctypeString, MIME_TYPE.XML_TEXT);
