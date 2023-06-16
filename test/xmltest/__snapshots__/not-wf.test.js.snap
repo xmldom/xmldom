@@ -484,6 +484,15 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 054.xml with snapshot 1`] = `
 Object {
+  "actual": "<!DOCTYPE doc [
+<!ENTITY foo PUBLIC \\"some public id\\">
+]>
+<doc/>",
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 055.xml with snapshot 1`] = `
+Object {
   "actual": "<!DOCTYPE doc><doc/>",
 }
 `;
@@ -497,79 +506,127 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 057.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"whatever\\" -- a comment -->
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 058.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 (foo,bar) #IMPLIED>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 059.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 NMTOKEN v1>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 060.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 NAME #IMPLIED>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 061.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e PUBLIC \\"whatever\\"\\"e.ent\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 062.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY foo\\"some text\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 063.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<![INCLUDE[ ]]>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 064.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST e a1 CDATA\\"foo\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 065.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1(foo|bar) #IMPLIED>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 066.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 (foo|bar)#IMPLIED>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 067.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 (foo)\\"foo\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 068.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 NOTATION(foo) #IMPLIED>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 069.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><!-- missing space before NDATA -->
+  "actual": "<!DOCTYPE doc [
+<!NOTATION eps SYSTEM \\"eps.exe\\">
+<!-- missing space before NDATA -->
+<!ENTITY foo SYSTEM \\"foo.eps\\"NDATA eps>
+]>
 <doc/>",
 }
 `;
@@ -583,32 +640,13 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 071.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e1;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e1 \\"&e2;\\">
+<!ENTITY e2 \\"&e3;\\">
+<!ENTITY e3 \\"&e1;\\">
+]>
+<doc>&amp;e1;</doc>",
   "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e2;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 6,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e3;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 6,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e1;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 6,
-      },
-    ],
     Array [
       "error",
       "entity not found:&e1;",
@@ -639,7 +677,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 073.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;f;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"whatever\\">
+]>
+<doc>&amp;f;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -655,11 +696,12 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 074.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><foo>\\"&gt;
-]&gt;
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"</foo><foo>\\">
+]>
 <doc>
 <foo>&amp;e;</foo>
-</doc></foo>",
+</doc>",
   "errors": Array [
     Array [
       "error",
@@ -675,32 +717,13 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 075.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc a=\\"&amp;e1;\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e1 \\"&e2;\\">
+<!ENTITY e2 \\"&e3;\\">
+<!ENTITY e3 \\"&e1;\\">
+]>
+<doc a=\\"&amp;e1;\\"/>",
   "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e2;",
-      Object {
-        "columnNumber": 8,
-        "lineNumber": 6,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e3;",
-      Object {
-        "columnNumber": 8,
-        "lineNumber": 6,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e1;",
-      Object {
-        "columnNumber": 8,
-        "lineNumber": 6,
-      },
-    ],
     Array [
       "error",
       "entity not found:&e1;",
@@ -731,16 +754,11 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 077.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc a=\\"&amp;foo;\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY foo \\"&bar;\\">
+]>
+<doc a=\\"&amp;foo;\\"/>",
   "errors": Array [
-    Array [
-      "error",
-      "entity not found:&bar;",
-      Object {
-        "columnNumber": 8,
-        "lineNumber": 4,
-      },
-    ],
     Array [
       "error",
       "entity not found:&foo;",
@@ -755,103 +773,46 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 078.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&foo;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 5,
-      },
-    ],
-  ],
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA \\"&foo;\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 079.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e2;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 8,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e3;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 8,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e1;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 8,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e1;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 8,
-      },
-    ],
-  ],
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e1 \\"&e2;\\">
+<!ENTITY e2 \\"&e3;\\">
+<!ENTITY e3 \\"&e1;\\">
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA \\"&e1;\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 080.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e2;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 8,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e3;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 8,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e1;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 8,
-      },
-    ],
-    Array [
-      "error",
-      "entity not found:&e1;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 8,
-      },
-    ],
-  ],
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e1 \\"&e2;\\">
+<!ENTITY e2 \\"&e3;\\">
+<!ENTITY e3 \\"&e1;\\">
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #FIXED \\"&e1;\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 081.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc a=\\"&amp;e;\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e SYSTEM \\"nul\\">
+]>
+<doc a=\\"&amp;e;\\"/>",
   "errors": Array [
     Array [
       "error",
@@ -867,23 +828,21 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 082.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 6,
-      },
-    ],
-  ],
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e SYSTEM \\"nul\\">
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA \\"&e;\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 083.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e SYSTEM \\"nul\\" NDATA n>
+]>
+<doc>&amp;e;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -899,17 +858,12 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 084.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 6,
-      },
-    ],
-  ],
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e SYSTEM \\"nul\\" NDATA n>
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA \\"&e;\\">
+]>
+<doc/>",
 }
 `;
 
@@ -922,41 +876,43 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 086.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY foo PUBLIC \\"[\\" \\"null.xml\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 087.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!NOTATION foo PUBLIC \\"[\\" \\"null.ent\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 089.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY % foo SYSTEM \\"foo.xml\\" NDATA bar>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 090.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><foo a=\\"&lt;\\"/>\\"&gt;
-]&gt;
-&lt;doc&gt;&amp;e;",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"<foo a='&#60;'></foo>\\">
+]>
+<doc>&amp;e;</doc>",
   "errors": Array [
-    Array [
-      "error",
-      "element parse error: Error: Hierarchy request error: Only one element can be added and only after doctype",
-      Object {
-        "columnNumber": 2,
-        "lineNumber": 4,
-      },
-    ],
     Array [
       "error",
       "entity not found:&e;",
       Object {
-        "columnNumber": 2,
+        "columnNumber": 6,
         "lineNumber": 4,
       },
     ],
@@ -966,29 +922,26 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 091.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!NOTATION n SYSTEM \\"n\\">
+<!ENTITY % foo SYSTEM \\"foo.xml\\" NDATA n>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 092.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><foo a=\\"&amp;\\"/>\\"&gt;
-]&gt;
-&lt;doc&gt;&amp;e;",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"<foo a='&#38;'></foo>\\">
+]>
+<doc>&amp;e;</doc>",
   "errors": Array [
-    Array [
-      "error",
-      "element parse error: Error: Hierarchy request error: Only one element can be added and only after doctype",
-      Object {
-        "columnNumber": 2,
-        "lineNumber": 4,
-      },
-    ],
     Array [
       "error",
       "entity not found:&e;",
       Object {
-        "columnNumber": 2,
+        "columnNumber": 6,
         "lineNumber": 4,
       },
     ],
@@ -1067,7 +1020,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 103.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#60;foo>\\">
+]>
+<doc>&amp;e;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1083,9 +1039,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 104.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><foo>\\"&gt;
-]&gt;
-<doc>&amp;e;</doc></foo>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"<foo>\\">
+]>
+<doc>&amp;e;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1117,7 +1074,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 107.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<![CDATA[]]>
+]>
+<doc/>",
 }
 `;
 
@@ -1129,18 +1089,12 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 109.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc><doc/>\\"&gt;
-]&gt;
-&amp;e;
-",
-}
-`;
-
 exports[`xmltest/not-wellformed standalone should match 110.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"\\">
+]>
+<doc/>
 &amp;e;
 ",
 }
@@ -1156,19 +1110,28 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 113.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY % foo \\"&\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 114.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY foo \\"&\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 115.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc a=\\"&amp;e;\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#38;\\">
+]>
+<doc a=\\"&amp;e;\\"/>",
   "errors": Array [
     Array [
       "error",
@@ -1184,7 +1147,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 116.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;7;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#38;#9\\">
+]>
+<doc>&amp;e;7;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1200,7 +1166,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 117.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;#97;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#38;\\">
+]>
+<doc>&amp;e;#97;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1216,7 +1185,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 118.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;&amp;e;97;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"#\\">
+]>
+<doc>&amp;&amp;e;97;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1232,7 +1204,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 119.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#38;\\">
+]>
+<doc>
 &amp;e;#38;
 </doc>",
   "errors": Array [
@@ -1250,7 +1225,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 120.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#38;\\">
+]>
+<doc>
 &amp;e;
 </doc>",
   "errors": Array [
@@ -1268,130 +1246,201 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 121.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY #DEFAULT \\"default\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 122.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a, (b) | c)?>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 123.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc ((doc?)))>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 124.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (doc|#PCDATA)*>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 125.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc ((#PCDATA))>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 126.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)+>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 127.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)?>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 128.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc CDATA>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 129.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc - - (#PCDATA)>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 130.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (doc?) +(foo)>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 131.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (doc?) -(foo)>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 132.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a, (b, c), (d, (e, f) | g))?>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 133.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a *)>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 134.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a) *>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 135.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a & b)?>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 136.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc O O (#PCDATA)>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 137.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc(#PCDATA)>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 138.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (doc*?)>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 139.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc ()>
+]>
+<doc/>",
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 141.xml with snapshot 1`] = `
+exports[`xmltest/not-wellformed standalone should match 140.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"<&#x309a;></&#x309a;>\\">
+]>
+<doc>&amp;e;</doc>",
   "errors": Array [
     Array [
       "error",
-      "element parse error: Error: invalid tagName:X&#xe5c;",
+      "entity not found:&e;",
       Object {
         "columnNumber": 6,
         "lineNumber": 4,
       },
     ],
+  ],
+}
+`;
+
+exports[`xmltest/not-wellformed standalone should match 141.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"<X&#xe5c;></X&#xe5c;>\\">
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
     Array [
       "error",
       "entity not found:&e;",
@@ -1406,31 +1455,46 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 142.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>{!0!}</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>{!0!}</doc>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 143.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>{!1f!}</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>{!1f!}</doc>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 144.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>{!ffff!}</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>{!ffff!}</doc>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 145.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>{!d800!}</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>{!d800!}</doc>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 146.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>{!dc00!}{!dc00!}</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>{!dc00!}{!dc00!}</doc>",
 }
 `;
 
@@ -1452,7 +1516,11 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 149.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><?xml version=\\"1.0\\"?><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<?xml version=\\"1.0\\"?>
+]>
+<doc/>",
 }
 `;
 
@@ -1481,7 +1549,11 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 153.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><?xml encoding='UTF-8'?><doc>&amp;e;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"<?xml encoding='UTF-8'?>\\">
+]>
+<doc>&amp;e;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1527,13 +1599,22 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 158.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!NOTATION gif PUBLIC \\"image/gif\\" \\"\\">
+<!ATTLIST #NOTATION gif a1 CDATA #IMPLIED>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 159.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"<![CDATA[Tim & Michael]]>\\">
+]>
+<doc>&amp;e;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1549,37 +1630,62 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 160.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY % e \\"\\">
+<!ENTITY foo \\"%e;\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 161.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY % e \\"#PCDATA\\">
+<!ELEMENT doc (%e;)>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 162.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY % e1 \\"\\">
+<!ENTITY % e2 \\"%e1;\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 163.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY % e \\"\\">
+]><doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 164.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY % e \\"\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 165.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY% e \\"\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
 }
 `;
 
@@ -1641,13 +1747,20 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 175.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY % e \\"{!ffff!}\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 176.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "errors": Array [
     Array [
       "warning",
@@ -1663,7 +1776,10 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 177.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>A{!ffff!}</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>A{!ffff!}</doc>",
 }
 `;
 
@@ -1675,23 +1791,22 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 180.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 6,
-      },
-    ],
-  ],
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA \\"&e;\\">
+<!ENTITY e \\"v\\">
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 181.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;]]&gt;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#60;![CDATA[\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>&amp;e;]]&gt;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1707,7 +1822,11 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 182.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;--&gt;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#60;!--\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>&amp;e;--&gt;</doc>",
   "errors": Array [
     Array [
       "error",
@@ -1723,13 +1842,21 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 183.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA | foo*)* >
+<!ELEMENT foo EMPTY>
+]>
+<doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 184.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA | (foo))* >
+<!ELEMENT foo EMPTY>
+]>
+<doc/>",
 }
 `;
 
@@ -1753,7 +1880,11 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 186.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE a><a b=\\"c\\" d=\\"e\\"/>",
+  "actual": "<!DOCTYPE a [
+<!ELEMENT a EMPTY>
+<!ATTLIST a b CDATA #IMPLIED d CDATA #IMPLIED>
+]>
+<a b=\\"c\\" d=\\"e\\"/>",
   "errors": Array [
     Array [
       "warning",

@@ -57,8 +57,8 @@ describe('doctype', () => {
 
 		expect(doc.doctype).toBeTruthy();
 		expect(doc.doctype.name).toBe('name');
-		expect(doc.doctype.publicId).toBe('identifier');
-		expect(doc.doctype.systemId).toBe('url');
+		expect(doc.doctype.publicId).toBe('"identifier"');
+		expect(doc.doctype.systemId).toBe('"url"');
 		expect(doc.doctype.internalSubset).toBe(internalSubset);
 	});
 });
