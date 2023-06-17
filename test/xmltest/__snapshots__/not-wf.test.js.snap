@@ -134,11 +134,17 @@ Object {
 }
 `;
 
+exports[`xmltest/not-wellformed standalone should match 013.xml with snapshot 1`] = `"missing root element"`;
+
 exports[`xmltest/not-wellformed standalone should match 014.xml with snapshot 1`] = `
 Object {
   "actual": "<doc a1=\\"&lt;foo&gt;\\"/>",
 }
 `;
+
+exports[`xmltest/not-wellformed standalone should match 015.xml with snapshot 1`] = `"missing root element"`;
+
+exports[`xmltest/not-wellformed standalone should match 016.xml with snapshot 1`] = `"missing root element"`;
 
 exports[`xmltest/not-wellformed standalone should match 017.xml with snapshot 1`] = `
 Object {
@@ -146,11 +152,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 018.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>&lt;![CDATA [ stuff]]&gt;</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 018.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 019.xml with snapshot 1`] = `
 Object {
@@ -193,6 +195,8 @@ Object {
   "actual": "<doc a1=\\"&amp;#123:\\"/>",
 }
 `;
+
+exports[`xmltest/not-wellformed standalone should match 023.xml with snapshot 1`] = `"missing root element"`;
 
 exports[`xmltest/not-wellformed standalone should match 024.xml with snapshot 1`] = `
 Object {
@@ -317,6 +321,8 @@ Object {
 ",
 }
 `;
+
+exports[`xmltest/not-wellformed standalone should match 038.xml with snapshot 1`] = `"Attribute x redefined"`;
 
 exports[`xmltest/not-wellformed standalone should match 039.xml with snapshot 1`] = `
 Object {
@@ -450,6 +456,8 @@ Object {
 }
 `;
 
+exports[`xmltest/not-wellformed standalone should match 050.xml with snapshot 1`] = `"missing root element"`;
+
 exports[`xmltest/not-wellformed standalone should match 051.xml with snapshot 1`] = `
 Object {
   "actual": "<!-- a comment -->
@@ -491,18 +499,9 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 055.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc><doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 055.xml with snapshot 1`] = `"malformed document type"`;
 
-exports[`xmltest/not-wellformed standalone should match 056.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 056.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 057.xml with snapshot 1`] = `
 Object {
@@ -561,14 +560,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 063.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<![INCLUDE[ ]]>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 063.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 064.xml with snapshot 1`] = `
 Object {
@@ -694,26 +686,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 074.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY e \\"</foo><foo>\\">
-]>
-<doc>
-<foo>&amp;e;</foo>
-</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 15,
-        "lineNumber": 5,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 074.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 075.xml with snapshot 1`] = `
 Object {
@@ -867,12 +840,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 085.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc PUBLIC \\"[\\" \\"null.ent\\">
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 085.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 086.xml with snapshot 1`] = `
 Object {
@@ -892,6 +860,8 @@ Object {
 }
 `;
 
+exports[`xmltest/not-wellformed standalone should match 088.xml with snapshot 1`] = `"missing root element"`;
+
 exports[`xmltest/not-wellformed standalone should match 089.xml with snapshot 1`] = `
 Object {
   "actual": "<!DOCTYPE doc [
@@ -901,24 +871,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 090.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY e \\"<foo a='&#60;'></foo>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 090.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 091.xml with snapshot 1`] = `
 Object {
@@ -930,24 +883,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 092.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY e \\"<foo a='&#38;'></foo>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 092.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 093.xml with snapshot 1`] = `
 Object {
@@ -1018,43 +954,9 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 103.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY e \\"&#60;foo>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 103.xml with snapshot 1`] = `"malformed document type"`;
 
-exports[`xmltest/not-wellformed standalone should match 104.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY e \\"<foo>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 104.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 105.xml with snapshot 1`] = `
 Object {
@@ -1072,22 +974,11 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 107.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<![CDATA[]]>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 107.xml with snapshot 1`] = `"malformed document type"`;
 
-exports[`xmltest/not-wellformed standalone should match 108.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-&lt;![CDATA [  ]]&gt;
-</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 108.xml with snapshot 1`] = `"malformed document type"`;
+
+exports[`xmltest/not-wellformed standalone should match 109.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 110.xml with snapshot 1`] = `
 Object {
@@ -1100,13 +991,9 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 112.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-&lt;![cdata[data]]&gt;
-</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 111.xml with snapshot 1`] = `"missing root element"`;
+
+exports[`xmltest/not-wellformed standalone should match 112.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 113.xml with snapshot 1`] = `
 Object {
@@ -1415,43 +1302,9 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 140.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY e \\"<&#x309a;></&#x309a;>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 140.xml with snapshot 1`] = `"malformed document type"`;
 
-exports[`xmltest/not-wellformed standalone should match 141.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY e \\"<X&#xe5c;></X&#xe5c;>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 141.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 142.xml with snapshot 1`] = `
 Object {
@@ -1547,25 +1400,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 153.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc (#PCDATA)>
-<!ENTITY e \\"<?xml encoding='UTF-8'?>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 5,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 153.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 154.xml with snapshot 1`] = `
 Object {
@@ -1608,25 +1443,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 159.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc (#PCDATA)>
-<!ENTITY e \\"<![CDATA[Tim & Michael]]>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 5,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 159.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 160.xml with snapshot 1`] = `
 Object {
@@ -1669,25 +1486,9 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 164.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc (#PCDATA)>
-<!ENTITY % e \\"\\">
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 164.xml with snapshot 1`] = `"malformed document type"`;
 
-exports[`xmltest/not-wellformed standalone should match 165.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY% e \\"\\">
-<!ELEMENT doc (#PCDATA)>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 165.xml with snapshot 1`] = `"malformed document type"`;
 
 exports[`xmltest/not-wellformed standalone should match 166.xml with snapshot 1`] = `
 Object {
@@ -1783,9 +1584,14 @@ Object {
 }
 `;
 
+exports[`xmltest/not-wellformed standalone should match 178.xml with snapshot 1`] = `"missing root element"`;
+
 exports[`xmltest/not-wellformed standalone should match 179.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#34;>
+]>
+<doc/>",
 }
 `;
 
