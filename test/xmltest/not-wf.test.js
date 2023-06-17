@@ -20,6 +20,7 @@ describe('xmltest/not-wellformed', () => {
 					expect(generateSnapshot(actual, errors)).toMatchSnapshot();
 				} catch (e) {
 					expect(e).toBeInstanceOf(ParseError);
+					expect(e.message).toMatchSnapshot();
 				}
 			});
 		});
