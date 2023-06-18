@@ -24,7 +24,7 @@ describe('all relevant regular expressions written out to a file', () => {
 		}
 		expect(fs.readFileSync(fileName, 'utf-8')).toBe(REGEXP_DUMP);
 	});
-})
+});
 describe('doctypedecl_uv', () => {
 	test('should match parts', () => {
 		expect(Name.test('name')).toBe(true);
