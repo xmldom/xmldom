@@ -64,7 +64,7 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
  * - picks the first line in the stack trace that is in `libFile`,
  *   and strips absolute paths and character position from that stack entry
  *   as second line. the line number in the stack is converted to the error index
- *   (to make snapshot testing possible even with stryker).
+ *   (to only have relevant changes in snapshots).
  * @param {Error} error
  * @param {string} libFile the path from the root of the project that should be preserved in the stack
  * @returns {string}
@@ -79,8 +79,8 @@ function toErrorSnapshot(error, libFile) {
 		.replace(libFileMatch, '$1')
 		// strip of position of character in line
 		.replace(/:\d+\)$/, ')')
-		// We only store the error index int he snapshot instead of the line numbers.
-		// This way they need to be updated less frequent and are compatible with stryker.
+		// We only store the error index in the snapshot instead of the line numbers.
+		// This way they need to be updated less frequent.
 		// see `parseErrorLines` in `./reported.js` for how LINE_TO_ERROR_INDEX is created,
 		// and `./reported.json` (after running the tests) to inspect it.
 		.replace(new RegExp(`${libFile}:\\d+`), (fileAndLine) => {
