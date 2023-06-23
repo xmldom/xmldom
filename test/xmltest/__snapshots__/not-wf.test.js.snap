@@ -520,7 +520,7 @@ exports[`xmltest/not-wellformed standalone should match 067.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 068.xml with snapshot 1`] = `"Error in internal subset at position 41"`;
 
-exports[`xmltest/not-wellformed standalone should match 069.xml with snapshot 1`] = `"Error in internal subset at position 49"`;
+exports[`xmltest/not-wellformed standalone should match 069.xml with snapshot 1`] = `"Error in internal subset at position 85"`;
 
 exports[`xmltest/not-wellformed standalone should match 070.xml with snapshot 1`] = `
 Object {
