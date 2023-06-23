@@ -698,9 +698,35 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 081.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
+exports[`xmltest/not-wellformed standalone should match 081.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e SYSTEM \\"nul\\">
+]>
+<doc a=\\"&amp;e;\\"/>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 8,
+        "lineNumber": 4,
+      },
+    ],
+  ],
+}
+`;
 
-exports[`xmltest/not-wellformed standalone should match 082.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
+exports[`xmltest/not-wellformed standalone should match 082.xml with snapshot 1`] = `
+Object {
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e SYSTEM \\"nul\\">
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA \\"&e;\\">
+]>
+<doc/>",
+}
+`;
 
 exports[`xmltest/not-wellformed standalone should match 083.xml with snapshot 1`] = `
 Object {
