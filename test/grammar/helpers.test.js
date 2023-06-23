@@ -37,8 +37,14 @@ describe('chars_without', () => {
 	test('should throw if second parameter is not part of source', () => {
 		expect(() => chars_without(/[a-z.-\]]/, 'x')).toThrow(Error);
 	});
-	test('should throw if second parameter falsy', () => {
-		expect(() => chars_without(/[undefined]/)).toThrow(Error);
+	test('should throw if second parameter is not provided', () => {
+		expect(() => chars_without(/[false]/)).toThrow(Error);
+	});
+	test('should throw if second parameter is not a string', () => {
+		expect(() => chars_without(/[true]/, true)).toThrow(Error);
+	});
+	test('should throw if second parameter is empty string', () => {
+		expect(() => chars_without(/[false]/, false)).toThrow(Error);
 	});
 	test('should throw if source is not starting with [', () => {
 		expect(() => chars_without(/abc/, '')).toThrow('/abc/');
