@@ -12,6 +12,8 @@ Array [
   "PI_unsafe",
   "PubidLiteral",
   "QName",
+  "QName_exact",
+  "QName_group",
   "S",
   "SystemLiteral",
   "elementdecl",
