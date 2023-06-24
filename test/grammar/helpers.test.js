@@ -1,7 +1,6 @@
 'use strict';
 
 const { describe, expect, test, beforeEach } = require('@jest/globals');
-const { spyOn } = require('jest-mock');
 const { reg, chars, chars_without, regg, UNICODE_SUPPORT, detectUnicodeSupport } = require('../../lib/grammar');
 
 test('should only be run with unicode support', () => {

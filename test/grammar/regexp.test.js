@@ -20,6 +20,8 @@ ${Object.entries(Grammar)
 			`const ${name} = /${reg.source
 				// to make the test pass with all node version,
 				// we need to "sync" how `/` is being serialized
+				// in node v10 it serializes to just /
+				// in later versions it serializes to \/
 				.replace(/\\?\//g, '\\/')}/${reg.flags};`
 	)
 	.join('\n')}`;
