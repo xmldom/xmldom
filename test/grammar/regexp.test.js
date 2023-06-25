@@ -3,6 +3,7 @@
 const fs = require('fs');
 const { describe, expect, test } = require('@jest/globals');
 const grammar = require('../../lib/grammar');
+const { DOMParser, MIME_TYPE } = require('../../lib');
 const Grammar = Object.keys(grammar)
 	.sort()
 	.reduce((acc, key) => {
