@@ -1,3 +1,8 @@
+'use strict';
+/**
+ * See https://stackoverflow.com/a/488640/684134
+ * methods in this file should make it easier to do that.
+ */
 /**
  *
  * @param {string} from
