@@ -3,6 +3,7 @@
 exports[`all grammar regular expressions should have the expected keys 1`] = `
 Array [
   "AttlistDecl",
+  "Char",
   "Comment",
   "EntityDecl",
   "ExternalID",
@@ -15,6 +16,7 @@ Array [
   "QName_exact",
   "QName_group",
   "S",
+  "S_OPT",
   "SystemLiteral",
   "elementdecl",
 ]
