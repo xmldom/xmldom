@@ -32,7 +32,7 @@ describe('all grammar regular expressions', () => {
 	test('should match the file on disk', () => {
 		var fileName = __dirname + '/regexp.js';
 		// delete the file and rerun the test(s) to update to current value, in case you touched grammar.js
-			fs.writeFileSync(fileName, REGEXP_DUMP);
+		fs.writeFileSync(fileName, REGEXP_DUMP);
 		if (!fs.existsSync(fileName)) {
 		}
 		expect(fs.readFileSync(fileName, 'utf-8')).toBe(REGEXP_DUMP);
