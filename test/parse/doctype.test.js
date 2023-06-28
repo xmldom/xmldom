@@ -75,8 +75,7 @@ describe('doctype', () => {
   <!ENTITY % baz "baz">
 `;
 
-		const doctypeString = `
-		<?xml version="1.0">
+		const doctypeString = `<?xml version="1.0"?>
 		<!-- >'" -->
 		<!DOCTYPE name PUBLIC "identifier" "url" [${internalSubset}]>
 		<name/>
