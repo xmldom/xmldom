@@ -1330,15 +1330,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 149.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc (#PCDATA)>
-<?xml version=\\"1.0\\"?>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 149.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
 exports[`xmltest/not-wellformed standalone should match 150.xml with snapshot 1`] = `
 Object {
