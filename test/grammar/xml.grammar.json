@@ -341,6 +341,7 @@
 			"grammar": "'<!DOCTYPE' S Name (S ExternalID)? S? ('[' intSubset ']' S?)? '>'",
 			"href": "#NT-doctypedecl",
 			"constraints": {
+				"#vc-roottype": "[VC: Root Element Type]",
 				"#ExtSubset": "[WFC: External Subset]"
 			}
 		},
@@ -349,6 +350,7 @@
 			"grammar": "'<!DOCTYPE' S Name (S ExternalID)? S? ('[' intSubset ']' S?)? '>'",
 			"href": "#NT-doctypedecl",
 			"constraints": {
+				"#vc-roottype": "[VC: Root Element Type]",
 				"#ExtSubset": "[WFC: External Subset]"
 			}
 		},
@@ -394,6 +396,7 @@
 			"grammar": "elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment",
 			"href": "#NT-markupdecl",
 			"constraints": {
+				"#vc-PEinMarkupDecl": "[VC: Proper Declaration/PE Nesting]",
 				"#wfc-PEinInternalSubset": "[WFC: PEs in Internal Subset]"
 			}
 		},
@@ -402,6 +405,7 @@
 			"grammar": "elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment",
 			"href": "#NT-markupdecl",
 			"constraints": {
+				"#vc-PEinMarkupDecl": "[VC: Proper Declaration/PE Nesting]",
 				"#wfc-PEinInternalSubset": "[WFC: PEs in Internal Subset]"
 			}
 		}
@@ -454,6 +458,7 @@
 			"grammar": "EmptyElemTag | STag content ETag",
 			"href": "#NT-element",
 			"constraints": {
+				"#GIMatch": "[WFC: Element Type Match]",
 				"#elementvalid": "[VC: Element Valid]"
 			}
 		},
@@ -462,6 +467,7 @@
 			"grammar": "EmptyElemTag | STag content ETag",
 			"href": "#NT-element",
 			"constraints": {
+				"#GIMatch": "[WFC: Element Type Match]",
 				"#elementvalid": "[VC: Element Valid]"
 			}
 		}
@@ -498,6 +504,8 @@
 			"grammar": "Name Eq AttValue",
 			"href": "#NT-Attribute",
 			"constraints": {
+				"#ValueType": "[VC: Attribute Value Type]",
+				"#NoExternalRefs": "[WFC: No External Entity References]",
 				"#CleanAttrVals": "[WFC: No < in Attribute Values]"
 			}
 		},
@@ -506,6 +514,8 @@
 			"grammar": "Name Eq AttValue",
 			"href": "#NT-Attribute",
 			"constraints": {
+				"#ValueType": "[VC: Attribute Value Type]",
+				"#NoExternalRefs": "[WFC: No External Entity References]",
 				"#CleanAttrVals": "[WFC: No < in Attribute Values]"
 			}
 		},
@@ -514,6 +524,8 @@
 			"grammar": "NSAttName Eq AttValue | QName Eq AttValue",
 			"href": "#NT-Attribute",
 			"constraints": {
+				"#nsc-NSDeclared": "[NSC: Prefix Declared]",
+				"#nsc-NoPrefixUndecl": "[NSC: No Prefix Undeclaring]",
 				"#nsc-AttrsUnique": "[NSC: Attributes Unique]"
 			}
 		}
@@ -682,6 +694,7 @@
 			"grammar": "'(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' | '(' S? '#PCDATA' S? ')'",
 			"href": "#NT-Mixed",
 			"constraints": {
+				"#vc-PEinGroup": "[VC: Proper Group/PE Nesting]",
 				"#vc-MixedChildrenUnique": "[VC: No Duplicate Types]"
 			}
 		},
@@ -690,6 +703,7 @@
 			"grammar": "'(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' | '(' S? '#PCDATA' S? ')'",
 			"href": "#NT-Mixed",
 			"constraints": {
+				"#vc-PEinGroup": "[VC: Proper Group/PE Nesting]",
 				"#vc-MixedChildrenUnique": "[VC: No Duplicate Types]"
 			}
 		},
@@ -763,6 +777,11 @@
 			"grammar": "'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' | 'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'",
 			"href": "#NT-TokenizedType",
 			"constraints": {
+				"#id": "[VC: ID]",
+				"#one-id-per-el": "[VC: One ID per Element Type]",
+				"#id-default": "[VC: ID Attribute Default]",
+				"#idref": "[VC: IDREF]",
+				"#entname": "[VC: Entity Name]",
 				"#nmtok": "[VC: Name Token]"
 			}
 		},
@@ -771,6 +790,11 @@
 			"grammar": "'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' | 'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'",
 			"href": "#NT-TokenizedType",
 			"constraints": {
+				"#id": "[VC: ID]",
+				"#one-id-per-el": "[VC: One ID per Element Type]",
+				"#id-default": "[VC: ID Attribute Default]",
+				"#idref": "[VC: IDREF]",
+				"#entname": "[VC: Entity Name]",
 				"#nmtok": "[VC: Name Token]"
 			}
 		}
@@ -793,6 +817,9 @@
 			"grammar": "'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'",
 			"href": "#NT-NotationType",
 			"constraints": {
+				"#notatn": "[VC: Notation Attributes]",
+				"#OneNotationPer": "[VC: One Notation Per Element Type]",
+				"#NoNotationEmpty": "[VC: No Notation on Empty Element]",
 				"#NoDuplicateTokens": "[VC: No Duplicate Tokens]"
 			}
 		},
@@ -801,6 +828,9 @@
 			"grammar": "'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'",
 			"href": "#NT-NotationType",
 			"constraints": {
+				"#notatn": "[VC: Notation Attributes]",
+				"#OneNotationPer": "[VC: One Notation Per Element Type]",
+				"#NoNotationEmpty": "[VC: No Notation on Empty Element]",
 				"#NoDuplicateTokens": "[VC: No Duplicate Tokens]"
 			}
 		}
@@ -811,6 +841,7 @@
 			"grammar": "'(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'",
 			"href": "#NT-Enumeration",
 			"constraints": {
+				"#enum": "[VC: Enumeration]",
 				"#NoDuplicateTokens": "[VC: No Duplicate Tokens]"
 			}
 		},
@@ -819,6 +850,7 @@
 			"grammar": "'(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'",
 			"href": "#NT-Enumeration",
 			"constraints": {
+				"#enum": "[VC: Enumeration]",
 				"#NoDuplicateTokens": "[VC: No Duplicate Tokens]"
 			}
 		}
@@ -829,6 +861,10 @@
 			"grammar": "'#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)",
 			"href": "#NT-DefaultDecl",
 			"constraints": {
+				"#RequiredAttr": "[VC: Required Attribute]",
+				"#defattrvalid": "[VC: Attribute Default Value Syntactically Correct]",
+				"#CleanAttrVals": "[WFC: No < in Attribute Values]",
+				"#FixedAttr": "[VC: Fixed Attribute Default]",
 				"#NoExternalRefs": "[WFC: No External Entity References]"
 			}
 		},
@@ -837,6 +873,10 @@
 			"grammar": "'#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)",
 			"href": "#NT-DefaultDecl",
 			"constraints": {
+				"#RequiredAttr": "[VC: Required Attribute]",
+				"#defattrvalid": "[VC: Attribute Default Value Syntactically Correct]",
+				"#CleanAttrVals": "[WFC: No < in Attribute Values]",
+				"#FixedAttr": "[VC: Fixed Attribute Default]",
 				"#NoExternalRefs": "[WFC: No External Entity References]"
 			}
 		}
@@ -949,6 +989,9 @@
 			"grammar": "'&' Name ';'",
 			"href": "#NT-EntityRef",
 			"constraints": {
+				"#wf-entdeclared": "[WFC: Entity Declared]",
+				"#vc-entdeclared": "[VC: Entity Declared]",
+				"#textent": "[WFC: Parsed Entity]",
 				"#norecursion": "[WFC: No Recursion]"
 			}
 		},
@@ -957,6 +1000,9 @@
 			"grammar": "'&' Name ';'",
 			"href": "#NT-EntityRef",
 			"constraints": {
+				"#wf-entdeclared": "[WFC: Entity Declared]",
+				"#vc-entdeclared": "[VC: Entity Declared]",
+				"#textent": "[WFC: Parsed Entity]",
 				"#norecursion": "[WFC: No Recursion]"
 			}
 		}
@@ -967,6 +1013,8 @@
 			"grammar": "'%' Name ';'",
 			"href": "#NT-PEReference",
 			"constraints": {
+				"#vc-entdeclared": "[VC: Entity Declared]",
+				"#norecursion": "[WFC: No Recursion]",
 				"#indtd": "[WFC: In DTD]"
 			}
 		},
@@ -975,6 +1023,8 @@
 			"grammar": "'%' Name ';'",
 			"href": "#NT-PEReference",
 			"constraints": {
+				"#vc-entdeclared": "[VC: Entity Declared]",
+				"#norecursion": "[WFC: No Recursion]",
 				"#indtd": "[WFC: In DTD]"
 			}
 		}

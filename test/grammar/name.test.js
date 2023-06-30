@@ -1,7 +1,7 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { Name, QName, QName_exact } = require('../../lib/grammar');
+const { Name, QName, QName_exact, QName_group } = require('../../lib/grammar');
 const { unicode } = require('./utils');
 
 const NAME_START_CHARS = [
@@ -109,6 +109,8 @@ describe('QName', () => {
 	].forEach((valid) =>
 		test(`should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) ${unicode(valid)}`, () => {
 			expect(QName.exec(valid)[0]).toBe(valid);
+			expect(QName_exact.test(valid)).toBe(true);
+			expect(QName_group.exec(valid)).toMatchSnapshot();
 		})
 	);
 	NAME_CHAR_ADDITIONS.forEach((invalid) =>
@@ -118,6 +120,7 @@ describe('QName', () => {
 	);
 	[':', '::', 'a:', ':a', 'a:b:', `${QNAME_START_CHARS[0]}:${NAME_CHAR_ADDITIONS[0]}`].forEach((invalid) =>
 		test(`should not match ${unicode(invalid)}`, () => {
+			expect(QName_exact.test(invalid)).toBe(false);
 			expect(QName_exact.test(invalid)).toBe(false);
 		})
 	);
