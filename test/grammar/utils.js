@@ -19,4 +19,15 @@ const range = (from, to) => {
 	return result;
 };
 
+/**
+ * @param {string} value
+ * @returns {string}
+ */
+const unicode = (value) =>
+	`"${value}" (${value
+		.split('')
+		.map((char) => '\\u' + char.codePointAt(0).toString(16).toUpperCase().padStart(4, '0'))
+		.join('')})`;
+
+exports.unicode = unicode;
 exports.range = range;
