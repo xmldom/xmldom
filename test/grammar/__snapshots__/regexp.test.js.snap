@@ -2,24 +2,23 @@
 
 exports[`all grammar regular expressions should have the expected keys 1`] = `
 Array [
-  "AttlistDecl",
+  "SystemLiteral",
+  "S_OPT",
+  "S",
   "Char",
+  "PubidLiteral",
   "Comment",
-  "EntityDecl",
   "ExternalID",
   "Name",
-  "NotationDecl",
   "PEReference",
-  "PI_match",
-  "PI_unsafe",
-  "PubidLiteral",
+  "XMLDecl",
+  "PI",
   "QName",
   "QName_exact",
   "QName_group",
-  "S",
-  "S_OPT",
-  "SystemLiteral",
-  "XMLDecl",
+  "NotationDecl",
   "elementdecl",
+  "AttlistDecl",
+  "EntityDecl",
 ]
 `;

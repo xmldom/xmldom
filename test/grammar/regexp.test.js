@@ -4,12 +4,14 @@ const fs = require('fs');
 const { describe, expect, test } = require('@jest/globals');
 const grammar = require('../../lib/grammar');
 const Grammar = Object.keys(grammar)
+	.filter((key) => grammar[key] instanceof RegExp)
+	// first sort alphabetically
 	.sort()
+	// then by the length (complexity) of the regular expression
+	// shortest ones first
+	.sort((a, b) => grammar[a].source.length - grammar[b].source.length)
 	.reduce((acc, key) => {
-		const value = grammar[key];
-		if (value instanceof RegExp) {
-			acc[key] = value;
-		}
+		acc[key] = grammar[key];
 		return acc;
 	}, {});
 var REGEXP_DUMP = `'use strict';
