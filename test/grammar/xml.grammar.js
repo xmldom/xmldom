@@ -48,7 +48,7 @@ const parseSpecFile = (filename) => {
 			}
 			const it = collected[name][filename];
 			if (name === 'TokenizedType') {
-				console.log({ numeric, href, name, grammar, constraints, it});
+				console.log({ numeric, href, name, grammar, constraints, it });
 			}
 			it.numeric = numeric;
 			it.grammar = it.grammar && !it.grammar.endsWith(grammar) ? `${it.grammar} ${grammar}` : it.grammar || grammar;

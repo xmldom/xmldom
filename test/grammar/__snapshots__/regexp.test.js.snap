@@ -2,9 +2,9 @@
 
 exports[`all grammar regular expressions should have the expected keys 1`] = `
 Array [
-  "SystemLiteral",
-  "S_OPT",
   "S",
+  "S_OPT",
+  "SystemLiteral",
   "Char",
   "PubidLiteral",
   "Comment",

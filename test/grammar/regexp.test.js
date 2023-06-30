@@ -3,13 +3,17 @@
 const fs = require('fs');
 const { describe, expect, test } = require('@jest/globals');
 const grammar = require('../../lib/grammar');
+const alphabetical = Object.keys(grammar)
+	.filter((key) => grammar[key] instanceof RegExp)
+	.sort();
 const Grammar = Object.keys(grammar)
 	.filter((key) => grammar[key] instanceof RegExp)
-	// first sort alphabetically
-	.sort()
 	// then by the length (complexity) of the regular expression
 	// shortest ones first
-	.sort((a, b) => grammar[a].source.length - grammar[b].source.length)
+	.sort((a, b) => {
+		const length = grammar[a].source.length - grammar[b].source.length;
+		return length === 0 ? alphabetical.indexOf(a) - alphabetical.indexOf(b) : length;
+	})
 	.reduce((acc, key) => {
 		acc[key] = grammar[key];
 		return acc;
@@ -34,8 +38,8 @@ describe('all grammar regular expressions', () => {
 	test('should match the file on disk', () => {
 		var fileName = __dirname + '/regexp.js';
 		// delete the file and rerun the test(s) to update to current value, in case you touched grammar.js
-		fs.writeFileSync(fileName, REGEXP_DUMP);
 		if (!fs.existsSync(fileName)) {
+			fs.writeFileSync(fileName, REGEXP_DUMP);
 		}
 		expect(fs.readFileSync(fileName, 'utf-8')).toBe(REGEXP_DUMP);
 	});

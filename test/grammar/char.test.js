@@ -2,7 +2,7 @@
 
 const { describe, expect, test } = require('@jest/globals');
 const { Char } = require('../../lib/grammar');
-const { unicode } = require('./utils')
+const { unicode } = require('./utils');
 
 describe('Char', () => {
 	[' ', '\t', '\n', '\r', '\x7F', '\x84', '\x85', '\x86', '\x9F', '\uE000', '\uFFFD', '\u{10000}', '\u{10FFFF}'].forEach(
