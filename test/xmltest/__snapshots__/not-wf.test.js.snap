@@ -54,23 +54,11 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 003.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc><? ?></doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 003.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 004.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>&lt;?target some data&gt;</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 004.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 005.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>&lt;?target some data?</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 005.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`] = `
 Object {
@@ -246,13 +234,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 028.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-&lt;?a pi that is not closed
-</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 028.xml with snapshot 1`] = `"Invalid processing instruction starting at position 6"`;
 
 exports[`xmltest/not-wellformed standalone should match 029.xml with snapshot 1`] = `
 Object {
@@ -266,11 +248,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 031.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc><?pi a form feed () is not allowed in a pi?></doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 031.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 032.xml with snapshot 1`] = `
 Object {
@@ -814,68 +792,23 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 094.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml VERSION=\\"1.0\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 094.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 095.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml encoding=\\"UTF-8\\" version=\\"1.0\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 095.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 096.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml version=\\"1.0\\"encoding=\\"UTF-8\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 096.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 097.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml version=\\"1.0' encoding=\\"UTF-8\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 097.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 098.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml version=\\"1.0\\" version=\\"1.0\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 098.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 099.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml version=\\"1.0\\" valid=\\"no\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 099.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 100.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml version=\\"1.0\\" standalone=\\"YES\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 100.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 101.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml version=\\"1.0\\" encoding=\\" UTF-8\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 101.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 102.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml version=\\"1.0 \\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 102.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
 exports[`xmltest/not-wellformed standalone should match 103.xml with snapshot 1`] = `
 Object {
@@ -1314,46 +1247,17 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 147.xml with snapshot 1`] = `
-Object {
-  "actual": "
-<?xml version=\\"1.0\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 147.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 148.xml with snapshot 1`] = `
-Object {
-  "actual": "<!-- -->
-<?xml version=\\"1.0\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 148.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
 exports[`xmltest/not-wellformed standalone should match 149.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 150.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-<?xml version=\\"1.0\\"?>
-</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 150.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 151.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-</doc>
-<?xml version=\\"1.0\\"?>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 151.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 152.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xml encoding=\\"UTF-8\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 152.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
 exports[`xmltest/not-wellformed standalone should match 153.xml with snapshot 1`] = `
 Object {
@@ -1375,35 +1279,13 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 154.xml with snapshot 1`] = `
-Object {
-  "actual": "<?XML version=\\"1.0\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 154.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 155.xml with snapshot 1`] = `
-Object {
-  "actual": "<?xmL version=\\"1.0\\"?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 155.xml with snapshot 1`] = `"Invalid xml declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 156.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-<?xMl version=\\"1.0\\"?>
-</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 156.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 157.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-<?xmL ?>
-</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 157.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
 exports[`xmltest/not-wellformed standalone should match 158.xml with snapshot 1`] = `"Error in internal subset at position 79"`;
 
@@ -1491,12 +1373,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 172.xml with snapshot 1`] = `
-Object {
-  "actual": "<?pi {!ffff!}?>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 172.xml with snapshot 1`] = `"Invalid processing instruction starting at position 0"`;
 
 exports[`xmltest/not-wellformed standalone should match 173.xml with snapshot 1`] = `
 Object {
