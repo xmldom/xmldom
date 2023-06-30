@@ -89,7 +89,7 @@ function StubDOMHandlerWith(throwingMethod, ErrorClass) {
  * there are samples per case in
  * @see REPORTED
  */
-const ALL_METHODS = `<?xml ?>
+const ALL_METHODS = `<?xml version="1.1"?>
 <!DOCTYPE name >
 <![CDATA[ raw ]]>
 <root xmlns="namespace">
