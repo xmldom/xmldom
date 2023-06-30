@@ -18,7 +18,7 @@ describe('SystemLiteral', () => {
 		})
 	);
 	['', '"""', "'''"].forEach((invalid) =>
-		test(`should match ${invalid}`, () => {
+		test(`should not match ${invalid}`, () => {
 			expect(reg('^', SystemLiteral, '$').test(invalid)).toBe(false);
 		})
 	);
@@ -32,7 +32,7 @@ describe('PubidLiteral', () => {
 			})
 	);
 	['', '"""', "'\"'", "'''"].forEach((invalid) =>
-		test(`should match ${invalid}`, () => {
+		test(`should not match ${invalid}`, () => {
 			expect(reg('^', PubidLiteral, '$').test(invalid)).toBe(false);
 		})
 	);
@@ -52,7 +52,7 @@ describe('ExternalID', () => {
 			})
 		);
 		['', 'SYSTEM'].forEach((invalid) =>
-			test(`should match ${invalid}`, () => {
+			test(`should not match ${invalid}`, () => {
 				expect(reg('^', ExternalID, '$').test(invalid)).toBe(false);
 			})
 		);
@@ -75,7 +75,7 @@ describe('ExternalID', () => {
 			})
 		);
 		['', 'PUBLIC', `PUBLIC ''`, `PUBLIC ""`, `PUBLIC '"' ''`].forEach((invalid) =>
-			test(`should match ${invalid}`, () => {
+			test(`should not match ${invalid}`, () => {
 				expect(reg('^', ExternalID, '$').test(invalid)).toBe(false);
 			})
 		);
