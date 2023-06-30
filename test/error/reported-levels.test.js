@@ -71,19 +71,19 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
  */
 function toErrorSnapshot(error, libFile) {
 	const libFileMatch = new RegExp(`\/.*\/(${libFile})`);
-	const stackLines = error.stack.split(/[\n\r]+/);
-	const matchedLines = stackLines.filter((l) => libFileMatch.test(l));
-	if (matchedLines.length === 0) {
-		// Handle case where no lines match libFileMatch
-		return error.message.replace(/([\n\r]+\s*)/g, '||');
-	}
-	let firstMatchedLine = matchedLines[0];
-	// strip of absolute path
-	firstMatchedLine = firstMatchedLine.replace(libFileMatch, '$1')
-	// strip of position of character in line
-	firstMatchedLine = firstMatchedLine.replace(/:\d+\)$/, ')')
-	firstMatchedLine = firstMatchedLine.replace(new RegExp(`${libFile}:\\d+`), (fileAndLine) => {
-		return `${libFile}:#${fileAndLine in LINE_TO_ERROR_INDEX ? LINE_TO_ERROR_INDEX[fileAndLine].index : -1}`;
-	});
-	return `${error.message.replace(/([\n\r]+\s*)/g, '||')}\n${firstMatchedLine}`;
+	return `${error.message.replace(/([\n\r]+\s*)/g, '||')}\n${error.stack
+		.split(/[\n\r]+/)
+		// find first line that is from lib/sax.js
+		.filter((l) => libFileMatch.test(l))[0]
+		// strip of absolute path
+		.replace(libFileMatch, '$1')
+		// strip of position of character in line
+		.replace(/:\d+\)$/, ')')
+		// We only store the error index in the snapshot instead of the line numbers.
+		// This way they need to be updated less frequent.
+		// see `parseErrorLines` in `./reported.js` for how LINE_TO_ERROR_INDEX is created,
+		// and `./reported.json` (after running the tests) to inspect it.
+		.replace(new RegExp(`${libFile}:\\d+`), (fileAndLine) => {
+			return `${libFile}:#${fileAndLine in LINE_TO_ERROR_INDEX ? LINE_TO_ERROR_INDEX[fileAndLine].index : -1}`;
+		})}`;
 }
