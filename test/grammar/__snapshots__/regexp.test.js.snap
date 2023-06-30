@@ -10,6 +10,7 @@ Array [
   "Name",
   "NotationDecl",
   "PEReference",
+  "PI_match",
   "PI_unsafe",
   "PubidLiteral",
   "QName",
@@ -18,6 +19,7 @@ Array [
   "S",
   "S_OPT",
   "SystemLiteral",
+  "XMLDecl",
   "elementdecl",
 ]
 `;
