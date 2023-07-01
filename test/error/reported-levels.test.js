@@ -71,22 +71,28 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
  * @returns {string}
  */
 function toErrorSnapshot(error, libFile) {
-	const libFileMatch = new RegExp(`[^(]*(${libFile})`);
-	return `${error.message.replace(/([\n\r]+\s*)/g, '||')}\n${error.stack
-		.split(/[\n\r]+/)
-		// find first line that is from lib/sax.js
-		.filter((l) => libFileMatch.test(l))[0]
-		// strip of absolute path
-		.replace(libFileMatch, '$1')
-		// strip of position of character in line
-		.replace(/:\d+\)$/, ')')
-		// We only store the error index in the snapshot instead of the line numbers.
-		// This way they need to be updated less frequent.
-		// see `parseErrorLines` in `./reported.js` for how LINE_TO_ERROR_INDEX is created,
-		// and `./reported.json` (after running the tests) to inspect it.
-		.replace(new RegExp(`${libFile}:\\d+`), (fileAndLine) => {
-			return `${libFile.replace(/\\/g, '/')}:#${
-				fileAndLine in LINE_TO_ERROR_INDEX ? LINE_TO_ERROR_INDEX[fileAndLine].index : -1
-			}`;
-		})}`;
+	// Escape the backslash for Windows paths and make the regex platform independent
+	const escapedLibFile = libFile.replace(/\\/g, '\\\\');
+	// replace separators in file path to '/' (linux format) for consistent error snapshot
+	const unifiedLibFile = libFile.replace(/\\/g, '/');
+	const libFileMatch = new RegExp(`[^(]*(${escapedLibFile})`);
+
+	const errorMessageSingleLine = error.message.replace(/([\n\r]+\s*)/g, '||');
+	const firstStacktraceLineWithLibFileAbs = error.stack.split(/[\n\r]+/).find((l) => libFileMatch.test(l));
+	const firstStacktraceLineWithLibFileRel = firstStacktraceLineWithLibFileAbs.replace(libFileMatch, '$1');
+	// strip of position of character in line
+	const firstStacktraceLineWithoutPosInLine = firstStacktraceLineWithLibFileRel.replace(/:\d+\)$/, ')');
+
+	const unifiedStacktraceLine = firstStacktraceLineWithoutPosInLine.replace(
+		new RegExp(`${escapedLibFile}:\\d+`),
+		(fileAndLine) => {
+			// We only store the error index in the snapshot instead of the line numbers.
+			// This way they need to be updated less frequent.
+			// see `parseErrorLines` in `./reported.js` for how LINE_TO_ERROR_INDEX is created,
+			// and `./reported.json` (after running the tests) to inspect it.
+			return `${unifiedLibFile}:#${fileAndLine in LINE_TO_ERROR_INDEX ? LINE_TO_ERROR_INDEX[fileAndLine].index : -1}`;
+		}
+	);
+
+	return `${errorMessageSingleLine}\n${unifiedStacktraceLine}`;
 }
