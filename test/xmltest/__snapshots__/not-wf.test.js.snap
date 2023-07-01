@@ -1063,23 +1063,9 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 128.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc CDATA>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 128.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
-exports[`xmltest/not-wellformed standalone should match 129.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc - - (#PCDATA)>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 129.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
 exports[`xmltest/not-wellformed standalone should match 130.xml with snapshot 1`] = `
 Object {
@@ -1117,14 +1103,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 134.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc (a) *>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 134.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
 exports[`xmltest/not-wellformed standalone should match 135.xml with snapshot 1`] = `
 Object {
@@ -1135,14 +1114,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 136.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc O O (#PCDATA)>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 136.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
 exports[`xmltest/not-wellformed standalone should match 137.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
@@ -1155,14 +1127,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 139.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc ()>
-]>
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 139.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
 exports[`xmltest/not-wellformed standalone should match 140.xml with snapshot 1`] = `
 Object {

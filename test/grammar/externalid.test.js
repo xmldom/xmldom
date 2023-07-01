@@ -145,7 +145,7 @@ describe('NotationDecl', () => {
 		expect(NotationDecl.source.split(PubidLiteral.source)).toHaveLength(3);
 	});
 	const VALID_PUBLIC_SINGLE = VALID_PUBLIC_DOUBLE.map((pub) => {
-		// strip second air of quotes from pub
+		// strip second pair of quotes from pub
 		return pub.substring(0, pub.lastIndexOf(' '));
 	})
 		.filter((pub, i, all) => {
