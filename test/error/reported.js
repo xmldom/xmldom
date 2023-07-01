@@ -1,5 +1,6 @@
 'use strict';
 const fs = require('fs');
+const path = require('path');
 
 /**
  * @typedef ErrorReport
@@ -263,7 +264,7 @@ const LINE_TO_ERROR_INDEX = {
  */
 function parseErrorLines(fileNameInKey) {
 	let errorIndex = 0;
-	const source = fs.readFileSync(`${__dirname}/../../${fileNameInKey}`, 'utf8').split('\n');
+	const source = fs.readFileSync(path.join(__dirname, '..', '..', fileNameInKey), 'utf8').split('\n');
 	source.forEach((lineFull, lineNumber) => {
 		const line = lineFull.trim();
 		if (/^(\/\/|\/\*|\* ?)/.test(line) || line.length === 0) {
@@ -306,9 +307,9 @@ function parseErrorLines(fileNameInKey) {
 			throw new Error(`line not mapped: ${lineKey} reportedAs $${key}`);
 		}
 	});
-	fs.writeFileSync(`${__dirname}/reported.json`, JSON.stringify(LINE_TO_ERROR_INDEX, null, 2), 'utf8');
+	fs.writeFileSync(path.join(__dirname, 'reported.json'), JSON.stringify(LINE_TO_ERROR_INDEX, null, 2), 'utf8');
 }
-parseErrorLines('lib/sax.js');
+parseErrorLines(path.join('lib', 'sax.js'));
 
 module.exports = {
 	LINE_TO_ERROR_INDEX,
