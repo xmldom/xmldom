@@ -85,6 +85,6 @@ function toErrorSnapshot(error, libFile) {
 		// see `parseErrorLines` in `./reported.js` for how LINE_TO_ERROR_INDEX is created,
 		// and `./reported.json` (after running the tests) to inspect it.
 		.replace(new RegExp(`${libFile}:\\d+`), (fileAndLine) => {
-			return `${libFile}:#${fileAndLine in LINE_TO_ERROR_INDEX ? LINE_TO_ERROR_INDEX[fileAndLine].index : -1}`;
+			return `${libFile.replace(/\\/g, '/')}:#${fileAndLine in LINE_TO_ERROR_INDEX ? LINE_TO_ERROR_INDEX[fileAndLine].index : -1}`;
 		})}`;
 }
