@@ -2,6 +2,7 @@
 // wallaby:file.skip since stacktrace detection is not working in instrumented files
 const { describe, expect, test } = require('@jest/globals');
 
+const path = require('path');
 const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
 const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib/dom-parser');
@@ -50,7 +51,7 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 					const { parser } = getTestParser({ onError });
 
 					expect(() => parser.parseFromString(source, mimeType)).toThrow(ParseError);
-					expect(thrown.map((error) => toErrorSnapshot(error, 'lib/sax.js'))).toMatchSnapshot();
+					expect(thrown.map((error) => toErrorSnapshot(error, path.join('lib', 'sax.js')))).toMatchSnapshot();
 					match && expect(match(thrown[0].toString())).toBe(true);
 				});
 			}
@@ -70,7 +71,7 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
  * @returns {string}
  */
 function toErrorSnapshot(error, libFile) {
-	const libFileMatch = new RegExp(`\/.*\/(${libFile})`);
+	const libFileMatch = new RegExp(`[^(]*(${libFile})`);
 	return `${error.message.replace(/([\n\r]+\s*)/g, '||')}\n${error.stack
 		.split(/[\n\r]+/)
 		// find first line that is from lib/sax.js
