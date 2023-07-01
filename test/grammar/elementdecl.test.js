@@ -1,7 +1,7 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { elementdecl, QName, reg, S, PEReference, Name, S_OPT } = require('../../lib/grammar');
+const { elementdecl, QName, S, PEReference, Name, S_OPT } = require('../../lib/grammar');
 
 describe('elementdecl', () => {
 	test('should contain Name twice', () => {
