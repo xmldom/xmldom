@@ -1,7 +1,7 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { Name, QName, QName_exact, QName_group } = require('../../lib/grammar');
+const { Name, QName, QName_exact, QName_group, PEReference } = require('../../lib/grammar');
 const { unicode } = require('./utils');
 
 const NAME_START_CHARS = [
@@ -82,6 +82,7 @@ describe('Name', () => {
 		})
 	);
 });
+
 const QNAME_START_CHARS = NAME_START_CHARS.filter((char) => char !== ':');
 describe('QName', () => {
 	test('should contain NameStartChar characters without ":" 4 times', () => {
@@ -124,4 +125,11 @@ describe('QName', () => {
 			expect(QName_exact.test(invalid)).toBe(false);
 		})
 	);
+});
+
+describe('PEReference', () => {
+	test('should use Name', () => {
+		const splitByName = PEReference.source.split(Name.source);
+		expect(splitByName).toEqual(['%', ';']);
+	});
 });
