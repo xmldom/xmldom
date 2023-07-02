@@ -42,6 +42,13 @@ name    CDATA   #IMPLIED>`,
 		`<!ATTLIST poem xml:lang CDATA 'fr'>`,
 		`<!ATTLIST gloss xml:lang CDATA 'en'>`,
 		`<!ATTLIST note xml:lang CDATA 'en'>`,
+		// https://en.wikipedia.org/wiki/Document_type_definition#Attribute_list_declarations
+		`<!ATTLIST img
+   src    CDATA          #REQUIRED
+   id     ID             #IMPLIED
+   sort   CDATA          #FIXED "true"
+   print  (yes | no) "yes"
+>`,
 	].forEach((valid) =>
 		test(`should match examples from spec ${valid}`, () => {
 			expect(AttlistDecl.exec(valid)[0]).toBe(valid);
