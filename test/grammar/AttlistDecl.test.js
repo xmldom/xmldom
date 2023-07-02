@@ -3,8 +3,43 @@
 const { describe, expect, test } = require('@jest/globals');
 const { AttlistDecl, S, Name, S_OPT } = require('../../lib/grammar');
 
+// var AttlistDecl_Inlined = reg(
+// 	'<!ATTLIST',
+// 	S,
+// 	Name, /* target element */
+// 	/*AttDef*/ regg(
+// 		S,
+// 		Name, /* attribute name */
+// 		S,
+// 		/*AttType*/ regg(
+// 			/CDATA|ID|IDREF|IDREFS|ENTITY|ENTITIES|NMTOKEN|NMTOKENS/,
+// 			'|',
+// 			/*EnumeratedType*/ regg(
+// 				/*NotationType*/ reg('NOTATION', S, /\(/, S_OPT, Name, regg(S_OPT, /\|/, S_OPT, Name), '*', S_OPT, /\)/),
+// 				'|',
+// 				/*Enumeration*/ reg(/\(/, S_OPT, Nmtoken, regg(S_OPT, /\|/, S_OPT, Nmtoken), '*', S_OPT, /\)/)
+// 			)
+// 		),
+// 		S,
+// 		/*DefaultDecl*/ regg(
+// 			/#REQUIRED|#IMPLIED/,
+// 			'|',
+// 			regg(
+// 				regg('#FIXED', S),
+// 				'?',
+// 				/*AttValue*/ regg('"', regg(/[^<&"]/, '|', Reference), '*', '"', '|', "'", regg(/[^<&']/, '|', Reference), '*', "'")
+// 			)
+// 		)
+// 	),
+// 	'*',
+// 	S_OPT,
+// 	'>'
+// );
+
+
 describe('AttlistDecl', () => {
 	test('should contain Name six times', () => {
+		// 4 are directly visible in the inlined code, and 2 are part of Reference -> EntityRef
 		expect(AttlistDecl.source.split(Name.source)).toHaveLength(7);
 	});
 	test('should contain S six times', () => {
