@@ -6,10 +6,10 @@ const { AttlistDecl, S, Name, S_OPT } = require('../../lib/grammar');
 // var AttlistDecl_Inlined = reg(
 // 	'<!ATTLIST',
 // 	S,
-// 	Name, /* target element */
+// 	Name /* target element */,
 // 	/*AttDef*/ regg(
 // 		S,
-// 		Name, /* attribute name */
+// 		Name /* attribute name */,
 // 		S,
 // 		/*AttType*/ regg(
 // 			/CDATA|ID|IDREF|IDREFS|ENTITY|ENTITIES|NMTOKEN|NMTOKENS/,
@@ -35,7 +35,6 @@ const { AttlistDecl, S, Name, S_OPT } = require('../../lib/grammar');
 // 	S_OPT,
 // 	'>'
 // );
-
 
 describe('AttlistDecl', () => {
 	test('should contain Name six times', () => {
