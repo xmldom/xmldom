@@ -260,7 +260,7 @@ Array [
 ]
 `;
 
-exports[`SYNTAX_UnclosedComment with mimeType text/html should be reported 1`] = `
+exports[`WF_UnclosedComment with mimeType text/html should be reported 1`] = `
 Array [
   Array [
     "error",
@@ -273,14 +273,14 @@ Array [
 ]
 `;
 
-exports[`SYNTAX_UnclosedComment with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+exports[`WF_UnclosedComment with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: Unclosed comment
     at parseDCC (lib/sax.js:#20)",
 ]
 `;
 
-exports[`SYNTAX_UnclosedComment with mimeType text/xml should be reported 1`] = `
+exports[`WF_UnclosedComment with mimeType text/xml should be reported 1`] = `
 Array [
   Array [
     "error",
@@ -293,7 +293,7 @@ Array [
 ]
 `;
 
-exports[`SYNTAX_UnclosedComment with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+exports[`WF_UnclosedComment with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: Unclosed comment
     at parseDCC (lib/sax.js:#20)",

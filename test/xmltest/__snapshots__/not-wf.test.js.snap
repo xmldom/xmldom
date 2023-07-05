@@ -60,11 +60,7 @@ exports[`xmltest/not-wellformed standalone should match 004.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 005.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc><!-- a comment -- another --></doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`] = `"Invalid comment starting at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 007.xml with snapshot 1`] = `
 Object {
@@ -134,13 +130,9 @@ exports[`xmltest/not-wellformed standalone should match 015.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 016.xml with snapshot 1`] = `"missing root element"`;
 
-exports[`xmltest/not-wellformed standalone should match 017.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>&lt;![CDATA[</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 017.xml with snapshot 1`] = `"Invalid CDATA starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 018.xml with snapshot 1`] = `"Expected <!DOCTYPE"`;
+exports[`xmltest/not-wellformed standalone should match 018.xml with snapshot 1`] = `"Invalid CDATA starting at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 019.xml with snapshot 1`] = `
 Object {
@@ -216,23 +208,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 027.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-&lt;!-- abc
-</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "Unclosed comment",
-      Object {
-        "columnNumber": 2,
-        "lineNumber": 2,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 027.xml with snapshot 1`] = `"Invalid comment starting at position 6"`;
 
 exports[`xmltest/not-wellformed standalone should match 028.xml with snapshot 1`] = `"Invalid processing instruction starting at position 6"`;
 
@@ -250,11 +226,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 031.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 032.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc><!-- a form feed () is not allowed in a comment --></doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 032.xml with snapshot 1`] = `"Invalid comment starting at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 033.xml with snapshot 1`] = `
 Object {
@@ -500,12 +472,7 @@ exports[`xmltest/not-wellformed standalone should match 068.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 069.xml with snapshot 1`] = `"Error in internal subset at position 85"`;
 
-exports[`xmltest/not-wellformed standalone should match 070.xml with snapshot 1`] = `
-Object {
-  "actual": "<!-- a comment ending with three dashes --->
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 070.xml with snapshot 1`] = `"Invalid comment starting at position 0"`;
 
 exports[`xmltest/not-wellformed standalone should match 071.xml with snapshot 1`] = `
 Object {
@@ -866,7 +833,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 107.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
-exports[`xmltest/not-wellformed standalone should match 108.xml with snapshot 1`] = `"Expected <!DOCTYPE"`;
+exports[`xmltest/not-wellformed standalone should match 108.xml with snapshot 1`] = `"Invalid CDATA starting at position 6"`;
 
 exports[`xmltest/not-wellformed standalone should match 109.xml with snapshot 1`] = `"missing root element"`;
 
@@ -883,7 +850,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 111.xml with snapshot 1`] = `"missing root element"`;
 
-exports[`xmltest/not-wellformed standalone should match 112.xml with snapshot 1`] = `"Expected <!DOCTYPE"`;
+exports[`xmltest/not-wellformed standalone should match 112.xml with snapshot 1`] = `"Invalid CDATA starting at position 6"`;
 
 exports[`xmltest/not-wellformed standalone should match 113.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
@@ -1331,12 +1298,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot 1`] = `
-Object {
-  "actual": "<!-- {!ffff!} -->
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot 1`] = `"Invalid comment starting at position 0"`;
 
 exports[`xmltest/not-wellformed standalone should match 172.xml with snapshot 1`] = `"Invalid processing instruction starting at position 0"`;
 
@@ -1346,11 +1308,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 174.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc><![CDATA[{!ffff!}]]></doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 174.xml with snapshot 1`] = `"Invalid CDATA starting at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 175.xml with snapshot 1`] = `
 Object {

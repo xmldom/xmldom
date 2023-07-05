@@ -4,6 +4,7 @@ const S = /[\x20\x09\x0D\x0A]+/mu;
 const S_OPT = /[\x20\x09\x0D\x0A]*/mu;
 const SystemLiteral = /(?:"[^"]*"|'[^']*')/mu;
 const Char = /[-\x09\x0A\x0D\x20-\x2C\x2E-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]/mu;
+const CDSect = /<!\[CDATA\[[-\x09\x0A\x0D\x20-\x2C\x2E-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]*?\]\]>/mu;
 const PubidLiteral = /(?:"[\x20\x0D\x0Aa-zA-Z0-9-'()+,.\/:=?;!*#@$_%]*"|'[\x20\x0D\x0Aa-zA-Z0-9-()+,.\/:=?;!*#@$_%]*')/mu;
 const Comment = /<!--(?:[\x09\x0A\x0D\x20-\x2C\x2E-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]|-[\x09\x0A\x0D\x20-\x2C\x2E-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}])*-->/mu;
 const ExternalID = /(?:(?:SYSTEM[\x20\x09\x0D\x0A]+(?:"[^"]*"|'[^']*'))|(?:PUBLIC[\x20\x09\x0D\x0A]+(?:"[\x20\x0D\x0Aa-zA-Z0-9-'()+,.\/:=?;!*#@$_%]*"|'[\x20\x0D\x0Aa-zA-Z0-9-()+,.\/:=?;!*#@$_%]*')[\x20\x09\x0D\x0A]+(?:"[^"]*"|'[^']*')))/mu;

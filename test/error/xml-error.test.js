@@ -13,10 +13,7 @@ describe('html vs xml:', () => {
 		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
-	test.each([
-		['<test><!--', '<test/>'],
-		['<r', '<r/>'],
-	])('invalid xml node "%s"', (input, expected) => {
+	test.each([['<r', '<r/>']])('invalid xml node "%s"', (input, expected) => {
 		const { errors, parser } = getTestParser();
 
 		const actual = parser.parseFromString(input, MIME_TYPE.XML_TEXT).documentElement.toString();

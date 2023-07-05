@@ -40,30 +40,6 @@ Object {
 }
 `;
 
-exports[`html vs xml: invalid xml node "<test><!--" 1`] = `
-Object {
-  "actual": "<test/>",
-  "errors": Array [
-    Array [
-      "warning",
-      "unclosed xml attribute",
-      Object {
-        "columnNumber": 7,
-        "lineNumber": 1,
-      },
-    ],
-    Array [
-      "error",
-      "Unclosed comment",
-      Object {
-        "columnNumber": 7,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
-
 exports[`html vs xml: text/html attribute (missing =) 1`] = `
 Object {
   "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">

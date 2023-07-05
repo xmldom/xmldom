@@ -6,6 +6,7 @@ Array [
   "S_OPT",
   "SystemLiteral",
   "Char",
+  "CDSect",
   "PubidLiteral",
   "Comment",
   "ExternalID",
