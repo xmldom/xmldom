@@ -90,8 +90,6 @@ describe('parseUtils', () => {
 			var source = 'source';
 			const p = parseUtils(source, start);
 
-			const positions = p.skipBlanks();
-
 			expect(p.substringStartsWith('urce')).toBe(true);
 			expect(p.getIndex()).toBe(start);
 		});
