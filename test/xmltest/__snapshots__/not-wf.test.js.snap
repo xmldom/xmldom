@@ -60,7 +60,7 @@ exports[`xmltest/not-wellformed standalone should match 004.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 005.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`] = `"Invalid comment starting at position 5"`;
+exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`] = `"Not well-formed comment starting at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 007.xml with snapshot 1`] = `
 Object {
@@ -208,7 +208,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 027.xml with snapshot 1`] = `"Invalid comment starting at position 6"`;
+exports[`xmltest/not-wellformed standalone should match 027.xml with snapshot 1`] = `"Not well-formed comment starting at position 6"`;
 
 exports[`xmltest/not-wellformed standalone should match 028.xml with snapshot 1`] = `"Invalid processing instruction starting at position 6"`;
 
@@ -226,7 +226,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 031.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 032.xml with snapshot 1`] = `"Invalid comment starting at position 5"`;
+exports[`xmltest/not-wellformed standalone should match 032.xml with snapshot 1`] = `"Not well-formed comment starting at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 033.xml with snapshot 1`] = `
 Object {
@@ -472,7 +472,7 @@ exports[`xmltest/not-wellformed standalone should match 068.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 069.xml with snapshot 1`] = `"Error in internal subset at position 85"`;
 
-exports[`xmltest/not-wellformed standalone should match 070.xml with snapshot 1`] = `"Invalid comment starting at position 0"`;
+exports[`xmltest/not-wellformed standalone should match 070.xml with snapshot 1`] = `"Not well-formed comment starting at position 0"`;
 
 exports[`xmltest/not-wellformed standalone should match 071.xml with snapshot 1`] = `
 Object {
@@ -1298,7 +1298,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot 1`] = `"Invalid comment starting at position 0"`;
+exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot 1`] = `"Not well-formed comment starting at position 0"`;
 
 exports[`xmltest/not-wellformed standalone should match 172.xml with snapshot 1`] = `"Invalid processing instruction starting at position 0"`;
 
