@@ -1183,7 +1183,7 @@ exports[`xmltest/not-wellformed standalone should match 147.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 148.xml with snapshot 1`] = `"processing instruction at position 9 is an xml declaration which is only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 149.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
+exports[`xmltest/not-wellformed standalone should match 149.xml with snapshot 1`] = `"xml declaration is only allowed at the start of the document, but found at position 41"`;
 
 exports[`xmltest/not-wellformed standalone should match 150.xml with snapshot 1`] = `"processing instruction at position 6 is an xml declaration which is only at the start of the document"`;
 
