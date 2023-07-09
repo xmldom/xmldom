@@ -63,7 +63,6 @@ describe('chars_without', () => {
 	test('should drop character ]', () => {
 		var actual = chars_without(/[a-z.-\]]/, '\\]');
 		expect(actual).toEqual(/[a-z.-]/u);
-		expect(actual.chars).toBe('a-z.-');
 	});
 	test('should throw if second parameter is not part of source', () => {
 		expect(() => chars_without(/[a-z.-\]]/, 'x')).toThrow(Error);

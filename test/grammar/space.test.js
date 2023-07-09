@@ -1,14 +1,14 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { S, S_OPT } = require('../../lib/grammar');
+const { S, S_OPT, SChar_s } = require('../../lib/grammar');
 
 describe('S', () => {
 	['\x20\x09\x0D\x0A', ' \n\r\t', ' ', '\n', '\r', '\t'].forEach((valid) => {
 		if (valid.length > 1) {
 			test(`should match all ${valid.length} chars`, () => {
 				expect(S.exec(valid)[0]).toBe(valid);
-				expect(S.chars.length % valid.length).toBe(0);
+				expect(SChar_s.length % valid.length).toBe(0);
 			});
 		} else {
 			test(`should match \\x${valid.charCodeAt(0)}`, () => {
@@ -25,7 +25,7 @@ describe('S_OPT', () => {
 		if (valid.length > 1) {
 			test(`should match all ${valid.length} chars`, () => {
 				expect(S_OPT.exec(valid)[0]).toBe(valid);
-				expect(S_OPT.chars.length % valid.length).toBe(0);
+				expect(SChar_s.length % valid.length).toBe(0);
 			});
 		} else {
 			test(`should match \\x${valid.charCodeAt(0)}`, () => {
