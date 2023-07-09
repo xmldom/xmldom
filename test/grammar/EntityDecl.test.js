@@ -35,16 +35,6 @@ describe('EntityDecl', () => {
 	test('should contain S_OPT twice', () => {
 		expect(EntityDecl.source.split(S_OPT.source)).toHaveLength(3);
 	});
-	[].forEach((valid) =>
-		test(`should match different GEDecl cases ${valid}`, () => {
-			expect(EntityDecl.exec(valid)[0]).toBe(valid);
-		})
-	);
-	[].forEach((valid) =>
-		test(`should match different PEDecl cases ${valid}`, () => {
-			expect(EntityDecl.exec(valid)[0]).toBe(valid);
-		})
-	);
 	[
 		`<!ENTITY d "&#xD;">`,
 		`<!ENTITY a "&#xA;">`,
