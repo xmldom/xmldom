@@ -1,7 +1,7 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { ExternalID, PubidLiteral, S, SystemLiteral, reg, NotationDecl, Name } = require('../../lib/grammar');
+const { ExternalID, PubidLiteral, S, SystemLiteral, reg, NotationDecl, Name, ExternalID_match } = require('../../lib/grammar');
 const { range } = require('./utils');
 
 describe('SystemLiteral', () => {
@@ -48,8 +48,8 @@ const VALID_PUBLIC_DOUBLE = [
 	`PUBLIC '' "'"`,
 	`PUBLIC "'" '"'`,
 	`PUBLIC '' '"'`,
-	`PUBLIC "\x20\x0D\x0Aa-zA-Z0-9-()+,./:=?;!*#@$_%" '"'`,
-	`PUBLIC '\x20\x0D\x0Aa-zA-Z0-9-()+,./:=?;!*#@$_%' '"'`,
+	`PUBLIC "\x20a-zA-Z0-9-()+,./:=?;!*#@$_%" '"'`,
+	`PUBLIC '\x20a-zA-Z0-9-()+,./:=?;!*#@$_%' '"'`,
 ];
 describe('ExternalID', () => {
 	test('should contain SystemLiteral twice', () => {
@@ -60,25 +60,29 @@ describe('ExternalID', () => {
 	});
 	describe('SYSTEM', () => {
 		VALID_SYSTEM.forEach((valid) =>
-			test(`should match ${valid}`, () => {
+			test(`should match ""${valid}""`, () => {
 				expect(ExternalID.exec(valid)[0]).toBe(valid);
+				expect(ExternalID_match.exec(valid.replace('\x0D\x0A', '')).groups).toMatchSnapshot();
 			})
 		);
 		['', 'SYSTEM'].forEach((invalid) =>
-			test(`should not match ${invalid}`, () => {
+			test(`should not match ""${invalid}""`, () => {
 				expect(reg('^', ExternalID, '$').test(invalid)).toBe(false);
+				expect(ExternalID_match.test(invalid)).toBe(false);
 			})
 		);
 	});
 	describe('PUBLIC', () => {
 		VALID_PUBLIC_DOUBLE.forEach((valid) =>
-			test(`should match ${valid}`, () => {
+			test(`should match ""${valid}""`, () => {
 				expect(ExternalID.exec(valid)[0]).toBe(valid);
+				expect(ExternalID_match.exec(valid).groups).toMatchSnapshot();
 			})
 		);
 		['', 'PUBLIC', `PUBLIC ''`, `PUBLIC ""`, `PUBLIC '"' ''`].forEach((invalid) =>
-			test(`should not match ${invalid}`, () => {
+			test(`should not match ""${invalid}""`, () => {
 				expect(reg('^', ExternalID, '$').test(invalid)).toBe(false);
+				expect(ExternalID_match.test(invalid)).toBe(false);
 			})
 		);
 	});

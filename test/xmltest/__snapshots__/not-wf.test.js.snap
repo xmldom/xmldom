@@ -60,7 +60,7 @@ exports[`xmltest/not-wellformed standalone should match 004.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 005.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`] = `"Not well-formed comment starting at position 5"`;
+exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`] = `"comment is not well-formed at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 007.xml with snapshot 1`] = `
 Object {
@@ -208,7 +208,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 027.xml with snapshot 1`] = `"Not well-formed comment starting at position 6"`;
+exports[`xmltest/not-wellformed standalone should match 027.xml with snapshot 1`] = `"comment is not well-formed at position 6"`;
 
 exports[`xmltest/not-wellformed standalone should match 028.xml with snapshot 1`] = `"Invalid processing instruction starting at position 6"`;
 
@@ -226,7 +226,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 031.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 032.xml with snapshot 1`] = `"Not well-formed comment starting at position 5"`;
+exports[`xmltest/not-wellformed standalone should match 032.xml with snapshot 1`] = `"comment is not well-formed at position 5"`;
 
 exports[`xmltest/not-wellformed standalone should match 033.xml with snapshot 1`] = `
 Object {
@@ -444,7 +444,7 @@ exports[`xmltest/not-wellformed standalone should match 054.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 055.xml with snapshot 1`] = `"Error detected in Markup declaration"`;
 
-exports[`xmltest/not-wellformed standalone should match 056.xml with snapshot 1`] = `"DOCTYPE not terminated"`;
+exports[`xmltest/not-wellformed standalone should match 056.xml with snapshot 1`] = `"doctype not terminated with > at position 14"`;
 
 exports[`xmltest/not-wellformed standalone should match 057.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
@@ -472,7 +472,7 @@ exports[`xmltest/not-wellformed standalone should match 068.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 069.xml with snapshot 1`] = `"Error in internal subset at position 85"`;
 
-exports[`xmltest/not-wellformed standalone should match 070.xml with snapshot 1`] = `"Not well-formed comment starting at position 0"`;
+exports[`xmltest/not-wellformed standalone should match 070.xml with snapshot 1`] = `"comment is not well-formed at position 0"`;
 
 exports[`xmltest/not-wellformed standalone should match 071.xml with snapshot 1`] = `
 Object {
@@ -703,7 +703,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 085.xml with snapshot 1`] = `"PUBLIC without public identifier"`;
+exports[`xmltest/not-wellformed standalone should match 085.xml with snapshot 1`] = `"doctype external id is not well-formed at position 14"`;
 
 exports[`xmltest/not-wellformed standalone should match 086.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
@@ -759,23 +759,23 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 094.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 094.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 095.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 095.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 096.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 096.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 097.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 097.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 098.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 098.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 099.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 099.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 100.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 100.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 101.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 101.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 102.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 102.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
 exports[`xmltest/not-wellformed standalone should match 103.xml with snapshot 1`] = `
 Object {
@@ -1179,17 +1179,17 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 147.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
+exports[`xmltest/not-wellformed standalone should match 147.xml with snapshot 1`] = `"processing instruction at position 1 is an xml declaration which is only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 148.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
+exports[`xmltest/not-wellformed standalone should match 148.xml with snapshot 1`] = `"processing instruction at position 9 is an xml declaration which is only at the start of the document"`;
 
 exports[`xmltest/not-wellformed standalone should match 149.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 150.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
+exports[`xmltest/not-wellformed standalone should match 150.xml with snapshot 1`] = `"processing instruction at position 6 is an xml declaration which is only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 151.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
+exports[`xmltest/not-wellformed standalone should match 151.xml with snapshot 1`] = `"processing instruction at position 13 is an xml declaration which is only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 152.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 152.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
 exports[`xmltest/not-wellformed standalone should match 153.xml with snapshot 1`] = `
 Object {
@@ -1211,13 +1211,13 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 154.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 154.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 155.xml with snapshot 1`] = `"Invalid xml declaration"`;
+exports[`xmltest/not-wellformed standalone should match 155.xml with snapshot 1`] = `"xml declaration is not well-formed"`;
 
-exports[`xmltest/not-wellformed standalone should match 156.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
+exports[`xmltest/not-wellformed standalone should match 156.xml with snapshot 1`] = `"processing instruction at position 6 is an xml declaration which is only at the start of the document"`;
 
-exports[`xmltest/not-wellformed standalone should match 157.xml with snapshot 1`] = `"xml declaration is allowed only at the start of the document"`;
+exports[`xmltest/not-wellformed standalone should match 157.xml with snapshot 1`] = `"processing instruction at position 6 is an xml declaration which is only at the start of the document"`;
 
 exports[`xmltest/not-wellformed standalone should match 158.xml with snapshot 1`] = `"Error in internal subset at position 79"`;
 
@@ -1264,7 +1264,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 164.xml with snapshot 1`] = `"DOCTYPE not terminated"`;
+exports[`xmltest/not-wellformed standalone should match 164.xml with snapshot 1`] = `"doctype not terminated with > at position 60"`;
 
 exports[`xmltest/not-wellformed standalone should match 165.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
@@ -1298,7 +1298,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot 1`] = `"Not well-formed comment starting at position 0"`;
+exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot 1`] = `"comment is not well-formed at position 0"`;
 
 exports[`xmltest/not-wellformed standalone should match 172.xml with snapshot 1`] = `"Invalid processing instruction starting at position 0"`;
 

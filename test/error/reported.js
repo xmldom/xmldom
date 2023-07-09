@@ -76,7 +76,7 @@ const REPORTED = {
 	WF_UnclosedComment: {
 		source: '<xml></xml><!--',
 		level: 'fatalError',
-		match: (msg) => /Not well-formed comment/.test(msg),
+		match: (msg) => /comment is not well-formed/.test(msg),
 	},
 	/**
 	 * Triggered by lib/sax.js:596, caught in 208

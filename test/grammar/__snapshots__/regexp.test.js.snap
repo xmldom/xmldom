@@ -10,6 +10,7 @@ Array [
   "PubidLiteral",
   "Comment",
   "ExternalID",
+  "ExternalID_match",
   "Name",
   "PEReference",
   "XMLDecl",
