@@ -10,7 +10,7 @@ const { ParseError } = require('../../lib/sax');
 const { getTestParser } = require('../get-test-parser');
 
 describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, skippedInHtml }) => {
-	describe.each([MIME_TYPE.XML_TEXT, 'text/html'])('with mimeType %s', (mimeType) => {
+	describe.each([MIME_TYPE.XML_TEXT, MIME_TYPE.HTML])('with mimeType %s', (mimeType) => {
 		const isHtml = mimeType === 'text/html';
 		if (isHtml && skippedInHtml) {
 			test(`should not be reported`, () => {

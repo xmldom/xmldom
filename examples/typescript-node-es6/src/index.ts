@@ -17,4 +17,6 @@ const serialized = new XMLSerializer().serializeToString(doc);
 
 if (source !== serialized) {
 	throw `expected\n${source}\nbut was\n${serialized}`;
+} else {
+	console.log(serialized);
 }

@@ -73,10 +73,10 @@ const REPORTED = {
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser it is reported as `error on line 1 at column 6: Comment not terminated`.
 	 */
-	SYNTAX_UnclosedComment: {
+	WF_UnclosedComment: {
 		source: '<xml></xml><!--',
-		level: 'error',
-		match: (msg) => /Unclosed comment/.test(msg),
+		level: 'fatalError',
+		match: (msg) => /comment is not well-formed/.test(msg),
 	},
 	/**
 	 * Triggered by lib/sax.js:596, caught in 208

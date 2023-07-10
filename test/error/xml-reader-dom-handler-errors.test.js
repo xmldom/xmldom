@@ -89,7 +89,7 @@ function StubDOMHandlerWith(throwingMethod, ErrorClass) {
  * there are samples per case in
  * @see REPORTED
  */
-const ALL_METHODS = `<?xml ?>
+const ALL_METHODS = `<?xml version="1.1"?>
 <!DOCTYPE name >
 <![CDATA[ raw ]]>
 <root xmlns="namespace">
@@ -97,9 +97,8 @@ const ALL_METHODS = `<?xml ?>
   <element xmlns:x="http://test" x:a="" warning>
     character
   </element>
-  <element attribute=""></mismatch>
+  <element attribute="">&e;</mismatch>
 </root>
-<!--
 `;
 
 describe('methods called in DOMHandler', () => {
