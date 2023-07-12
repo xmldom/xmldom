@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.12](https://github.com/xmldom/xmldom/compare/0.7.11...0.7.12)
+
+### Fixed
+
+- fix: Set nodeName property in ProcessingInstruction [`#509`](https://github.com/xmldom/xmldom/pull/509) / [`#505`](https://github.com/xmldom/xmldom/issues/505)
+
+Thank you, [@cjbarth](https://github.com/cjbarth), for your contributions
+
+
 ## [0.7.11](https://github.com/xmldom/xmldom/compare/0.7.10...0.7.11)
 
 ### Fixed
