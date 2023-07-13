@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-beta.9](https://github.com/xmldom/xmldom/compare/0.9.0-beta.8...0.9.0-beta.9)
+
+### Fixed
+
+- Set nodeName property in ProcessingInstruction [`#509`](https://github.com/xmldom/xmldom/pull/509) / [`#505`](https://github.com/xmldom/xmldom/issues/505)
+- preserve DOCTYPE internal subset [`#498`](https://github.com/xmldom/xmldom/pull/498) / [`#497`](https://github.com/xmldom/xmldom/pull/497) / [`#117`](https://github.com/xmldom/xmldom/issues/117)\
+  BREAKING CHANGES: Many documents that were previously accepted by xmldom, esecially non well-formed ones are no longer accepted. Some issues that were formerly reported as errors are now a fatalError.
+- DOMParser: Align parseFromString errors with specs [`#454`](https://github.com/xmldom/xmldom/pull/454)
+
+### Chore
+
+- stop running mutation tests using stryker [`#496`](https://github.com/xmldom/xmldom/pull/496)
+- make `toErrorSnapshot` windows compatible [`#503`](https://github.com/xmldom/xmldom/pull/503)
+
+Thank you, [@cjbarth](https://github.com/cjbarth), [@shunkica](https://github.com/shunkica), [@pmahend1](https://github.com/pmahend1), [@niklasl](https://github.com/niklasl), for your contributions
+
+
 ## [0.8.9](https://github.com/xmldom/xmldom/compare/0.8.8...0.8.9)
 
 ### Fixed
