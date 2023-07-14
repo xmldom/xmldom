@@ -49,7 +49,7 @@
     "eslint-plugin-anti-trojan-source": "1.1.1",
     "eslint-plugin-es5": "1.5.0",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-prettier": "5.0.0",
     "get-stream": "6.0.1",
     "jest": "27.5.1",
     "nodemon": "3.0.1",
