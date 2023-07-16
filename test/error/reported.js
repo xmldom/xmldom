@@ -4,10 +4,10 @@ const path = require('path');
 
 /**
  * @typedef ErrorReport
- * @property {string} source The XML snippet
- * @property {'error' | 'warning' | 'fatalError'} level The name of the method triggered
- * @property {?function(msg:string):boolean} match To pick the relevant report when there are multiple
- * @property {boolean | null} skippedInHtml Is the error reported when parsing HTML?
+ * @property {string}                             source         The XML snippet.
+ * @property {'error' | 'warning' | 'fatalError'} level          The name of the method triggered.
+ * @property {?function(msg:string):boolean}      match          To pick the relevant report when there are multiple.
+ * @property {boolean | null}                     skippedInHtml  Is the error reported when parsing HTML?
  */
 /** A collection of XML samples and related information that cause the XMLReader to call methods on `errorHandler`. */
 const REPORTED = {
@@ -214,8 +214,8 @@ const REPORTED = {
 		skippedInHtml: true,
 	},
 	/**
-	 * Triggered by lib/sax.js:376 This seems to only be reached when there are two subsequent attributes with a missing value In
-	 * the browser this is not an issue at all, but just add an attribute without a value. But the XML specifications does not allow
+	 * Triggered by lib/sax.js:376 This seems to only be reached when there are two subsequent attributes with a missing value In the
+	 * browser this is not an issue at all, but just add an attribute without a value. But the XML specifications does not allow
 	 * that:
 	 *
 	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute
@@ -237,8 +237,7 @@ const LINE_TO_ERROR_INDEX = {
  * To avoid to have exact lines in snapshots, but still being able to verify, that a certain error was reported in the expected
  * order, this method indexes all cases of
  *
- * - Thrown errors
- * - Calls to one of the errorHandler methods and adds them to the exported LINE_TO_ERROR_INDEX.
+ * - Thrown errors - Calls to one of the errorHandler methods and adds them to the exported LINE_TO_ERROR_INDEX.
  *
  * It also checks that every match configured in REPORTED only matches a single line, and adds the related key to the index as
  * `reportedAs`. Any failing check will throw, so it prevents the tests from being executed.
@@ -246,7 +245,7 @@ const LINE_TO_ERROR_INDEX = {
  * The result is written to reported.json for easier human introspection. The file is only written, not read by any code, the
  * source code is the only source of truth.
  *
- * @param fileNameInKey The part of the path that is supposed to be part of the key
+ * @param fileNameInKey  The part of the path that is supposed to be part of the key.
  */
 function parseErrorLines(fileNameInKey) {
 	let errorIndex = 0;

@@ -5,7 +5,9 @@ const fs = require('fs');
 
 const onError = () => {};
 const collected = {};
-/** @returns {Document} */
+/**
+ * @returns {Document}
+ */
 const parseSpecFile = (filename) => {
 	var doc = new DOMParser({ onError }).parseFromString(fs.readFileSync(__dirname + `/${filename}`, 'utf-8'), MIME_TYPE.HTML);
 	const scraps = doc.getElementsByClassName('scrap');
