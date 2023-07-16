@@ -1,7 +1,7 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { NodeList, LiveNodeList, Node, DOMImplementation } = require('../../lib/dom');
+const { NodeList, LiveNodeList, DOMImplementation } = require('../../lib/dom');
 
 describe('NodeList', () => {
 	describe('item', () => {
