@@ -4,3 +4,4 @@ trailingComma: es5
 singleQuote: true
 plugins:
   - '@homer0/prettier-plugin-jsdoc'
+jsdocUseColumns: false
