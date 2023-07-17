@@ -7,7 +7,8 @@ const { DOMParser } = require('../../lib/dom-parser');
 /**
  * Returns an array containing only one occurrence of every sting in `values` (like in a Set).
  *
- * @param values  {string}
+ * @param values
+ * {string}
  */
 const uniqArray = (...values) => [...new Set(values)];
 

@@ -66,8 +66,9 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
  * absolute paths and character position from that stack entry as second line. the line number in the stack is converted to the
  * error index (to only have relevant changes in snapshots).
  *
- * @param {Error}  error
- * @param {string} libFile  The path from the root of the project that should be preserved in the stack.
+ * @param {Error} error
+ * @param {string} libFile
+ * The path from the root of the project that should be preserved in the stack.
  * @returns {string}
  */
 function toErrorSnapshot(error, libFile) {
