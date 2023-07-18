@@ -38,7 +38,7 @@ const UNCALLED_METHODS = new Set([
  * Some methods DOMParser/XMLReader calls during parsing are not guarded by try/catch,
  * hence an error happening in those will stop the parsing process.
  * There is a test to verify this error handling.
- * If it changes this list might need to be changed as well
+ * If it changes this list might need to be changed as well.
  *
  * @type {Set<string>}
  */
@@ -86,8 +86,9 @@ function StubDOMHandlerWith(throwingMethod, ErrorClass) {
  * For example not all possible warning and error cases are present in this file,
  * but some, so that the methods are triggered.
  * For testing all the cases of the different error levels,
- * there are samples per case in
- * @see REPORTED
+ * there are samples per case in.
+ *
+ * @see REPORTED.
  */
 const ALL_METHODS = `<?xml version="1.1"?>
 <!DOCTYPE name >

@@ -60,14 +60,14 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 });
 
 /**
- * Creates a string from an error that is easily readable in a snapshot
- * - put's the message on one line as first line
- * - picks the first line in the stack trace that is in `libFile`,
- *   and strips absolute paths and character position from that stack entry
- *   as second line. the line number in the stack is converted to the error index
- *   (to only have relevant changes in snapshots).
+ * Creates a string from an error that is easily readable in a snapshot - put's the message on one line as first line - picks the
+ * first line in the stack trace that is in `libFile`,
+ * and strips absolute paths and character position from that stack entry as second line. the line number in the stack is
+ * converted to the error index (to only have relevant changes in snapshots).
+ *
  * @param {Error} error
- * @param {string} libFile the path from the root of the project that should be preserved in the stack
+ * @param {string} libFile
+ * The path from the root of the project that should be preserved in the stack.
  * @returns {string}
  */
 function toErrorSnapshot(error, libFile) {
