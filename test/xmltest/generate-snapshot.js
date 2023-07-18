@@ -8,7 +8,7 @@ const { replaceNonTextChars } = require('xmltest');
  * @param {string | undefined | {toString: function(): string}} actual
  * @param {[ErrorLevel, string][]} errors
  * @param {string} [expected]
- *  compared to actual-only added to output if different.
+ * Compared to actual-only added to output if different.
  * @returns {{ actual?: string } & Partial<Record<ErrorLevel, string[]>>}
  */
 const generateSnapshot = (actual, errors, expected) => {
