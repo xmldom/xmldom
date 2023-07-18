@@ -17,8 +17,9 @@ const INPUT = (first = '', second = '', third = '', fourth = '') => `
 `;
 
 /**
- * Whitespace that can be part of classnames. Some characters (like `\u2028`) will be normalized when parsing, but they can still
- * be added to the dom after parsing.
+ * Whitespace that can be part of classnames.
+ * Some characters (like `\u2028`) will be normalized when parsing,
+ * but they can still be added to the dom after parsing.
  *
  * @see https://www.w3.org/TR/html52/infrastructure.html#set-of-space-separated-tokens
  * @see normalizeLineEndings
