@@ -45,3 +45,4 @@ jsdocTagsOrder:
   - see
   - other
   - todo
+jsdocAllowAccessTag: false
