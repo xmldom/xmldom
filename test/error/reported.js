@@ -4,14 +4,10 @@ const path = require('path');
 
 /**
  * @typedef ErrorReport
- * @property {string} source
- * The XML snippet.
- * @property {'error' | 'warning' | 'fatalError'} level
- * The name of the method triggered.
- * @property {?function(msg:string):boolean} match
- * To pick the relevant report when there are multiple.
- * @property {boolean | null} skippedInHtml
- * Is the error reported when parsing HTML?
+ * @property {string}                             source         The XML snippet.
+ * @property {'error' | 'warning' | 'fatalError'} level          The name of the method triggered.
+ * @property {?function(msg:string):boolean}      match          To pick the relevant report when there are multiple.
+ * @property {boolean | null}                     skippedInHtml  Is the error reported when parsing HTML?
  */
 /** A collection of XML samples and related information that cause the XMLReader to call methods on `errorHandler`. */
 const REPORTED = {
@@ -249,8 +245,7 @@ const LINE_TO_ERROR_INDEX = {
  * The result is written to reported.json for easier human introspection. The file is only written, not read by any code, the
  * source code is the only source of truth.
  *
- * @param fileNameInKey
- * The part of the path that is supposed to be part of the key.
+ * @param fileNameInKey  The part of the path that is supposed to be part of the key.
  */
 function parseErrorLines(fileNameInKey) {
 	let errorIndex = 0;
