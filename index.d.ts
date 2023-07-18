@@ -6,12 +6,12 @@ declare module '@xmldom/xmldom' {
 	 * Since xmldom can not rely on `Object.assign`,
 	 * it uses/provides a simplified version that is sufficient for its needs.
 	 *
-	 * @throws TypeError if target is not an object
-	 *
+	 * @throws {TypeError}
+	 * If target is not an object.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
 	 * @see https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object.assign
 	 */
-	function assign<T, S>(target:T, source:S): T & S;
+	function assign<T, S>(target: T, source: S): T & S;
 	/**
 	 * Only returns true if `value` matches MIME_TYPE.HTML, which indicates an HTML document.
 	 *
@@ -29,9 +29,11 @@ declare module '@xmldom/xmldom' {
 	/**
 	 * All mime types that are allowed as input to `DOMParser.parseFromString`
 	 *
-	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString#Argument02 MDN
-	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#domparsersupportedtype WHATWG HTML Spec
-	 * @see DOMParser.prototype.parseFromString
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString#Argument02
+	 *      MDN
+	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#domparsersupportedtype
+	 *   WHATWG HTML Spec
+	 * @see DOMParser.prototype.parseFromString.
 	 */
 	enum MIME_TYPE {
 		/**
@@ -40,13 +42,15 @@ declare module '@xmldom/xmldom' {
 		 * @see https://www.iana.org/assignments/media-types/text/html IANA MimeType registration
 		 * @see https://en.wikipedia.org/wiki/HTML Wikipedia
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString MDN
-		 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring WHATWG HTML Spec
+		 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring
+		 *   WHATWG HTML Spec
 		 */
 		HTML = 'text/html',
 		/**
 		 * `application/xml`, the standard mime type for XML documents.
 		 *
-		 * @see https://www.iana.org/assignments/media-types/application/xml IANA MimeType registration
+		 * @see https://www.iana.org/assignments/media-types/application/xml IANA MimeType
+		 *      registration
 		 * @see https://tools.ietf.org/html/rfc7303#section-9.1 RFC 7303
 		 * @see https://en.wikipedia.org/wiki/XML_and_MIME Wikipedia
 		 */
@@ -63,7 +67,8 @@ declare module '@xmldom/xmldom' {
 		 * `application/xhtml+xml`, indicates an XML document that has the default HTML namespace,
 		 * but is parsed as an XML document.
 		 *
-		 * @see https://www.iana.org/assignments/media-types/application/xhtml+xml IANA MimeType registration
+		 * @see https://www.iana.org/assignments/media-types/application/xhtml+xml IANA MimeType
+		 *      registration
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument WHATWG DOM Spec
 		 * @see https://en.wikipedia.org/wiki/XHTML Wikipedia
 		 */
@@ -103,7 +108,7 @@ declare module '@xmldom/xmldom' {
 		XML = 'http://www.w3.org/XML/1998/namespace',
 
 		/**
-		 * The `xmlns:` namespace
+		 * The `xmlns:` namespace.
 		 *
 		 * @see https://www.w3.org/2000/xmlns/
 		 */
@@ -114,13 +119,14 @@ declare module '@xmldom/xmldom' {
 	 * A custom error that will not be caught by XMLReader aka the SAX parser.
 	 */
 	class ParseError extends Error {
-		constructor(message:string, locator?:any);
+		constructor(message: string, locator?: any);
 	}
 	// END ./lib/conventions.js
 
 	// START ./lib/dom.js
 	/**
 	 * The error class for errors reported by the DOM API.
+	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMException
 	 * @see http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html
 	 * @see http://www.w3.org/TR/REC-DOM-Level-1/ecma-script-language-binding.html
@@ -131,17 +137,16 @@ declare module '@xmldom/xmldom' {
 
 	interface DOMImplementation {
 		/**
-		 * The DOMImplementation interface represents an object providing methods
-		 * which are not dependent on any particular document.
+		 * The DOMImplementation interface represents an object providing methods which are not
+		 * dependent on any particular document.
 		 * Such an object is returned by the `Document.implementation` property.
 		 *
-		 * __The individual methods describe the differences compared to the specs.__
+		 * __The individual methods describe the differences compared to the specs.__.
 		 *
-		 * @constructor
-		 *
+		 * @class
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation MDN
-		 * @see https://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#ID-102161490 DOM Level 1 Core
-		 *   (Initial)
+		 * @see https://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#ID-102161490 DOM Level 1
+		 *      Core (Initial)
 		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-102161490 DOM Level 2 Core
 		 * @see https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-102161490 DOM Level 3 Core
 		 * @see https://dom.spec.whatwg.org/#domimplementation DOM Living Standard
@@ -156,14 +161,12 @@ declare module '@xmldom/xmldom' {
 		 * `type` set to `'xml'`).
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
-		 * @returns {Document} the XML document
-		 *
-		 * @see DOMImplementation.createHTMLDocument
-		 *
+		 * @returns {Document} The XML document.
+		 * @see {@link DOMImplementation.createHTMLDocument}
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createDocument MDN
 		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocument DOM
-		 *   Level 2 Core (initial)
-		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument  DOM Level 2 Core
+		 *      Level 2 Core (initial)
+		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument DOM Level 2 Core
 		 */
 		createDocument(
 			namespaceURI: string | null,
@@ -178,15 +181,14 @@ declare module '@xmldom/xmldom' {
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
 		 * @returns {DocumentType} which can either be used with `DOMImplementation.createDocument`
-		 *   upon document creation or can be put into the document via methods like
-		 *   `Node.insertBefore()` or `Node.replaceChild()`
-		 *
+		 *                         upon document creation or can be put into the document via methods
+		 *                         like `Node.insertBefore()` or `Node.replaceChild()`
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createDocumentType
-		 *   MDN
+		 *      MDN
 		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocType DOM
-		 *   Level 2 Core
+		 *      Level 2 Core
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocumenttype DOM Living
-		 *   Standard
+		 *      Standard
 		 */
 		createDocumentType(
 			qualifiedName: string,
@@ -202,8 +204,7 @@ declare module '@xmldom/xmldom' {
 		 * omitted)
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
-		 * @see DOMImplementation.createDocument
-		 *
+		 * @see {@link DOMImplementation.createDocument}
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument
 		 * @see https://dom.spec.whatwg.org/#html-document
 		 */
@@ -211,14 +212,15 @@ declare module '@xmldom/xmldom' {
 
 		/**
 		 * The DOMImplementation.hasFeature() method returns a Boolean flag indicating if a given
-		 * feature is supported. The different implementations fairly diverged in what kind of features
-		 * were reported. The latest version of the spec settled to force this method to always return
-		 * true, where the functionality was accurate and in use.
+		 * feature is supported. The different implementations fairly diverged in what kind of
+		 * features were reported. The latest version of the spec settled to force this method to
+		 * always return true, where the functionality was accurate and in use.
 		 *
-		 * @deprecated It is deprecated and modern browsers return true in all cases.
-		 *
+		 * @deprecated
+		 * It is deprecated and modern browsers return true in all cases.
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/hasFeature MDN
-		 * @see https://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#ID-5CED94D7 DOM Level 1 Core
+		 * @see https://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#ID-5CED94D7 DOM Level 1
+		 *      Core
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-hasfeature DOM Living Standard
 		 */
 		hasFeature(feature: string, version?: string): true;
@@ -234,15 +236,14 @@ declare module '@xmldom/xmldom' {
 	var DOMParser: DOMParserStatic;
 	interface DOMParserStatic {
 		/**
-		 * The DOMParser interface provides the ability to parse XML or HTML source code
-		 * from a string into a DOM `Document`.
+		 * The DOMParser interface provides the ability to parse XML or HTML source code from a
+		 * string into a DOM `Document`.
 		 *
 		 * _xmldom is different from the spec in that it allows an `options` parameter,
-		 * to control the behavior._
+		 * to control the behavior._.
 		 *
+		 * @class
 		 * @param {DOMParserOptions} [options]
-		 * @constructor
-		 *
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
 		 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-parsing-and-serialization
 		 */
@@ -250,37 +251,41 @@ declare module '@xmldom/xmldom' {
 	}
 
 	/**
-	 * The DOMParser interface provides the ability to parse XML or HTML source code
-	 * from a string into a DOM `Document`.
+	 * The DOMParser interface provides the ability to parse XML or HTML source code from a string
+	 * into a DOM `Document`.
 	 *
 	 * _xmldom is different from the spec in that it allows an `options` parameter,
-	 * to control the behavior._
+	 * to control the behavior._.
 	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
 	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-parsing-and-serialization
 	 */
 	interface DOMParser {
 		/**
-		 * Parses `source` using the options in the way configured by the `DOMParserOptions` of `this`
+		 * Parses `source` using the options in the way configured by the `DOMParserOptions` of
+		 * `this`
 		 * `DOMParser`. If `mimeType` is `text/html` an HTML `Document` is created, otherwise an XML
 		 * `Document` is created.
 		 *
 		 * __It behaves different from the description in the living standard__:
-		 * - Uses the `options` passed to the `DOMParser` constructor to modify the
-		 *   behavior.
-		 * - Any unexpected input is reported to `onError` with either a `warning`, `error` or `fatalError` level.
-		 *   - Any `fatalError` throws a `ParseError` which prevents further processing.
-		 *   - Any error thrown by `onError` is converted to a `ParseError` which prevents further processing
-		 * - If no `Document` was created during parsing it is reported as a `fatalError`.
+		 * - Uses the `options` passed to the `DOMParser` constructor to modify the behavior.
+		 * - Any unexpected input is reported to `onError` with either a `warning`, `error` or
+		 * `fatalError` level.
+		 * - Any `fatalError` throws a `ParseError` which prevents further processing.
+		 * - Any error thrown by `onError` is converted to a `ParseError` which prevents further
+		 * processing - If no `Document` was created during parsing it is reported as a `fatalError`.
 		 *
-		 * @throws ParseError for any `fatalError` or anything that is thrown by `onError`
-		 * @throws TypeError for any invalid `mimeType`
-		 * @returns the `Document` node
-		 *
+		 * @returns The `Document` node.
+		 * @throws {ParseError}
+		 * for any `fatalError` or anything that is thrown by `onError`
+		 * @throws {TypeError} for any invalid `mimeType`
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
 		 * @see https://html.spec.whatwg.org/#dom-domparser-parsefromstring-dev
 		 */
-		parseFromString(source: string, mimeType: MIME_TYPE = MIME_TYPE.XML_TEXT): Document;
+		parseFromString(
+			source: string,
+			mimeType: MIME_TYPE = MIME_TYPE.XML_TEXT
+		): Document;
 	}
 
 	interface XMLSerializer {
@@ -293,14 +298,14 @@ declare module '@xmldom/xmldom' {
 		 * which is used to copy values from the options before they are used for parsing.
 		 *
 		 * @private
-		 * @see conventions.assign
+		 * @see {@link conventions.assign}
 		 */
 		readonly assign?: typeof Object.assign;
 		/**
 		 * For internal testing: The class for creating an instance for handling events from the SAX
 		 * parser.
-		 * __**Warning: By configuring a faulty implementation,
-		 * the specified behavior can completely be broken.**__
+		 * *****Warning: By configuring a faulty implementation,
+		 * the specified behavior can completely be broken*****.
 		 *
 		 * @private
 		 */
@@ -312,8 +317,9 @@ declare module '@xmldom/xmldom' {
 		 * For backwards compatibility:
 		 * If it is a function, it will be used as a value for `onError`,
 		 * but it receives different argument types than before 0.9.0.
-		 * @throws If it is an object.
+		 *
 		 * @deprecated
+		 * @throws {TypeError} If it is an object.
 		 */
 		readonly errorHandler?: ErrorHandlerFunction;
 
@@ -339,15 +345,17 @@ declare module '@xmldom/xmldom' {
 		 * If the provided method throws, a `ParserError` is thrown,
 		 * which prevents any further processing.
 		 *
-		 * Be aware that many `warning`s are considered an error
-		 * that prevents further processing in most implementations.
+		 * Be aware that many `warning`s are considered an error that prevents further processing in
+		 * most implementations.
 		 *
-		 * @param level the error level as reported by the SAXParser
-		 * @param message the error message
-		 * @param context the DOMHandler instance used for parsing
-		 *
-		 * @see onErrorStopParsing
-		 * @see onWarningStopParsing
+		 * @param level
+		 * The error level as reported by the SAXParser.
+		 * @param message
+		 * The error message.
+		 * @param context
+		 * The DOMHandler instance used for parsing.
+		 * @see {@link onErrorStopParsing}
+		 * @see {@link onWarningStopParsing}
 		 */
 		readonly onError?: ErrorHandlerFunction;
 
@@ -369,16 +377,16 @@ declare module '@xmldom/xmldom' {
 	 * A method that prevents any further parsing when an `error`
 	 * with level `error` is reported during parsing.
 	 *
-	 * @see DOMParserOptions.onError
-	 * @see onWarningStopParsing
+	 * @see {@link DOMParserOptions.onError.
+	 * @see {@link onWarningStopParsing}
 	 */
 	function onErrorStopParsing(): void | never;
 	/**
 	 * A method that prevents any further parsing when an `error`
 	 * with any level is reported during parsing.
 	 *
-	 * @see DOMParserOptions.onError
-	 * @see onErrorStopParsing
+	 * @see {@link DOMParserOptions.onError}
+	 * @see {@link onErrorStopParsing}
 	 */
 	function onWarningStopParsing(): never;
 	// END ./lib/dom-parser.js
