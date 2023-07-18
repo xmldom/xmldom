@@ -33,7 +33,7 @@ declare module '@xmldom/xmldom' {
 	 *      MDN
 	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#domparsersupportedtype
 	 *   WHATWG HTML Spec
-	 * @see DOMParser.prototype.parseFromString.
+	 * @see {@link DOMParser.prototype.parseFromString}
 	 */
 	enum MIME_TYPE {
 		/**
@@ -377,7 +377,7 @@ declare module '@xmldom/xmldom' {
 	 * A method that prevents any further parsing when an `error`
 	 * with level `error` is reported during parsing.
 	 *
-	 * @see {@link DOMParserOptions.onError.
+	 * @see {@link DOMParserOptions.onError}
 	 * @see {@link onWarningStopParsing}
 	 */
 	function onErrorStopParsing(): void | never;
