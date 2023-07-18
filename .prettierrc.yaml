@@ -4,7 +4,9 @@ trailingComma: es5
 singleQuote: true
 plugins:
   - '@homer0/prettier-plugin-jsdoc'
-jsdocUseColumns: false
+# plugin specific options
+jsdocAllowAccessTag: false
+jsdocPrintWidth: 95
 jsdocTagsOrder:
   - deprecated
   - type
@@ -45,4 +47,4 @@ jsdocTagsOrder:
   - see
   - other
   - todo
-jsdocAllowAccessTag: false
+jsdocUseColumns: false

@@ -15,7 +15,8 @@ const { DOMParser } = require('../lib/dom-parser');
  * default stores a list of all entries per `key` in `errors` and does not log or throw.
  * - `errors`: the object for the `errorHandler` to use,
  * is also returned with the same name for later assertions,
- * default is an empty object - `locator`: Whether to record node locations in the XML string, default is true.
+ * default is an empty object - `locator`: Whether to record node locations in the XML string,
+ * default is true.
  *
  * @param options
  * {{
