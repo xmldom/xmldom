@@ -5,12 +5,10 @@ const { replaceNonTextChars } = require('xmltest');
 /**
  * Generate minimal snapshot representation by not adding empty lists to the snapshots.
  *
- * @param actual
- * {string | undefined | {toString: function(): string}}
- * @param errors
- * {[ErrorLevel, string][]}
- * @param expected
- * {string?} (optional) compared to actual-only added to output if different.
+ * @param {string | undefined | {toString: function(): string}} actual
+ * @param {[ErrorLevel, string][]} errors
+ * @param {string} [expected]
+ *  compared to actual-only added to output if different.
  * @returns {{ actual?: string } & Partial<Record<ErrorLevel, string[]>>}
  */
 const generateSnapshot = (actual, errors, expected) => {

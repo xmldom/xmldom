@@ -8,9 +8,9 @@ const path = require('path');
  * The XML snippet.
  * @property {'error' | 'warning' | 'fatalError'} level
  * The name of the method triggered.
- * @property {?function(msg:string):boolean} match
+ * @property {function(msg:string):boolean} [match]
  * To pick the relevant report when there are multiple.
- * @property {?boolean} skippedInHtml
+ * @property {boolean} [skippedInHtml]
  * Is the error reported when parsing HTML?
  */
 /**
