@@ -5,9 +5,10 @@ const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib/dom-parser');
 
 /**
- * Returns an array containing only one occurrence of every sting in `values` (like in a Set).
+ * Returns an array containing only one occurrence of every sting in `values`
+ * (like in a Set).
  *
- * @param values {string}
+ * @param {string} values
  */
 const uniqArray = (...values) => [...new Set(values)];
 

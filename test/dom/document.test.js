@@ -22,7 +22,7 @@ const INPUT = (first = '', second = '', third = '', fourth = '') => `
  * but they can still be added to the dom after parsing.
  *
  * @see https://www.w3.org/TR/html52/infrastructure.html#set-of-space-separated-tokens
- * @see normalizeLineEndings
+ * @see {@link normalizeLineEndings}
  * @see https://www.w3.org/TR/xml11/#sec-line-ends
  */
 const NON_HTML_WHITESPACE =
