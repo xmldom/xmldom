@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.10](https://github.com/xmldom/xmldom/compare/0.8.9...0.8.10)
+
+### Fixed
+
+- dom: prevent iteration over deleted items [`#514`](https://github.com/xmldom/xmldom/pull/514)/ [`#499`](https://github.com/xmldom/xmldom/issues/499)
+
+Thank you, [@qtow](https://github.com/qtow), for your contributions
+
+
+## [0.7.13](https://github.com/xmldom/xmldom/compare/0.7.12...0.7.13)
+
+### Fixed
+
+- dom: prevent iteration over deleted items [`#514`](https://github.com/xmldom/xmldom/pull/514)/ [`#499`](https://github.com/xmldom/xmldom/issues/499)
+
+Thank you, [@qtow](https://github.com/qtow), for your contributions
+
+
 ## [0.9.0-beta.9](https://github.com/xmldom/xmldom/compare/0.9.0-beta.8...0.9.0-beta.9)
 
 ### Fixed
