@@ -1,6 +1,6 @@
 {
   "name": "@xmldom/xmldom",
-  "version": "0.9.0-beta.9",
+  "version": "0.9.0-beta.10",
   "description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
   "keywords": [
     "w3c",
@@ -43,6 +43,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@homer0/prettier-plugin-jsdoc": "6.0.5",
     "auto-changelog": "2.4.0",
     "eslint": "8.44.0",
     "eslint-config-prettier": "8.8.0",

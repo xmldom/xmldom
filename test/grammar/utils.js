@@ -4,7 +4,6 @@
  * methods in this file should make it easier to do that.
  */
 /**
- *
  * @param {string} from
  * @param {string} to
  * @returns {string}

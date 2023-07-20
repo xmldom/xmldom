@@ -12,7 +12,8 @@ const { __DOMHandler, DOMParser } = require('../../lib/dom-parser');
 const DOMHandlerMethods = Object.keys(__DOMHandler.prototype).sort();
 
 /**
- * XMLReader is currently not calling all methods "implemented" by DOMHandler (some are just empty),
+ * XMLReader is currently not calling all methods "implemented" by DOMHandler (some are just
+ * empty),
  * If this changes the first test will fail.
  *
  * @type {Set<string>}
@@ -38,7 +39,7 @@ const UNCALLED_METHODS = new Set([
  * Some methods DOMParser/XMLReader calls during parsing are not guarded by try/catch,
  * hence an error happening in those will stop the parsing process.
  * There is a test to verify this error handling.
- * If it changes this list might need to be changed as well
+ * If it changes this list might need to be changed as well.
  *
  * @type {Set<string>}
  */
@@ -82,12 +83,14 @@ function StubDOMHandlerWith(throwingMethod, ErrorClass) {
  * This sample is triggering all method calls from XMLReader to DOMHandler at least once.
  * This is verified in a test.
  *
- * There is of course no guarantee that it triggers all the places where XMLReader calls DOMHandler.
+ * There is of course no guarantee that it triggers all the places where XMLReader calls
+ * DOMHandler.
  * For example not all possible warning and error cases are present in this file,
  * but some, so that the methods are triggered.
  * For testing all the cases of the different error levels,
- * there are samples per case in
- * @see REPORTED
+ * there are samples per case in.
+ *
+ * @see {@link REPORTED}
  */
 const ALL_METHODS = `<?xml version="1.1"?>
 <!DOCTYPE name >
