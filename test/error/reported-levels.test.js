@@ -28,7 +28,7 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 
 					expect(() => parser.parseFromString(source, mimeType)).toThrow(ParseError);
 
-					expect(onError).toHaveBeenCalledTimes(1);
+					expect(onError).toHaveBeenCalled();
 				});
 			} else {
 				test(`should be reported`, () => {

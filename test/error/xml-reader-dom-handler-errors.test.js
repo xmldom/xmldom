@@ -100,7 +100,7 @@ const ALL_METHODS = `<?xml version="1.1"?>
   <element xmlns:x="http://test" x:a="" warning>
     character
   </element>
-  <element attribute="">&e;</mismatch>
+  <element attribute="">&e;</element>
 </root>
 `;
 

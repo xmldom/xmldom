@@ -1,45 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/html should be reported 1`] = `
-Array [
-  Array [
-    "error",
-    "element parse error: Error: attribute value missed!!",
-    Object {
-      "columnNumber": 7,
-      "lineNumber": 1,
-    },
-  ],
-]
-`;
-
-exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
-Array [
-  "error: element parse error: Error: attribute value missed!!
-    at parse (lib/sax.js:#4)",
-]
-`;
-
-exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/xml should be reported 1`] = `
-Array [
-  Array [
-    "error",
-    "element parse error: Error: attribute value missed!!",
-    Object {
-      "columnNumber": 7,
-      "lineNumber": 1,
-    },
-  ],
-]
-`;
-
-exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
-Array [
-  "error: element parse error: Error: attribute value missed!!
-    at parse (lib/sax.js:#4)",
-]
-`;
-
 exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/html should be reported 1`] = `
 Array [
   Array [
@@ -56,7 +16,7 @@ Array [
 exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: element parse error: Error: attribute value no end '\\"' match
-    at parse (lib/sax.js:#4)",
+    at parse (lib/sax.js:#5)",
 ]
 `;
 
@@ -76,7 +36,7 @@ Array [
 exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: element parse error: Error: attribute value no end '\\"' match
-    at parse (lib/sax.js:#4)",
+    at parse (lib/sax.js:#5)",
 ]
 `;
 
@@ -96,7 +56,7 @@ Array [
 exports[`SYNTAX_ElementClosingNotConnected with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: element parse error: Error: elements closed character '/' and '>' must be connected to
-    at parse (lib/sax.js:#4)",
+    at parse (lib/sax.js:#5)",
 ]
 `;
 
@@ -116,67 +76,7 @@ Array [
 exports[`SYNTAX_ElementClosingNotConnected with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: element parse error: Error: elements closed character '/' and '>' must be connected to
-    at parse (lib/sax.js:#4)",
-]
-`;
-
-exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/xml should be reported 1`] = `
-Array [
-  Array [
-    "error",
-    "end tag name: inner maybe not complete",
-    Object {
-      "columnNumber": 6,
-      "lineNumber": 1,
-    },
-  ],
-]
-`;
-
-exports[`SYNTAX_EndTagMaybeNotComplete with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
-Array [
-  "error: end tag name: inner maybe not complete
-    at parse (lib/sax.js:#2)",
-]
-`;
-
-exports[`SYNTAX_EndTagNotComplete with mimeType text/html should be reported 1`] = `
-Array [
-  Array [
-    "error",
-    "end tag name: xml is not complete",
-    Object {
-      "columnNumber": 1,
-      "lineNumber": 1,
-    },
-  ],
-]
-`;
-
-exports[`SYNTAX_EndTagNotComplete with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
-Array [
-  "error: end tag name: xml is not complete
-    at parse (lib/sax.js:#1)",
-]
-`;
-
-exports[`SYNTAX_EndTagNotComplete with mimeType text/xml should be reported 1`] = `
-Array [
-  Array [
-    "error",
-    "end tag name: xml is not complete",
-    Object {
-      "columnNumber": 1,
-      "lineNumber": 1,
-    },
-  ],
-]
-`;
-
-exports[`SYNTAX_EndTagNotComplete with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
-Array [
-  "error: end tag name: xml is not complete
-    at parse (lib/sax.js:#1)",
+    at parse (lib/sax.js:#5)",
 ]
 `;
 
@@ -196,7 +96,7 @@ Array [
 exports[`SYNTAX_InvalidAttributeName with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: element parse error: Error: invalid attribute:123
-    at parse (lib/sax.js:#4)",
+    at parse (lib/sax.js:#5)",
 ]
 `;
 
@@ -216,7 +116,7 @@ Array [
 exports[`SYNTAX_InvalidAttributeName with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: element parse error: Error: invalid attribute:123
-    at parse (lib/sax.js:#4)",
+    at parse (lib/sax.js:#5)",
 ]
 `;
 
@@ -236,7 +136,7 @@ Array [
 exports[`SYNTAX_InvalidTagName with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: element parse error: Error: invalid tagName:123
-    at parse (lib/sax.js:#4)",
+    at parse (lib/sax.js:#5)",
 ]
 `;
 
@@ -256,7 +156,7 @@ Array [
 exports[`SYNTAX_InvalidTagName with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: element parse error: Error: invalid tagName:123
-    at parse (lib/sax.js:#4)",
+    at parse (lib/sax.js:#5)",
 ]
 `;
 
@@ -276,7 +176,7 @@ Array [
 exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: unexpected end of input
-    at parseElementStartPart (lib/sax.js:#12)",
+    at parseElementStartPart (lib/sax.js:#13)",
 ]
 `;
 
@@ -304,7 +204,7 @@ Array [
 exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "error: unexpected end of input
-    at parseElementStartPart (lib/sax.js:#12)",
+    at parseElementStartPart (lib/sax.js:#13)",
 ]
 `;
 
@@ -324,7 +224,7 @@ Array [
 exports[`WF_AttributeMissingQuote with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute \\"value\\" missed quot(\\")!
-    at parseElementStartPart (lib/sax.js:#13)",
+    at parseElementStartPart (lib/sax.js:#14)",
 ]
 `;
 
@@ -344,7 +244,7 @@ Array [
 exports[`WF_AttributeMissingQuote with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute \\"value\\" missed quot(\\")!
-    at parseElementStartPart (lib/sax.js:#13)",
+    at parseElementStartPart (lib/sax.js:#14)",
 ]
 `;
 
@@ -364,7 +264,7 @@ Array [
 exports[`WF_AttributeMissingQuote2 with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute \\"&\\" missed quot(\\")!!
-    at parseElementStartPart (lib/sax.js:#16)",
+    at parseElementStartPart (lib/sax.js:#17)",
 ]
 `;
 
@@ -384,7 +284,7 @@ Array [
 exports[`WF_AttributeMissingQuote2 with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute \\"&\\" missed quot(\\")!!
-    at parseElementStartPart (lib/sax.js:#16)",
+    at parseElementStartPart (lib/sax.js:#17)",
 ]
 `;
 
@@ -404,7 +304,7 @@ Array [
 exports[`WF_AttributeMissingStartingQuote with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute \\"attr\\" missed start quot(\\")!!
-    at parseElementStartPart (lib/sax.js:#9)",
+    at parseElementStartPart (lib/sax.js:#10)",
 ]
 `;
 
@@ -424,7 +324,7 @@ Array [
 exports[`WF_AttributeMissingStartingQuote with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute \\"attr\\" missed start quot(\\")!!
-    at parseElementStartPart (lib/sax.js:#9)",
+    at parseElementStartPart (lib/sax.js:#10)",
 ]
 `;
 
@@ -444,7 +344,7 @@ Array [
 exports[`WF_AttributeMissingValue with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute \\"attr\\" missed value!! \\"attr\\" instead!!
-    at parseElementStartPart (lib/sax.js:#14)",
+    at parseElementStartPart (lib/sax.js:#15)",
 ]
 `;
 
@@ -472,7 +372,7 @@ Array [
 exports[`WF_AttributeMissingValue2 with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute \\"attr\\" missed value!! \\"attr\\" instead2!!
-    at parseElementStartPart (lib/sax.js:#17)",
+    at parseElementStartPart (lib/sax.js:#18)",
 ]
 `;
 
@@ -492,7 +392,7 @@ Array [
 exports[`WF_AttributeValueMustAfterEqual with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute value must after \\"=\\"
-    at parseElementStartPart (lib/sax.js:#7)",
+    at parseElementStartPart (lib/sax.js:#8)",
 ]
 `;
 
@@ -512,7 +412,7 @@ Array [
 exports[`WF_AttributeValueMustAfterEqual with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: attribute value must after \\"=\\"
-    at parseElementStartPart (lib/sax.js:#7)",
+    at parseElementStartPart (lib/sax.js:#8)",
 ]
 `;
 
@@ -572,6 +472,6 @@ Array [
 exports[`WF_UnclosedXmlAttribute with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 Array [
   "warning: unclosed xml attribute
-    at parse (lib/sax.js:#3)",
+    at parse (lib/sax.js:#4)",
 ]
 `;

@@ -116,22 +116,6 @@ Object {
 }
 `;
 
-exports[`html normalizer <r><Label onClick="doClick..>Hello, World</Label></r> 1`] = `
-Object {
-  "actual": "<r xmlns=\\"http://www.w3.org/1999/xhtml\\">&lt;Label onClick=\\"doClick..&gt;Hello, World</r>",
-  "errors": Array [
-    Array [
-      "error",
-      "element parse error: Error: attribute value no end '\\"' match",
-      Object {
-        "columnNumber": 5,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
-
 exports[`html normalizer text/html: script <input type="button" disabled></input> 1`] = `
 Object {
   "actual": "<input type=\\"button\\" disabled=\\"disabled\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",

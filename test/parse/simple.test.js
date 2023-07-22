@@ -13,30 +13,6 @@ describe('parse', () => {
 		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
-	test('unclosed inner', () => {
-		const { errors, parser } = getTestParser();
-
-		const actual = parser.parseFromString('<r><Page><Label /></Page  <Page></Page></r>', MIME_TYPE.XML_TEXT).toString();
-
-		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
-	});
-
-	test('unclosed root', () => {
-		const { errors, parser } = getTestParser();
-
-		const actual = parser.parseFromString('<Page><Label class="title"/></Page  1', MIME_TYPE.XML_TEXT).toString();
-
-		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
-	});
-
-	test('unclosed root followed by another tag', () => {
-		const { errors, parser } = getTestParser();
-
-		const actual = parser.parseFromString('<Page></Page  <hello></hello>', MIME_TYPE.XML_TEXT).toString();
-
-		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
-	});
-
 	test('svg test', () => {
 		const svgCase = [
 			'<svg>',
@@ -80,7 +56,7 @@ describe('parse', () => {
 		const actual = parser
 			.parseFromString(
 				// TODO: xml not well formed but no warning or error, extract into different test?
-				'<html><body title="1<2"><table>&lt;;test</body></body></html>',
+				'<html><body title="1<2"><table>&lt;;test</table></body></html>',
 				'text/html'
 			)
 			.toString();

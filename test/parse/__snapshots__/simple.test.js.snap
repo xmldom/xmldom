@@ -33,56 +33,8 @@ Object {
 }
 `;
 
-exports[`parse unclosed inner 1`] = `
-Object {
-  "actual": "<r><Page><Label/></Page></r>",
-  "errors": Array [
-    Array [
-      "error",
-      "end tag name: Page maybe not complete",
-      Object {
-        "columnNumber": 10,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
-
-exports[`parse unclosed root 1`] = `
-Object {
-  "actual": "<Page><Label class=\\"title\\"/></Page>  1",
-  "errors": Array [
-    Array [
-      "error",
-      "end tag name: Page is not complete",
-      Object {
-        "columnNumber": 20,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
-
-exports[`parse unclosed root followed by another tag 1`] = `
-Object {
-  "actual": "<Page/>",
-  "errors": Array [
-    Array [
-      "error",
-      "end tag name: Page maybe not complete",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
-
 exports[`parse wrong closing tag 1`] = `
 Object {
-  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"><table></table>&lt;;test</body></html>",
+  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"><table>&lt;;test</table></body></html>",
 }
 `;

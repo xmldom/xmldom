@@ -1,58 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`xmltest/not-wellformed standalone should match 001.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-&lt;doc
-?
-&lt;a
-</doc>",
-  "errors": Array [
-    Array [
-      "warning",
-      "attribute \\"?\\" missed value!! \\"?\\" instead2!!",
-      Object {
-        "columnNumber": 7,
-        "lineNumber": 4,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid attribute:?",
-      Object {
-        "columnNumber": 7,
-        "lineNumber": 4,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:a<",
-      Object {
-        "columnNumber": 7,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 001.xml with snapshot 1`] = `"Opening and ending tag mismatch: \\"doc\\" != \\"a\\""`;
 
-exports[`xmltest/not-wellformed standalone should match 002.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-&lt;.doc&gt;</doc>
-",
-  "errors": Array [
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:.doc",
-      Object {
-        "columnNumber": 14,
-        "lineNumber": 2,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 002.xml with snapshot 1`] = `"end tag name contains invalid characters: \\".doc\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 003.xml with snapshot 1`] = `"Invalid processing instruction starting at position 5"`;
 
@@ -126,7 +76,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 015.xml with snapshot 1`] = `"missing root element"`;
+exports[`xmltest/not-wellformed standalone should match 015.xml with snapshot 1`] = `"AttValue: ' or \\" expected"`;
 
 exports[`xmltest/not-wellformed standalone should match 016.xml with snapshot 1`] = `"missing root element"`;
 
@@ -134,29 +84,7 @@ exports[`xmltest/not-wellformed standalone should match 017.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 018.xml with snapshot 1`] = `"Invalid CDATA starting at position 5"`;
 
-exports[`xmltest/not-wellformed standalone should match 019.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc/>",
-  "errors": Array [
-    Array [
-      "warning",
-      "unclosed xml attribute",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-    Array [
-      "error",
-      "end tag name: doc is not complete",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 019.xml with snapshot 1`] = `"end tag name missing"`;
 
 exports[`xmltest/not-wellformed standalone should match 020.xml with snapshot 1`] = `
 Object {
@@ -178,23 +106,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 023.xml with snapshot 1`] = `"missing root element"`;
 
-exports[`xmltest/not-wellformed standalone should match 024.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-&lt;123&gt;</doc>
-",
-  "errors": Array [
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:123",
-      Object {
-        "columnNumber": 12,
-        "lineNumber": 2,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 024.xml with snapshot 1`] = `"end tag name contains invalid characters: \\"123\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 025.xml with snapshot 1`] = `
 Object {
@@ -234,11 +146,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 034.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>A form-feed is not white space or a name character</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 034.xml with snapshot 1`] = `"end tag name contains invalid characters: \\"doc\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 035.xml with snapshot 1`] = `
 Object {
@@ -274,11 +182,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 038.xml with snapshot 1`] = `"Attribute x redefined"`;
 
-exports[`xmltest/not-wellformed standalone should match 039.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc><a/></doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 039.xml with snapshot 1`] = `"Opening and ending tag mismatch: \\"a\\" != \\"aa\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 040.xml with snapshot 1`] = `
 Object {
@@ -314,11 +218,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 042.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 042.xml with snapshot 1`] = `"end tag name contains invalid characters: \\"doc/\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 043.xml with snapshot 1`] = `
 Object {
@@ -363,23 +263,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 046.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-&lt;a/
-</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "element parse error: Error: elements closed character '/' and '>' must be connected to",
-      Object {
-        "columnNumber": 8,
-        "lineNumber": 2,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 046.xml with snapshot 1`] = `"Opening and ending tag mismatch: \\"doc\\" != \\"a\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 047.xml with snapshot 1`] = `
 Object {
@@ -397,14 +281,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 049.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc>
-<a><![CDATA[xyz]]]></a>
-
-</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 049.xml with snapshot 1`] = `"Opening and ending tag mismatch: \\"doc\\" != \\"a\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 050.xml with snapshot 1`] = `"missing root element"`;
 
@@ -424,21 +301,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 053.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc/>",
-  "errors": Array [
-    Array [
-      "warning",
-      "unclosed xml attribute",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 053.xml with snapshot 1`] = `"Opening and ending tag mismatch: \\"doc\\" != \\"DOC\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 054.xml with snapshot 1`] = `"Error in internal subset at position 16"`;
 
@@ -796,24 +659,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 104.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ENTITY e \\"<foo>\\">
-]>
-<doc>&amp;e;</doc>",
-  "errors": Array [
-    Array [
-      "error",
-      "entity not found:&e;",
-      Object {
-        "columnNumber": 6,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 104.xml with snapshot 1`] = `"Opening and ending tag mismatch: \\"doc\\" != \\"foo\\""`;
 
 exports[`xmltest/not-wellformed standalone should match 105.xml with snapshot 1`] = `
 Object {

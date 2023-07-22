@@ -19,11 +19,54 @@ const path = require('path');
  */
 const REPORTED = {
 	/**
+	 * Well-formedness constraint: Element Type Match
+	 *
+	 * The Name in an element's end-tag must match the element type in the start-tag.
+	 *
+	 * @see https://www.w3.org/TR/xml/#GIMatch
+	 * @see https://www.w3.org/TR/xml11/#GIMatch
+	 */
+	WF_ElementTypeMatch: {
+		source: '<xml><a></b></xml>',
+		level: 'fatalError',
+		match: (msg) => /Opening and ending tag mismatch/.test(msg),
+	},
+	/**
+	 * Well-formedness constraint: Element Type Match
+	 *
+	 * The Name in an element's end-tag must match the element type in the start-tag.
+	 *
+	 * @see https://www.w3.org/TR/xml/#GIMatch
+	 * @see https://www.w3.org/TR/xml11/#GIMatch
+	 */
+	WF_ElementTypeMatch_QName: {
+		source: '<xml><a></b></xml 1',
+		level: 'fatalError',
+		match: (msg) => /end tag name contains invalid characters/.test(msg),
+	},
+	WF_ElementTypeMatch_QName_complex: {
+		source: '<r><Page><Label /></Page  <Page></Page></r>',
+		level: 'fatalError',
+		match: (msg) => /end tag name contains invalid characters/.test(msg),
+	},
+	WF_ElementTypeMatch_Root: {
+		source: '<xml></Xml>',
+		level: 'fatalError',
+		skippedInHtml: true,
+		match: (msg) => /Opening and ending tag mismatch/.test(msg),
+	},
+	WF_ElementTypeMatch_Root_UnclosedMultiple: {
+		source: '<xml></xml <second></second>',
+		level: 'fatalError',
+		match: (msg) => /Opening and ending tag mismatch/.test(msg),
+	},
+
+	/**
 	 * Entities need to be in the entityMap to be converted as part of parsing.
 	 * xmldom currently doesn't parse entities declared in DTD.
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#wf-entdeclared
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#wf-entdeclared
+	 * @see https://www.w3.org/TR/xml/#wf-entdeclared
+	 * @see https://www.w3.org/TR/xml11/#wf-entdeclared
 	 */
 	WF_EntityDeclared: {
 		source: '<xml>&e;</xml>',
@@ -44,34 +87,13 @@ const REPORTED = {
 	 * than for other attributes (picks last),
 	 * which can be a security issue.
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#uniqattspec
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#uniqattspec
+	 * @see https://www.w3.org/TR/xml/#uniqattspec
+	 * @see https://www.w3.org/TR/xml11/#uniqattspec
 	 */
 	WF_DuplicateAttribute: {
 		source: '<xml a="1" a="2"></xml>',
 		level: 'fatalError',
 		match: (msg) => /Attribute .* redefined/.test(msg),
-	},
-	/**
-	 * This sample doesn't follow the specified grammar.
-	 * In the browser it is reported as `error on line 1 at column 14: expected '>'`,
-	 * but still adds the root level element to the dom.
-	 */
-	SYNTAX_EndTagNotComplete: {
-		source: '<xml></xml',
-		level: 'error',
-		match: (msg) => /end tag name/.test(msg) && /is not complete/.test(msg),
-	},
-	/**
-	 * This sample doesn't follow the specified grammar.
-	 * In the browser it is reported as `error on line 1 at column 21: expected '>'`,
-	 * but still adds the root level element and inner tag to the dom.
-	 */
-	SYNTAX_EndTagMaybeNotComplete: {
-		source: '<xml><inner></inner </xml>',
-		level: 'error',
-		skippedInHtml: true,
-		match: (msg) => /end tag name/.test(msg) && /maybe not complete/.test(msg),
 	},
 	/**
 	 * This sample doesn't follow the specified grammar.
@@ -211,20 +233,21 @@ const REPORTED = {
 	 *
 	 * But the XML specifications does not allow that:
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
-	SYNTAX_AttributeEqualMissingValue: {
+	WF_AttributeEqualMissingValue: {
 		source: '<doc><child a1=></child></doc>',
-		level: 'error',
-		match: (msg) => /attribute value missed!!/.test(msg),
+		level: 'fatalError',
+		skippedInHtml: true,
+		match: (msg) => /AttValue: \\' or " expected/.test(msg),
 	},
 	/**
 	 * In the browser this is not an issue at all, but just add an attribute without a value.
 	 * But the XML specifications does not allow that:
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
 	WF_AttributeMissingValue: {
 		source: '<xml attr ></xml>',
@@ -238,8 +261,8 @@ const REPORTED = {
 	 * but just add an attribute without a value.
 	 * But the XML specifications does not allow that:
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
 	WF_AttributeMissingValue2: {
 		source: '<xml attr attr2 ></xml>',
