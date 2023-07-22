@@ -16,9 +16,15 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 			test(`should not be reported`, () => {
 				const { errors, parser } = getTestParser();
 
-				parser.parseFromString(source, mimeType);
+				try {
+					parser.parseFromString(source, mimeType);
 
-				expect(errors).toHaveLength(0);
+					expect(errors).toMatchSnapshot('reported');
+					expect(errors.filter((lvl, msg) => match(msg))).toHaveLength(0);
+				} catch (e) {
+					expect(e).toMatchSnapshot('caught');
+					expect(match(e.message)).toBe(false);
+				}
 			});
 		} else {
 			if (level === 'fatalError') {

@@ -70,11 +70,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 013.xml with snapshot 1`] = `"missing root element"`;
 
-exports[`xmltest/not-wellformed standalone should match 014.xml with snapshot 1`] = `
-Object {
-  "actual": "<doc a1=\\"&lt;foo&gt;\\"/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 014.xml with snapshot 1`] = `"Unescaped '<' not allowed in attributes values"`;
 
 exports[`xmltest/not-wellformed standalone should match 015.xml with snapshot 1`] = `"AttValue: ' or \\" expected"`;
 

@@ -96,6 +96,31 @@ const REPORTED = {
 		match: (msg) => /Attribute .* redefined/.test(msg),
 	},
 	/**
+	 * Well-formedness constraint: No < in Attribute Values
+	 *
+	 * The replacement text of any entity referred to directly or indirectly in an attribute value
+	 * must not contain a `<`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#CleanAttrVals
+	 * @see https://www.w3.org/TR/xml11/#CleanAttrVals
+	 */
+	WF_AttValue_CleanAttrVals: {
+		source: '<xml attr="1<2">',
+		level: 'fatalError',
+		skippedInHtml: true,
+		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
+	},
+	WF_AttValue_CleanAttrVals_MissingClosingQuote: {
+		source: '<xml><Label onClick="doClick..>Hello, World</Label></xml>',
+		level: 'fatalError',
+		// the sample still reports another fatalError, because `Label` is never properly closed.
+		// (search for the key in the snapshots to see it)
+		// our test just makes sure that this specific error is not reported
+		// browsers ignore the faulty tag, but this is not easy to implement
+		skippedInHtml: true,
+		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
+	},
+	/**
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser it is reported as `error on line 1 at column 6: Comment not terminated`.
 	 */
