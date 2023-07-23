@@ -29,27 +29,6 @@ describe('parse', () => {
 		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
-	test('line error', () => {
-		const xmlLineError = [
-			'<package xmlns="http://ns.saxonica.com/xslt/export"',
-			'         xmlns:fn="http://www.w3.org/2005/xpath-functions"',
-			'         xmlns:xs="http://www.w3.org/2001/XMLSchema"',
-			'         xmlns:vv="http://saxon.sf.net/generated-variable"',
-			'         version="20"',
-			'         packageVersion="1">',
-			'  <co id="0" binds="1">',
-			'</package>',
-		].join('\r\n');
-		const { errors, parser } = getTestParser({ locator: {} });
-
-		const dom = parser.parseFromString(xmlLineError, MIME_TYPE.XML_TEXT);
-
-		expect({
-			lineNumber: dom.documentElement.firstChild.nextSibling.lineNumber,
-			...(errors.length ? { errors } : undefined),
-		}).toMatchSnapshot();
-	});
-
 	test('wrong closing tag', () => {
 		const { errors, parser } = getTestParser({ locator: {} });
 

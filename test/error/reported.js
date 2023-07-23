@@ -60,7 +60,27 @@ const REPORTED = {
 		level: 'fatalError',
 		match: (msg) => /Opening and ending tag mismatch/.test(msg),
 	},
-
+	/**
+	 * In the Browser (for XML) this is reported as
+	 * `error on line 1 at column 6: Extra content at the end of the document`
+	 * for HTML it's added to the DOM without anything being reported.
+	 */
+	WF_ElementTypeMatch_UnclosedXmlTag: {
+		source: '<xml>',
+		level: 'fatalError',
+		skippedInHtml: true,
+		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
+	},
+	/**
+	 * This sample doesn't follow the specified grammar.
+	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start Tag xml`.
+	 */
+	WF_ElementTypeMatch_IncompleteStartTag: {
+		source: '<xml',
+		level: 'fatalError',
+		skippedInHtml: true,
+		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
+	},
 	/**
 	 * Entities need to be in the entityMap to be converted as part of parsing.
 	 * xmldom currently doesn't parse entities declared in DTD.
@@ -157,15 +177,6 @@ const REPORTED = {
 		match: (msg) => /invalid attribute/.test(msg),
 	},
 	/**
-	 * This sample doesn't follow the specified grammar.
-	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start Tag xml`.
-	 */
-	SYNTAX_UnexpectedEndOfInput: {
-		source: '<xml',
-		level: 'error',
-		match: (msg) => /unexpected end of input/.test(msg),
-	},
-	/**
 	 * Triggered by lib/sax.js:392, caught in 208
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser:
@@ -176,17 +187,6 @@ const REPORTED = {
 		source: '<xml><a/ </xml>',
 		level: 'error',
 		match: (msg) => /must be connected/.test(msg),
-	},
-	/**
-	 * In the Browser (for XML) this is reported as
-	 * `error on line 1 at column 6: Extra content at the end of the document`
-	 * for HTML it's added to the DOM without anything being reported.
-	 */
-	WF_UnclosedXmlAttribute: {
-		source: '<xml>',
-		level: 'warning',
-		skippedInHtml: true,
-		match: (msg) => /unclosed xml attribute/.test(msg),
 	},
 	/**
 	 * In the browser:

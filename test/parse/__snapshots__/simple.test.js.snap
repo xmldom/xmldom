@@ -1,21 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parse line error 1`] = `
-Object {
-  "errors": Array [
-    Array [
-      "warning",
-      "unclosed xml attribute",
-      Object {
-        "columnNumber": 24,
-        "lineNumber": 7,
-      },
-    ],
-  ],
-  "lineNumber": 7,
-}
-`;
-
 exports[`parse simple 1`] = `
 Object {
   "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"></body></html>",

@@ -160,54 +160,6 @@ Array [
 ]
 `;
 
-exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/html should be reported 1`] = `
-Array [
-  Array [
-    "error",
-    "unexpected end of input",
-    Object {
-      "columnNumber": 1,
-      "lineNumber": 1,
-    },
-  ],
-]
-`;
-
-exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
-Array [
-  "error: unexpected end of input
-    at parseElementStartPart (lib/sax.js:#14)",
-]
-`;
-
-exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/xml should be reported 1`] = `
-Array [
-  Array [
-    "error",
-    "unexpected end of input",
-    Object {
-      "columnNumber": 1,
-      "lineNumber": 1,
-    },
-  ],
-  Array [
-    "warning",
-    "unclosed xml attribute",
-    Object {
-      "columnNumber": 1,
-      "lineNumber": 1,
-    },
-  ],
-]
-`;
-
-exports[`SYNTAX_UnexpectedEndOfInput with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
-Array [
-  "error: unexpected end of input
-    at parseElementStartPart (lib/sax.js:#14)",
-]
-`;
-
 exports[`WF_AttValue_CleanAttrVals with mimeType text/html should not be reported: reported 1`] = `Array []`;
 
 exports[`WF_AttValue_CleanAttrVals_MissingClosingQuote with mimeType text/html should not be reported: caught 1`] = `[ParseError: Opening and ending tag mismatch: "xml" != "Label"]`;
@@ -426,7 +378,22 @@ Array [
 ]
 `;
 
+exports[`WF_ElementTypeMatch_IncompleteStartTag with mimeType text/html should not be reported: reported 1`] = `
+Array [
+  Array [
+    "error",
+    "unexpected end of input",
+    Object {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
 exports[`WF_ElementTypeMatch_Root with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_ElementTypeMatch_UnclosedXmlTag with mimeType text/html should not be reported: reported 1`] = `Array []`;
 
 exports[`WF_EntityDeclared with mimeType text/html should be reported 1`] = `
 Array [
@@ -465,27 +432,5 @@ exports[`WF_EntityDeclared with mimeType text/xml should escalate Error thrown i
 Array [
   "error: entity not found:&e;
     at replace (lib/sax.js:#0)",
-]
-`;
-
-exports[`WF_UnclosedXmlAttribute with mimeType text/html should not be reported: reported 1`] = `Array []`;
-
-exports[`WF_UnclosedXmlAttribute with mimeType text/xml should be reported 1`] = `
-Array [
-  Array [
-    "warning",
-    "unclosed xml attribute",
-    Object {
-      "columnNumber": 1,
-      "lineNumber": 1,
-    },
-  ],
-]
-`;
-
-exports[`WF_UnclosedXmlAttribute with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
-Array [
-  "warning: unclosed xml attribute
-    at parse (lib/sax.js:#4)",
 ]
 `;

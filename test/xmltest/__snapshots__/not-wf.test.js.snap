@@ -1162,24 +1162,7 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 176.xml with snapshot 1`] = `
-Object {
-  "actual": "<!DOCTYPE doc [
-<!ELEMENT doc (#PCDATA)>
-]>
-<doc/>",
-  "errors": Array [
-    Array [
-      "warning",
-      "unclosed xml attribute",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 4,
-      },
-    ],
-  ],
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 176.xml with snapshot 1`] = `"unclosed xml tag(s): doc"`;
 
 exports[`xmltest/not-wellformed standalone should match 177.xml with snapshot 1`] = `
 Object {
