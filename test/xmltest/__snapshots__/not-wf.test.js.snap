@@ -182,17 +182,33 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 036.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>
-Illegal data
-",
+  "actual": "<doc/>",
+  "errors": Array [
+    Array [
+      "error",
+      "Extra content at the end of the document",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 037.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>
-&amp;#32;
-",
+  "actual": "<doc/>",
+  "errors": Array [
+    Array [
+      "error",
+      "Extra content at the end of the document",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
@@ -238,20 +254,35 @@ exports[`xmltest/not-wellformed standalone should match 042.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 043.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>
-Illegal data
-",
+  "actual": "<doc/>",
+  "errors": Array [
+    Array [
+      "error",
+      "Extra content at the end of the document",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 044.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>&lt;doc/&gt;
-",
+  "actual": "<doc/>&lt;",
   "errors": Array [
     Array [
       "error",
       "element parse error: Error: Hierarchy request error: Only one element can be added and only after doctype",
+      Object {
+        "columnNumber": 7,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
+      "Extra content at the end of the document",
       Object {
         "columnNumber": 7,
         "lineNumber": 1,
@@ -714,9 +745,17 @@ Object {
   "actual": "<!DOCTYPE doc [
 <!ENTITY e \\"\\">
 ]>
-<doc/>
-&amp;e;
-",
+<doc/>",
+  "errors": Array [
+    Array [
+      "error",
+      "Extra content at the end of the document",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 4,
+      },
+    ],
+  ],
 }
 `;
 
