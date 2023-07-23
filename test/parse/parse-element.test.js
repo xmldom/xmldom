@@ -158,6 +158,11 @@ describe('XML Node Parse', () => {
 		);
 	});
 
+	it('sibling closing tag with same name and whitespace', () => {
+		const actual = new DOMParser().parseFromString(`<xml><span>1</span><span>2</span ></xml>`, 'text/xml').toString();
+		expect(actual).toBe(`<xml><span>1</span><span>2</span></xml>`);
+	});
+
 	describe('simple attributes', () => {
 		describe('nothing special', () => {
 			test.each(['<xml a="1" b="2"></xml>', '<xml a="1" b="2" ></xml>', '<xml a="1" b="2" />'])('%s', (input) => {
