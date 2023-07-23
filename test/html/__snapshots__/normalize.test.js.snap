@@ -58,6 +58,14 @@ Object {
   "errors": Array [
     Array [
       "error",
+      "entity not matching Reference production: &456",
+      Object {
+        "columnNumber": 23,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
       "element parse error: Error: invalid tagName:789;&&<",
       Object {
         "columnNumber": 23,
@@ -70,7 +78,7 @@ Object {
 
 exports[`html normalizer <div>&nbsp;&copy;&nbsp&copy</div> 1`] = `
 Object {
-  "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\"> ©&amp;nbsp&amp;copy</div>",
+  "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\"> © ©</div>",
 }
 `;
 
@@ -221,6 +229,14 @@ Object {
     Array [
       "error",
       "element parse error: Error: attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 28,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
+      "EntityRef: expecting ;",
       Object {
         "columnNumber": 28,
         "lineNumber": 1,

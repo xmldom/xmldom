@@ -15,6 +15,16 @@ exports[`xmltest/not-wellformed standalone should match 006.xml with snapshot 1`
 exports[`xmltest/not-wellformed standalone should match 007.xml with snapshot 1`] = `
 Object {
   "actual": "<doc>&amp;amp no refc</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "EntityRef: expecting ;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
@@ -26,7 +36,17 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 009.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>{!0!}</doc>",
+  "actual": "<doc>&amp;#RE;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not matching Reference production: &#RE;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
@@ -614,7 +634,17 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 093.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>{!0!}</doc>",
+  "actual": "<doc>&amp;#X58;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not matching Reference production: &#X58;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
