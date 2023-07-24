@@ -332,13 +332,7 @@ exports[`xmltest/not-wellformed standalone should match 049.xml with snapshot 1`
 
 exports[`xmltest/not-wellformed standalone should match 050.xml with snapshot 1`] = `"missing root element"`;
 
-exports[`xmltest/not-wellformed standalone should match 051.xml with snapshot 1`] = `
-Object {
-  "actual": "<!-- a comment -->
-
-<doc/>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 051.xml with snapshot 1`] = `"CDATA outside of element"`;
 
 exports[`xmltest/not-wellformed standalone should match 052.xml with snapshot 1`] = `
 Object {
@@ -718,14 +712,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 104.xml with snapshot 1`] = `"Opening and ending tag mismatch: \\"doc\\" != \\"foo\\""`;
 
-exports[`xmltest/not-wellformed standalone should match 105.xml with snapshot 1`] = `
-Object {
-  "actual": "<?pi stuff?>
-
-<doc>
-</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 105.xml with snapshot 1`] = `"CDATA outside of element"`;
 
 exports[`xmltest/not-wellformed standalone should match 106.xml with snapshot 1`] = `
 Object {
