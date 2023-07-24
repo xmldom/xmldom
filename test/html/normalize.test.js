@@ -50,14 +50,14 @@ describe('html normalizer', () => {
 			'<ul><li>abc<li>def</ul>',
 		])(`${mimeType}: script %s`, (xml) => {
 			const { errors, parser } = getTestParser();
+			let actual;
 
 			try {
-				const actual = parser.parseFromString(xml, mimeType).toString();
-
-				expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot('reported');
+				actual = parser.parseFromString(xml, mimeType).toString();
 			} catch (error) {
 				expect(error).toMatchSnapshot('caught');
 			}
+			actual && expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot('reported');
 		});
 	});
 
