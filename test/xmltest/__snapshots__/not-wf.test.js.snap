@@ -339,6 +339,16 @@ Object {
   "actual": "<!-- a comment -->
  
 <doc/>",
+  "errors": Array [
+    Array [
+      "error",
+      "Unexpected content outside root element: '&#32;'",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 3,
+      },
+    ],
+  ],
 }
 `;
 
@@ -718,6 +728,16 @@ exports[`xmltest/not-wellformed standalone should match 106.xml with snapshot: r
 Object {
   "actual": "<?pi data?>
  <doc/>",
+  "errors": Array [
+    Array [
+      "error",
+      "Unexpected content outside root element: '&#32;'",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 2,
+      },
+    ],
+  ],
 }
 `;
 
@@ -1159,6 +1179,16 @@ Object {
 <!ELEMENT doc (#PCDATA)>
 <!ENTITY % e \\"\\">
 ]><doc/>",
+  "errors": Array [
+    Array [
+      "error",
+      "Unexpected content outside root element: '%e;'",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 6,
+      },
+    ],
+  ],
 }
 `;
 
@@ -1178,23 +1208,11 @@ Object {
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 168.xml with snapshot: reported 1`] = `
-Object {
-  "actual": "<doc>���</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 168.xml with snapshot: caught 1`] = `"Unicode replacement character detected, source encoding issues?"`;
 
-exports[`xmltest/not-wellformed standalone should match 169.xml with snapshot: reported 1`] = `
-Object {
-  "actual": "<doc>���</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 169.xml with snapshot: caught 1`] = `"Unicode replacement character detected, source encoding issues?"`;
 
-exports[`xmltest/not-wellformed standalone should match 170.xml with snapshot: reported 1`] = `
-Object {
-  "actual": "<doc>����</doc>",
-}
-`;
+exports[`xmltest/not-wellformed standalone should match 170.xml with snapshot: caught 1`] = `"Unicode replacement character detected, source encoding issues?"`;
 
 exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot: caught 1`] = `"comment is not well-formed at position 0"`;
 
