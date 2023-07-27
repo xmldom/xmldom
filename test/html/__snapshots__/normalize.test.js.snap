@@ -336,6 +336,6 @@ Object {
 
 exports[`html normalizer unclosed html <html><meta><link><img><br><hr><input></html> 1`] = `
 Object {
-  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><meta><link><img><br><hr><input/></hr></br></img></link></meta></html>",
+  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><meta/><link/><img/><br/><hr/><input/></html>",
 }
 `;
