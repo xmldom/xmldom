@@ -36,6 +36,14 @@ Object {
         "lineNumber": 1,
       },
     ],
+    Array [
+      "error",
+      "entity not matching Reference production: &456",
+      Object {
+        "columnNumber": 17,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -43,6 +51,16 @@ Object {
 exports[`html normalizer <div test="a<b&&a< c && a>d"></div> 1`] = `
 Object {
   "actual": "<div test=\\"a&lt;b&amp;&amp;a&lt; c &amp;&amp; a&gt;d\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&a",
+      Object {
+        "columnNumber": 11,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
@@ -163,6 +181,16 @@ Object {
 exports[`html normalizer text/html: script <textarea>alert(a<b&&c?"<br>":">>");</textarea>: reported 1`] = `
 Object {
   "actual": "<textarea xmlns=\\"http://www.w3.org/1999/xhtml\\">alert(a&lt;b&amp;&amp;c?\\"&lt;br&gt;\\":\\"&gt;&gt;\\");</textarea>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&c",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 

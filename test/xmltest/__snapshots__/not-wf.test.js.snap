@@ -111,12 +111,32 @@ Object {
 exports[`xmltest/not-wellformed standalone should match 021.xml with snapshot: reported 1`] = `
 Object {
   "actual": "<doc a1=\\"a&amp;b\\"/>",
+  "errors": Array [
+    Array [
+      "error",
+      "EntityRef: expecting ;",
+      Object {
+        "columnNumber": 9,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 022.xml with snapshot: reported 1`] = `
 Object {
   "actual": "<doc a1=\\"&amp;#123:\\"/>",
+  "errors": Array [
+    Array [
+      "error",
+      "EntityRef: expecting ;",
+      Object {
+        "columnNumber": 9,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
