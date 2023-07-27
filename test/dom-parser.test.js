@@ -161,24 +161,38 @@ describe('DOMParser', () => {
 				expect(onError).toHaveBeenCalledWith('fatalError', expect.stringContaining('root'), expect.any(__DOMHandler));
 			});
 			test('should throw for level error when using onErrorStopParsing', () => {
-				const parser = new DOMParser({ onError: onErrorStopParsing });
+				const onError = jest.fn(onErrorStopParsing);
+				const parser = new DOMParser({ onError });
 
 				// warning
-				expect(() => parser.parseFromString('<xml>', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(() => parser.parseFromString('<xml attr />', MIME_TYPE.XML_TEXT)).not.toThrow(ParseError);
+				expect(onError).toBeCalledTimes(1);
+				expect(onError).toHaveBeenCalledWith('warning', expect.anything(), expect.anything());
 				// error
-				expect(() => parser.parseFromString('<xml', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(() => parser.parseFromString('<xml>&e;</xml>', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(onError).toBeCalledTimes(2);
+				expect(onError).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
 				// fatalError
 				expect(() => parser.parseFromString('', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(onError).toBeCalledTimes(3);
+				expect(onError).toHaveBeenCalledWith('fatalError', expect.anything(), expect.anything());
 			});
 			test('should throw for level error when using onWarningStopParsing', () => {
-				const parser = new DOMParser({ onError: onWarningStopParsing });
+				const onError = jest.fn(onWarningStopParsing);
+				const parser = new DOMParser({ onError });
 
 				// warning
-				expect(() => parser.parseFromString('<xml>', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(() => parser.parseFromString('<xml attr />', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(onError).toBeCalledTimes(1);
+				expect(onError).toHaveBeenCalledWith('warning', expect.anything(), expect.anything());
 				// error
-				expect(() => parser.parseFromString('<xml', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(() => parser.parseFromString('<xml>&e;</xml>', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(onError).toBeCalledTimes(2);
+				expect(onError).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
 				// fatalError
 				expect(() => parser.parseFromString('', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
+				expect(onError).toBeCalledTimes(3);
+				expect(onError).toHaveBeenCalledWith('fatalError', expect.anything(), expect.anything());
 			});
 			test('should throw when errorHandler is not a function', () => {
 				expect(() => new DOMParser({ errorHandler: {} })).toThrow(TypeError);
