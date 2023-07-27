@@ -18,13 +18,12 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 
 				try {
 					parser.parseFromString(source, mimeType);
-
-					expect(errors).toMatchSnapshot('reported');
-					expect(errors.filter((lvl, msg) => match(msg))).toHaveLength(0);
 				} catch (e) {
 					expect(e).toMatchSnapshot('caught');
 					expect(match(e.message)).toBe(false);
 				}
+				expect(errors).toMatchSnapshot('reported');
+				expect(errors.filter((lvl, msg) => match(msg))).toHaveLength(0);
 			});
 		} else {
 			if (level === 'fatalError') {

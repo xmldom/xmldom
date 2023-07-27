@@ -164,6 +164,27 @@ exports[`WF_AttValue_CleanAttrVals with mimeType text/html should not be reporte
 
 exports[`WF_AttValue_CleanAttrVals_MissingClosingQuote with mimeType text/html should not be reported: caught 1`] = `[ParseError: Opening and ending tag mismatch: "xml" != "Label"]`;
 
+exports[`WF_AttValue_CleanAttrVals_MissingClosingQuote with mimeType text/html should not be reported: reported 1`] = `
+Array [
+  Array [
+    "error",
+    "element parse error: Error: attribute value no end '\\"' match",
+    Object {
+      "columnNumber": 7,
+      "lineNumber": 1,
+    },
+  ],
+  Array [
+    "fatalError",
+    "Opening and ending tag mismatch: \\"xml\\" != \\"Label\\"",
+    Object {
+      "columnNumber": 7,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
 exports[`WF_AttributeEqualMissingValue with mimeType text/html should not be reported: reported 1`] = `Array []`;
 
 exports[`WF_AttributeMissingQuote with mimeType text/html should be reported 1`] = `
