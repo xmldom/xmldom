@@ -444,7 +444,7 @@ function parseErrorLines(fileNameInKey) {
 
 	const REPORTED_JSON = path.join(__dirname, 'reported.json');
 	const data = JSON.stringify(LINE_TO_ERROR_INDEX, null, 2);
-	const currentData = fs.readFileSync(REPORTED_JSON, 'utf8');
+	const currentData = fs.existsSync(REPORTED_JSON) ? fs.readFileSync(REPORTED_JSON, 'utf8') : '';
 	if (data !== currentData) {
 		fs.writeFileSync(REPORTED_JSON, data, 'utf8');
 	}
