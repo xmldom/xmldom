@@ -399,7 +399,11 @@ Array [
 ]
 `;
 
-exports[`WF_ElementTypeMatch_IncompleteStartTag with mimeType text/html should not be reported: reported 1`] = `
+exports[`WF_ElementTypeMatch_Mismatch_Root with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_ElementTypeMatch_UnclosedXmlTag with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_ElementTypeMatch_UnclosedXmlTag_IncompleteStartTag with mimeType text/html should not be reported: reported 1`] = `
 Array [
   Array [
     "error",
@@ -412,9 +416,107 @@ Array [
 ]
 `;
 
-exports[`WF_ElementTypeMatch_Root with mimeType text/html should not be reported: reported 1`] = `Array []`;
+exports[`WF_Entity_ReferenceProduction with mimeType text/html should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "entity not matching Reference production: &1;",
+    Object {
+      "columnNumber": 6,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
 
-exports[`WF_ElementTypeMatch_UnclosedXmlTag with mimeType text/html should not be reported: reported 1`] = `Array []`;
+exports[`WF_Entity_ReferenceProduction with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: entity not matching Reference production: &1;
+    at replace (lib/sax.js:#2)",
+]
+`;
+
+exports[`WF_Entity_ReferenceProduction with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "entity not matching Reference production: &1;",
+    Object {
+      "columnNumber": 6,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_Entity_ReferenceProduction with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: entity not matching Reference production: &1;
+    at replace (lib/sax.js:#2)",
+]
+`;
+
+exports[`WF_Entity_ReferenceProduction_Attr with mimeType text/html should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "entity not matching Reference production: &1;",
+    Object {
+      "columnNumber": 11,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_Entity_ReferenceProduction_Attr with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: entity not matching Reference production: &1;
+    at replace (lib/sax.js:#2)",
+]
+`;
+
+exports[`WF_Entity_ReferenceProduction_Attr with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "entity not matching Reference production: &1;",
+    Object {
+      "columnNumber": 11,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_Entity_ReferenceProduction_Attr with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: entity not matching Reference production: &1;
+    at replace (lib/sax.js:#2)",
+]
+`;
+
+exports[`WF_Entity_ReferenceProduction_Script with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_Entity_ReferenceProduction_Script with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "entity not matching Reference production: &1;",
+    Object {
+      "columnNumber": 9,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_Entity_ReferenceProduction_Script with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: entity not matching Reference production: &1;
+    at replace (lib/sax.js:#2)",
+]
+`;
 
 exports[`WF_EntityDeclared with mimeType text/html should be reported 1`] = `
 Array [
@@ -453,5 +555,203 @@ exports[`WF_EntityDeclared with mimeType text/xml should escalate Error thrown i
 Array [
   "error: entity not found:&e;
     at replace (lib/sax.js:#3)",
+]
+`;
+
+exports[`WF_EntityDeclared_Attr with mimeType text/html should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "entity not found:&e;",
+    Object {
+      "columnNumber": 11,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_EntityDeclared_Attr with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: entity not found:&e;
+    at replace (lib/sax.js:#3)",
+]
+`;
+
+exports[`WF_EntityDeclared_Attr with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "entity not found:&e;",
+    Object {
+      "columnNumber": 11,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_EntityDeclared_Attr with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: entity not found:&e;
+    at replace (lib/sax.js:#3)",
+]
+`;
+
+exports[`WF_EntityDeclared_Script with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_EntityDeclared_Script with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "entity not found:&e;",
+    Object {
+      "columnNumber": 9,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_EntityDeclared_Script with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: entity not found:&e;
+    at replace (lib/sax.js:#3)",
+]
+`;
+
+exports[`WF_EntityRef with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_EntityRef with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "EntityRef: expecting ;",
+    Object {
+      "columnNumber": 6,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_EntityRef with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: EntityRef: expecting ;
+    at replace (lib/sax.js:#1)",
+]
+`;
+
+exports[`WF_EntityRef_Attr with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_EntityRef_Attr with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "EntityRef: expecting ;",
+    Object {
+      "columnNumber": 11,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_EntityRef_Attr with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: EntityRef: expecting ;
+    at replace (lib/sax.js:#1)",
+]
+`;
+
+exports[`WF_EntityRef_Script with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_EntityRef_Script with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "EntityRef: expecting ;",
+    Object {
+      "columnNumber": 9,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_EntityRef_Script with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: EntityRef: expecting ;
+    at replace (lib/sax.js:#1)",
+]
+`;
+
+exports[`WF_SingleRootElement_CDataOutside with mimeType text/html should not be reported: caught 1`] = `[ParseError: Not well-formed XML starting with "<!" at position 0]`;
+
+exports[`WF_SingleRootElement_CDataOutside with mimeType text/html should not be reported: reported 1`] = `
+Array [
+  Array [
+    "fatalError",
+    "Not well-formed XML starting with \\"<!\\" at position 0",
+    Object {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_SingleRootElement_ContentAfter with mimeType text/html should not be reported: reported 1`] = `
+Array [
+  Array [
+    "error",
+    "Extra content at the end of the document",
+    Object {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_SingleRootElement_ContentAfter with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "Extra content at the end of the document",
+    Object {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_SingleRootElement_ContentAfter with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: Extra content at the end of the document
+    at parse (lib/sax.js:#5)",
+]
+`;
+
+exports[`WF_SingleRootElement_ContentBefore with mimeType text/html should not be reported: reported 1`] = `Array []`;
+
+exports[`WF_SingleRootElement_ContentBefore with mimeType text/xml should be reported 1`] = `
+Array [
+  Array [
+    "error",
+    "Unexpected content outside root element: 'textbefore'",
+    Object {
+      "columnNumber": 12,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`WF_SingleRootElement_ContentBefore with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+Array [
+  "error: Unexpected content outside root element: 'textbefore'
+    at parse (lib/sax.js:#6)",
 ]
 `;

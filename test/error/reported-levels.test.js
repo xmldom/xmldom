@@ -8,6 +8,37 @@ const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib/dom-parser');
 const { ParseError } = require('../../lib/sax');
 const { getTestParser } = require('../get-test-parser');
+describe('reported.json', () => {
+	Object.entries(LINE_TO_ERROR_INDEX)
+		.filter(([key]) => !!key)
+		.forEach(([key, { errorType, index, line, message }]) => {
+			describe(`entry #${index} (${key})`, () => {
+				const relatedReported = Object.entries(REPORTED).filter(
+					([sourceLine, { level, match }]) => new RegExp(level, 'i').test(errorType) && match(message)
+				);
+				switch (relatedReported.length) {
+					case 0:
+						test.todo(`should have an entry in REPORTED matching ${errorType}: ${message}`);
+						break;
+					case 1:
+						test(`should have an entry in REPORTED matching ${errorType}: ${message}`, () => {
+							expect(relatedReported.length).toBeGreaterThanOrEqual(1);
+						});
+						break;
+					default: // more than one match
+						const start = relatedReported[0][0];
+						test(`should have keys that start with '${start}' for multiple matches`, () => {
+							expect(relatedReported.filter(([key]) => !key.startsWith(start))).toHaveLength(0);
+						});
+				}
+				if (errorType.includes('fatalError')) {
+					test('should return when reporting fatalError', () => {
+						expect(line).toMatch(/^return /);
+					});
+				}
+			});
+		});
+});
 
 describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, skippedInHtml }) => {
 	describe.each([MIME_TYPE.XML_TEXT, MIME_TYPE.HTML])('with mimeType %s', (mimeType) => {

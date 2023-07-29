@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const skippedInHtml = true;
 /**
  * @typedef ErrorReport
  * @property {string} source
@@ -18,18 +19,10 @@ const path = require('path');
  * to call methods on `errorHandler`.
  */
 const REPORTED = {
-	/**
-	 * Well-formedness constraint: Element Type Match
-	 *
-	 * The Name in an element's end-tag must match the element type in the start-tag.
-	 *
-	 * @see https://www.w3.org/TR/xml/#GIMatch
-	 * @see https://www.w3.org/TR/xml11/#GIMatch
-	 */
-	WF_ElementTypeMatch: {
-		source: '<xml><a></b></xml>',
+	Encoding_ReplacementCharacter: {
+		source: '\ufffd',
 		level: 'fatalError',
-		match: (msg) => /Opening and ending tag mismatch/.test(msg),
+		match: (msg) => /Unicode replacement character/.test(msg),
 	},
 	/**
 	 * Well-formedness constraint: Element Type Match
@@ -49,13 +42,26 @@ const REPORTED = {
 		level: 'fatalError',
 		match: (msg) => /end tag name contains invalid characters/.test(msg),
 	},
-	WF_ElementTypeMatch_Root: {
-		source: '<xml></Xml>',
+	/**
+	 * Well-formedness constraint: Element Type Match
+	 *
+	 * The Name in an element's end-tag must match the element type in the start-tag.
+	 *
+	 * @see https://www.w3.org/TR/xml/#GIMatch
+	 * @see https://www.w3.org/TR/xml11/#GIMatch
+	 */
+	WF_ElementTypeMatch_Mismatch: {
+		source: '<xml><a></b></xml>',
 		level: 'fatalError',
-		skippedInHtml: true,
 		match: (msg) => /Opening and ending tag mismatch/.test(msg),
 	},
-	WF_ElementTypeMatch_Root_UnclosedMultiple: {
+	WF_ElementTypeMatch_Mismatch_Root: {
+		source: '<xml></Xml>',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /Opening and ending tag mismatch/.test(msg),
+	},
+	WF_ElementTypeMatch_Mismatch_Root_UnclosedMultiple: {
 		source: '<xml></xml <second></second>',
 		level: 'fatalError',
 		match: (msg) => /Opening and ending tag mismatch/.test(msg),
@@ -68,17 +74,22 @@ const REPORTED = {
 	WF_ElementTypeMatch_UnclosedXmlTag: {
 		source: '<xml>',
 		level: 'fatalError',
-		skippedInHtml: true,
+		skippedInHtml,
 		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
+	},
+	WF_ElementTypeMatch_EndTagMissingName: {
+		source: '<xml></>',
+		level: 'fatalError',
+		match: (msg) => /end tag name missing/.test(msg),
 	},
 	/**
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start Tag xml`.
 	 */
-	WF_ElementTypeMatch_IncompleteStartTag: {
+	WF_ElementTypeMatch_UnclosedXmlTag_IncompleteStartTag: {
 		source: '<xml',
 		level: 'fatalError',
-		skippedInHtml: true,
+		skippedInHtml,
 		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
 	},
 	/**
@@ -92,6 +103,51 @@ const REPORTED = {
 		source: '<xml>&e;</xml>',
 		level: 'error',
 		match: (msg) => /entity not found/.test(msg),
+	},
+	WF_EntityDeclared_Attr: {
+		source: '<xml attr="&e;"></xml>',
+		level: 'error',
+		match: (msg) => /entity not found/.test(msg),
+	},
+	WF_EntityDeclared_Script: {
+		source: '<script>&e;</script>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /entity not found/.test(msg),
+	},
+	WF_EntityRef: {
+		source: '<xml>&amp</xml>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /EntityRef: expecting ;/.test(msg),
+	},
+	WF_EntityRef_Attr: {
+		source: '<xml attr="&amp"></xml>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /EntityRef: expecting ;/.test(msg),
+	},
+	WF_EntityRef_Script: {
+		source: '<script>&amp</script>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /EntityRef: expecting ;/.test(msg),
+	},
+	WF_Entity_ReferenceProduction: {
+		source: '<xml>&1;</xml>',
+		level: 'error',
+		match: (msg) => /entity not matching Reference production/.test(msg),
+	},
+	WF_Entity_ReferenceProduction_Attr: {
+		source: '<xml attr="&1;"></xml>',
+		level: 'error',
+		match: (msg) => /entity not matching Reference production/.test(msg),
+	},
+	WF_Entity_ReferenceProduction_Script: {
+		source: '<script>&1;</script>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /entity not matching Reference production/.test(msg),
 	},
 	/**
 	 * Well-formedness constraint: Unique Att Spec
@@ -127,7 +183,7 @@ const REPORTED = {
 	WF_AttValue_CleanAttrVals: {
 		source: '<xml attr="1<2">',
 		level: 'fatalError',
-		skippedInHtml: true,
+		skippedInHtml,
 		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
 	},
 	WF_AttValue_CleanAttrVals_MissingClosingQuote: {
@@ -137,7 +193,7 @@ const REPORTED = {
 		// (search for the key in the snapshots to see it)
 		// our test just makes sure that this specific error is not reported
 		// browsers ignore the faulty tag, but this is not easy to implement
-		skippedInHtml: true,
+		skippedInHtml,
 		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
 	},
 	/**
@@ -264,7 +320,7 @@ const REPORTED = {
 	WF_AttributeEqualMissingValue: {
 		source: '<doc><child a1=></child></doc>',
 		level: 'fatalError',
-		skippedInHtml: true,
+		skippedInHtml,
 		match: (msg) => /AttValue: \\' or " expected/.test(msg),
 	},
 	/**
@@ -278,7 +334,7 @@ const REPORTED = {
 		source: '<xml attr ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead!!/.test(msg),
-		skippedInHtml: true,
+		skippedInHtml,
 	},
 	/**
 	 * Triggered by lib/sax.js:376 This seems to only be reached when there are two subsequent
@@ -293,7 +349,30 @@ const REPORTED = {
 		source: '<xml attr attr2 ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead2!!/.test(msg),
-		skippedInHtml: true,
+		skippedInHtml,
+	},
+	WF_SingleRootElement_ContentAfter: {
+		source: '<xml/>text after',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /Extra content at the end of the document/.test(msg),
+	},
+	WF_SingleRootElement_ContentBefore: {
+		source: 'text before<xml/>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /Unexpected content outside root element/.test(msg),
+	},
+	WF_SingleRootElement_InvalidCData: {
+		source: '<!CDATA[ ] ] ><xml/>',
+		level: 'fatalError',
+		match: (msg) => /Invalid CDATA starting at/.test(msg),
+	},
+	WF_SingleRootElement_CDataOutside: {
+		source: '<!CDATA[]]><xml/>',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /CDATA outside of element/.test(msg),
 	},
 };
 
@@ -362,7 +441,13 @@ function parseErrorLines(fileNameInKey) {
 			throw new Error(`line not mapped: ${lineKey} reportedAs $${key}`);
 		}
 	});
-	fs.writeFileSync(path.join(__dirname, 'reported.json'), JSON.stringify(LINE_TO_ERROR_INDEX, null, 2), 'utf8');
+
+	const REPORTED_JSON = path.join(__dirname, 'reported.json');
+	const data = JSON.stringify(LINE_TO_ERROR_INDEX, null, 2);
+	const currentData = fs.readFileSync(REPORTED_JSON, 'utf8');
+	if (data !== currentData) {
+		fs.writeFileSync(REPORTED_JSON, data, 'utf8');
+	}
 }
 parseErrorLines(path.join('lib', 'sax.js'));
 
