@@ -8,6 +8,37 @@ const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib/dom-parser');
 const { ParseError } = require('../../lib/sax');
 const { getTestParser } = require('../get-test-parser');
+describe('reported.json', () => {
+	Object.entries(LINE_TO_ERROR_INDEX)
+		.filter(([key]) => !!key)
+		.forEach(([key, { errorType, index, line, message }]) => {
+			describe(`entry #${index} (${key})`, () => {
+				const relatedReported = Object.entries(REPORTED).filter(
+					([sourceLine, { level, match }]) => new RegExp(level, 'i').test(errorType) && match(message)
+				);
+				switch (relatedReported.length) {
+					case 0:
+						test.todo(`should have an entry in REPORTED matching ${errorType}: ${message}`);
+						break;
+					case 1:
+						test(`should have an entry in REPORTED matching ${errorType}: ${message}`, () => {
+							expect(relatedReported.length).toBeGreaterThanOrEqual(1);
+						});
+						break;
+					default: // more than one match
+						const start = relatedReported[0][0];
+						test(`should have keys that start with '${start}' for multiple matches`, () => {
+							expect(relatedReported.filter(([key]) => !key.startsWith(start))).toHaveLength(0);
+						});
+				}
+				if (errorType.includes('fatalError')) {
+					test('should return when reporting fatalError', () => {
+						expect(line).toMatch(/^return /);
+					});
+				}
+			});
+		});
+});
 
 describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, skippedInHtml }) => {
 	describe.each([MIME_TYPE.XML_TEXT, MIME_TYPE.HTML])('with mimeType %s', (mimeType) => {
@@ -16,9 +47,14 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 			test(`should not be reported`, () => {
 				const { errors, parser } = getTestParser();
 
-				parser.parseFromString(source, mimeType);
-
-				expect(errors).toHaveLength(0);
+				try {
+					parser.parseFromString(source, mimeType);
+				} catch (e) {
+					expect(e).toMatchSnapshot('caught');
+					expect(match(e.message)).toBe(false);
+				}
+				expect(errors).toMatchSnapshot('reported');
+				expect(errors.filter((lvl, msg) => match(msg))).toHaveLength(0);
 			});
 		} else {
 			if (level === 'fatalError') {
@@ -28,7 +64,7 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 
 					expect(() => parser.parseFromString(source, mimeType)).toThrow(ParseError);
 
-					expect(onError).toHaveBeenCalledTimes(1);
+					expect(onError).toHaveBeenCalled();
 				});
 			} else {
 				test(`should be reported`, () => {

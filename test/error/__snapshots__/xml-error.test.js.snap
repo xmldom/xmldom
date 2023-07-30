@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`html vs xml: html attribute (miss quote) 1`] = `
+exports[`html without reported errors html attribute (missing quote) 1`] = `
 Object {
   "actual": "<img attr=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
   "errors": Array [
@@ -16,31 +16,7 @@ Object {
 }
 `;
 
-exports[`html vs xml: invalid xml node "<r" 1`] = `
-Object {
-  "actual": "<r/>",
-  "errors": Array [
-    Array [
-      "error",
-      "unexpected end of input",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-    Array [
-      "warning",
-      "unclosed xml attribute",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
-
-exports[`html vs xml: text/html attribute (missing =) 1`] = `
+exports[`html without reported errors text/html attribute (missing =) 1`] = `
 Object {
   "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
 
@@ -67,7 +43,7 @@ Object {
 }
 `;
 
-exports[`html vs xml: text/xml attribute (missing =) 1`] = `
+exports[`html without reported errors text/xml attribute (missing =) 1`] = `
 Object {
   "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
 
@@ -94,24 +70,8 @@ Object {
 }
 `;
 
-exports[`html vs xml: unclosed document in text/html 1`] = `
+exports[`html without reported errors unclosed document 1`] = `
 Object {
   "actual": "<img xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
-}
-`;
-
-exports[`html vs xml: unclosed document in text/xml 1`] = `
-Object {
-  "actual": "<img/>",
-  "errors": Array [
-    Array [
-      "warning",
-      "unclosed xml attribute",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-  ],
 }
 `;

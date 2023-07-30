@@ -15,7 +15,6 @@ describe('html normalizer', () => {
 		'<div test="a<b&&a< c && a>d"></div>',
 		'<div a=& bb c d=123&&456/>',
 		'<html test="123"/>',
-		'<r><Label onClick="doClick..>Hello, World</Label></r>',
 		'<Label onClick=doClick..">Hello, World</Label>',
 	])('%s', (xml) => {
 		const { errors, parser } = getTestParser();
@@ -34,12 +33,12 @@ describe('html normalizer', () => {
 	])('unclosed html %s', (xml) => {
 		const { errors, parser } = getTestParser();
 
-		const actual = parser.parseFromString(xml, 'text/html').toString();
+		const actual = parser.parseFromString(xml, MIME_TYPE.HTML).toString();
 
 		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 	});
 
-	Array.from([MIME_TYPE.XML_TEXT, 'text/html']).forEach((mimeType) => {
+	Array.from([MIME_TYPE.XML_TEXT, MIME_TYPE.HTML]).forEach((mimeType) => {
 		test.each([
 			'<script>alert(a<b&&c?"<br>":">>");</script>',
 			'<script>alert(a<b&&c?"<br/>":">>");</script>',
@@ -51,10 +50,14 @@ describe('html normalizer', () => {
 			'<ul><li>abc<li>def</ul>',
 		])(`${mimeType}: script %s`, (xml) => {
 			const { errors, parser } = getTestParser();
+			let actual;
 
-			const actual = parser.parseFromString(xml, mimeType).toString();
-
-			expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
+			try {
+				actual = parser.parseFromString(xml, mimeType).toString();
+			} catch (error) {
+				expect(error).toMatchSnapshot('caught');
+			}
+			actual && expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot('reported');
 		});
 	});
 

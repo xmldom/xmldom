@@ -94,13 +94,13 @@ function StubDOMHandlerWith(throwingMethod, ErrorClass) {
  */
 const ALL_METHODS = `<?xml version="1.1"?>
 <!DOCTYPE name >
-<![CDATA[ raw ]]>
 <root xmlns="namespace">
+	<![CDATA[ raw ]]>
   <!-- -->
   <element xmlns:x="http://test" x:a="" warning>
     character
   </element>
-  <element attribute="">&e;</mismatch>
+  <element attribute="">&e;</element>
 </root>
 `;
 

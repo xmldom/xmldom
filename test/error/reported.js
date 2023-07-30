@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const skippedInHtml = true;
 /**
  * @typedef ErrorReport
  * @property {string} source
@@ -18,17 +19,135 @@ const path = require('path');
  * to call methods on `errorHandler`.
  */
 const REPORTED = {
+	Encoding_ReplacementCharacter: {
+		source: '\ufffd',
+		level: 'fatalError',
+		match: (msg) => /Unicode replacement character/.test(msg),
+	},
+	/**
+	 * Well-formedness constraint: Element Type Match
+	 *
+	 * The Name in an element's end-tag must match the element type in the start-tag.
+	 *
+	 * @see https://www.w3.org/TR/xml/#GIMatch
+	 * @see https://www.w3.org/TR/xml11/#GIMatch
+	 */
+	WF_ElementTypeMatch_QName: {
+		source: '<xml><a></b></xml 1',
+		level: 'fatalError',
+		match: (msg) => /end tag name contains invalid characters/.test(msg),
+	},
+	WF_ElementTypeMatch_QName_complex: {
+		source: '<r><Page><Label /></Page  <Page></Page></r>',
+		level: 'fatalError',
+		match: (msg) => /end tag name contains invalid characters/.test(msg),
+	},
+	/**
+	 * Well-formedness constraint: Element Type Match
+	 *
+	 * The Name in an element's end-tag must match the element type in the start-tag.
+	 *
+	 * @see https://www.w3.org/TR/xml/#GIMatch
+	 * @see https://www.w3.org/TR/xml11/#GIMatch
+	 */
+	WF_ElementTypeMatch_Mismatch: {
+		source: '<xml><a></b></xml>',
+		level: 'fatalError',
+		match: (msg) => /Opening and ending tag mismatch/.test(msg),
+	},
+	WF_ElementTypeMatch_Mismatch_Root: {
+		source: '<xml></Xml>',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /Opening and ending tag mismatch/.test(msg),
+	},
+	WF_ElementTypeMatch_Mismatch_Root_UnclosedMultiple: {
+		source: '<xml></xml <second></second>',
+		level: 'fatalError',
+		match: (msg) => /Opening and ending tag mismatch/.test(msg),
+	},
+	/**
+	 * In the Browser (for XML) this is reported as
+	 * `error on line 1 at column 6: Extra content at the end of the document`
+	 * for HTML it's added to the DOM without anything being reported.
+	 */
+	WF_ElementTypeMatch_UnclosedXmlTag: {
+		source: '<xml>',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
+	},
+	WF_ElementTypeMatch_EndTagMissingName: {
+		source: '<xml></>',
+		level: 'fatalError',
+		match: (msg) => /end tag name missing/.test(msg),
+	},
+	/**
+	 * This sample doesn't follow the specified grammar.
+	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start Tag xml`.
+	 */
+	WF_ElementTypeMatch_UnclosedXmlTag_IncompleteStartTag: {
+		source: '<xml',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
+	},
 	/**
 	 * Entities need to be in the entityMap to be converted as part of parsing.
 	 * xmldom currently doesn't parse entities declared in DTD.
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#wf-entdeclared
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#wf-entdeclared
+	 * @see https://www.w3.org/TR/xml/#wf-entdeclared
+	 * @see https://www.w3.org/TR/xml11/#wf-entdeclared
 	 */
 	WF_EntityDeclared: {
 		source: '<xml>&e;</xml>',
 		level: 'error',
 		match: (msg) => /entity not found/.test(msg),
+	},
+	WF_EntityDeclared_Attr: {
+		source: '<xml attr="&e;"></xml>',
+		level: 'error',
+		match: (msg) => /entity not found/.test(msg),
+	},
+	WF_EntityDeclared_Script: {
+		source: '<script>&e;</script>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /entity not found/.test(msg),
+	},
+	WF_EntityRef: {
+		source: '<xml>&amp</xml>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /EntityRef: expecting ;/.test(msg),
+	},
+	WF_EntityRef_Attr: {
+		source: '<xml attr="&amp"></xml>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /EntityRef: expecting ;/.test(msg),
+	},
+	WF_EntityRef_Script: {
+		source: '<script>&amp</script>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /EntityRef: expecting ;/.test(msg),
+	},
+	WF_Entity_ReferenceProduction: {
+		source: '<xml>&1;</xml>',
+		level: 'error',
+		match: (msg) => /entity not matching Reference production/.test(msg),
+	},
+	WF_Entity_ReferenceProduction_Attr: {
+		source: '<xml attr="&1;"></xml>',
+		level: 'error',
+		match: (msg) => /entity not matching Reference production/.test(msg),
+	},
+	WF_Entity_ReferenceProduction_Script: {
+		source: '<script>&1;</script>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /entity not matching Reference production/.test(msg),
 	},
 	/**
 	 * Well-formedness constraint: Unique Att Spec
@@ -44,8 +163,8 @@ const REPORTED = {
 	 * than for other attributes (picks last),
 	 * which can be a security issue.
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#uniqattspec
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#uniqattspec
+	 * @see https://www.w3.org/TR/xml/#uniqattspec
+	 * @see https://www.w3.org/TR/xml11/#uniqattspec
 	 */
 	WF_DuplicateAttribute: {
 		source: '<xml a="1" a="2"></xml>',
@@ -53,25 +172,29 @@ const REPORTED = {
 		match: (msg) => /Attribute .* redefined/.test(msg),
 	},
 	/**
-	 * This sample doesn't follow the specified grammar.
-	 * In the browser it is reported as `error on line 1 at column 14: expected '>'`,
-	 * but still adds the root level element to the dom.
+	 * Well-formedness constraint: No < in Attribute Values
+	 *
+	 * The replacement text of any entity referred to directly or indirectly in an attribute value
+	 * must not contain a `<`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#CleanAttrVals
+	 * @see https://www.w3.org/TR/xml11/#CleanAttrVals
 	 */
-	SYNTAX_EndTagNotComplete: {
-		source: '<xml></xml',
-		level: 'error',
-		match: (msg) => /end tag name/.test(msg) && /is not complete/.test(msg),
+	WF_AttValue_CleanAttrVals: {
+		source: '<xml attr="1<2">',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
 	},
-	/**
-	 * This sample doesn't follow the specified grammar.
-	 * In the browser it is reported as `error on line 1 at column 21: expected '>'`,
-	 * but still adds the root level element and inner tag to the dom.
-	 */
-	SYNTAX_EndTagMaybeNotComplete: {
-		source: '<xml><inner></inner </xml>',
-		level: 'error',
-		skippedInHtml: true,
-		match: (msg) => /end tag name/.test(msg) && /maybe not complete/.test(msg),
+	WF_AttValue_CleanAttrVals_MissingClosingQuote: {
+		source: '<xml><Label onClick="doClick..>Hello, World</Label></xml>',
+		level: 'fatalError',
+		// the sample still reports another fatalError, because `Label` is never properly closed.
+		// (search for the key in the snapshots to see it)
+		// our test just makes sure that this specific error is not reported
+		// browsers ignore the faulty tag, but this is not easy to implement
+		skippedInHtml,
+		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
 	},
 	/**
 	 * This sample doesn't follow the specified grammar.
@@ -110,15 +233,6 @@ const REPORTED = {
 		match: (msg) => /invalid attribute/.test(msg),
 	},
 	/**
-	 * This sample doesn't follow the specified grammar.
-	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start Tag xml`.
-	 */
-	SYNTAX_UnexpectedEndOfInput: {
-		source: '<xml',
-		level: 'error',
-		match: (msg) => /unexpected end of input/.test(msg),
-	},
-	/**
 	 * Triggered by lib/sax.js:392, caught in 208
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser:
@@ -129,17 +243,6 @@ const REPORTED = {
 		source: '<xml><a/ </xml>',
 		level: 'error',
 		match: (msg) => /must be connected/.test(msg),
-	},
-	/**
-	 * In the Browser (for XML) this is reported as
-	 * `error on line 1 at column 6: Extra content at the end of the document`
-	 * for HTML it's added to the DOM without anything being reported.
-	 */
-	WF_UnclosedXmlAttribute: {
-		source: '<xml>',
-		level: 'warning',
-		skippedInHtml: true,
-		match: (msg) => /unclosed xml attribute/.test(msg),
 	},
 	/**
 	 * In the browser:
@@ -211,26 +314,27 @@ const REPORTED = {
 	 *
 	 * But the XML specifications does not allow that:
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
-	SYNTAX_AttributeEqualMissingValue: {
+	WF_AttributeEqualMissingValue: {
 		source: '<doc><child a1=></child></doc>',
-		level: 'error',
-		match: (msg) => /attribute value missed!!/.test(msg),
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /AttValue: \\' or " expected/.test(msg),
 	},
 	/**
 	 * In the browser this is not an issue at all, but just add an attribute without a value.
 	 * But the XML specifications does not allow that:
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
 	WF_AttributeMissingValue: {
 		source: '<xml attr ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead!!/.test(msg),
-		skippedInHtml: true,
+		skippedInHtml,
 	},
 	/**
 	 * Triggered by lib/sax.js:376 This seems to only be reached when there are two subsequent
@@ -238,14 +342,37 @@ const REPORTED = {
 	 * but just add an attribute without a value.
 	 * But the XML specifications does not allow that:
 	 *
-	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#NT-Attribute
-	 * @see https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
+	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
 	WF_AttributeMissingValue2: {
 		source: '<xml attr attr2 ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead2!!/.test(msg),
-		skippedInHtml: true,
+		skippedInHtml,
+	},
+	WF_SingleRootElement_ContentAfter: {
+		source: '<xml/>text after',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /Extra content at the end of the document/.test(msg),
+	},
+	WF_SingleRootElement_ContentBefore: {
+		source: 'text before<xml/>',
+		level: 'error',
+		skippedInHtml,
+		match: (msg) => /Unexpected content outside root element/.test(msg),
+	},
+	WF_SingleRootElement_InvalidCData: {
+		source: '<!CDATA[ ] ] ><xml/>',
+		level: 'fatalError',
+		match: (msg) => /Invalid CDATA starting at/.test(msg),
+	},
+	WF_SingleRootElement_CDataOutside: {
+		source: '<!CDATA[]]><xml/>',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /CDATA outside of element/.test(msg),
 	},
 };
 
@@ -314,7 +441,13 @@ function parseErrorLines(fileNameInKey) {
 			throw new Error(`line not mapped: ${lineKey} reportedAs $${key}`);
 		}
 	});
-	fs.writeFileSync(path.join(__dirname, 'reported.json'), JSON.stringify(LINE_TO_ERROR_INDEX, null, 2), 'utf8');
+
+	const REPORTED_JSON = path.join(__dirname, 'reported.json');
+	const data = JSON.stringify(LINE_TO_ERROR_INDEX, null, 2);
+	const currentData = fs.existsSync(REPORTED_JSON) ? fs.readFileSync(REPORTED_JSON, 'utf8') : '';
+	if (data !== currentData) {
+		fs.writeFileSync(REPORTED_JSON, data, 'utf8');
+	}
 }
 parseErrorLines(path.join('lib', 'sax.js'));
 
