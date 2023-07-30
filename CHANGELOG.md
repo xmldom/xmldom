@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-beta.11](https://github.com/xmldom/xmldom/compare/0.9.0-beta.10...0.9.0-beta.11)
+
+### Fixed
+
+- report more non well-formed cases [`#519`](https://github.com/xmldom/xmldom/pull/519)  / [`#45`](https://github.com/xmldom/xmldom/issues/45) / [`#125`](https://github.com/xmldom/xmldom/issues/125) / [`#467`](https://github.com/xmldom/xmldom/issues/467)
+  BREAKING-CHANGE: Reports more not well-formed documents as fatalError
+  and drop broken support for optional and unclosed tags in HTML.
+
+### Other
+
+- Translate/drop non English comments [`#518`](https://github.com/xmldom/xmldom/pull/518)
+- use node v16 for development [`#517`](https://github.com/xmldom/xmldom/pull/517)
+
+Thank you, [@brodybits](https://github.com/brodybits), [@cbettinger](https://github.com/cbettinger), [@josecarlosrx](https://github.com/josecarlosrx), for your contributions
+
+
 ## [0.9.0-beta.10](https://github.com/xmldom/xmldom/compare/0.9.0-beta.9...0.9.0-beta.10)
 
 ### Fixed
