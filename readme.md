@@ -4,8 +4,11 @@
 *For better readability in the docs we will continue to talk about this library as "xmldom".*
 
 [![license(MIT)](https://img.shields.io/npm/l/@xmldom/xmldom?color=blue&style=flat-square)](https://github.com/xmldom/xmldom/blob/master/LICENSE)
+[![no dependencies](https://img.shields.io/badge/dependencies-0-lightgreen)](https://socket.dev/npm/package/@xmldom/xmldom)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/@xmldom/xmldom)](https://socket.dev/npm/package/@xmldom/xmldom)
 [![snyk.io package health](https://snyk.io/advisor/npm-package/@xmldom/xmldom/badge.svg)](https://snyk.io/advisor/npm-package/@xmldom/xmldom)
+[![codecov](https://codecov.io/gh/xmldom/xmldom/branch/master/graph/badge.svg?token=NisDcchEOV)](https://codecov.io/gh/xmldom/xmldom)
+[![install size](https://packagephobia.com/badge?p=@xmldom/xmldom)](https://packagephobia.com/result?p=@xmldom/xmldom)
 
 [![npm:latest](https://img.shields.io/npm/v/@xmldom/xmldom/latest?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
 [![npm:next](https://img.shields.io/npm/v/@xmldom/xmldom/next?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom?activeTab=versions)
