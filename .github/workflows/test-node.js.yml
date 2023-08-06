@@ -21,6 +21,8 @@ jobs:
         - 12.x
         - 14.x
         - 16.x
+        - 18.x
+        - 20.x
 
     steps:
     - uses: actions/checkout@v3
@@ -30,6 +32,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci --no-audit
     - run: npm run test
+      if: matrix.node-version != 16.x
+    - run: npm run test -- --coverage
+      if: matrix.node-version == 16.x
+    - if: matrix.node-version == 16.x
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   lint:
 
