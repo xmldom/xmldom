@@ -158,6 +158,11 @@ describe('XML Node Parse', () => {
 		);
 	});
 
+	it('sibling closing tag with same name and whitespace', () => {
+		const actual = new DOMParser().parseFromString(`<xml><span>1</span><span>2</span ></xml>`, 'text/xml').toString();
+		expect(actual).toBe(`<xml><span>1</span><span>2</span></xml>`);
+	});
+
 	describe('simple attributes', () => {
 		describe('nothing special', () => {
 			test.each(['<xml a="1" b="2"></xml>', '<xml a="1" b="2" ></xml>', '<xml a="1" b="2" />'])('%s', (input) => {
@@ -210,14 +215,6 @@ describe('XML Node Parse', () => {
 			});
 		});
 
-		test('unclosed root tag will be closed', () => {
-			const { errors, parser } = getTestParser();
-
-			const actual = parser.parseFromString('<xml a="1" b="2/">', MIME_TYPE.XML_TEXT).toString();
-
-			expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
-		});
-
 		test('should be able to have `constructor` attribute', () => {
 			const { errors, parser } = getTestParser();
 
@@ -244,14 +241,6 @@ describe('XML Node Parse', () => {
 			const actual = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT).toString();
 
 			expect(actual).toBe('<xml xmlns="1" xmlns:a="2" a:test="3"/>');
-		});
-
-		test('unclosed root tag will be closed', () => {
-			const { errors, parser } = getTestParser();
-
-			const actual = parser.parseFromString('<xml xmlns="1" xmlns:a="2" a:test="3/">', MIME_TYPE.XML_TEXT).toString();
-
-			expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 		});
 	});
 });

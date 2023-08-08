@@ -17,13 +17,13 @@ describe('xmltest/valid', () => {
 				const expected = await xmltest.getContent(xmltest.RELATED.out(pathInZip));
 
 				const { errors, parser } = getTestParser();
+				let actual;
 				try {
-					const actual = parser.parseFromString(input, MIME_TYPE.XML_TEXT).toString();
-
-					expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
-				} catch (e) {
-					expect([errors, e]).toMatchSnapshot();
+					actual = parser.parseFromString(input, MIME_TYPE.XML_TEXT).toString();
+				} catch (error) {
+					expect({ error, expected }).toMatchSnapshot('caught');
 				}
+				actual && expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
 			});
 		});
 	});

@@ -14,14 +14,15 @@ describe('xmltest/not-wellformed', () => {
 				const input = await xmltest.getContent(pathInZip);
 
 				const { errors, parser } = getTestParser();
+				let actual;
 
 				try {
-					const actual = parser.parseFromString(input, MIME_TYPE.XML_TEXT);
-					expect(generateSnapshot(actual, errors)).toMatchSnapshot();
+					actual = parser.parseFromString(input, MIME_TYPE.XML_TEXT);
 				} catch (e) {
 					expect(e).toBeInstanceOf(ParseError);
-					expect(e.message).toMatchSnapshot();
+					expect(e.message).toMatchSnapshot('caught');
 				}
+				actual && expect(generateSnapshot(actual, errors)).toMatchSnapshot('reported');
 			});
 		});
 	});

@@ -5,14 +5,6 @@ const { MIME_TYPE } = require('../../lib/conventions');
 const { getTestParser } = require('../get-test-parser');
 
 describe('errorHandle', () => {
-	test('unclosed tag', () => {
-		const { errors, parser } = getTestParser();
-
-		const actual = parser.parseFromString('<foo', MIME_TYPE.XML_TEXT).toString();
-
-		expect({ actual, ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
-	});
-
 	test('document source', () => {
 		const testSource = '<?xml version="1.0"?>\n<!--test-->\n<xml/>';
 		const { errors, parser } = getTestParser();

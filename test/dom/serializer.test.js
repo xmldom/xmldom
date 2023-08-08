@@ -211,7 +211,7 @@ describe('XML Serializer', () => {
 		});
 
 		test('should escape special characters in namespace attributes', () => {
-			const input = `<xml xmlns='<&"' xmlns:attr='"&<'><test attr:test=""/></xml>`;
+			const input = `<xml xmlns='&lt;&"' xmlns:attr='"&&lt;'><test attr:test=""/></xml>`;
 			const doc = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT);
 
 			// in this case the explicit attribute nodes are serialized

@@ -90,8 +90,7 @@ describe('DOMLocator', () => {
 	});
 
 	test('attribute position', () => {
-		// TODO: xml not well formed but no warning or error, extract into different test?
-		const xml = '<html><body title="1<2"><table>&lt;;test</body></body></html>';
+		const xml = '<html><body title="1&lt;2"><table>&lt;;test</table></body></html>';
 		const { errors, parser } = getTestParser({
 			locator: { systemId: 'c:/test/1.xml' },
 		});

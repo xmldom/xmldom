@@ -115,28 +115,11 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 012.xml with snapshot 1`] = `
-Array [
-  Array [
-    Array [
-      "error",
-      "element parse error: Error: invalid attribute::",
-      Object {
-        "columnNumber": 2,
-        "lineNumber": 5,
-      },
-    ],
-    Array [
-      "fatalError",
-      "missing root element",
-      Object {
-        "columnNumber": 2,
-        "lineNumber": 5,
-      },
-    ],
-  ],
-  [ParseError: missing root element],
-]
+exports[`xmltest/valid standalone should match 012.xml with snapshot: caught 1`] = `
+Object {
+  "error": [ParseError: missing root element],
+  "expected": "<doc :=\\"v1\\"></doc>",
+}
 `;
 
 exports[`xmltest/valid standalone should match 013.xml with snapshot 1`] = `
@@ -552,148 +535,25 @@ Object {
 }
 `;
 
-exports[`xmltest/valid standalone should match 049.xml with snapshot 1`] = `
-Array [
-  Array [
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 14,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 14,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 14,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 14,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "fatalError",
-      "missing root element",
-      Object {
-        "columnNumber": 14,
-        "lineNumber": 7,
-      },
-    ],
-  ],
-  [ParseError: missing root element],
-]
+exports[`xmltest/valid standalone should match 049.xml with snapshot: caught 1`] = `
+Object {
+  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
+  "expected": "<doc>£</doc>",
+}
 `;
 
-exports[`xmltest/valid standalone should match 050.xml with snapshot 1`] = `
-Array [
-  Array [
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 22,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 22,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 22,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 22,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "fatalError",
-      "missing root element",
-      Object {
-        "columnNumber": 22,
-        "lineNumber": 7,
-      },
-    ],
-  ],
-  [ParseError: missing root element],
-]
+exports[`xmltest/valid standalone should match 050.xml with snapshot: caught 1`] = `
+Object {
+  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
+  "expected": "<doc>เจมส์</doc>",
+}
 `;
 
-exports[`xmltest/valid standalone should match 051.xml with snapshot 1`] = `
-Array [
-  Array [
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 16,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 16,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 16,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "error",
-      "element parse error: Error: invalid tagName:",
-      Object {
-        "columnNumber": 16,
-        "lineNumber": 7,
-      },
-    ],
-    Array [
-      "fatalError",
-      "missing root element",
-      Object {
-        "columnNumber": 16,
-        "lineNumber": 7,
-      },
-    ],
-  ],
-  [ParseError: missing root element],
-]
+exports[`xmltest/valid standalone should match 051.xml with snapshot: caught 1`] = `
+Object {
+  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
+  "expected": "<เจมส์></เจมส์>",
+}
 `;
 
 exports[`xmltest/valid standalone should match 052.xml with snapshot 1`] = `

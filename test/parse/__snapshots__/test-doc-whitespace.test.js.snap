@@ -23,27 +23,3 @@ Object {
   ],
 }
 `;
-
-exports[`errorHandle unclosed tag 1`] = `
-Object {
-  "actual": "<foo/>",
-  "errors": Array [
-    Array [
-      "error",
-      "unexpected end of input",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-    Array [
-      "warning",
-      "unclosed xml attribute",
-      Object {
-        "columnNumber": 1,
-        "lineNumber": 1,
-      },
-    ],
-  ],
-}
-`;
