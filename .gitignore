@@ -11,3 +11,5 @@ coverage
 # can be used to install node with the correct version when entering the directory
 # https://github.com/direnv/direnv/wiki/Node
 .envrc
+
+/.idea
