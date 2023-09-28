@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`XML Node Parse closing tag with unquoted value ending with // 1`] = `
-Array [
-  Array [
+[
+  [
     "warning",
-    "attribute \\"lazy/\\" missed quot(\\")!",
-    Object {
+    "attribute "lazy/" missed quot(")!",
+    {
       "columnNumber": 9,
       "lineNumber": 5,
     },
@@ -14,11 +14,11 @@ Array [
 `;
 
 exports[`XML Node Parse closing tag with unquoted value following / 1`] = `
-Array [
-  Array [
+[
+  [
     "warning",
-    "attribute \\"lazy\\" missed quot(\\")!",
-    Object {
+    "attribute "lazy" missed quot(")!",
+    {
       "columnNumber": 9,
       "lineNumber": 5,
     },
@@ -27,11 +27,11 @@ Array [
 `;
 
 exports[`XML Node Parse closing tag with unquoted value following space and / 1`] = `
-Array [
-  Array [
+[
+  [
     "warning",
-    "attribute \\"lazy\\" missed quot(\\")!!",
-    Object {
+    "attribute "lazy" missed quot(")!!",
+    {
       "columnNumber": 9,
       "lineNumber": 5,
     },
@@ -40,11 +40,11 @@ Array [
 `;
 
 exports[`XML Node Parse closing tag with unquoted value including /  followed by space / 1`] = `
-Array [
-  Array [
+[
+  [
     "warning",
-    "attribute \\"lazy/\\" missed quot(\\")!!",
-    Object {
+    "attribute "lazy/" missed quot(")!!",
+    {
       "columnNumber": 9,
       "lineNumber": 5,
     },
@@ -53,11 +53,11 @@ Array [
 `;
 
 exports[`XML Node Parse closing tag without attribute value 1`] = `
-Array [
-  Array [
+[
+  [
     "warning",
-    "attribute \\"lazy\\" missed value!! \\"lazy\\" instead!!",
-    Object {
+    "attribute "lazy" missed value!! "lazy" instead!!",
+    {
       "columnNumber": 9,
       "lineNumber": 5,
     },
@@ -66,13 +66,13 @@ Array [
 `;
 
 exports[`XML Node Parse simple attributes should be able to have \`__prototype__\` attribute 1`] = `
-Object {
-  "actual": "<xml __prototype__=\\"\\"/>",
+{
+  "actual": "<xml __prototype__=""/>",
 }
 `;
 
 exports[`XML Node Parse simple attributes should be able to have \`constructor\` attribute 1`] = `
-Object {
-  "actual": "<xml constructor=\\"\\"/>",
+{
+  "actual": "<xml constructor=""/>",
 }
 `;
