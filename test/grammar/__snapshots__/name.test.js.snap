@@ -1,70 +1,70 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "_-:_-" (\\u005F\\u002D\\u003A\\u005F\\u002D) 1`] = `
-[
+Array [
   "_-:_-",
   "_-:_-",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "A9:A9" (\\u0041\\u0039\\u003A\\u0041\\u0039) 1`] = `
-[
+Array [
   "A9:A9",
   "A9:A9",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "Z·:Z·" (\\u005A\\u00B7\\u003A\\u005A\\u00B7) 1`] = `
-[
+Array [
   "Z·:Z·",
   "Z·:Z·",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "a.:a." (\\u0061\\u002E\\u003A\\u0061\\u002E) 1`] = `
-[
+Array [
   "a.:a.",
   "a.:a.",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "a0123456789:a0123456789" (\\u0061\\u0030\\u0031\\u0032\\u0033\\u0034\\u0035\\u0036\\u0037\\u0038\\u0039\\u003A\\u0061\\u0030\\u0031\\u0032\\u0033\\u0034\\u0035\\u0036\\u0037\\u0038\\u0039) 1`] = `
-[
+Array [
   "a0123456789:a0123456789",
   "a0123456789:a0123456789",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "z0:z0" (\\u007A\\u0030\\u003A\\u007A\\u0030) 1`] = `
-[
+Array [
   "z0:z0",
   "z0:z0",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "À̀:À̀" (\\u00C0\\u0300\\u003A\\u00C0\\u0300) 1`] = `
-[
+Array [
   "À̀:À̀",
   "À̀:À̀",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "Öͯ:Öͯ" (\\u00D6\\u036F\\u003A\\u00D6\\u036F) 1`] = `
-[
+Array [
   "Öͯ:Öͯ",
   "Öͯ:Öͯ",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "Ø‿:Ø‿" (\\u00D8\\u203F\\u003A\\u00D8\\u203F) 1`] = `
-[
+Array [
   "Ø‿:Ø‿",
   "Ø‿:Ø‿",
 ]
 `;
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "ö⁀:ö⁀" (\\u00F6\\u2040\\u003A\\u00F6\\u2040) 1`] = `
-[
+Array [
   "ö⁀:ö⁀",
   "ö⁀:ö⁀",
 ]

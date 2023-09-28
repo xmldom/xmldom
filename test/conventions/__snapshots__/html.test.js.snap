@@ -1,294 +1,294 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable allowfullscreen with value 'true' 1`] = `
-[
+Array [
   "allowfullscreen",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable async with value 'true' 1`] = `
-[
+Array [
   "async",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable autofocus with value 'true' 1`] = `
-[
+Array [
   "autofocus",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable autoplay with value 'true' 1`] = `
-[
+Array [
   "autoplay",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable checked with value 'true' 1`] = `
-[
+Array [
   "checked",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable controls with value 'true' 1`] = `
-[
+Array [
   "controls",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable default with value 'true' 1`] = `
-[
+Array [
   "default",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable defer with value 'true' 1`] = `
-[
+Array [
   "defer",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable disabled with value 'true' 1`] = `
-[
+Array [
   "disabled",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable formnovalidate with value 'true' 1`] = `
-[
+Array [
   "formnovalidate",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable hidden with value 'true' 1`] = `
-[
+Array [
   "hidden",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable ismap with value 'true' 1`] = `
-[
+Array [
   "ismap",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable itemscope with value 'true' 1`] = `
-[
+Array [
   "itemscope",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable loop with value 'true' 1`] = `
-[
+Array [
   "loop",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable multiple with value 'true' 1`] = `
-[
+Array [
   "multiple",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable muted with value 'true' 1`] = `
-[
+Array [
   "muted",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable nomodule with value 'true' 1`] = `
-[
+Array [
   "nomodule",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable novalidate with value 'true' 1`] = `
-[
+Array [
   "novalidate",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable open with value 'true' 1`] = `
-[
+Array [
   "open",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable playsinline with value 'true' 1`] = `
-[
+Array [
   "playsinline",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable readonly with value 'true' 1`] = `
-[
+Array [
   "readonly",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable required with value 'true' 1`] = `
-[
+Array [
   "required",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable reversed with value 'true' 1`] = `
-[
+Array [
   "reversed",
   true,
 ]
 `;
 
 exports[`HTML_BOOLEAN_ATTRIBUTES should contain immutable selected with value 'true' 1`] = `
-[
+Array [
   "selected",
   true,
 ]
 `;
 
 exports[`HTML_RAW_TEXT_ELEMENTS should contain immutable script with value 'true' 1`] = `
-[
+Array [
   "script",
   false,
 ]
 `;
 
 exports[`HTML_RAW_TEXT_ELEMENTS should contain immutable style with value 'true' 1`] = `
-[
+Array [
   "style",
   false,
 ]
 `;
 
 exports[`HTML_RAW_TEXT_ELEMENTS should contain immutable textarea with value 'true' 1`] = `
-[
+Array [
   "textarea",
   true,
 ]
 `;
 
 exports[`HTML_RAW_TEXT_ELEMENTS should contain immutable title with value 'true' 1`] = `
-[
+Array [
   "title",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable area with value 'true' 1`] = `
-[
+Array [
   "area",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable base with value 'true' 1`] = `
-[
+Array [
   "base",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable br with value 'true' 1`] = `
-[
+Array [
   "br",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable col with value 'true' 1`] = `
-[
+Array [
   "col",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable embed with value 'true' 1`] = `
-[
+Array [
   "embed",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable hr with value 'true' 1`] = `
-[
+Array [
   "hr",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable img with value 'true' 1`] = `
-[
+Array [
   "img",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable input with value 'true' 1`] = `
-[
+Array [
   "input",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable link with value 'true' 1`] = `
-[
+Array [
   "link",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable meta with value 'true' 1`] = `
-[
+Array [
   "meta",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable param with value 'true' 1`] = `
-[
+Array [
   "param",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable source with value 'true' 1`] = `
-[
+Array [
   "source",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable track with value 'true' 1`] = `
-[
+Array [
   "track",
   true,
 ]
 `;
 
 exports[`HTML_VOID_ELEMENTS should contain immutable wbr with value 'true' 1`] = `
-[
+Array [
   "wbr",
   true,
 ]

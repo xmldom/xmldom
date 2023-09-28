@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DOMLocator attribute position 1`] = `
-{
-  "actual": "<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"><table>&lt;;test</table></body></html>",
+Object {
+  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"><table>&lt;;test</table></body></html>",
 }
 `;
 
 exports[`DOMLocator logs error positions 1`] = `
-[
-  [
+Array [
+  Array [
     "error",
     "element parse error: Error: invalid tagName:err<",
-    {
+    Object {
       "columnNumber": 3,
       "lineNumber": 2,
     },

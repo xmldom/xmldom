@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PI should not be greedy 1`] = `
-[
+Array [
   "<?target anything is allowed here as long as ? and > are not beside each other like this:	
 ?>",
   "target",

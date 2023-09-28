@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`parse simple 1`] = `
-{
-  "actual": "<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"></body></html>",
+Object {
+  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"></body></html>",
 }
 `;
 
 exports[`parse svg test 1`] = `
-{
+Object {
   "actual": "<svg>
   <metadata>...</metadata>
-  <defs id="defs14">
-  <path id="path4" d="M 68.589358,...-6.363961,-6.363964 z"/>
-  <path id="path4" d="M 68.589358,...-6.363961,-6.363964 z"/></defs>
+  <defs id=\\"defs14\\">
+  <path id=\\"path4\\" d=\\"M 68.589358,...-6.363961,-6.363964 z\\"/>
+  <path id=\\"path4\\" d=\\"M 68.589358,...-6.363961,-6.363964 z\\"/></defs>
 </svg>",
 }
 `;
 
 exports[`parse wrong closing tag 1`] = `
-{
-  "actual": "<html xmlns="http://www.w3.org/1999/xhtml"><body title="1&lt;2"><table>&lt;;test</table></body></html>",
+Object {
+  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"><table>&lt;;test</table></body></html>",
 }
 `;

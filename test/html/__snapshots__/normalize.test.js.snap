@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`html normalizer <Label onClick=doClick..">Hello, World</Label> 1`] = `
-{
-  "actual": "<Label onClick="doClick.." xmlns="http://www.w3.org/1999/xhtml">Hello, World</Label>",
-  "errors": [
-    [
+Object {
+  "actual": "<Label onClick=\\"doClick..\\" xmlns=\\"http://www.w3.org/1999/xhtml\\">Hello, World</Label>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "onClick" missed start quot(")!!",
-      {
+      "attribute \\"onClick\\" missed start quot(\\")!!",
+      Object {
         "columnNumber": 27,
         "lineNumber": 1,
       },
@@ -17,29 +17,29 @@ exports[`html normalizer <Label onClick=doClick..">Hello, World</Label> 1`] = `
 `;
 
 exports[`html normalizer <div a=& bb c d=123&&456/> 1`] = `
-{
-  "actual": "<div a="&amp;" bb="bb" c="c" d="123&amp;&amp;456" xmlns="http://www.w3.org/1999/xhtml"></div>",
-  "errors": [
-    [
+Object {
+  "actual": "<div a=\\"&amp;\\" bb=\\"bb\\" c=\\"c\\" d=\\"123&amp;&amp;456\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "&" missed quot(")!!",
-      {
+      "attribute \\"&\\" missed quot(\\")!!",
+      Object {
         "columnNumber": 17,
         "lineNumber": 1,
       },
     ],
-    [
+    Array [
       "warning",
-      "attribute "123&&456" missed quot(")!",
-      {
+      "attribute \\"123&&456\\" missed quot(\\")!",
+      Object {
         "columnNumber": 17,
         "lineNumber": 1,
       },
     ],
-    [
+    Array [
       "error",
       "entity not matching Reference production: &456",
-      {
+      Object {
         "columnNumber": 17,
         "lineNumber": 1,
       },
@@ -49,13 +49,13 @@ exports[`html normalizer <div a=& bb c d=123&&456/> 1`] = `
 `;
 
 exports[`html normalizer <div test="a<b&&a< c && a>d"></div> 1`] = `
-{
-  "actual": "<div test="a&lt;b&amp;&amp;a&lt; c &amp;&amp; a&gt;d" xmlns="http://www.w3.org/1999/xhtml"></div>",
-  "errors": [
-    [
+Object {
+  "actual": "<div test=\\"a&lt;b&amp;&amp;a&lt; c &amp;&amp; a&gt;d\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
+  "errors": Array [
+    Array [
       "error",
       "entity not found:&a",
-      {
+      Object {
         "columnNumber": 11,
         "lineNumber": 1,
       },
@@ -65,27 +65,27 @@ exports[`html normalizer <div test="a<b&&a< c && a>d"></div> 1`] = `
 `;
 
 exports[`html normalizer <div test="alert('<br/>')"/> 1`] = `
-{
-  "actual": "<div test="alert('&lt;br/&gt;')" xmlns="http://www.w3.org/1999/xhtml"></div>",
+Object {
+  "actual": "<div test=\\"alert('&lt;br/&gt;')\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
 }
 `;
 
 exports[`html normalizer <div>&amp;&lt;123&456<789;&&</div> 1`] = `
-{
-  "actual": "<div xmlns="http://www.w3.org/1999/xhtml">&amp;&lt;123&amp;456&lt;789;&amp;&amp;</div>",
-  "errors": [
-    [
+Object {
+  "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">&amp;&lt;123&amp;456&lt;789;&amp;&amp;</div>",
+  "errors": Array [
+    Array [
       "error",
       "entity not matching Reference production: &456",
-      {
+      Object {
         "columnNumber": 23,
         "lineNumber": 1,
       },
     ],
-    [
+    Array [
       "error",
       "element parse error: Error: invalid tagName:789;&&<",
-      {
+      Object {
         "columnNumber": 23,
         "lineNumber": 1,
       },
@@ -95,27 +95,27 @@ exports[`html normalizer <div>&amp;&lt;123&456<789;&&</div> 1`] = `
 `;
 
 exports[`html normalizer <div>&nbsp;&copy;&nbsp&copy</div> 1`] = `
-{
-  "actual": "<div xmlns="http://www.w3.org/1999/xhtml"> © ©</div>",
+Object {
+  "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\"> © ©</div>",
 }
 `;
 
 exports[`html normalizer <div><123e>&<a<br/></div> 1`] = `
-{
-  "actual": "<div xmlns="http://www.w3.org/1999/xhtml">&lt;123e&gt;&amp;&lt;a<br/></div>",
-  "errors": [
-    [
+Object {
+  "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">&lt;123e&gt;&amp;&lt;a<br/></div>",
+  "errors": Array [
+    Array [
       "error",
       "element parse error: Error: invalid tagName:123e",
-      {
+      Object {
         "columnNumber": 15,
         "lineNumber": 1,
       },
     ],
-    [
+    Array [
       "error",
       "element parse error: Error: invalid tagName:a<br",
-      {
+      Object {
         "columnNumber": 15,
         "lineNumber": 1,
       },
@@ -125,67 +125,67 @@ exports[`html normalizer <div><123e>&<a<br/></div> 1`] = `
 `;
 
 exports[`html normalizer <html test="123"/> 1`] = `
-{
-  "actual": "<html test="123" xmlns="http://www.w3.org/1999/xhtml"></html>",
+Object {
+  "actual": "<html test=\\"123\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
 }
 `;
 
 exports[`html normalizer <html test="a<b && a>b && '&amp;&&'"/> 1`] = `
-{
-  "actual": "<html test="a&lt;b &amp;&amp; a&gt;b &amp;&amp; '&amp;&amp;&amp;'" xmlns="http://www.w3.org/1999/xhtml"></html>",
+Object {
+  "actual": "<html test=\\"a&lt;b &amp;&amp; a&gt;b &amp;&amp; '&amp;&amp;&amp;'\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
 }
 `;
 
 exports[`html normalizer <html xmlns:x="1"><body/></html> 1`] = `
-{
-  "actual": "<html xmlns:x="1" xmlns="http://www.w3.org/1999/xhtml"><body></body></html>",
+Object {
+  "actual": "<html xmlns:x=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"><body></body></html>",
 }
 `;
 
 exports[`html normalizer text/html: script <input type="button" disabled></input>: reported 1`] = `
-{
-  "actual": "<input type="button" disabled="disabled" xmlns="http://www.w3.org/1999/xhtml"/>",
+Object {
+  "actual": "<input type=\\"button\\" disabled=\\"disabled\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
 }
 `;
 
 exports[`html normalizer text/html: script <input type="checkbox" checked></input>: reported 1`] = `
-{
-  "actual": "<input type="checkbox" checked="checked" xmlns="http://www.w3.org/1999/xhtml"/>",
+Object {
+  "actual": "<input type=\\"checkbox\\" checked=\\"checked\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
 }
 `;
 
 exports[`html normalizer text/html: script <option selected></option>: reported 1`] = `
-{
-  "actual": "<option selected="selected" xmlns="http://www.w3.org/1999/xhtml"></option>",
+Object {
+  "actual": "<option selected=\\"selected\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></option>",
 }
 `;
 
 exports[`html normalizer text/html: script <script src="./test.js"/>: reported 1`] = `
-{
-  "actual": "<script src="./test.js" xmlns="http://www.w3.org/1999/xhtml"></script>",
+Object {
+  "actual": "<script src=\\"./test.js\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></script>",
 }
 `;
 
 exports[`html normalizer text/html: script <script>alert(a<b&&c?"<br/>":">>");</script>: reported 1`] = `
-{
-  "actual": "<script xmlns="http://www.w3.org/1999/xhtml">alert(a<b&&c?"<br/>":">>");</script>",
+Object {
+  "actual": "<script xmlns=\\"http://www.w3.org/1999/xhtml\\">alert(a<b&&c?\\"<br/>\\":\\">>\\");</script>",
 }
 `;
 
 exports[`html normalizer text/html: script <script>alert(a<b&&c?"<br>":">>");</script>: reported 1`] = `
-{
-  "actual": "<script xmlns="http://www.w3.org/1999/xhtml">alert(a<b&&c?"<br>":">>");</script>",
+Object {
+  "actual": "<script xmlns=\\"http://www.w3.org/1999/xhtml\\">alert(a<b&&c?\\"<br>\\":\\">>\\");</script>",
 }
 `;
 
 exports[`html normalizer text/html: script <textarea>alert(a<b&&c?"<br>":">>");</textarea>: reported 1`] = `
-{
-  "actual": "<textarea xmlns="http://www.w3.org/1999/xhtml">alert(a&lt;b&amp;&amp;c?"&lt;br&gt;":"&gt;&gt;");</textarea>",
-  "errors": [
-    [
+Object {
+  "actual": "<textarea xmlns=\\"http://www.w3.org/1999/xhtml\\">alert(a&lt;b&amp;&amp;c?\\"&lt;br&gt;\\":\\"&gt;&gt;\\");</textarea>",
+  "errors": Array [
+    Array [
       "error",
       "entity not found:&c",
-      {
+      Object {
         "columnNumber": 1,
         "lineNumber": 1,
       },
@@ -197,13 +197,13 @@ exports[`html normalizer text/html: script <textarea>alert(a<b&&c?"<br>":">>");<
 exports[`html normalizer text/html: script <ul><li>abc<li>def</ul>: caught 1`] = `[ParseError: Opening and ending tag mismatch: "li" != "ul"]`;
 
 exports[`html normalizer text/xml: script <input type="button" disabled></input>: reported 1`] = `
-{
-  "actual": "<input type="button" disabled="disabled"/>",
-  "errors": [
-    [
+Object {
+  "actual": "<input type=\\"button\\" disabled=\\"disabled\\"/>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "disabled" missed value!! "disabled" instead!!",
-      {
+      "attribute \\"disabled\\" missed value!! \\"disabled\\" instead!!",
+      Object {
         "columnNumber": 22,
         "lineNumber": 1,
       },
@@ -213,13 +213,13 @@ exports[`html normalizer text/xml: script <input type="button" disabled></input>
 `;
 
 exports[`html normalizer text/xml: script <input type="checkbox" checked></input>: reported 1`] = `
-{
-  "actual": "<input type="checkbox" checked="checked"/>",
-  "errors": [
-    [
+Object {
+  "actual": "<input type=\\"checkbox\\" checked=\\"checked\\"/>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "checked" missed value!! "checked" instead!!",
-      {
+      "attribute \\"checked\\" missed value!! \\"checked\\" instead!!",
+      Object {
         "columnNumber": 24,
         "lineNumber": 1,
       },
@@ -229,13 +229,13 @@ exports[`html normalizer text/xml: script <input type="checkbox" checked></input
 `;
 
 exports[`html normalizer text/xml: script <option selected></option>: reported 1`] = `
-{
-  "actual": "<option selected="selected"/>",
-  "errors": [
-    [
+Object {
+  "actual": "<option selected=\\"selected\\"/>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "selected" missed value!! "selected" instead!!",
-      {
+      "attribute \\"selected\\" missed value!! \\"selected\\" instead!!",
+      Object {
         "columnNumber": 9,
         "lineNumber": 1,
       },
@@ -245,27 +245,27 @@ exports[`html normalizer text/xml: script <option selected></option>: reported 1
 `;
 
 exports[`html normalizer text/xml: script <script src="./test.js"/>: reported 1`] = `
-{
-  "actual": "<script src="./test.js"/>",
+Object {
+  "actual": "<script src=\\"./test.js\\"/>",
 }
 `;
 
 exports[`html normalizer text/xml: script <script>alert(a<b&&c?"<br/>":">>");</script>: reported 1`] = `
-{
-  "actual": "<script>alert(a&lt;b&amp;&amp;c?"<br/>":"&gt;&gt;");</script>",
-  "errors": [
-    [
+Object {
+  "actual": "<script>alert(a&lt;b&amp;&amp;c?\\"<br/>\\":\\"&gt;&gt;\\");</script>",
+  "errors": Array [
+    Array [
       "error",
-      "element parse error: Error: attribute value must after "="",
-      {
+      "element parse error: Error: attribute value must after \\"=\\"",
+      Object {
         "columnNumber": 28,
         "lineNumber": 1,
       },
     ],
-    [
+    Array [
       "error",
       "EntityRef: expecting ;",
-      {
+      Object {
         "columnNumber": 28,
         "lineNumber": 1,
       },
@@ -281,13 +281,13 @@ exports[`html normalizer text/xml: script <textarea>alert(a<b&&c?"<br>":">>");</
 exports[`html normalizer text/xml: script <ul><li>abc<li>def</ul>: caught 1`] = `[ParseError: Opening and ending tag mismatch: "li" != "ul"]`;
 
 exports[`html normalizer unclosed html <html title = 1/> 1`] = `
-{
-  "actual": "<html title="1" xmlns="http://www.w3.org/1999/xhtml"></html>",
-  "errors": [
-    [
+Object {
+  "actual": "<html title=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "1" missed quot(")!",
-      {
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
         "columnNumber": 15,
         "lineNumber": 1,
       },
@@ -297,13 +297,13 @@ exports[`html normalizer unclosed html <html title = 1/> 1`] = `
 `;
 
 exports[`html normalizer unclosed html <html title =1/2></html> 1`] = `
-{
-  "actual": "<html title="1/2" xmlns="http://www.w3.org/1999/xhtml"></html>",
-  "errors": [
-    [
+Object {
+  "actual": "<html title=\\"1/2\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "1/2" missed quot(")!",
-      {
+      "attribute \\"1/2\\" missed quot(\\")!",
+      Object {
         "columnNumber": 14,
         "lineNumber": 1,
       },
@@ -313,19 +313,19 @@ exports[`html normalizer unclosed html <html title =1/2></html> 1`] = `
 `;
 
 exports[`html normalizer unclosed html <html title/> 1`] = `
-{
-  "actual": "<html title="title" xmlns="http://www.w3.org/1999/xhtml"></html>",
+Object {
+  "actual": "<html title=\\"title\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
 }
 `;
 
 exports[`html normalizer unclosed html <html title= 1/> 1`] = `
-{
-  "actual": "<html title="1" xmlns="http://www.w3.org/1999/xhtml"></html>",
-  "errors": [
-    [
+Object {
+  "actual": "<html title=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "1" missed quot(")!",
-      {
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
         "columnNumber": 14,
         "lineNumber": 1,
       },
@@ -335,7 +335,7 @@ exports[`html normalizer unclosed html <html title= 1/> 1`] = `
 `;
 
 exports[`html normalizer unclosed html <html><meta><link><img><br><hr><input></html> 1`] = `
-{
-  "actual": "<html xmlns="http://www.w3.org/1999/xhtml"><meta/><link/><img/><br/><hr/><input/></html>",
+Object {
+  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><meta/><link/><img/><br/><hr/><input/></html>",
 }
 `;
