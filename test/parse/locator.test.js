@@ -1,10 +1,13 @@
-'use strict'
+'use strict';
 
-const { DOMParser } = require('../../lib')
-const { getTestParser } = require('../get-test-parser')
+const { describe, expect, test } = require('@jest/globals');
+
+const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMParser } = require('../../lib/dom-parser');
+const { getTestParser } = require('../get-test-parser');
 
 describe('DOMLocator', () => {
-	it('empty line number', () => {
+	test('empty line number', () => {
 		const xml = [
 			'<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0"',
 			'       profile="ecmascript" id="scxmlRoot" initial="start">',
@@ -19,28 +22,28 @@ describe('DOMLocator', () => {
 			'  </state>',
 			'',
 			'  </scxml>',
-		].join('\n')
+		].join('\n');
 
-		const doc = new DOMParser().parseFromString(xml, 'text/xml')
+		const doc = new DOMParser().parseFromString(xml, MIME_TYPE.XML_TEXT);
 
 		expect(doc.getElementsByTagName('transition')[0]).toMatchObject({
 			// we are not testing for columnNumber here to keep this test as specific as possible
 			// it proves that empty lines are counted as lines
 			// it should only fail if that changes
 			lineNumber: 10,
-		})
-	})
+		});
+	});
 
-	it('node positions', () => {
-		const instruction = '<?xml version="1.0"?>'
+	test('node positions', () => {
+		const instruction = '<?xml version="1.0"?>';
 
 		const dom = new DOMParser().parseFromString(
-			`${instruction}<!-- aaa -->\n` +
-				'<test>\n' +
-				'  <a attr="value"><![CDATA[1]]>something\n' +
-				'</a>x</test>',
-			'text/xml'
-		)
+			`${instruction}<!-- aaa -->
+<test>
+  <a attr="value"><![CDATA[1]]>something
+</a>x</test>`,
+			MIME_TYPE.XML_TEXT
+		);
 
 		expect(dom).toMatchObject({
 			firstChild: {
@@ -83,33 +86,32 @@ describe('DOMLocator', () => {
 					columnNumber: 5,
 				},
 			},
-		})
-	})
+		});
+	});
 
-	it('attribute position', () => {
-		// TODO: xml not well formed but no warning or error, extract into different test?
-		const xml = '<html><body title="1<2"><table>&lt;;test</body></body></html>'
+	test('attribute position', () => {
+		const xml = '<html><body title="1&lt;2"><table>&lt;;test</table></body></html>';
 		const { errors, parser } = getTestParser({
 			locator: { systemId: 'c:/test/1.xml' },
-		})
+		});
 
-		const doc = parser.parseFromString(xml, 'text/html')
+		const doc = parser.parseFromString(xml, 'text/html');
 
-		expect({ actual: doc.toString(), ...errors }).toMatchSnapshot()
+		expect({ actual: doc.toString(), ...(errors.length ? { errors } : undefined) }).toMatchSnapshot();
 
-		const attr = doc.documentElement.firstChild.attributes.item(0)
+		const attr = doc.documentElement.firstChild.attributes.item(0);
 
 		expect(attr).toMatchObject({
 			lineNumber: 1,
 			columnNumber: 19, // position of the starting quote
-		})
-	})
+		});
+	});
 
-	it('logs error positions', () => {
-		const { errors, parser } = getTestParser()
+	test('logs error positions', () => {
+		const { errors, parser } = getTestParser();
 
-		parser.parseFromString('<root>\n\t<err</root>', 'text/html')
+		parser.parseFromString('<root>\n\t<err</root>', 'text/html');
 
-		expect(errors).toMatchSnapshot()
-	})
-})
+		expect(errors).toMatchSnapshot();
+	});
+});

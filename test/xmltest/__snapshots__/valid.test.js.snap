@@ -2,164 +2,245 @@
 
 exports[`xmltest/valid standalone should match 001.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 002.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 003.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 004.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"v1\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA #IMPLIED>
+]>
+<doc a1=\\"v1\\"/>",
   "expected": "<doc a1=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 005.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"v1\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA #IMPLIED>
+]>
+<doc a1=\\"v1\\"/>",
   "expected": "<doc a1=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 006.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"v1\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA #IMPLIED>
+]>
+<doc a1=\\"v1\\"/>",
   "expected": "<doc a1=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 007.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc> </doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc> </doc>",
+  "expected": "<doc> </doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 008.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;&lt;&gt;\\"'</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>&amp;&lt;&gt;\\"'</doc>",
   "expected": "<doc>&amp;&lt;&gt;&quot;'</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 009.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc> </doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc> </doc>",
+  "expected": "<doc> </doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 010.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"v1\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA #IMPLIED>
+]>
+<doc a1=\\"v1\\"/>",
   "expected": "<doc a1=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 011.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"v1\\" a2=\\"v2\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA #IMPLIED a2 CDATA #IMPLIED>
+]>
+<doc a1=\\"v1\\" a2=\\"v2\\"/>",
   "expected": "<doc a1=\\"v1\\" a2=\\"v2\\"></doc>",
 }
 `;
 
-exports[`xmltest/valid standalone should match 012.xml with snapshot 1`] = `
+exports[`xmltest/valid standalone should match 012.xml with snapshot: caught 1`] = `
 Object {
-  "actual": "",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid attribute::
-@#[line:1,col:1]",
-  ],
+  "error": [ParseError: missing root element],
   "expected": "<doc :=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 013.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc _.-0123456789=\\"v1\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc _.-0123456789 CDATA #IMPLIED>
+]>
+<doc _.-0123456789=\\"v1\\"/>",
   "expected": "<doc _.-0123456789=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 014.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc abcdefghijklmnopqrstuvwxyz=\\"v1\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc abcdefghijklmnopqrstuvwxyz CDATA #IMPLIED>
+]>
+<doc abcdefghijklmnopqrstuvwxyz=\\"v1\\"/>",
   "expected": "<doc abcdefghijklmnopqrstuvwxyz=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 015.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc ABCDEFGHIJKLMNOPQRSTUVWXYZ=\\"v1\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc ABCDEFGHIJKLMNOPQRSTUVWXYZ CDATA #IMPLIED>
+]>
+<doc ABCDEFGHIJKLMNOPQRSTUVWXYZ=\\"v1\\"/>",
   "expected": "<doc ABCDEFGHIJKLMNOPQRSTUVWXYZ=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 016.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><?pi ?></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><?pi ?></doc>",
+  "expected": "<doc><?pi ?></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 017.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><?pi some data ? > <??></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><?pi some data ? > <??></doc>",
+  "expected": "<doc><?pi some data ? > <??></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 018.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><![CDATA[<foo>]]></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><![CDATA[<foo>]]></doc>",
   "expected": "<doc>&lt;foo&gt;</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 019.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><![CDATA[<&]]></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><![CDATA[<&]]></doc>",
   "expected": "<doc>&lt;&amp;</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 020.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><![CDATA[<&]>]]]></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><![CDATA[<&]>]]]></doc>",
   "expected": "<doc>&lt;&amp;]&gt;]</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 021.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><!-- a comment --></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><!-- a comment --></doc>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 022.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><!-- a comment ->--></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><!-- a comment ->--></doc>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 023.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"\\">
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc></doc>",
 }
@@ -167,10 +248,21 @@ Object {
 
 exports[`xmltest/valid standalone should match 024.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (foo)>
+<!ELEMENT foo (#PCDATA)>
+<!ENTITY e \\"&#60;foo></foo>\\">
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 6,
+      },
+    ],
   ],
   "expected": "<doc><foo></foo></doc>",
 }
@@ -178,21 +270,33 @@ Object {
 
 exports[`xmltest/valid standalone should match 025.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><foo/><foo/></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (foo*)>
+<!ELEMENT foo (#PCDATA)>
+]>
+<doc><foo/><foo/></doc>",
   "expected": "<doc><foo></foo><foo></foo></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 026.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><foo/><foo/></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (foo*)>
+<!ELEMENT foo EMPTY>
+]>
+<doc><foo/><foo/></doc>",
   "expected": "<doc><foo></foo><foo></foo></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 027.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><foo/><foo/></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (foo*)>
+<!ELEMENT foo ANY>
+]>
+<doc><foo/><foo/></doc>",
   "expected": "<doc><foo></foo><foo></foo></doc>",
 }
 `;
@@ -200,6 +304,9 @@ Object {
 exports[`xmltest/valid standalone should match 028.xml with snapshot 1`] = `
 Object {
   "actual": "<?xml version=\\"1.0\\"?>
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<doc></doc>",
 }
@@ -208,6 +315,9 @@ Object {
 exports[`xmltest/valid standalone should match 029.xml with snapshot 1`] = `
 Object {
   "actual": "<?xml version='1.0'?>
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<doc></doc>",
 }
@@ -216,6 +326,9 @@ Object {
 exports[`xmltest/valid standalone should match 030.xml with snapshot 1`] = `
 Object {
   "actual": "<?xml version = \\"1.0\\"?>
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<doc></doc>",
 }
@@ -224,6 +337,9 @@ Object {
 exports[`xmltest/valid standalone should match 031.xml with snapshot 1`] = `
 Object {
   "actual": "<?xml version='1.0' encoding=\\"UTF-8\\"?>
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<doc></doc>",
 }
@@ -232,6 +348,9 @@ Object {
 exports[`xmltest/valid standalone should match 032.xml with snapshot 1`] = `
 Object {
   "actual": "<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<doc></doc>",
 }
@@ -240,6 +359,9 @@ Object {
 exports[`xmltest/valid standalone should match 033.xml with snapshot 1`] = `
 Object {
   "actual": "<?xml version='1.0' encoding=\\"UTF-8\\" standalone='yes'?>
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<doc></doc>",
 }
@@ -247,21 +369,30 @@ Object {
 
 exports[`xmltest/valid standalone should match 034.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 035.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 036.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>
 <?pi data?>",
   "expected": "<doc></doc><?pi data?>",
 }
@@ -269,7 +400,10 @@ Object {
 
 exports[`xmltest/valid standalone should match 037.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>
 <!-- comment -->",
   "expected": "<doc></doc>",
 }
@@ -278,6 +412,9 @@ Object {
 exports[`xmltest/valid standalone should match 038.xml with snapshot 1`] = `
 Object {
   "actual": "<!-- comment -->
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<doc></doc>",
 }
@@ -286,6 +423,9 @@ Object {
 exports[`xmltest/valid standalone should match 039.xml with snapshot 1`] = `
 Object {
   "actual": "<?pi data?>
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<?pi data?><doc></doc>",
 }
@@ -293,34 +433,55 @@ Object {
 
 exports[`xmltest/valid standalone should match 040.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"&quot;&lt;&amp;&gt;'\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA #IMPLIED>
+]>
+<doc a1=\\"&quot;&lt;&amp;&gt;'\\"/>",
   "expected": "<doc a1=\\"&quot;&lt;&amp;&gt;'\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 041.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"A\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA #IMPLIED>
+]>
+<doc a1=\\"A\\"/>",
   "expected": "<doc a1=\\"A\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 042.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>A</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>A</doc>",
+  "expected": "<doc>A</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 043.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"foo bar\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ATTLIST doc a1 CDATA #IMPLIED>
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc a1=\\"foo bar\\"/>",
   "expected": "<doc a1=\\"foo bar\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 044.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (e*)>
+<!ELEMENT e EMPTY>
+<!ATTLIST e a1 CDATA \\"v1\\" a2 CDATA \\"v2\\" a3 CDATA #IMPLIED>
+]>
+<doc>
 <e a3=\\"v3\\"/>
 <e a1=\\"w1\\"/>
 <e a2=\\"w2\\" a3=\\"v3\\"/>
@@ -331,21 +492,34 @@ Object {
 
 exports[`xmltest/valid standalone should match 045.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA \\"v1\\">
+<!ATTLIST doc a1 CDATA \\"z1\\">
+]>
+<doc/>",
   "expected": "<doc a1=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 046.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA \\"v1\\">
+<!ATTLIST doc a2 CDATA \\"v2\\">
+]>
+<doc/>",
   "expected": "<doc a1=\\"v1\\" a2=\\"v2\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 047.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>X
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>X
 Y</doc>",
   "expected": "<doc>X&#10;Y</doc>",
 }
@@ -353,79 +527,62 @@ Y</doc>",
 
 exports[`xmltest/valid standalone should match 048.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>]</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>]</doc>",
+  "expected": "<doc>]</doc>",
 }
 `;
 
-exports[`xmltest/valid standalone should match 049.xml with snapshot 1`] = `
+exports[`xmltest/valid standalone should match 049.xml with snapshot: caught 1`] = `
 Object {
-  "actual": "{!0!}/{!0!}d{!0!}o{!0!}c{!0!}&gt;{!0!}
-{!0!}
-{!0!}",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:1,col:3]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:3,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:14]",
-  ],
+  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
   "expected": "<doc>£</doc>",
 }
 `;
 
-exports[`xmltest/valid standalone should match 050.xml with snapshot 1`] = `
+exports[`xmltest/valid standalone should match 050.xml with snapshot: caught 1`] = `
 Object {
-  "actual": "{!0!}/{!0!}d{!0!}o{!0!}c{!0!}&gt;{!0!}
-{!0!}
-{!0!}",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:1,col:3]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:3,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:22]",
-  ],
+  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
   "expected": "<doc>เจมส์</doc>",
 }
 `;
 
-exports[`xmltest/valid standalone should match 051.xml with snapshot 1`] = `
+exports[`xmltest/valid standalone should match 051.xml with snapshot: caught 1`] = `
 Object {
-  "actual": "{!0!}/{!0!}@!*L&gt;{!0!}
-{!0!}
-{!0!}",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:1,col:3]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:3,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:2]",
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:7,col:16]",
-  ],
+  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
   "expected": "<เจมส์></เจมส์>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 052.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>𐀀􏿽</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>𐀀􏿽</doc>",
+  "expected": "<doc>𐀀􏿽</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 053.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"<e/>\\">
+<!ELEMENT doc (e)>
+<!ELEMENT e EMPTY>
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 6,
+      },
+    ],
   ],
   "expected": "<doc><e></e></doc>",
 }
@@ -433,14 +590,22 @@ Object {
 
 exports[`xmltest/valid standalone should match 054.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+
+
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 055.xml with snapshot 1`] = `
 Object {
-  "actual": "<?pi data?>
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<?pi data?>
 <doc/>",
   "expected": "<?pi data?><doc></doc>",
 }
@@ -448,27 +613,43 @@ Object {
 
 exports[`xmltest/valid standalone should match 056.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>A</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>A</doc>",
+  "expected": "<doc>A</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 057.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a*)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 058.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\" 1   2  \\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ATTLIST doc a1 NMTOKENS #IMPLIED>
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc a1=\\" 1   2  \\"/>",
   "expected": "<doc a1=\\"1 2\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 059.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (e*)>
+<!ELEMENT e EMPTY>
+<!ATTLIST e a1 CDATA #IMPLIED a2 CDATA #IMPLIED a3 CDATA #IMPLIED>
+]>
+<doc>
 <e a1=\\"v1\\" a2=\\"v2\\" a3=\\"v3\\"/>
 <e a1=\\"w1\\" a2=\\"v2\\"/>
 <e a1=\\"v1\\" a2=\\"w2\\" a3=\\"v3\\"/>
@@ -479,7 +660,10 @@ Object {
 
 exports[`xmltest/valid standalone should match 060.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>X
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>X
 Y</doc>",
   "expected": "<doc>X&#10;Y</doc>",
 }
@@ -487,42 +671,73 @@ Y</doc>",
 
 exports[`xmltest/valid standalone should match 061.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>£</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>£</doc>",
+  "expected": "<doc>£</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 062.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>เจมส์</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>เจมส์</doc>",
+  "expected": "<doc>เจมส์</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 063.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE เจมส์><เจมส์/>",
+  "actual": "<!DOCTYPE เจมส์ [
+<!ELEMENT เจมส์ (#PCDATA)>
+]>
+<เจมส์/>",
   "expected": "<เจมส์></เจมส์>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 064.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>𐀀􏿽</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>𐀀􏿽</doc>",
+  "expected": "<doc>𐀀􏿽</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 065.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#60;\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 066.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"&amp;e1;\\"/>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e1;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA #IMPLIED>
+<!-- 34 is double quote -->
+<!ENTITY e1 \\"&#34;\\">
+]>
+<doc a1=\\"&amp;e1;\\"/>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e1;",
+      Object {
+        "columnNumber": 9,
+        "lineNumber": 7,
+      },
+    ],
   ],
   "expected": "<doc a1=\\"&quot;\\"></doc>",
 }
@@ -530,7 +745,10 @@ Object {
 
 exports[`xmltest/valid standalone should match 067.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>
 </doc>",
   "expected": "<doc>&#13;</doc>",
 }
@@ -538,10 +756,20 @@ Object {
 
 exports[`xmltest/valid standalone should match 068.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"&#13;\\">
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>&#13;</doc>",
 }
@@ -549,122 +777,197 @@ Object {
 
 exports[`xmltest/valid standalone should match 069.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!NOTATION n PUBLIC \\"whatever\\">
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 070.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY % e \\"<!ELEMENT doc (#PCDATA)>\\">
+%e;
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 071.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a ID #IMPLIED>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 072.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a IDREF #IMPLIED>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 073.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a IDREFS #IMPLIED>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 074.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a ENTITY #IMPLIED>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 075.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a ENTITIES #IMPLIED>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 076.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a NOTATION (n1|n2) #IMPLIED>
+<!NOTATION n1 SYSTEM \\"http://www.w3.org/\\">
+<!NOTATION n2 SYSTEM \\"http://www.w3.org/\\">
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 077.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a (1|2) #IMPLIED>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 078.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"v\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #REQUIRED>
+]>
+<doc a=\\"v\\"/>",
   "expected": "<doc a=\\"v\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 079.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"v\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #FIXED \\"v\\">
+]>
+<doc a=\\"v\\"/>",
   "expected": "<doc a=\\"v\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 080.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #FIXED \\"v\\">
+]>
+<doc/>",
   "expected": "<doc a=\\"v\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 081.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><a/><b/><c><a/></c></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a, b, c)>
+<!ELEMENT a (a?)>
+<!ELEMENT b (b*)>
+<!ELEMENT c (a | b)+>
+]>
+<doc><a/><b/><c><a/></c></doc>",
   "expected": "<doc><a></a><b></b><c><a></a></c></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 082.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY % e SYSTEM \\"e.dtd\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 083.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY % e PUBLIC 'whatever' \\"e.dtd\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 084.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [<!ELEMENT doc (#PCDATA)>]><doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 085.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY % e \\"<foo>\\">
+<!ENTITY e \\"\\">
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 6,
+      },
+    ],
   ],
   "expected": "<doc></doc>",
 }
@@ -672,10 +975,21 @@ Object {
 
 exports[`xmltest/valid standalone should match 086.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"\\">
+<!ENTITY e \\"<foo>\\">
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 6,
+      },
+    ],
   ],
   "expected": "<doc></doc>",
 }
@@ -683,10 +997,21 @@ Object {
 
 exports[`xmltest/valid standalone should match 087.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"<foo/&#62;\\">
+<!ELEMENT doc (foo)>
+<!ELEMENT foo EMPTY>
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 6,
+      },
+    ],
   ],
   "expected": "<doc><foo></foo></doc>",
 }
@@ -694,10 +1019,20 @@ Object {
 
 exports[`xmltest/valid standalone should match 088.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"&lt;foo>\\">
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>&lt;foo&gt;</doc>",
 }
@@ -705,10 +1040,20 @@ Object {
 
 exports[`xmltest/valid standalone should match 089.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e \\"&#x10000;&#x10FFFD;&#x10FFFF;\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>𐀀􏿽􏿿</doc>",
 }
@@ -716,21 +1061,37 @@ Object {
 
 exports[`xmltest/valid standalone should match 090.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ATTLIST e a NOTATION (n) #IMPLIED>
+<!ELEMENT doc (e)*>
+<!ELEMENT e (#PCDATA)>
+<!NOTATION n PUBLIC \\"whatever\\">
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 091.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!NOTATION n SYSTEM \\"http://www.w3.org/\\">
+<!ENTITY e SYSTEM \\"http://www.w3.org/\\" NDATA n>
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a ENTITY \\"e\\">
+]>
+<doc/>",
   "expected": "<doc a=\\"e\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 092.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a)*>
+<!ELEMENT a EMPTY>
+]>
+<doc>
 <a/>
     <a/>	<a/>
 
@@ -742,7 +1103,10 @@ Object {
 
 exports[`xmltest/valid standalone should match 093.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>
 
 
 </doc>",
@@ -752,35 +1116,61 @@ Object {
 
 exports[`xmltest/valid standalone should match 094.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY % e \\"foo\\">
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a1 CDATA \\"%e;\\">
+]>
+<doc/>",
   "expected": "<doc a1=\\"%e;\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 095.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a1=\\"1  2\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ATTLIST doc a1 CDATA #IMPLIED>
+<!ATTLIST doc a1 NMTOKENS #IMPLIED>
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc a1=\\"1  2\\"/>",
   "expected": "<doc a1=\\"1  2\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 096.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ATTLIST doc a1 NMTOKENS \\" 1  	2 	\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc a1=\\"1 2\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 097.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY % e SYSTEM \\"097.ent\\">
+<!ATTLIST doc a1 CDATA \\"v1\\">
+%e;
+<!ATTLIST doc a2 CDATA \\"v2\\">
+]>
+<doc/>",
   "expected": "<doc a1=\\"v1\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 098.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><?pi x
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><?pi x
+y?></doc>",
+  "expected": "<doc><?pi x
 y?></doc>",
 }
 `;
@@ -788,6 +1178,9 @@ y?></doc>",
 exports[`xmltest/valid standalone should match 099.xml with snapshot 1`] = `
 Object {
   "actual": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
 <doc/>",
   "expected": "<doc></doc>",
 }
@@ -795,65 +1188,109 @@ Object {
 
 exports[`xmltest/valid standalone should match 100.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ENTITY e PUBLIC \\";!*#@$_%\\" \\"100.xml\\">
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 101.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"&#34;\\">
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 102.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"&quot;\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #IMPLIED>
+]>
+<doc a=\\"&quot;\\"/>",
   "expected": "<doc a=\\"&quot;\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 103.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&lt;doc&gt;</doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>&lt;doc&gt;</doc>",
+  "expected": "<doc>&lt;doc&gt;</doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 104.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"x y\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #IMPLIED>
+]>
+<doc a=\\"x y\\"/>",
   "expected": "<doc a=\\"x y\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 105.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"x&#9;y\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #IMPLIED>
+]>
+<doc a=\\"x&#9;y\\"/>",
   "expected": "<doc a=\\"x&#9;y\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 106.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"x&#10;y\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #IMPLIED>
+]>
+<doc a=\\"x&#10;y\\"/>",
   "expected": "<doc a=\\"x&#10;y\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 107.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"x&#13;y\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #IMPLIED>
+]>
+<doc a=\\"x&#13;y\\"/>",
   "expected": "<doc a=\\"x&#13;y\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 108.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"x&amp;e;y\\"/>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"
+\\">
+<!ATTLIST doc a CDATA #IMPLIED>
+]>
+<doc a=\\"x&amp;e;y\\"/>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 8,
+        "lineNumber": 7,
+      },
+    ],
   ],
   "expected": "<doc a=\\"x y\\"></doc>",
 }
@@ -861,17 +1298,32 @@ Object {
 
 exports[`xmltest/valid standalone should match 109.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"\\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a CDATA #IMPLIED>
+]>
+<doc a=\\"\\"/>",
   "expected": "<doc a=\\"\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 110.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\"x&amp;e;y\\"/>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"&#13;&#10;\\">
+<!ATTLIST doc a CDATA #IMPLIED>
+]>
+<doc a=\\"x&amp;e;y\\"/>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 8,
+        "lineNumber": 6,
+      },
+    ],
   ],
   "expected": "<doc a=\\"x  y\\"></doc>",
 }
@@ -879,31 +1331,53 @@ Object {
 
 exports[`xmltest/valid standalone should match 111.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc a=\\" x  y \\"/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST doc a NMTOKENS #IMPLIED>
+]>
+<doc a=\\" x  y \\"/>",
   "expected": "<doc a=\\"x y\\"></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 112.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><a/></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (a | b)>
+<!ELEMENT a (#PCDATA)>
+]>
+<doc><a/></doc>",
   "expected": "<doc><a></a></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 113.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc/>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ATTLIST e a CDATA #IMPLIED>
+]>
+<doc/>",
   "expected": "<doc></doc>",
 }
 `;
 
 exports[`xmltest/valid standalone should match 114.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;e;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e;
-@#[line:5,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e \\"<![CDATA[&foo;]]>\\">
+]>
+<doc>&amp;e;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>&amp;foo;</doc>",
 }
@@ -911,10 +1385,21 @@ Object {
 
 exports[`xmltest/valid standalone should match 115.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc>&amp;e1;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&e1;
-@#[line:1,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY e1 \\"&e2;\\">
+<!ENTITY e2 \\"v\\">
+]>
+<doc>&amp;e1;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&e1;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 6,
+      },
+    ],
   ],
   "expected": "<doc>v</doc>",
 }
@@ -922,7 +1407,10 @@ Object {
 
 exports[`xmltest/valid standalone should match 116.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><![CDATA[
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc><![CDATA[
 ]]></doc>",
   "expected": "<doc>&#10;</doc>",
 }
@@ -930,10 +1418,20 @@ Object {
 
 exports[`xmltest/valid standalone should match 117.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;rsqb;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&rsqb;
-@#[line:5,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY rsqb \\"]\\">
+]>
+<doc>&amp;rsqb;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&rsqb;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>]</doc>",
 }
@@ -941,10 +1439,20 @@ Object {
 
 exports[`xmltest/valid standalone should match 118.xml with snapshot 1`] = `
 Object {
-  "actual": "<!DOCTYPE doc><doc>&amp;rsqb;</doc>",
-  "error": Array [
-    "[xmldom error]	entity not found:&rsqb;
-@#[line:5,col:1]",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+<!ENTITY rsqb \\"]]\\">
+]>
+<doc>&amp;rsqb;</doc>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&rsqb;",
+      Object {
+        "columnNumber": 6,
+        "lineNumber": 5,
+      },
+    ],
   ],
   "expected": "<doc>]]</doc>",
 }
@@ -952,7 +1460,10 @@ Object {
 
 exports[`xmltest/valid standalone should match 119.xml with snapshot 1`] = `
 Object {
-  "actual": "<doc><!-- -á --></doc>",
+  "actual": "<!DOCTYPE doc [
+<!ELEMENT doc ANY>
+]>
+<doc><!-- -á --></doc>",
   "expected": "<doc></doc>",
 }
 `;

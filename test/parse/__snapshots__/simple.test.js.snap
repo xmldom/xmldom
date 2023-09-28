@@ -1,15 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parse line error 1`] = `
-Object {
-  "lineNumber": 7,
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:7,col:3]",
-  ],
-}
-`;
-
 exports[`parse simple 1`] = `
 Object {
   "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"></body></html>",
@@ -27,28 +17,8 @@ Object {
 }
 `;
 
-exports[`parse unclosed inner 1`] = `
-Object {
-  "actual": "<r><Page><Label/></Page>  <Page/></r>",
-  "error": Array [
-    "[xmldom error]	end tag name: Page maybe not complete
-@#[line:1,col:10]",
-  ],
-}
-`;
-
-exports[`parse unclosed root 1`] = `
-Object {
-  "actual": "<Page><Label class=\\"title\\"/></Page>  1",
-  "error": Array [
-    "[xmldom error]	end tag name: Page is not complete:Page
-@#[line:1,col:20]",
-  ],
-}
-`;
-
 exports[`parse wrong closing tag 1`] = `
 Object {
-  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"><table></table>&lt;;test</body></html>",
+  "actual": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\"><body title=\\"1&lt;2\\"><table>&lt;;test</table></body></html>",
 }
 `;

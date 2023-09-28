@@ -1,26 +1,26 @@
-'use strict'
+'use strict';
 
-const { Node } = require('../../lib/dom')
-const { DOMParser } = require('../../lib')
+const { describe, expect, test } = require('@jest/globals');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { Node } = require('../../lib/dom');
+const { DOMParser } = require('../../lib/dom-parser');
 
 const expectNeighbours = (first, second, ...nodes) => {
-	expect(first.nextSibling).toStrictEqual(second)
-	expect(second.previousSibling).toStrictEqual(first)
-	expect(first.parentNode).toStrictEqual(second.parentNode)
+	expect(first.nextSibling).toStrictEqual(second);
+	expect(second.previousSibling).toStrictEqual(first);
+	expect(first.parentNode).toStrictEqual(second.parentNode);
 
 	if (nodes.length > 0) {
-		expectNeighbours(second, ...nodes)
+		expectNeighbours(second, ...nodes);
 	}
-}
+};
 
 describe('XML Node Parse', () => {
-	it('element', () => {
-		const dom = new DOMParser().parseFromString('<xml><child/></xml>')
+	test('element', () => {
+		const dom = new DOMParser().parseFromString('<xml><child/></xml>', MIME_TYPE.XML_TEXT);
 
-		expect(dom.documentElement.nodeType).toStrictEqual(Node.ELEMENT_NODE)
-		expect(dom.documentElement.firstChild.nodeType).toStrictEqual(
-			Node.ELEMENT_NODE
-		)
+		expect(dom.documentElement.nodeType).toStrictEqual(Node.ELEMENT_NODE);
+		expect(dom.documentElement.firstChild.nodeType).toStrictEqual(Node.ELEMENT_NODE);
 		expect(dom).toMatchObject({
 			childNodes: {
 				length: 1,
@@ -36,25 +36,24 @@ describe('XML Node Parse', () => {
 				nodeName: 'xml',
 				tagName: 'xml',
 			},
-		})
-	})
+		});
+	});
 
-	it('text', () => {
-		const { firstChild } = new DOMParser().parseFromString(
-			'<xml>start center end</xml>'
-		).documentElement
+	test('text', () => {
+		const { firstChild } = new DOMParser().parseFromString('<xml>start center end</xml>', MIME_TYPE.XML_TEXT).documentElement;
 
-		expect(firstChild.nodeType).toStrictEqual(Node.TEXT_NODE)
+		expect(firstChild.nodeType).toStrictEqual(Node.TEXT_NODE);
 		expect(firstChild).toMatchObject({
 			data: 'start center end',
 			nextSibling: null,
-		})
-	})
+		});
+	});
 
-	it('cdata', () => {
+	test('cdata', () => {
 		const { documentElement } = new DOMParser().parseFromString(
-			'<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>'
-		)
+			'<xml>start <![CDATA[<encoded>]]> end<![CDATA[[[[[[[[[]]]]]]]]]]></xml>',
+			MIME_TYPE.XML_TEXT
+		);
 		expect(documentElement.firstChild).toMatchObject({
 			data: 'start ',
 			nextSibling: {
@@ -65,32 +64,32 @@ describe('XML Node Parse', () => {
 					},
 				},
 			},
-		})
-	})
+		});
+	});
 
-	it('cdata empty', () => {
+	test('cdata empty', () => {
 		const { documentElement } = new DOMParser().parseFromString(
-			'<xml><![CDATA[]]>start <![CDATA[]]> end</xml>'
-		)
+			'<xml><![CDATA[]]>start <![CDATA[]]> end</xml>',
+			MIME_TYPE.XML_TEXT
+		);
 		expect(documentElement).toMatchObject({
 			textContent: 'start  end',
-		})
-	})
+		});
+	});
 
-	it('comment', () => {
-		const { documentElement } = new DOMParser().parseFromString(
-			'<xml><!-- comment&>< --></xml>'
-		)
+	test('comment', () => {
+		const { documentElement } = new DOMParser().parseFromString('<xml><!-- comment&>< --></xml>', MIME_TYPE.XML_TEXT);
 
 		expect(documentElement.firstChild).toMatchObject({
 			nodeValue: ' comment&>< ',
-		})
-	})
+		});
+	});
 
-	it('cdata comment', () => {
+	test('cdata comment', () => {
 		const { documentElement } = new DOMParser().parseFromString(
-			'<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>'
-		)
+			'<xml>start <![CDATA[<encoded>]]> <!-- comment -->end</xml>',
+			MIME_TYPE.XML_TEXT
+		);
 
 		expect(documentElement.firstChild).toMatchObject({
 			nodeName: '#text', // 0
@@ -111,98 +110,89 @@ describe('XML Node Parse', () => {
 					},
 				},
 			},
-		})
-	})
+		});
+	});
 
 	describe('appendChild', () => {
-		it('returns the argument', () => {
-			const dom = new DOMParser().parseFromString('<xml/>')
+		test('returns the argument', () => {
+			const dom = new DOMParser().parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
 
-			const child = dom.createElement('child')
+			const child = dom.createElement('child');
 
-			expect(dom.documentElement.appendChild(child)).toStrictEqual(child)
-		})
+			expect(dom.documentElement.appendChild(child)).toStrictEqual(child);
+		});
 
-		it('appends as firstChild', () => {
-			const dom = new DOMParser().parseFromString('<xml/>')
-			const child = dom.createElement('child')
+		test('appends as firstChild', () => {
+			const dom = new DOMParser().parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
+			const child = dom.createElement('child');
 
-			dom.documentElement.appendChild(child)
+			dom.documentElement.appendChild(child);
 
-			expect(dom.documentElement.firstChild).toStrictEqual(child)
-		})
-		it('subsequent calls append in order', () => {
-			const dom = new DOMParser().parseFromString('<xml />')
-			const fragment = dom.createDocumentFragment()
+			expect(dom.documentElement.firstChild).toStrictEqual(child);
+		});
+		test('subsequent calls append in order', () => {
+			const dom = new DOMParser().parseFromString('<xml />', MIME_TYPE.XML_TEXT);
+			const fragment = dom.createDocumentFragment();
 
-			expect(fragment.nodeType).toStrictEqual(Node.DOCUMENT_FRAGMENT_NODE)
+			expect(fragment.nodeType).toStrictEqual(Node.DOCUMENT_FRAGMENT_NODE);
 
-			const first = fragment.appendChild(dom.createElement('first'))
-			const last = fragment.appendChild(dom.createElement('last'))
+			const first = fragment.appendChild(dom.createElement('first'));
+			const last = fragment.appendChild(dom.createElement('last'));
 
-			expectNeighbours(first, last)
-			expect(fragment.firstChild).toStrictEqual(first)
-			expect(fragment.lastChild).toStrictEqual(last)
-		})
-	})
+			expectNeighbours(first, last);
+			expect(fragment.firstChild).toStrictEqual(first);
+			expect(fragment.lastChild).toStrictEqual(last);
+		});
+	});
 
 	describe('insertBefore', () => {
-		it('places created element before existing element', () => {
-			const dom = new DOMParser().parseFromString('<xml><child/></xml>')
-			const inserted = dom.createElement('sibling')
-			const child = dom.documentElement.firstChild
+		test('places created element before existing element', () => {
+			const dom = new DOMParser().parseFromString('<xml><child/></xml>', MIME_TYPE.XML_TEXT);
+			const inserted = dom.createElement('sibling');
+			const child = dom.documentElement.firstChild;
 
-			child.parentNode.insertBefore(inserted, child)
+			child.parentNode.insertBefore(inserted, child);
 
-			expectNeighbours(inserted, child)
-		})
-		it('inserts all elements in DocumentFragment', () => {
-			const dom = new DOMParser().parseFromString('<xml><child/></xml>')
-			const child = dom.documentElement.firstChild
+			expectNeighbours(inserted, child);
+		});
+		test('inserts all elements in DocumentFragment', () => {
+			const dom = new DOMParser().parseFromString('<xml><child/></xml>', MIME_TYPE.XML_TEXT);
+			const child = dom.documentElement.firstChild;
 
-			const fragment = dom.createDocumentFragment()
-			const first = fragment.appendChild(dom.createElement('first'))
-			const second = fragment.appendChild(dom.createElement('second'))
+			const fragment = dom.createDocumentFragment();
+			const first = fragment.appendChild(dom.createElement('first'));
+			const second = fragment.appendChild(dom.createElement('second'));
 
-			child.parentNode.insertBefore(fragment, child)
+			child.parentNode.insertBefore(fragment, child);
 
-			expectNeighbours(first, second, child)
-			expect(child.parentNode.firstChild).toStrictEqual(first)
-		})
-	})
+			expectNeighbours(first, second, child);
+			expect(child.parentNode.firstChild).toStrictEqual(first);
+		});
+	});
 
-	it('preserves instruction', () => {
-		const source =
-			'<?xml version="1.0"?><root><child>&amp;<!-- &amp; --></child></root>'
+	test('preserves instruction', () => {
+		const source = '<?xml version="1.0"?><root><child>&amp;<!-- &amp; --></child></root>';
 
-		const actual = new DOMParser()
-			.parseFromString(source, 'text/xml')
-			.toString()
+		const actual = new DOMParser().parseFromString(source, MIME_TYPE.XML_TEXT).toString();
 
-		expect(actual).toStrictEqual(source)
-	})
+		expect(actual).toStrictEqual(source);
+	});
 
-	it('preserves doctype with public id and sysid', () => {
+	test('preserves doctype with public id and sysid', () => {
 		const DOCTYPE =
 			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"' +
-			' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
+			' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 
-		const actual = new DOMParser()
-			.parseFromString(`${DOCTYPE}<html/>`, 'text/html')
-			.toString()
+		const actual = new DOMParser().parseFromString(`${DOCTYPE}<html/>`, 'text/html').toString();
 
-		expect(actual).toStrictEqual(
-			`${DOCTYPE}<html xmlns="http://www.w3.org/1999/xhtml"></html>`
-		)
-	})
+		expect(actual).toStrictEqual(`${DOCTYPE}<html xmlns="http://www.w3.org/1999/xhtml"></html>`);
+	});
 
-	it('preserves doctype with sysid', () => {
-		const DOCTYPE = '<!DOCTYPE custom SYSTEM "custom.dtd">'
+	test('preserves doctype with sysid', () => {
+		const DOCTYPE = '<!DOCTYPE custom SYSTEM "custom.dtd">';
 
-		const actual = new DOMParser()
-			.parseFromString(`${DOCTYPE}<custom/>`, 'text/xml')
-			.toString()
+		const actual = new DOMParser().parseFromString(`${DOCTYPE}<custom/>`, MIME_TYPE.XML_TEXT).toString();
 
-		expect(actual).toStrictEqual(`${DOCTYPE}<custom/>`)
-	})
-})
+		expect(actual).toStrictEqual(`${DOCTYPE}<custom/>`);
+	});
+});

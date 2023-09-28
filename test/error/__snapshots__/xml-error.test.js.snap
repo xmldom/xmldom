@@ -1,44 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`html vs xml: html attribute (miss quote) 1`] = `
+exports[`html without reported errors html attribute (missing quote) 1`] = `
 Object {
   "actual": "<img attr=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 11,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
 
-exports[`html vs xml: invalid xml node "<r" 1`] = `
+exports[`html without reported errors text/html attribute (missing =) 1`] = `
 Object {
-  "actual": "<r/>",
-  "error": Array [
-    "[xmldom error]	unexpected end of input
-@#[line:1,col:1]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:1]",
+  "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
+
+  <!--
+      some comment (next line is empty)
+
+  -->
+
+  <state id=\\"start\\" name=\\"start\\">
+    <transition event=\\"init\\" name=\\"init\\" target=\\"main_state\\"></transition>
+  </state>
+
+  </scxml>",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 11,
+        "lineNumber": 11,
+      },
+    ],
   ],
 }
 `;
 
-exports[`html vs xml: invalid xml node "<test><!--" 1`] = `
-Object {
-  "actual": "<test/>",
-  "error": Array [
-    "[xmldom error]	Unclosed comment
-@#[line:1,col:7]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:1]",
-  ],
-}
-`;
-
-exports[`html vs xml: text/html attribute (missing =) 1`] = `
+exports[`html without reported errors text/xml attribute (missing =) 1`] = `
 Object {
   "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
 
@@ -52,46 +57,21 @@ Object {
   </state>
 
   </scxml>",
-  "warning": Array [
-    "[xmldom warning]	attribute value must after \\"=\\"
-@#[line:10,col:5]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 11,
+        "lineNumber": 11,
+      },
+    ],
   ],
 }
 `;
 
-exports[`html vs xml: text/xml attribute (missing =) 1`] = `
-Object {
-  "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
-
-  <!--
-      some comment (next line is empty)
-
-  -->
-
-  <state id=\\"start\\" name=\\"start\\">
-    <transition event=\\"init\\" name=\\"init\\" target=\\"main_state\\"/>
-  </state>
-
-  </scxml>",
-  "warning": Array [
-    "[xmldom warning]	attribute value must after \\"=\\"
-@#[line:10,col:5]",
-  ],
-}
-`;
-
-exports[`html vs xml: unclosed document in text/html 1`] = `
+exports[`html without reported errors unclosed document 1`] = `
 Object {
   "actual": "<img xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
-}
-`;
-
-exports[`html vs xml: unclosed document in text/xml 1`] = `
-Object {
-  "actual": "<img/>",
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:1]",
-  ],
 }
 `;

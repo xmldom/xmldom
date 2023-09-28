@@ -11,23 +11,15 @@ Object {
 exports[`errorHandle should encode < literal when not part of a tag 1`] = `
 Object {
   "actual": "<p xmlns=\\"http://www.w3.org/1999/xhtml\\">populaciji (&lt; 0.1%), te se</p>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:
-@#[line:1,col:16]",
-  ],
-}
-`;
-
-exports[`errorHandle unclosed tag 1`] = `
-Object {
-  "actual": "<foo/>",
-  "error": Array [
-    "[xmldom error]	unexpected end of input
-@#[line:1,col:1]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:",
+      Object {
+        "columnNumber": 17,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;

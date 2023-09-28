@@ -4,6 +4,343 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-beta.11](https://github.com/xmldom/xmldom/compare/0.9.0-beta.10...0.9.0-beta.11)
+
+### Fixed
+
+- report more non well-formed cases [`#519`](https://github.com/xmldom/xmldom/pull/519)  / [`#45`](https://github.com/xmldom/xmldom/issues/45) / [`#125`](https://github.com/xmldom/xmldom/issues/125) / [`#467`](https://github.com/xmldom/xmldom/issues/467)
+  BREAKING-CHANGE: Reports more not well-formed documents as fatalError
+  and drop broken support for optional and unclosed tags in HTML.
+
+### Other
+
+- Translate/drop non English comments [`#518`](https://github.com/xmldom/xmldom/pull/518)
+- use node v16 for development [`#517`](https://github.com/xmldom/xmldom/pull/517)
+
+Thank you, [@brodybits](https://github.com/brodybits), [@cbettinger](https://github.com/cbettinger), [@josecarlosrx](https://github.com/josecarlosrx), for your contributions
+
+
+## [0.9.0-beta.10](https://github.com/xmldom/xmldom/compare/0.9.0-beta.9...0.9.0-beta.10)
+
+### Fixed
+
+- dom: prevent iteration over deleted items [`#514`](https://github.com/xmldom/xmldom/pull/514)/ [`#499`](https://github.com/xmldom/xmldom/issues/499)
+
+### Chore
+
+- use prettier plugin for jsdoc [`#513`](https://github.com/xmldom/xmldom/pull/513)
+
+Thank you, [@qtow](https://github.com/qtow), [@shunkica](https://github.com/shunkica), [@homer0](https://github.com/homer0), for your contributions
+
+
+## [0.8.10](https://github.com/xmldom/xmldom/compare/0.8.9...0.8.10)
+
+### Fixed
+
+- dom: prevent iteration over deleted items [`#514`](https://github.com/xmldom/xmldom/pull/514)/ [`#499`](https://github.com/xmldom/xmldom/issues/499)
+
+Thank you, [@qtow](https://github.com/qtow), for your contributions
+
+
+## [0.7.13](https://github.com/xmldom/xmldom/compare/0.7.12...0.7.13)
+
+### Fixed
+
+- dom: prevent iteration over deleted items [`#514`](https://github.com/xmldom/xmldom/pull/514)/ [`#499`](https://github.com/xmldom/xmldom/issues/499)
+
+Thank you, [@qtow](https://github.com/qtow), for your contributions
+
+
+## [0.9.0-beta.9](https://github.com/xmldom/xmldom/compare/0.9.0-beta.8...0.9.0-beta.9)
+
+### Fixed
+
+- Set nodeName property in ProcessingInstruction [`#509`](https://github.com/xmldom/xmldom/pull/509) / [`#505`](https://github.com/xmldom/xmldom/issues/505)
+- preserve DOCTYPE internal subset [`#498`](https://github.com/xmldom/xmldom/pull/498) / [`#497`](https://github.com/xmldom/xmldom/pull/497) / [`#117`](https://github.com/xmldom/xmldom/issues/117)\
+  BREAKING CHANGES: Many documents that were previously accepted by xmldom, esecially non well-formed ones are no longer accepted. Some issues that were formerly reported as errors are now a fatalError.
+- DOMParser: Align parseFromString errors with specs [`#454`](https://github.com/xmldom/xmldom/pull/454)
+
+### Chore
+
+- stop running mutation tests using stryker [`#496`](https://github.com/xmldom/xmldom/pull/496)
+- make `toErrorSnapshot` windows compatible [`#503`](https://github.com/xmldom/xmldom/pull/503)
+
+Thank you, [@cjbarth](https://github.com/cjbarth), [@shunkica](https://github.com/shunkica), [@pmahend1](https://github.com/pmahend1), [@niklasl](https://github.com/niklasl), for your contributions
+
+
+## [0.8.9](https://github.com/xmldom/xmldom/compare/0.8.8...0.8.9)
+
+### Fixed
+
+- Set nodeName property in ProcessingInstruction [`#509`](https://github.com/xmldom/xmldom/pull/509) / [`#505`](https://github.com/xmldom/xmldom/issues/505)
+
+Thank you, [@cjbarth](https://github.com/cjbarth), for your contributions
+
+
+## [0.7.12](https://github.com/xmldom/xmldom/compare/0.7.11...0.7.12)
+
+### Fixed
+
+- Set nodeName property in ProcessingInstruction [`#509`](https://github.com/xmldom/xmldom/pull/509) / [`#505`](https://github.com/xmldom/xmldom/issues/505)
+
+Thank you, [@cjbarth](https://github.com/cjbarth), for your contributions
+
+
+## [0.9.0-beta.8](https://github.com/xmldom/xmldom/compare/0.9.0-beta.7...0.9.0-beta.8)
+
+### Fixed
+
+- Throw DOMException when calling removeChild with invalid parameter [`#494`](https://github.com/xmldom/xmldom/pull/494) / [`#135`](https://github.com/xmldom/xmldom/issues/135)
+
+BREAKING CHANGE: Previously it was possible (but not documented) to call `Node.removeChild` with any node in the tree,
+and with certain exceptions, it would work. This is no longer the case: calling `Node.removeChild` with an argument that is not a direct child of the node that it is called from, will throw a NotFoundError DOMException, as it is described by the specs.
+
+Thank you, [@noseworthy](https://github.com/noseworthy), [@davidmc24](https://github.com/davidmc24), for your contributions
+
+
+## [0.9.0-beta.7](https://github.com/xmldom/xmldom/compare/0.9.0-beta.6...0.9.0-beta.7)
+
+### Feature
+
+- Add `compareDocumentPosition` method from level 3 spec. [`#488`](https://github.com/xmldom/xmldom/pull/488)
+
+### Fixed
+
+- `getAttribute` and `getAttributeNS` should return `null` (#477) [`#46`](https://github.com/xmldom/xmldom/issues/46)
+- several issues in NamedNodeMap and Element (#482) [`#46`](https://github.com/xmldom/xmldom/issues/46)
+- properly parse closing where the last attribute has no value [`#485`](https://github.com/xmldom/xmldom/pull/485) / [`#486`](https://github.com/xmldom/xmldom/issues/486)
+- extend list of HTML entities [`#489`](https://github.com/xmldom/xmldom/pull/489)
+
+BREAKING CHANGE: Iteration over attributes now happens in the right order and non-existing attributes now return `null` instead of undefined. THe same is true for the `namepsaceURI` and `prefix` of Attr nodes.
+All of the changes are fixing misalignment with the DOM specs, so if you expected it to work as specified,
+nothing should break for you.
+
+### Chore
+
+- update multiple devDependencies
+- Configure jest (correctly) and wallaby [`#481`](https://github.com/xmldom/xmldom/pull/481) / [`#483`](https://github.com/xmldom/xmldom/pull/483)
+
+Thank you, [@bulandent](https://github.com/bulandent), [@zorkow](https://github.com/zorkow), for your contributions
+
+
+## [0.8.8](https://github.com/xmldom/xmldom/compare/0.8.7...0.8.8)
+
+### Fixed
+
+- extend list of HTML entities [`#489`](https://github.com/xmldom/xmldom/pull/489)
+
+Thank you, [@zorkow](https://github.com/zorkow), for your contributions
+
+## [0.7.11](https://github.com/xmldom/xmldom/compare/0.7.10...0.7.11)
+
+### Fixed
+
+- extend list of HTML entities [`#489`](https://github.com/xmldom/xmldom/pull/489)
+
+Thank you, [@zorkow](https://github.com/zorkow), for your contributions
+
+
+## [0.8.7](https://github.com/xmldom/xmldom/compare/0.8.6...0.8.7)
+
+### Fixed
+
+- properly parse closing where the last attribute has no value [`#485`](https://github.com/xmldom/xmldom/pull/485) / [`#486`](https://github.com/xmldom/xmldom/issues/486)
+
+Thank you, [@bulandent](https://github.com/bulandent), for your contributions
+
+
+## [0.7.10](https://github.com/xmldom/xmldom/compare/0.7.9...0.7.10)
+
+### Fixed
+
+- properly parse closing where the last attribute has no value [`#485`](https://github.com/xmldom/xmldom/pull/485) / [`#486`](https://github.com/xmldom/xmldom/issues/486)
+
+Thank you, [@bulandent](https://github.com/bulandent), for your contributions
+
+
+## [0.8.6](https://github.com/xmldom/xmldom/compare/0.8.5...0.8.6)
+
+### Fixed
+
+- Properly check nodes before replacement [`#457`](https://github.com/xmldom/xmldom/pull/457) / [`#455`](https://github.com/xmldom/xmldom/issues/455) / [`#456`](https://github.com/xmldom/xmldom/issues/456)
+
+Thank you, [@edemaine](https://github.com/edemaine), [@pedro-l9](https://github.com/pedro-l9), for your contributions
+
+
+## [0.7.9](https://github.com/xmldom/xmldom/compare/0.7.8...0.7.9)
+
+### Fixed
+
+- Properly check nodes before replacement [`#457`](https://github.com/xmldom/xmldom/pull/457) / [`#455`](https://github.com/xmldom/xmldom/issues/455) / [`#456`](https://github.com/xmldom/xmldom/issues/456)
+
+Thank you, [@edemaine](https://github.com/edemaine), [@pedro-l9](https://github.com/pedro-l9), for your contributions
+
+
+## [0.9.0-beta.6](https://github.com/xmldom/xmldom/compare/0.9.0-beta.5...0.9.0-beta.6)
+
+### Fixed
+
+- Properly check nodes before replacement [`#457`](https://github.com/xmldom/xmldom/pull/457) / [`#455`](https://github.com/xmldom/xmldom/issues/455) / [`#456`](https://github.com/xmldom/xmldom/issues/456)
+
+Thank you, [@edemaine](https://github.com/edemaine), [@pedro-l9](https://github.com/pedro-l9), for your contributions
+
+
+## [0.9.0-beta.5](https://github.com/xmldom/xmldom/compare/0.9.0-beta.4...0.9.0-beta.5)
+
+### Fixed
+
+- fix: Restore ES5 compatibility [`#452`](https://github.com/xmldom/xmldom/pull/452) / [`#453`](https://github.com/xmldom/xmldom/issues/453)
+
+Thank you, [@fengxinming](https://github.com/fengxinming), for your contributions
+
+
+## [0.8.5](https://github.com/xmldom/xmldom/compare/0.8.4...0.8.5)
+
+### Fixed
+
+- fix: Restore ES5 compatibility [`#452`](https://github.com/xmldom/xmldom/pull/452) / [`#453`](https://github.com/xmldom/xmldom/issues/453)
+
+Thank you, [@fengxinming](https://github.com/fengxinming), for your contributions
+
+
+## [0.7.8](https://github.com/xmldom/xmldom/compare/0.7.7...0.7.8)
+
+### Fixed
+
+- fix: Restore ES5 compatibility [`#452`](https://github.com/xmldom/xmldom/pull/452) / [`#453`](https://github.com/xmldom/xmldom/issues/453)
+
+Thank you, [@fengxinming](https://github.com/fengxinming), for your contributions
+
+
+## [0.9.0-beta.4](https://github.com/xmldom/xmldom/compare/0.9.0-beta.3...0.9.0-beta.4)
+
+### Fixed
+
+- Security: Prevent inserting DOM nodes when they are not well-formed [`CVE-2022-39353`](https://github.com/xmldom/xmldom/security/advisories/GHSA-crh6-fp67-6883)
+  In case such a DOM would be created, the part that is not well-formed will be transformed into text nodes, in which xml specific characters like `<` and `>` are encoded accordingly.
+  In the upcoming version 0.9.0 those text nodes will no longer be added and an error will be thrown instead.
+  This change can break your code, if you relied on this behavior, e.g. multiple root elements in the past. We consider it more important to align with the specs that we want to be aligned with, considering the potential security issues that might derive from people not being aware of the difference in behavior.
+  Related Spec: <https://dom.spec.whatwg.org/#concept-node-ensure-pre-insertion-validity>
+
+### Chore
+
+- update multiple devDependencies
+- Add eslint-plugin-node for `lib` [`#448`](https://github.com/xmldom/xmldom/pull/448) / [`#190`](https://github.com/xmldom/xmldom/issues/190)
+- style: Apply prettier to all code [`#447`](https://github.com/xmldom/xmldom/pull/447) / [`#29`](https://github.com/xmldom/xmldom/issues/29) / [`#130`](https://github.com/xmldom/xmldom/issues/130)
+
+Thank you, [@XhmikosR](https://github.com/XhmikosR), [@awwright](https://github.com/awwright), [@frumioj](https://github.com/frumioj), [@cjbarth](https://github.com/cjbarth), [@markgollnick](https://github.com/markgollnick) for your contributions
+
+
+## [0.8.4](https://github.com/xmldom/xmldom/compare/0.8.3...0.8.4)
+
+### Fixed
+
+- Security: Prevent inserting DOM nodes when they are not well-formed [`CVE-2022-39353`](https://github.com/xmldom/xmldom/security/advisories/GHSA-crh6-fp67-6883)
+  In case such a DOM would be created, the part that is not well-formed will be transformed into text nodes, in which xml specific characters like `<` and `>` are encoded accordingly.
+  In the upcoming version 0.9.0 those text nodes will no longer be added and an error will be thrown instead.
+  This change can break your code, if you relied on this behavior, e.g. multiple root elements in the past. We consider it more important to align with the specs that we want to be aligned with, considering the potential security issues that might derive from people not being aware of the difference in behavior.
+  Related Spec: <https://dom.spec.whatwg.org/#concept-node-ensure-pre-insertion-validity>
+
+Thank you, [@frumioj](https://github.com/frumioj), [@cjbarth](https://github.com/cjbarth), [@markgollnick](https://github.com/markgollnick) for your contributions
+
+
+## [0.7.7](https://github.com/xmldom/xmldom/compare/0.7.6...0.7.7)
+
+### Fixed
+
+- Security: Prevent inserting DOM nodes when they are not well-formed [`CVE-2022-39353`](https://github.com/xmldom/xmldom/security/advisories/GHSA-crh6-fp67-6883)
+  In case such a DOM would be created, the part that is not well-formed will be transformed into text nodes, in which xml specific characters like `<` and `>` are encoded accordingly.
+  In the upcoming version 0.9.0 those text nodes will no longer be added and an error will be thrown instead.
+  This change can break your code, if you relied on this behavior, e.g. multiple root elements in the past. We consider it more important to align with the specs that we want to be aligned with, considering the potential security issues that might derive from people not being aware of the difference in behavior.
+  Related Spec: <https://dom.spec.whatwg.org/#concept-node-ensure-pre-insertion-validity>
+
+Thank you, [@frumioj](https://github.com/frumioj), [@cjbarth](https://github.com/cjbarth), [@markgollnick](https://github.com/markgollnick) for your contributions
+
+
+## [0.9.0-beta.3](https://github.com/xmldom/xmldom/compare/0.9.0-beta.2...0.9.0-beta.3)
+
+### Fixed
+
+- fix: Stop adding tags after incomplete closing tag [`#445`](https://github.com/xmldom/xmldom/pull/445) / [`#416`](https://github.com/xmldom/xmldom/pull/416)
+  BREAKING CHANGE: It no longer reports an error when parsing HTML containing incomplete closing tags, to align the behavior with the one in the browser.
+  BREAKING CHANGE: If your code relied on not well-formed XML to be parsed and include subsequent tags, this will no longer work.
+- fix: Avoid bidirectional characters in source code [`#440`](https://github.com/xmldom/xmldom/pull/440)
+
+### Other
+
+- ci: Add CodeQL scan [`#444`](https://github.com/xmldom/xmldom/pull/444)
+
+Thank you, [@ACN-kck](https://github.com/ACN-kck), [@mgerlach](https://github.com/mgerlach) for your contributions
+
+
+## [0.7.6](https://github.com/xmldom/xmldom/compare/0.7.5...0.7.6)
+
+### Fixed
+- Avoid iterating over prototype properties [`#441`](https://github.com/xmldom/xmldom/pull/441) / [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
+
+Thank you, [@jftanner](https://github.com/jftanner), [@Supraja9726](https://github.com/Supraja9726) for your contributions
+
+
+## [0.8.3](https://github.com/xmldom/xmldom/compare/0.8.3...0.8.2)
+
+### Fixed
+- Avoid iterating over prototype properties [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
+
+Thank you, [@Supraja9726](https://github.com/Supraja9726) for your contributions
+
+
+## [0.9.0-beta.2](https://github.com/xmldom/xmldom/compare/0.9.0-beta.1...0.9.0-beta.2)
+
+### Fixed
+- Avoid iterating over prototype properties [`#437`](https://github.com/xmldom/xmldom/pull/437) / [`#436`](https://github.com/xmldom/xmldom/issues/436)
+
+Thank you, [@Supraja9726](https://github.com/Supraja9726) for your contributions
+
+
+## [0.9.0-beta.1](https://github.com/xmldom/xmldom/compare/0.8.2...0.9.0-beta.1)
+
+### Fixed
+
+**Only use HTML rules if mimeType matches** [`#338`](https://github.com/xmldom/xmldom/pull/338), fixes [`#203`](https://github.com/xmldom/xmldom/issues/203)
+
+In the living specs for parsing XML and HTML, that this library is trying to implement,
+there is a distinction between the different types of documents being parsed:
+There are quite some rules that are different for parsing, constructing and serializing XML vs HTML documents.
+
+So far xmldom was always "detecting" whether "the HTML rules should be applied" by looking at the current namespace. So from the first time an the HTML default namespace (`http://www.w3.org/1999/xhtml`) was found, every node was treated as being part of an HTML document. This misconception is the root cause for quite some reported bugs.
+
+BREAKING CHANGE: HTML rules are no longer applied just because of the namespace, but require the `mimeType` argument passed to `DOMParser.parseFromString(source, mimeType)` to match `'text/html'`. Doing so implies all rules for handling casing for tag and attribute names when parsing, creation of nodes and searching nodes.
+
+BREAKING CHANGE: Correct the return type of `DOMParser.parseFromString` to `Document | undefined`. In case of parsing errors it was always possible that "the returned `Document`" has not been created. In case you are using Typescript you now need to handle those cases.
+
+BREAKING CHANGE: The instance property `DOMParser.options` is no longer available, instead use the individual `readonly` property per option (`assign`, `domHandler`, `errorHandler`, `normalizeLineEndings`, `locator`, `xmlns`). Those also provides the default value if the option was not passed. The 'locator' option is now just a boolean (default remains `true`).
+
+BREAKING CHANGE: The following methods no longer allow a (non spec compliant) boolean argument to toggle "HTML rules":
+- `XMLSerializer.serializeToString`
+- `Node.toString`
+- `Document.toString`
+
+The following interfaces have been implemented:
+`DOMImplementation` now implements all methods defined in the DOM spec, but not all of the behavior is implemented (see docstring):
+- `createDocument` creates an "XML Document" (prototype: `Document`, property `type` is `'xml'`)
+- `createHTMLDocument` creates an "HTML Document" (type/prototype: `Document`, property `type` is `'html'`).
+  - when no argument is passed or the first argument is a string, the basic nodes for an HTML structure are created, as specified
+  - when the first argument is `false` no child nodes are created
+
+`Document` now has two new readonly properties as specified in the DOM spec:
+- `contentType` which is the mime-type that was used to create the document
+- `type` which is either the string literal `'xml'` or `'html'`
+
+`MIME_TYPE` (`/lib/conventions.js`):
+- `hasDefaultHTMLNamespace` test if the provided string is one of the miem types that implies the default HTML namespace: `text/html` or `application/xhtml+xml`
+
+Thank you [@weiwu-zhang](https://github.com/weiwu-zhang) for your contributions
+
+### Chore
+
+- update multiple devDependencies
+
+
 ## [0.8.2](https://github.com/xmldom/xmldom/compare/0.8.1...0.8.2)
 
 ### Fixed
@@ -59,7 +396,7 @@ Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://gi
 ### Fixes:
 
 - Preserve default namespace when serializing [`#319`](https://github.com/xmldom/xmldom/issues/319) / [`#321`](https://github.com/xmldom/xmldom/pull/321)
-  Thank you [@lupestro](https://github.com/lupestro)
+  Thank you, [@lupestro](https://github.com/lupestro)
 
 ## 0.7.4
 
@@ -68,7 +405,7 @@ Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://gi
 ### Fixes:
 
 - Restore ability to parse `__prototype__` attributes [`#315`](https://github.com/xmldom/xmldom/pull/315)
-  Thank you [@dsimpsonOMF](https://github.com/dsimpsonOMF)
+  Thank you, [@dsimpsonOMF](https://github.com/dsimpsonOMF)
 
 ## 0.7.3
 
@@ -78,7 +415,7 @@ Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://gi
 
 - Add doctype when parsing from string [`#277`](https://github.com/xmldom/xmldom/issues/277) / [`#301`](https://github.com/xmldom/xmldom/pull/301)
 - Correct typo in error message [`#294`](https://github.com/xmldom/xmldom/pull/294)
-  Thank you [@rrthomas](https://github.com/rrthomas)
+  Thank you, [@rrthomas](https://github.com/rrthomas)
 
 ### Refactor:
 
@@ -103,7 +440,7 @@ Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://gi
 ### Fixes:
 
 - Types: Add index.d.ts to packaged files [`#288`](https://github.com/xmldom/xmldom/pull/288)
-  Thank you [@forty](https://github.com/forty)
+  Thank you, [@forty](https://github.com/forty)
 
 ## 0.7.1
 
@@ -112,7 +449,7 @@ Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://gi
 ### Fixes:
 
 - Types: Copy types from DefinitelyTyped [`#283`](https://github.com/xmldom/xmldom/pull/283)
-  Thank you [@kachkaev](https://github.com/kachkaev)
+  Thank you, [@kachkaev](https://github.com/kachkaev)
 
 ### Chore:
 - package.json: remove author, maintainers, etc. [`#279`](https://github.com/xmldom/xmldom/pull/279)
@@ -129,7 +466,7 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 ### Fixes:
 
 - Security: Misinterpretation of malicious XML input [`CVE-2021-32796`](https://github.com/xmldom/xmldom/security/advisories/GHSA-5fg8-2547-mr8q)
-- Implement `Document.getElementsByClassName` as specified [`#213`](https://github.com/xmldom/xmldom/pull/213), thank you [@ChALkeR](https://github.com/ChALkeR)
+- Implement `Document.getElementsByClassName` as specified [`#213`](https://github.com/xmldom/xmldom/pull/213), thank you, [@ChALkeR](https://github.com/ChALkeR)
 - Inherit namespace prefix from parent when required [`#268`](https://github.com/xmldom/xmldom/pull/268)
 - Handle whitespace in closing tags [`#267`](https://github.com/xmldom/xmldom/pull/267)
 - Update `DOMImplementation` according to recent specs [`#210`](https://github.com/xmldom/xmldom/pull/210)  
@@ -137,7 +474,7 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 - No longer serializes any namespaces with an empty URI [`#244`](https://github.com/xmldom/xmldom/pull/244)   
   (related to [`#168`](https://github.com/xmldom/xmldom/pull/168) released in 0.6.0)  
   BREAKING CHANGE: Only if you rely on ["unsetting" a namespace prefix](https://github.com/xmldom/xmldom/pull/168#issuecomment-886984994) by setting it to an empty string 
-- Set `localName` as part of `Document.createElement` [`#229`](https://github.com/xmldom/xmldom/pull/229), thank you [@rrthomas](https://github.com/rrthomas)
+- Set `localName` as part of `Document.createElement` [`#229`](https://github.com/xmldom/xmldom/pull/229), thank you, [@rrthomas](https://github.com/rrthomas)
 
 ### CI
 
@@ -156,7 +493,7 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 
 - Stop serializing empty namespace values like `xmlns:ds=""` [`#168`](https://github.com/xmldom/xmldom/pull/168)  
   BREAKING CHANGE: If your code expected empty namespaces attributes to be serialized.  
-  Thank you [@pdecat](https://github.com/pdecat) and [@FranckDepoortere](https://github.com/FranckDepoortere)
+  Thank you, [@pdecat](https://github.com/pdecat) and [@FranckDepoortere](https://github.com/FranckDepoortere)
 - Escape `<` to `&lt;` when serializing attribute values [`#198`](https://github.com/xmldom/xmldom/issues/198) / [`#199`](https://github.com/xmldom/xmldom/pull/199)
 
 ## 0.5.0

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`all grammar regular expressions should have the expected keys 1`] = `
+Array [
+  "S",
+  "S_OPT",
+  "SystemLiteral",
+  "Char",
+  "CDSect",
+  "PubidLiteral",
+  "Comment",
+  "ExternalID",
+  "ExternalID_match",
+  "Name",
+  "PEReference",
+  "XMLDecl",
+  "Reference",
+  "PI",
+  "QName",
+  "QName_exact",
+  "QName_group",
+  "NotationDecl",
+  "EntityValue",
+  "elementdecl",
+  "AttlistDecl",
+  "EntityDecl",
+]
+`;

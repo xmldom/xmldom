@@ -3,25 +3,15 @@
 exports[`html normalizer <Label onClick=doClick..">Hello, World</Label> 1`] = `
 Object {
   "actual": "<Label onClick=\\"doClick..\\" xmlns=\\"http://www.w3.org/1999/xhtml\\">Hello, World</Label>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"onClick\\" missed start quot(\\")!!
-@#[line:1,col:1]",
-  ],
-}
-`;
-
-exports[`html normalizer <div a=& a="&''" b/> 1`] = `
-Object {
-  "actual": "<div a=\\"&amp;''\\" b=\\"b\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
-  "fatalError": Array [
-    "[xmldom fatalError]	Attribute a redefined
-@#[line:1,col:1]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
-@#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"b\\" missed value!! \\"b\\" instead!!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"onClick\\" missed start quot(\\")!!",
+      Object {
+        "columnNumber": 27,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -29,15 +19,31 @@ Object {
 exports[`html normalizer <div a=& bb c d=123&&456/> 1`] = `
 Object {
   "actual": "<div a=\\"&amp;\\" bb=\\"bb\\" c=\\"c\\" d=\\"123&amp;&amp;456\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"&\\" missed quot(\\")!!
-@#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"bb\\" missed value!! \\"bb\\" instead2!!
-@#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"c\\" missed value!! \\"c\\" instead2!!
-@#[line:1,col:1]",
-    "[xmldom warning]	attribute \\"123&&456\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"&\\" missed quot(\\")!!",
+      Object {
+        "columnNumber": 17,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "warning",
+      "attribute \\"123&&456\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 17,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
+      "entity not matching Reference production: &456",
+      Object {
+        "columnNumber": 17,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -45,6 +51,16 @@ Object {
 exports[`html normalizer <div test="a<b&&a< c && a>d"></div> 1`] = `
 Object {
   "actual": "<div test=\\"a&lt;b&amp;&amp;a&lt; c &amp;&amp; a&gt;d\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></div>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&a",
+      Object {
+        "columnNumber": 11,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
@@ -57,27 +73,53 @@ Object {
 exports[`html normalizer <div>&amp;&lt;123&456<789;&&</div> 1`] = `
 Object {
   "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">&amp;&lt;123&amp;456&lt;789;&amp;&amp;</div>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:789;&&<
-@#[line:1,col:22]",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not matching Reference production: &456",
+      Object {
+        "columnNumber": 23,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:789;&&<",
+      Object {
+        "columnNumber": 23,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
 
 exports[`html normalizer <div>&nbsp;&copy;&nbsp&copy</div> 1`] = `
 Object {
-  "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\"> ©&amp;nbsp&amp;copy</div>",
+  "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\"> © ©</div>",
 }
 `;
 
 exports[`html normalizer <div><123e>&<a<br/></div> 1`] = `
 Object {
   "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">&lt;123e&gt;&amp;&lt;a<br/></div>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:123e
-@#[line:1,col:6]",
-    "[xmldom error]	element parse error: Error: invalid tagName:a<br
-@#[line:1,col:13]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:123e",
+      Object {
+        "columnNumber": 15,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
+      "element parse error: Error: invalid tagName:a<br",
+      Object {
+        "columnNumber": 15,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -100,90 +142,156 @@ Object {
 }
 `;
 
-exports[`html normalizer <r><Label onClick="doClick..>Hello, World</Label></r> 1`] = `
+exports[`html normalizer text/html: script <input type="button" disabled></input>: reported 1`] = `
 Object {
-  "actual": "<r xmlns=\\"http://www.w3.org/1999/xhtml\\">&lt;Label onClick=\\"doClick..&gt;Hello, World</r>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: attribute value no end '\\"' match
-@#[line:1,col:4]",
-  ],
+  "actual": "<input type=\\"button\\" disabled=\\"disabled\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
 }
 `;
 
-exports[`html normalizer text/html: script <script src="./test.js"/> 1`] = `
+exports[`html normalizer text/html: script <input type="checkbox" checked></input>: reported 1`] = `
+Object {
+  "actual": "<input type=\\"checkbox\\" checked=\\"checked\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+}
+`;
+
+exports[`html normalizer text/html: script <option selected></option>: reported 1`] = `
+Object {
+  "actual": "<option selected=\\"selected\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></option>",
+}
+`;
+
+exports[`html normalizer text/html: script <script src="./test.js"/>: reported 1`] = `
 Object {
   "actual": "<script src=\\"./test.js\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></script>",
 }
 `;
 
-exports[`html normalizer text/html: script <script>alert(a<b&&c?"<br/>":">>");</script> 1`] = `
+exports[`html normalizer text/html: script <script>alert(a<b&&c?"<br/>":">>");</script>: reported 1`] = `
 Object {
   "actual": "<script xmlns=\\"http://www.w3.org/1999/xhtml\\">alert(a<b&&c?\\"<br/>\\":\\">>\\");</script>",
 }
 `;
 
-exports[`html normalizer text/html: script <script>alert(a<b&&c?"<br>":">>");</script> 1`] = `
+exports[`html normalizer text/html: script <script>alert(a<b&&c?"<br>":">>");</script>: reported 1`] = `
 Object {
   "actual": "<script xmlns=\\"http://www.w3.org/1999/xhtml\\">alert(a<b&&c?\\"<br>\\":\\">>\\");</script>",
 }
 `;
 
-exports[`html normalizer text/html: script <textarea>alert(a<b&&c?"<br>":">>");</textarea> 1`] = `
+exports[`html normalizer text/html: script <textarea>alert(a<b&&c?"<br>":">>");</textarea>: reported 1`] = `
 Object {
   "actual": "<textarea xmlns=\\"http://www.w3.org/1999/xhtml\\">alert(a&lt;b&amp;&amp;c?\\"&lt;br&gt;\\":\\"&gt;&gt;\\");</textarea>",
+  "errors": Array [
+    Array [
+      "error",
+      "entity not found:&c",
+      Object {
+        "columnNumber": 1,
+        "lineNumber": 1,
+      },
+    ],
+  ],
 }
 `;
 
-exports[`html normalizer text/xml: script <script src="./test.js"/> 1`] = `
+exports[`html normalizer text/html: script <ul><li>abc<li>def</ul>: caught 1`] = `[ParseError: Opening and ending tag mismatch: "li" != "ul"]`;
+
+exports[`html normalizer text/xml: script <input type="button" disabled></input>: reported 1`] = `
+Object {
+  "actual": "<input type=\\"button\\" disabled=\\"disabled\\"/>",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"disabled\\" missed value!! \\"disabled\\" instead!!",
+      Object {
+        "columnNumber": 22,
+        "lineNumber": 1,
+      },
+    ],
+  ],
+}
+`;
+
+exports[`html normalizer text/xml: script <input type="checkbox" checked></input>: reported 1`] = `
+Object {
+  "actual": "<input type=\\"checkbox\\" checked=\\"checked\\"/>",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"checked\\" missed value!! \\"checked\\" instead!!",
+      Object {
+        "columnNumber": 24,
+        "lineNumber": 1,
+      },
+    ],
+  ],
+}
+`;
+
+exports[`html normalizer text/xml: script <option selected></option>: reported 1`] = `
+Object {
+  "actual": "<option selected=\\"selected\\"/>",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"selected\\" missed value!! \\"selected\\" instead!!",
+      Object {
+        "columnNumber": 9,
+        "lineNumber": 1,
+      },
+    ],
+  ],
+}
+`;
+
+exports[`html normalizer text/xml: script <script src="./test.js"/>: reported 1`] = `
 Object {
   "actual": "<script src=\\"./test.js\\"/>",
 }
 `;
 
-exports[`html normalizer text/xml: script <script>alert(a<b&&c?"<br/>":">>");</script> 1`] = `
+exports[`html normalizer text/xml: script <script>alert(a<b&&c?"<br/>":">>");</script>: reported 1`] = `
 Object {
   "actual": "<script>alert(a&lt;b&amp;&amp;c?\\"<br/>\\":\\"&gt;&gt;\\");</script>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: attribute value must after \\"=\\"
-@#[line:1,col:16]",
+  "errors": Array [
+    Array [
+      "error",
+      "element parse error: Error: attribute value must after \\"=\\"",
+      Object {
+        "columnNumber": 28,
+        "lineNumber": 1,
+      },
+    ],
+    Array [
+      "error",
+      "EntityRef: expecting ;",
+      Object {
+        "columnNumber": 28,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
 
-exports[`html normalizer text/xml: script <script>alert(a<b&&c?"<br>":">>");</script> 1`] = `
-Object {
-  "actual": "<script>alert(a&lt;b&amp;&amp;c?\\"<br/>\\":\\"&gt;&gt;\\");</script>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: attribute value must after \\"=\\"
-@#[line:1,col:16]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:23]",
-  ],
-}
-`;
+exports[`html normalizer text/xml: script <script>alert(a<b&&c?"<br>":">>");</script>: caught 1`] = `[ParseError: Opening and ending tag mismatch: "br" != "script"]`;
 
-exports[`html normalizer text/xml: script <textarea>alert(a<b&&c?"<br>":">>");</textarea> 1`] = `
-Object {
-  "actual": "<textarea>alert(a&lt;b&amp;&amp;c?\\"<br/>\\":\\"&gt;&gt;\\");</textarea>",
-  "error": Array [
-    "[xmldom error]	element parse error: Error: attribute value must after \\"=\\"
-@#[line:1,col:18]",
-  ],
-  "warning": Array [
-    "[xmldom warning]	unclosed xml attribute
-@#[line:1,col:25]",
-  ],
-}
-`;
+exports[`html normalizer text/xml: script <textarea>alert(a<b&&c?"<br>":">>");</textarea>: caught 1`] = `[ParseError: Opening and ending tag mismatch: "br" != "textarea"]`;
+
+exports[`html normalizer text/xml: script <ul><li>abc<li>def</ul>: caught 1`] = `[ParseError: Opening and ending tag mismatch: "li" != "ul"]`;
 
 exports[`html normalizer unclosed html <html title = 1/> 1`] = `
 Object {
   "actual": "<html title=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 15,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -191,9 +299,15 @@ Object {
 exports[`html normalizer unclosed html <html title =1/2></html> 1`] = `
 Object {
   "actual": "<html title=\\"1/2\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"1/2\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"1/2\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;
@@ -201,19 +315,21 @@ Object {
 exports[`html normalizer unclosed html <html title/> 1`] = `
 Object {
   "actual": "<html title=\\"title\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"title\\" missed value!! \\"title\\" instead!!
-@#[line:1,col:1]",
-  ],
 }
 `;
 
 exports[`html normalizer unclosed html <html title= 1/> 1`] = `
 Object {
   "actual": "<html title=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"></html>",
-  "warning": Array [
-    "[xmldom warning]	attribute \\"1\\" missed quot(\\")!
-@#[line:1,col:1]",
+  "errors": Array [
+    Array [
+      "warning",
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
+        "columnNumber": 14,
+        "lineNumber": 1,
+      },
+    ],
   ],
 }
 `;

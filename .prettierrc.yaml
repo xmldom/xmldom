@@ -1,3 +1,50 @@
 useTabs: true
-semi: false
+semi: true
+trailingComma: es5
 singleQuote: true
+plugins:
+  - '@homer0/prettier-plugin-jsdoc'
+# plugin specific options
+jsdocAllowAccessTag: false
+jsdocPrintWidth: 95
+jsdocTagsOrder:
+  - deprecated
+  - type
+  - typedef
+  - callback
+  - function
+  - method
+  - class
+  - file
+  - constant
+  - description
+  - classdesc
+  - example
+  - param
+  - property
+  - returns
+  - template
+  - augments
+  - extends
+  - throws
+  - yields
+  - fires
+  - listens
+  - async
+  - abstract
+  - override
+  - private
+  - protected
+  - public
+  - access
+  - author
+  - version
+  - since
+  - member
+  - memberof
+  - category
+  - external
+  - see
+  - other
+  - todo
+jsdocUseColumns: false

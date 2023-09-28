@@ -1,8 +1,15 @@
-# stryker temp files
-/.stryker-tmp
-
 /node_modules
 /reports
 /test/error/reported.json
 
 docs/*.jar
+
+coverage
+
+# user specific config for direnv
+# https://github.com/direnv/direnv/blob/master/docs/installation.md
+# can be used to install node with the correct version when entering the directory
+# https://github.com/direnv/direnv/wiki/Node
+.envrc
+
+/.idea

@@ -1,124 +1,135 @@
-'use strict'
+'use strict';
+// wallaby:file.skip since stacktrace detection is not working in instrumented files
+const { describe, expect, test } = require('@jest/globals');
 
-const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported')
-const { getTestParser } = require('../get-test-parser')
-const { ParseError } = require('../../lib/sax')
-const { DOMParser } = require('../../lib')
-
-describe.each(Object.entries(REPORTED))(
-	'%s',
-	(name, { source, level, match, skippedInHtml }) => {
-		describe.each(['text/xml', 'text/html'])('with mimeType %s', (mimeType) => {
-			const isHtml = mimeType === 'text/html'
-			if (isHtml && skippedInHtml) {
-				it(`should not be reported as ${level}`, () => {
-					const { errors, parser } = getTestParser()
-
-					parser.parseFromString(source, mimeType)
-
-					// if no report was triggered, the key is not present on `errors`
-					expect(errors[level]).toBeUndefined()
-				})
-			} else {
-				it(`should be reported as ${level}`, () => {
-					const { errors, parser } = getTestParser()
-
-					parser.parseFromString(source, mimeType)
-
-					const reported = errors[level]
-					// store the snapshot, so any change in message can be inspected in the git diff
-					expect(reported).toMatchSnapshot()
-					// if a match has been defined, filter messages
-					expect(
-						match ? (reported || []).filter(match) : reported
-					).toHaveLength(1)
-				})
-				if (level === 'fatalError') {
-					it(`should throw ParseError in errorHandler.fatalError`, () => {
-						const parser = new DOMParser()
-
-						expect(() => parser.parseFromString(source, mimeType)).toThrow(
-							ParseError
-						)
-					})
-				} else if (level === 'error') {
-					it(`should not catch Error thrown in errorHandler.${level}`, () => {
-						let thrown = []
-						const errorHandler = {
-							[level]: jest.fn((message) => {
-								const toThrow = new Error(message)
-								thrown.push(toThrow)
-								throw toThrow
-							}),
-						}
-						const { parser } = getTestParser({ errorHandler })
-
-						expect(() => parser.parseFromString(source, mimeType)).toThrow(
-							Error
-						)
-						expect(
-							thrown.map((error) => toErrorSnapshot(error, 'lib/sax.js'))
-						).toMatchSnapshot()
-						match && expect(match(thrown[0].toString())).toBe(true)
-					})
-				} else if (level === 'warning') {
-					it('should escalate Error thrown in errorHandler.warning to errorHandler.error', () => {
-						let thrown = []
-						const errorHandler = {
-							warning: jest.fn((message) => {
-								const toThrow = new Error(message)
-								thrown.push(toThrow)
-								throw toThrow
-							}),
-							error: jest.fn(),
-						}
-						const { parser } = getTestParser({ errorHandler })
-
-						parser.parseFromString(source, mimeType)
-
-						expect(errorHandler.warning).toHaveBeenCalledTimes(1)
-						expect(errorHandler.error).toHaveBeenCalledTimes(1)
-						expect(
-							thrown.map((error) => toErrorSnapshot(error, 'lib/sax.js'))
-						).toMatchSnapshot()
-						match && expect(match(thrown[0].message)).toBe(true)
-					})
+const path = require('path');
+const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMParser } = require('../../lib/dom-parser');
+const { ParseError } = require('../../lib/sax');
+const { getTestParser } = require('../get-test-parser');
+describe('reported.json', () => {
+	Object.entries(LINE_TO_ERROR_INDEX)
+		.filter(([key]) => !!key)
+		.forEach(([key, { errorType, index, line, message }]) => {
+			describe(`entry #${index} (${key})`, () => {
+				const relatedReported = Object.entries(REPORTED).filter(
+					([sourceLine, { level, match }]) => new RegExp(level, 'i').test(errorType) && match(message)
+				);
+				switch (relatedReported.length) {
+					case 0:
+						test.todo(`should have an entry in REPORTED matching ${errorType}: ${message}`);
+						break;
+					case 1:
+						test(`should have an entry in REPORTED matching ${errorType}: ${message}`, () => {
+							expect(relatedReported.length).toBeGreaterThanOrEqual(1);
+						});
+						break;
+					default: // more than one match
+						const start = relatedReported[0][0];
+						test(`should have keys that start with '${start}' for multiple matches`, () => {
+							expect(relatedReported.filter(([key]) => !key.startsWith(start))).toHaveLength(0);
+						});
 				}
+				if (errorType.includes('fatalError')) {
+					test('should return when reporting fatalError', () => {
+						expect(line).toMatch(/^return /);
+					});
+				}
+			});
+		});
+});
+
+describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, skippedInHtml }) => {
+	describe.each([MIME_TYPE.XML_TEXT, MIME_TYPE.HTML])('with mimeType %s', (mimeType) => {
+		const isHtml = mimeType === 'text/html';
+		if (isHtml && skippedInHtml) {
+			test(`should not be reported`, () => {
+				const { errors, parser } = getTestParser();
+
+				try {
+					parser.parseFromString(source, mimeType);
+				} catch (e) {
+					expect(e).toMatchSnapshot('caught');
+					expect(match(e.message)).toBe(false);
+				}
+				expect(errors).toMatchSnapshot('reported');
+				expect(errors.filter((lvl, msg) => match(msg))).toHaveLength(0);
+			});
+		} else {
+			if (level === 'fatalError') {
+				test(`should throw ParseError in errorHandler.fatalError`, () => {
+					const onError = jest.fn();
+					const parser = new DOMParser({ onError });
+
+					expect(() => parser.parseFromString(source, mimeType)).toThrow(ParseError);
+
+					expect(onError).toHaveBeenCalled();
+				});
+			} else {
+				test(`should be reported`, () => {
+					const { errors, parser } = getTestParser();
+
+					parser.parseFromString(source, mimeType);
+
+					// store the snapshot, so any change in message can be inspected in the git diff
+					expect(errors).toMatchSnapshot();
+					// if a match has been defined, filter messages
+					expect(match ? (errors || []).filter(match) : errors).toHaveLength(1);
+				});
+				test(`should escalate Error thrown in onError to ParseError`, () => {
+					let thrown = [];
+					const onError = jest.fn((level, message) => {
+						const toThrow = new Error(level + ': ' + message);
+						thrown.push(toThrow);
+						throw toThrow;
+					});
+					const { parser } = getTestParser({ onError });
+
+					expect(() => parser.parseFromString(source, mimeType)).toThrow(ParseError);
+					expect(thrown.map((error) => toErrorSnapshot(error, path.join('lib', 'sax.js')))).toMatchSnapshot();
+					match && expect(match(thrown[0].toString())).toBe(true);
+				});
 			}
-		})
-	}
-)
+		}
+	});
+});
 
 /**
- * Creates a string from an error that is easily readable in a snapshot
- * - put's the message on one line as first line
- * - picks the first line in the stack trace that is in `libFile`,
- *   and strips absolute paths and character position from that stack entry
- *   as second line. the line number in the stack is converted to the error index
- *   (to make snapshot testing possible even with stryker).
+ * Creates a string from an error that is easily readable in a snapshot - put's the message on
+ * one line as first line - picks the first line in the stack trace that is in `libFile`,
+ * and strips absolute paths and character position from that stack entry as second line.
+ * the line number in the stack is converted to the error index (to only have relevant changes
+ * in snapshots).
+ *
  * @param {Error} error
- * @param {string} libFile the path from the root of the project that should be preserved in the stack
+ * @param {string} libFile
+ * The path from the root of the project that should be preserved in the stack.
  * @returns {string}
  */
 function toErrorSnapshot(error, libFile) {
-	const libFileMatch = new RegExp(`\/.*\/(${libFile})`)
-	return `${error.message.replace(/([\n\r]+\s*)/g, '||')}\n${error.stack
-		.split(/[\n\r]+/)
-		// find first line that is from lib/sax.js
-		.filter((l) => libFileMatch.test(l))[0]
-		// strip of absolute path
-		.replace(libFileMatch, '$1')
-		// strip of position of character in line
-		.replace(/:\d+\)$/, ')')
-		// We only store the error index int he snapshot instead of the line numbers.
-		// This way they need to be updated less frequent and are compatible with stryker.
-		// see `parseErrorLines` in `./reported.js` for how LINE_TO_ERROR_INDEX is created,
-		// and `./reported.json` (after running the tests) to inspect it.
-		.replace(new RegExp(`${libFile}:\\d+`), (fileAndLine) => {
-			return `${libFile}:#${
-				fileAndLine in LINE_TO_ERROR_INDEX
-					? LINE_TO_ERROR_INDEX[fileAndLine].index
-					: -1
-			}`
-		})}`
+	// Escape the backslash for Windows paths and make the regex platform independent
+	const escapedLibFile = libFile.replace(/\\/g, '\\\\');
+	// replace separators in file path to '/' (linux format) for consistent error snapshot
+	const unifiedLibFile = libFile.replace(/\\/g, '/');
+	const libFileMatch = new RegExp(`[^(]*(${escapedLibFile})`);
+
+	const errorMessageSingleLine = error.message.replace(/([\n\r]+\s*)/g, '||');
+	const firstStacktraceLineWithLibFileAbs = error.stack.split(/[\n\r]+/).find((l) => libFileMatch.test(l));
+	const firstStacktraceLineWithLibFileRel = firstStacktraceLineWithLibFileAbs.replace(libFileMatch, '$1');
+	// strip of position of character in line
+	const firstStacktraceLineWithoutPosInLine = firstStacktraceLineWithLibFileRel.replace(/:\d+\)$/, ')');
+
+	const unifiedStacktraceLine = firstStacktraceLineWithoutPosInLine.replace(
+		new RegExp(`${escapedLibFile}:\\d+`),
+		(fileAndLine) => {
+			// We only store the error index in the snapshot instead of the line numbers.
+			// This way they need to be updated less frequent.
+			// see `parseErrorLines` in `./reported.js` for how LINE_TO_ERROR_INDEX is created,
+			// and `./reported.json` (after running the tests) to inspect it.
+			return `${unifiedLibFile}:#${fileAndLine in LINE_TO_ERROR_INDEX ? LINE_TO_ERROR_INDEX[fileAndLine].index : -1}`;
+		}
+	);
+
+	return `${errorMessageSingleLine}\n${unifiedStacktraceLine}`;
 }

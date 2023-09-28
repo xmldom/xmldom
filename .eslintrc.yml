@@ -3,24 +3,19 @@ env:
   commonjs: true
   es2020: true
   node: true
+extends: 'plugin:prettier/recommended'
+
 plugins:
   - es5
-# FUTURE TBD:
-# extends: 'eslint:recommended'
+  - anti-trojan-source
 parserOptions:
   ecmaVersion: 11
 rules:
-  # FUTURE TBD:
-  # indent:
-  #   - error
-  #   - tab
+  "anti-trojan-source/no-bidi":
+    - error
   linebreak-style:
     - error
     - unix
-  # FUTURE TBD:
-  # quotes:
-  #   - error
-  #   - single
-  # semi:
-  #   - error
-  #   - always
+  strict:
+    - error
+    - global

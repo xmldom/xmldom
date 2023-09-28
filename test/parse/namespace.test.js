@@ -1,20 +1,23 @@
-'use strict'
+'use strict';
 
-const { DOMParser } = require('../../lib')
+const { describe, expect, test } = require('@jest/globals');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMParser } = require('../../lib/dom-parser');
 
 /**
- * Returns an array containing only one occurrence of every sting in `values` (like in a Set).
+ * Returns an array containing only one occurrence of every sting in `values`
+ * (like in a Set).
  *
- * @param values {string}
+ * @param {string} values
  */
-const uniqArray = (...values) => [...new Set(values)]
+const uniqArray = (...values) => [...new Set(values)];
 
 describe('XML Namespace Parse', () => {
-	it('default namespace', () => {
+	test('default namespace', () => {
 		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com"><child attr="1"/></xml>',
-			'text/xml'
-		)
+			MIME_TYPE.XML_TEXT
+		);
 
 		expect(
 			uniqArray(
@@ -23,18 +26,16 @@ describe('XML Namespace Parse', () => {
 				documentElement.firstChild.namespaceURI,
 				documentElement.firstChild.lookupNamespaceURI('')
 			)
-		).toMatchObject(['http://test.com'])
-		expect(
-			documentElement.firstChild.getAttributeNode('attr').namespaceURI
-		).toBeUndefined()
-	})
+		).toMatchObject(['http://test.com']);
+		expect(documentElement.firstChild.getAttributeNode('attr').namespaceURI).toBeNull();
+	});
 
-	it('prefix namespace', () => {
+	test('prefix namespace', () => {
 		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns:p1="http://p1.com" xmlns:p2="http://p2.com"><p1:child a="1" p1:attr="1" b="2"/><p2:child/></xml>',
-			'text/xml'
-		)
-		const firstChild = documentElement.firstChild
+			MIME_TYPE.XML_TEXT
+		);
+		const firstChild = documentElement.firstChild;
 
 		expect(
 			uniqArray(
@@ -42,30 +43,21 @@ describe('XML Namespace Parse', () => {
 				firstChild.namespaceURI,
 				firstChild.getAttributeNode('p1:attr').namespaceURI
 			)
-		).toMatchObject(['http://p1.com'])
-		expect(
-			uniqArray(
-				firstChild.nextSibling.namespaceURI,
-				firstChild.nextSibling.lookupNamespaceURI('p2')
-			)
-		).toMatchObject(['http://p2.com'])
-		expect(firstChild.getAttributeNode('attr')).toBeUndefined()
-	})
+		).toMatchObject(['http://p1.com']);
+		expect(uniqArray(firstChild.nextSibling.namespaceURI, firstChild.nextSibling.lookupNamespaceURI('p2'))).toMatchObject([
+			'http://p2.com',
+		]);
+		expect(firstChild.getAttributeNode('attr')).toBeNull();
+	});
 
-	it('after prefix namespace', () => {
+	test('after prefix namespace', () => {
 		const { documentElement } = new DOMParser().parseFromString(
 			'<xml xmlns:p="http://test.com"><p:child xmlns:p="http://p.com"/><p:child/></xml>',
-			'text/xml'
-		)
+			MIME_TYPE.XML_TEXT
+		);
 
-		expect(documentElement.firstChild.namespaceURI).toStrictEqual(
-			'http://p.com'
-		)
-		expect(documentElement.lastChild.namespaceURI).toStrictEqual(
-			'http://test.com'
-		)
-		expect(
-			documentElement.firstChild.nextSibling.lookupNamespaceURI('p')
-		).toStrictEqual('http://test.com')
-	})
-})
+		expect(documentElement.firstChild.namespaceURI).toStrictEqual('http://p.com');
+		expect(documentElement.lastChild.namespaceURI).toStrictEqual('http://test.com');
+		expect(documentElement.firstChild.nextSibling.lookupNamespaceURI('p')).toStrictEqual('http://test.com');
+	});
+});
