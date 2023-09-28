@@ -1,28 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NAMESPACE should contain immutable HTML with correct value 1`] = `
-[
+Array [
   "HTML",
   "http://www.w3.org/1999/xhtml",
 ]
 `;
 
 exports[`NAMESPACE should contain immutable SVG with correct value 1`] = `
-[
+Array [
   "SVG",
   "http://www.w3.org/2000/svg",
 ]
 `;
 
 exports[`NAMESPACE should contain immutable XML with correct value 1`] = `
-[
+Array [
   "XML",
   "http://www.w3.org/XML/1998/namespace",
 ]
 `;
 
 exports[`NAMESPACE should contain immutable XMLNS with correct value 1`] = `
-[
+Array [
   "XMLNS",
   "http://www.w3.org/2000/xmlns/",
 ]

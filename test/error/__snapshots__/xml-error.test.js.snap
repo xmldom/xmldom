@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`html without reported errors html attribute (missing quote) 1`] = `
-{
-  "actual": "<img attr="1" xmlns="http://www.w3.org/1999/xhtml"/>",
-  "errors": [
-    [
+Object {
+  "actual": "<img attr=\\"1\\" xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
+  "errors": Array [
+    Array [
       "warning",
-      "attribute "1" missed quot(")!",
-      {
+      "attribute \\"1\\" missed quot(\\")!",
+      Object {
         "columnNumber": 11,
         "lineNumber": 1,
       },
@@ -17,24 +17,24 @@ exports[`html without reported errors html attribute (missing quote) 1`] = `
 `;
 
 exports[`html without reported errors text/html attribute (missing =) 1`] = `
-{
-  "actual": "<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" profile="ecmascript" id="scxmlRoot" initial="start">
+Object {
+  "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
 
   <!--
       some comment (next line is empty)
 
   -->
 
-  <state id="start" name="start">
-    <transition event="init" name="init" target="main_state"></transition>
+  <state id=\\"start\\" name=\\"start\\">
+    <transition event=\\"init\\" name=\\"init\\" target=\\"main_state\\"></transition>
   </state>
 
   </scxml>",
-  "errors": [
-    [
+  "errors": Array [
+    Array [
       "warning",
-      "attribute value must after "="",
-      {
+      "attribute value must after \\"=\\"",
+      Object {
         "columnNumber": 11,
         "lineNumber": 11,
       },
@@ -44,24 +44,24 @@ exports[`html without reported errors text/html attribute (missing =) 1`] = `
 `;
 
 exports[`html without reported errors text/xml attribute (missing =) 1`] = `
-{
-  "actual": "<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" profile="ecmascript" id="scxmlRoot" initial="start">
+Object {
+  "actual": "<scxml xmlns=\\"http://www.w3.org/2005/07/scxml\\" version=\\"1.0\\" profile=\\"ecmascript\\" id=\\"scxmlRoot\\" initial=\\"start\\">
 
   <!--
       some comment (next line is empty)
 
   -->
 
-  <state id="start" name="start">
-    <transition event="init" name="init" target="main_state"/>
+  <state id=\\"start\\" name=\\"start\\">
+    <transition event=\\"init\\" name=\\"init\\" target=\\"main_state\\"/>
   </state>
 
   </scxml>",
-  "errors": [
-    [
+  "errors": Array [
+    Array [
       "warning",
-      "attribute value must after "="",
-      {
+      "attribute value must after \\"=\\"",
+      Object {
         "columnNumber": 11,
         "lineNumber": 11,
       },
@@ -71,7 +71,7 @@ exports[`html without reported errors text/xml attribute (missing =) 1`] = `
 `;
 
 exports[`html without reported errors unclosed document 1`] = `
-{
-  "actual": "<img xmlns="http://www.w3.org/1999/xhtml"/>",
+Object {
+  "actual": "<img xmlns=\\"http://www.w3.org/1999/xhtml\\"/>",
 }
 `;

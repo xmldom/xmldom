@@ -1,79 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExternalID PUBLIC should match ""PUBLIC " a-zA-Z0-9-()+,./:=?;!*#@$_%" '"'"" 1`] = `
-{
-  "PubidLiteral": "" a-zA-Z0-9-()+,./:=?;!*#@$_%"",
-  "SystemLiteral": "'"'",
+Object {
+  "PubidLiteral": "\\" a-zA-Z0-9-()+,./:=?;!*#@$_%\\"",
+  "SystemLiteral": "'\\"'",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC "" """" 1`] = `
-{
-  "PubidLiteral": """",
-  "SystemLiteral": """",
+Object {
+  "PubidLiteral": "\\"\\"",
+  "SystemLiteral": "\\"\\"",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC "" ''"" 1`] = `
-{
-  "PubidLiteral": """",
+Object {
+  "PubidLiteral": "\\"\\"",
   "SystemLiteral": "''",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC "'" "'""" 1`] = `
-{
-  "PubidLiteral": ""'"",
-  "SystemLiteral": ""'"",
+Object {
+  "PubidLiteral": "\\"'\\"",
+  "SystemLiteral": "\\"'\\"",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC "'" '"'"" 1`] = `
-{
-  "PubidLiteral": ""'"",
-  "SystemLiteral": "'"'",
+Object {
+  "PubidLiteral": "\\"'\\"",
+  "SystemLiteral": "'\\"'",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC ' a-zA-Z0-9-()+,./:=?;!*#@$_%' '"'"" 1`] = `
-{
+Object {
   "PubidLiteral": "' a-zA-Z0-9-()+,./:=?;!*#@$_%'",
-  "SystemLiteral": "'"'",
+  "SystemLiteral": "'\\"'",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC '' """" 1`] = `
-{
+Object {
   "PubidLiteral": "''",
-  "SystemLiteral": """",
+  "SystemLiteral": "\\"\\"",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC '' "'""" 1`] = `
-{
+Object {
   "PubidLiteral": "''",
-  "SystemLiteral": ""'"",
+  "SystemLiteral": "\\"'\\"",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC '' '"'"" 1`] = `
-{
+Object {
   "PubidLiteral": "''",
-  "SystemLiteral": "'"'",
+  "SystemLiteral": "'\\"'",
   "SystemLiteralOnly": undefined,
 }
 `;
 
 exports[`ExternalID PUBLIC should match ""PUBLIC '' ''"" 1`] = `
-{
+Object {
   "PubidLiteral": "''",
   "SystemLiteral": "''",
   "SystemLiteralOnly": undefined,
@@ -81,31 +81,31 @@ exports[`ExternalID PUBLIC should match ""PUBLIC '' ''"" 1`] = `
 `;
 
 exports[`ExternalID SYSTEM should match ""SYSTEM """" 1`] = `
-{
+Object {
   "PubidLiteral": undefined,
   "SystemLiteral": undefined,
-  "SystemLiteralOnly": """",
+  "SystemLiteralOnly": "\\"\\"",
 }
 `;
 
 exports[`ExternalID SYSTEM should match ""SYSTEM "'""" 1`] = `
-{
+Object {
   "PubidLiteral": undefined,
   "SystemLiteral": undefined,
-  "SystemLiteralOnly": ""'"",
+  "SystemLiteralOnly": "\\"'\\"",
 }
 `;
 
 exports[`ExternalID SYSTEM should match ""SYSTEM '"'"" 1`] = `
-{
+Object {
   "PubidLiteral": undefined,
   "SystemLiteral": undefined,
-  "SystemLiteralOnly": "'"'",
+  "SystemLiteralOnly": "'\\"'",
 }
 `;
 
 exports[`ExternalID SYSTEM should match ""SYSTEM ''"" 1`] = `
-{
+Object {
   "PubidLiteral": undefined,
   "SystemLiteral": undefined,
   "SystemLiteralOnly": "''",

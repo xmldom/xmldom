@@ -1,35 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MIME_TYPE should contain immutable HTML with correct value 1`] = `
-[
+Array [
   "HTML",
   "text/html",
 ]
 `;
 
 exports[`MIME_TYPE should contain immutable XML_APPLICATION with correct value 1`] = `
-[
+Array [
   "XML_APPLICATION",
   "application/xml",
 ]
 `;
 
 exports[`MIME_TYPE should contain immutable XML_SVG_IMAGE with correct value 1`] = `
-[
+Array [
   "XML_SVG_IMAGE",
   "image/svg+xml",
 ]
 `;
 
 exports[`MIME_TYPE should contain immutable XML_TEXT with correct value 1`] = `
-[
+Array [
   "XML_TEXT",
   "text/xml",
 ]
 `;
 
 exports[`MIME_TYPE should contain immutable XML_XHTML_APPLICATION with correct value 1`] = `
-[
+Array [
   "XML_XHTML_APPLICATION",
   "application/xhtml+xml",
 ]
