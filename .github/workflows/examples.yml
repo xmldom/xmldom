@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: [ master ]
 
+permissions:
+  contents: read
+
 jobs:
   nodejs:
 
@@ -23,9 +26,14 @@ jobs:
         - 20
 
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
@@ -52,9 +60,14 @@ jobs:
         - 20
 
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
       with:
         node-version: ${{ matrix.node-version }}
     - run: ./pretest.sh ${{ matrix.ts-version }}
@@ -81,9 +94,14 @@ jobs:
         - 20
 
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
       with:
         node-version: ${{ matrix.node-version }}
     - run: ./pretest.sh ${{ matrix.ts-version }}
