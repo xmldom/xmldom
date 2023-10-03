@@ -285,6 +285,17 @@ describe('DOMParser', () => {
 			expect(() => new DOMParser({ onError }).parseFromString('<!-- only comment -->', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
 			expect(onError).toHaveBeenCalledWith('fatalError', expect.stringContaining('root'), expect.any(__DOMHandler));
 		});
+		test('should report fatalError when doctype is inside element', () => {
+			const onError = jest.fn();
+			expect(() =>
+				new DOMParser({ onError }).parseFromString('<root><!DOCTYPE root PUBLIC "pubId" "systemId"></root>', MIME_TYPE.XML_TEXT)
+			).toThrow(ParseError);
+			expect(onError).toHaveBeenCalledWith(
+				'fatalError',
+				expect.stringContaining('Doctype not allowed'),
+				expect.any(__DOMHandler)
+			);
+		});
 	});
 });
 
