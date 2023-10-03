@@ -184,6 +184,10 @@ import { DOMParser } from '@xmldom/xmldom'
 		
   readonly attribute:
   - `tagName`
+  - `firstElementChild`
+  - `lastElementChild`
+  - `nextElementSibling`
+  - `previousElementSibling`
 
   method:
   - `getAttribute(name)`

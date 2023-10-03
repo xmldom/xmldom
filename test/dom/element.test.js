@@ -227,4 +227,76 @@ describe('Element', () => {
 			expect(root.getAttributeNS('a', 'b')).toBe('e');
 		});
 	});
+	describe('element traversal', () => {
+		it('initialization', () => {
+			const doc = new DOMParser().parseFromString(`<A/>`)
+			const aElement = doc.firstChild
+
+			expect(aElement.childElementCount).toBe(0)
+			expect(aElement.firstElementChild).toBeNull()
+			expect(aElement.lastElementChild).toBeNull()
+			expect(aElement.previousElementSibling).toBeNull()
+			expect(aElement.nextElementSibling).toBeNull()
+		})
+
+		it('append one element and remove', () => {
+			const doc = new DOMParser().parseFromString(`<A></A>`)
+			const aElement = doc.firstChild
+			const bElement = doc.createElement('B')
+			aElement.appendChild(bElement)
+
+			expect(aElement.childElementCount).toBe(1)
+			expect(aElement.firstElementChild === bElement).toBe(true)
+			expect(aElement.lastElementChild === bElement).toBe(true)
+			expect(bElement.previousElementSibling).toBeNull()
+			expect(bElement.nextElementSibling).toBeNull()
+
+			aElement.removeChild(bElement)
+
+			expect(aElement.childElementCount).toBe(0)
+			expect(aElement.firstElementChild).toBeNull()
+			expect(aElement.lastElementChild).toBeNull()
+		})
+
+		it('append second element at the end and remove it', () => {
+			const doc = new DOMParser().parseFromString(`<A><B/></A>`)
+			const aElement = doc.firstChild
+			const bElement = doc.firstChild.firstChild
+
+			const cElement = doc.createElement('C')
+			aElement.appendChild(cElement)
+
+			expect(aElement.childElementCount).toBe(2)
+			expect(aElement.firstElementChild === bElement).toBe(true)
+			expect(aElement.lastElementChild === cElement).toBe(true)
+			expect(bElement.previousElementSibling).toBeNull()
+			expect(bElement.nextElementSibling === cElement).toBe(true)
+			expect(cElement.previousElementSibling === bElement).toBe(true)
+			expect(cElement.nextElementSibling).toBeNull()
+
+			aElement.removeChild(cElement)
+
+			expect(aElement.childElementCount).toBe(1)
+			expect(aElement.firstElementChild === bElement).toBe(true)
+			expect(aElement.lastElementChild === bElement).toBe(true)
+			expect(bElement.previousElementSibling).toBeNull()
+			expect(bElement.nextElementSibling).toBeNull()
+			expect(cElement.previousElementSibling).toBeNull()
+			expect(cElement.nextElementSibling).toBeNull()
+		})
+
+		it('remove element between two siblings', () => {
+			const doc = new DOMParser().parseFromString(`<A><B/><C/><D/></A>`)
+			const aElement = doc.firstChild
+			const bElement = doc.firstChild.firstChild
+			const cElement = bElement.nextSibling
+			const dElement = cElement.nextSibling
+
+			aElement.removeChild(cElement)
+			expect(bElement.previousElementSibling).toBeNull()
+			expect(bElement.nextElementSibling === dElement).toBe(true)
+			expect(dElement.previousElementSibling === bElement).toBe(true)
+			expect(dElement.nextElementSibling).toBeNull()
+		})
+	})
 });
