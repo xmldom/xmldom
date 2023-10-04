@@ -10,42 +10,42 @@ exports[`DOMException should have correct name from code 4 1`] = `"WrongDocument
 
 exports[`DOMException should have correct name from code 5 1`] = `"InvalidCharacterError"`;
 
-exports[`DOMException should have correct name from code 6 1`] = `"NoModificationAllowedError"`;
+exports[`DOMException should have correct name from code 6 1`] = `"NoDataAllowedError"`;
 
-exports[`DOMException should have correct name from code 7 1`] = `"NotFoundError"`;
+exports[`DOMException should have correct name from code 7 1`] = `"NoModificationAllowedError"`;
 
-exports[`DOMException should have correct name from code 8 1`] = `"NotSupportedError"`;
+exports[`DOMException should have correct name from code 8 1`] = `"NotFoundError"`;
 
-exports[`DOMException should have correct name from code 9 1`] = `"InUseAttributeError"`;
+exports[`DOMException should have correct name from code 9 1`] = `"NotSupportedError"`;
 
-exports[`DOMException should have correct name from code 10 1`] = `"InvalidStateError"`;
+exports[`DOMException should have correct name from code 10 1`] = `"InUseAttributeError"`;
 
-exports[`DOMException should have correct name from code 11 1`] = `"SyntaxError"`;
+exports[`DOMException should have correct name from code 11 1`] = `"InvalidStateError"`;
 
-exports[`DOMException should have correct name from code 12 1`] = `"InvalidModificationError"`;
+exports[`DOMException should have correct name from code 12 1`] = `"SyntaxError"`;
 
-exports[`DOMException should have correct name from code 13 1`] = `"NamespaceError"`;
+exports[`DOMException should have correct name from code 13 1`] = `"InvalidModificationError"`;
 
-exports[`DOMException should have correct name from code 14 1`] = `"InvalidAccessError"`;
+exports[`DOMException should have correct name from code 14 1`] = `"NamespaceError"`;
 
-exports[`DOMException should have correct name from code 15 1`] = `"TypeMismatchError"`;
+exports[`DOMException should have correct name from code 15 1`] = `"InvalidAccessError"`;
 
-exports[`DOMException should have correct name from code 16 1`] = `"SecurityError"`;
+exports[`DOMException should have correct name from code 16 1`] = `"ValidationError"`;
 
-exports[`DOMException should have correct name from code 17 1`] = `"NetworkError"`;
+exports[`DOMException should have correct name from code 17 1`] = `"TypeMismatchError"`;
 
-exports[`DOMException should have correct name from code 18 1`] = `"AbortError"`;
+exports[`DOMException should have correct name from code 18 1`] = `"SecurityError"`;
 
-exports[`DOMException should have correct name from code 19 1`] = `"URLMismatchError"`;
+exports[`DOMException should have correct name from code 19 1`] = `"NetworkError"`;
 
-exports[`DOMException should have correct name from code 20 1`] = `"QuotaExceededError"`;
+exports[`DOMException should have correct name from code 20 1`] = `"AbortError"`;
 
-exports[`DOMException should have correct name from code 21 1`] = `"TimeoutError"`;
+exports[`DOMException should have correct name from code 21 1`] = `"URLMismatchError"`;
 
-exports[`DOMException should have correct name from code 22 1`] = `"InvalidNodeTypeError"`;
+exports[`DOMException should have correct name from code 22 1`] = `"QuotaExceededError"`;
 
-exports[`DOMException should have correct name from code 23 1`] = `"DataCloneError"`;
+exports[`DOMException should have correct name from code 23 1`] = `"TimeoutError"`;
 
-exports[`DOMException should have correct name from code 24 1`] = `"EncodingError"`;
+exports[`DOMException should have correct name from code 24 1`] = `"InvalidNodeTypeError"`;
 
-exports[`DOMException should have correct name from code 25 1`] = `"NotReadableError"`;
+exports[`DOMException should have correct name from code 25 1`] = `"DataCloneError"`;

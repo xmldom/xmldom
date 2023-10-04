@@ -4,7 +4,7 @@ const { describe, expect, test } = require('@jest/globals');
 const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib');
 const { MIME_TYPE, NAMESPACE } = require('../../lib/conventions');
 const { Element, Node } = require('../../lib/dom');
-const { DOMException } = require('../../lib/errors');
+const { DOMException, DOMExceptionName } = require('../../lib/errors');
 
 describe('documentElement', () => {
 	test('can properly append exist child', () => {
@@ -235,6 +235,48 @@ describe('Element', () => {
 				MIME_TYPE.XML_TEXT
 			).documentElement;
 			expect(root.getAttributeNS('a', 'b')).toBe('e');
+		});
+		test('should throw InvalidCharacterError DOMException if qualifiedName does not match QName', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			const setInvalidAttribute = () => doc.documentElement.setAttributeNS(null, '123', '');
+			expect(setInvalidAttribute).toThrow(DOMException);
+			expect(setInvalidAttribute).toThrow(expect.objectContaining({ name: DOMExceptionName.InvalidCharacterError }));
+		});
+		test('should throw NamespaceError DOMException if prefix is present but namespace is null', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			const setInvalidAttribute = () => doc.documentElement.setAttributeNS(null, 'prefix:name', '');
+			expect(setInvalidAttribute).toThrow(DOMException);
+			expect(setInvalidAttribute).toThrow(expect.objectContaining({ name: DOMExceptionName.NamespaceError }));
+		});
+		test('should throw NamespaceError DOMException if prefix is "xml" but namespaceUri is not matching', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			const setInvalidAttribute = () => doc.documentElement.setAttributeNS('unexpected', 'xml:name', '');
+			expect(setInvalidAttribute).toThrow(DOMException);
+			expect(setInvalidAttribute).toThrow(expect.objectContaining({ name: DOMExceptionName.NamespaceError }));
+		});
+		test('should throw NamespaceError DOMException if prefix is "xmlns" but namespaceUri is not matching', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			const setInvalidAttribute = () => doc.documentElement.setAttributeNS('unexpected', 'xmlns:name', '');
+			expect(setInvalidAttribute).toThrow(DOMException);
+			expect(setInvalidAttribute).toThrow(expect.objectContaining({ name: DOMExceptionName.NamespaceError }));
+		});
+		test('should throw NamespaceError DOMException if qualifiedName is "xmlns" but namespaceUri is not matching', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			const setInvalidAttribute = () => doc.documentElement.setAttributeNS('unexpected', 'xmlns', '');
+			expect(setInvalidAttribute).toThrow(DOMException);
+			expect(setInvalidAttribute).toThrow(expect.objectContaining({ name: DOMExceptionName.NamespaceError }));
+		});
+		test('should throw NamespaceError DOMException if it is the xmlns namespace but prefix is not xmlns', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			const setInvalidAttribute = () => doc.documentElement.setAttributeNS(NAMESPACE.XMLNS, 'prefix:abc', '');
+			expect(setInvalidAttribute).toThrow(DOMException);
+			expect(setInvalidAttribute).toThrow(expect.objectContaining({ name: DOMExceptionName.NamespaceError }));
+		});
+		test('should throw NamespaceError DOMException if it is the xmlns namespace but qualifiedName is not xmlns', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			const setInvalidAttribute = () => doc.documentElement.setAttributeNS(NAMESPACE.XMLNS, 'abc', '');
+			expect(setInvalidAttribute).toThrow(DOMException);
+			expect(setInvalidAttribute).toThrow(expect.objectContaining({ name: DOMExceptionName.NamespaceError }));
 		});
 	});
 });
