@@ -1,8 +1,9 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
 const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib');
 const { MIME_TYPE, NAMESPACE } = require('../../lib/conventions');
-const { Element, DOMException } = require('../../lib/dom');
+const { Element, DOMException, Node } = require('../../lib/dom');
 
 describe('documentElement', () => {
 	test('can properly append exist child', () => {
@@ -101,6 +102,14 @@ describe('documentElement', () => {
 			}
 		}
 		expect(doc.childNodes.toString()).toBe(`<A/><B/><C/>`);
+	});
+
+	test('should throw DOMException when trying to append a doctype', () => {
+		const impl = new DOMImplementation();
+		const doc = impl.createDocument(null, 'root');
+		const docType = impl.createDocumentType('dt');
+		expect(docType.nodeType).toBe(Node.DOCUMENT_TYPE_NODE);
+		expect(() => doc.documentElement.appendChild(docType)).toThrow(DOMException);
 	});
 
 	xit('nested append failed', () => {});
