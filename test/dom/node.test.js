@@ -1,8 +1,9 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { DOMImplementation, Node } = require('../../lib/dom');
+const { DOMImplementation } = require('../../lib/dom');
 const { DOMException, DOMExceptionName } = require('../../lib/errors');
+const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('Node.prototype', () => {
 	describe('appendChild', () => {
@@ -15,8 +16,11 @@ describe('Node.prototype', () => {
 			const attr = doc.createAttribute('attr');
 			const pi = doc.createProcessingInstruction('target', 'data');
 			[doctype, text, attr, pi].forEach((node) => {
-				expect(() => node.appendChild()).toThrow(DOMException);
-				expect(() => node.appendChild()).toThrow(expect.objectContaining({ name: DOMExceptionName.HierarchyRequestError }));
+				expectDOMException(
+					() => node.appendChild(),
+					DOMExceptionName.HierarchyRequestError,
+					`Unexpected parent node type ${node.nodeType}`
+				);
 			});
 		});
 	});

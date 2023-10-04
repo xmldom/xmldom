@@ -6,6 +6,7 @@ const { DOMImplementation, DOMException } = require('../../lib/dom');
 const { NAMESPACE, MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib');
 const { DOMExceptionName } = require('../../lib/errors');
+const { expectDOMException } = require('../errors/expectDOMException');
 
 const INPUT = (first = '', second = '', third = '', fourth = '') => `
 <html >
@@ -35,9 +36,10 @@ describe('Document.prototype', () => {
 		test('should throw HierarchyRequestError DOMException when trying to add a second element', () => {
 			const impl = new DOMImplementation();
 			const doc = impl.createDocument(null, 'doc', impl.createDocumentType('firstDT'));
-			expect(() => doc.appendChild(doc.createElement('secondRoot'))).toThrow(DOMException);
-			expect(() => doc.appendChild(doc.createElement('secondRoot'))).toThrow(
-				expect.objectContaining({ name: DOMExceptionName.HierarchyRequestError })
+			expectDOMException(
+				() => doc.appendChild(doc.createElement('secondRoot')),
+				DOMExceptionName.HierarchyRequestError,
+				'Only one element'
 			);
 		});
 	});
@@ -308,8 +310,7 @@ describe('Document.prototype', () => {
 		test('should throw InvalidCharacter DOMException if name is not matching QName', () => {
 			const doc = new DOMImplementation().createHTMLDocument(false);
 
-			expect(() => doc.createAttribute('123')).toThrow(DOMException);
-			expect(() => doc.createAttribute('123')).toThrow(expect.objectContaining({ name: DOMExceptionName.InvalidCharacterError }));
+			expectDOMException(() => doc.createAttribute('123'), DOMExceptionName.InvalidCharacterError, 'in name "123"');
 		});
 	});
 	describe('insertBefore', () => {
@@ -328,7 +329,7 @@ describe('Document.prototype', () => {
 			const root = doc.createElement('root');
 			const second = doc.createElement('second');
 			doc.insertBefore(root);
-			expect(() => doc.insertBefore(second)).toThrow(DOMException);
+			expectDOMException(() => doc.insertBefore(second), DOMExceptionName.HierarchyRequestError, 'Only one element');
 			expect(doc.documentElement).toBe(root);
 			expect(doc.childNodes).toHaveLength(1);
 		});
@@ -338,7 +339,7 @@ describe('Document.prototype', () => {
 			const doc = impl.createDocument(null, '', doctype);
 			expect(doc.childNodes).toHaveLength(1);
 			const root = doc.createElement('root');
-			expect(() => doc.insertBefore(root, doctype)).toThrow(DOMException);
+			expectDOMException(() => doc.insertBefore(root, doctype), DOMExceptionName.HierarchyRequestError, 'only after doctype');
 			expect(doc.documentElement).toBeNull();
 			expect(doc.childNodes).toHaveLength(1);
 			expect(root.parentNode).toBeNull();
@@ -349,7 +350,7 @@ describe('Document.prototype', () => {
 			const doctype2 = impl.createDocumentType('DT2');
 			const doc = impl.createDocument(null, '', doctype);
 			expect(doc.childNodes).toHaveLength(1);
-			expect(() => doc.insertBefore(doctype2)).toThrow(DOMException);
+			expectDOMException(() => doc.insertBefore(doctype2), DOMExceptionName.HierarchyRequestError, 'Only one doctype');
 			expect(doc.childNodes).toHaveLength(1);
 		});
 		test('should prevent inserting a doctype before a comment after an element', () => {
@@ -360,7 +361,7 @@ describe('Document.prototype', () => {
 			const doctype = impl.createDocumentType('DT');
 			expect(doc.childNodes).toHaveLength(2);
 
-			expect(() => doc.insertBefore(doctype, comment)).toThrow(DOMException);
+			expectDOMException(() => doc.insertBefore(doctype, comment), DOMExceptionName.HierarchyRequestError, 'before an element');
 
 			expect(doc.childNodes).toHaveLength(2);
 		});
@@ -372,7 +373,7 @@ describe('Document.prototype', () => {
 			const doctype = impl.createDocumentType('DT');
 			expect(doc.childNodes).toHaveLength(1);
 
-			expect(() => doc.insertBefore(doctype)).toThrow(DOMException);
+			expectDOMException(() => doc.insertBefore(doctype), DOMExceptionName.HierarchyRequestError, 'element is present');
 
 			expect(doc.childNodes).toHaveLength(1);
 		});
@@ -381,7 +382,7 @@ describe('Document.prototype', () => {
 			const root = doc.createElement('root');
 			const withoutParent = doc.createElement('second');
 
-			expect(() => doc.insertBefore(root, withoutParent)).toThrow(DOMException);
+			expectDOMException(() => doc.insertBefore(root, withoutParent), DOMExceptionName.NotFoundError);
 
 			expect(doc.documentElement).toBeNull();
 			expect(doc.childNodes).toHaveLength(0);
@@ -405,9 +406,10 @@ describe('Document.prototype', () => {
 			const initialFirstChild = doc.firstChild;
 			const comment = doc.createComment('comment');
 			doc.insertBefore(comment, initialFirstChild);
-			expect(() => doc.replaceChild(doc.createElement('inserted'), comment)).toThrow(DOMException);
-			expect(() => doc.replaceChild(doc.createElement('inserted'), comment)).toThrow(
-				expect.objectContaining({ name: DOMExceptionName.HierarchyRequestError })
+			expectDOMException(
+				() => doc.replaceChild(doc.createElement('inserted'), comment),
+				DOMExceptionName.HierarchyRequestError,
+				'only after doctype'
 			);
 		});
 		test('should throw HierarchyRequestError DOMException when trying to replace a comment before a doctype with a doctype', () => {
@@ -416,9 +418,10 @@ describe('Document.prototype', () => {
 			const initialFirstChild = doc.firstChild;
 			const comment = doc.createComment('comment');
 			doc.insertBefore(comment, initialFirstChild);
-			expect(() => doc.replaceChild(impl.createDocumentType('inserted'), comment)).toThrow(DOMException);
-			expect(() => doc.replaceChild(impl.createDocumentType('inserted'), comment)).toThrow(
-				expect.objectContaining({ name: DOMExceptionName.HierarchyRequestError })
+			expectDOMException(
+				() => doc.replaceChild(impl.createDocumentType('inserted'), comment),
+				DOMExceptionName.HierarchyRequestError,
+				'Only one doctype'
 			);
 		});
 		test('should throw HierarchyRequestError DOMException when trying to replace a comment after an element with a doctype', () => {
@@ -426,9 +429,10 @@ describe('Document.prototype', () => {
 			const doc = impl.createDocument('', 'xml');
 			const comment = doc.createComment('comment');
 			doc.appendChild(comment);
-			expect(() => doc.replaceChild(impl.createDocumentType('inserted'), comment)).toThrow(DOMException);
-			expect(() => doc.replaceChild(impl.createDocumentType('inserted'), comment)).toThrow(
-				expect.objectContaining({ name: DOMExceptionName.HierarchyRequestError })
+			expectDOMException(
+				() => doc.replaceChild(impl.createDocumentType('inserted'), comment),
+				DOMExceptionName.HierarchyRequestError,
+				'before an element'
 			);
 		});
 	});
@@ -457,7 +461,7 @@ describe('Document.prototype', () => {
 			const ys = dom.getElementsByTagName('y');
 			const as = dom.getElementsByTagName('a');
 
-			expect(() => as[0].removeChild(ys[0])).toThrow(DOMException);
+			expectDOMException(() => as[0].removeChild(ys[0]), DOMExceptionName.NotFoundError);
 			expect(dom.toString()).toBe(ISSUE_CHECK);
 		});
 	});
