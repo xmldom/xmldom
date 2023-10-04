@@ -1,8 +1,8 @@
 'use strict';
 
-const { describe, expect, test } = require('@jest/globals');
+const { describe, test } = require('@jest/globals');
 const { DOMImplementation } = require('../../lib/dom');
-const { DOMException, DOMExceptionName } = require('../../lib/errors');
+const { DOMExceptionName } = require('../../lib/errors');
 const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('Node.prototype', () => {

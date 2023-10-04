@@ -1,6 +1,6 @@
 'use strict';
 
-const { describe, expect, test } = require('@jest/globals');
+const { expect } = require('@jest/globals');
 const { DOMException } = require('../../lib/errors');
 
 function expectDOMException(fun, name, messageMatch) {
