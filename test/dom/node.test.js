@@ -10,7 +10,7 @@ describe('Node.prototype', () => {
 		const doc = impl.createDocument(null, '');
 
 		test('should throw HierarchyRequestError DOMException if parent is not a valid node', () => {
-		  const doctype = impl.createDocumentType('doctype');
+			const doctype = impl.createDocumentType('doctype');
 			const text = doc.createTextNode('text');
 			const attr = doc.createAttribute('attr');
 			const pi = doc.createProcessingInstruction('target', 'data');

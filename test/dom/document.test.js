@@ -305,6 +305,12 @@ describe('Document.prototype', () => {
 			expect(attr.localName).toBe('name');
 			expect(attr.nodeName).toBe('name');
 		});
+		test('should throw InvalidCharacter DOMException if name is not matching QName', () => {
+			const doc = new DOMImplementation().createHTMLDocument(false);
+
+			expect(() => doc.createAttribute('123')).toThrow(DOMException);
+			expect(() => doc.createAttribute('123')).toThrow(expect.objectContaining({ name: DOMExceptionName.InvalidCharacterError }));
+		});
 	});
 	describe('insertBefore', () => {
 		test('should insert the first element and set `documentElement`', () => {
@@ -417,8 +423,7 @@ describe('Document.prototype', () => {
 		});
 		test('should throw HierarchyRequestError DOMException when trying to replace a comment after an element with a doctype', () => {
 			const impl = new DOMImplementation();
-			const doc = impl.createDocument('', 'xml'/*, impl.createDocumentType('dt')*/);
-			const initialFirstChild = doc.firstChild;
+			const doc = impl.createDocument('', 'xml');
 			const comment = doc.createComment('comment');
 			doc.appendChild(comment);
 			expect(() => doc.replaceChild(impl.createDocumentType('inserted'), comment)).toThrow(DOMException);
