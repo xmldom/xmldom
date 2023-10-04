@@ -1,5 +1,6 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
 const xmltest = require('xmltest');
 const { MIME_TYPE, ParseError } = require('../../lib/conventions');
 const { getTestParser } = require('../get-test-parser');
