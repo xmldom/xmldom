@@ -1,8 +1,11 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
 const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib');
 const { MIME_TYPE, NAMESPACE } = require('../../lib/conventions');
-const { Element, DOMException } = require('../../lib/dom');
+const { Element, Node } = require('../../lib/dom');
+const { DOMException, DOMExceptionName } = require('../../lib/errors');
+const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('documentElement', () => {
 	test('can properly append exist child', () => {
@@ -101,6 +104,18 @@ describe('documentElement', () => {
 			}
 		}
 		expect(doc.childNodes.toString()).toBe(`<A/><B/><C/>`);
+	});
+
+	test('should throw DOMException when trying to append a doctype', () => {
+		const impl = new DOMImplementation();
+		const doc = impl.createDocument(null, 'root');
+		const docType = impl.createDocumentType('dt');
+		expect(docType.nodeType).toBe(Node.DOCUMENT_TYPE_NODE);
+		expectDOMException(
+			() => doc.documentElement.appendChild(docType),
+			DOMExceptionName.HierarchyRequestError,
+			'node type 10 for parent node type 1'
+		);
 	});
 
 	xit('nested append failed', () => {});
@@ -225,6 +240,58 @@ describe('Element', () => {
 				MIME_TYPE.XML_TEXT
 			).documentElement;
 			expect(root.getAttributeNS('a', 'b')).toBe('e');
+		});
+		test('should throw InvalidCharacterError DOMException if qualifiedName does not match QName', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			expectDOMException(() => doc.documentElement.setAttributeNS(null, '123', ''), DOMExceptionName.InvalidCharacterError);
+		});
+		test('should throw NamespaceError DOMException if prefix is present but namespace is null', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			expectDOMException(
+				() => doc.documentElement.setAttributeNS(null, 'prefix:name', ''),
+				DOMExceptionName.NamespaceError,
+				'namespace is null'
+			);
+		});
+		test('should throw NamespaceError DOMException if prefix is "xml" but namespaceUri is not matching', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			expectDOMException(
+				() => doc.documentElement.setAttributeNS('unexpected', 'xml:name', ''),
+				DOMExceptionName.NamespaceError,
+				'namespace is not the XML namespace'
+			);
+		});
+		test('should throw NamespaceError DOMException if prefix is "xmlns" but namespaceUri is not matching', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			expectDOMException(
+				() => doc.documentElement.setAttributeNS('unexpected', 'xmlns:name', ''),
+				DOMExceptionName.NamespaceError,
+				'namespace is not the XMLNS namespace'
+			);
+		});
+		test('should throw NamespaceError DOMException if qualifiedName is "xmlns" but namespaceUri is not matching', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			expectDOMException(
+				() => doc.documentElement.setAttributeNS('unexpected', 'xmlns', ''),
+				DOMExceptionName.NamespaceError,
+				'namespace is not the XMLNS namespace'
+			);
+		});
+		test('should throw NamespaceError DOMException if it is the xmlns namespace but prefix is not xmlns', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			expectDOMException(
+				() => doc.documentElement.setAttributeNS(NAMESPACE.XMLNS, 'prefix:abc', ''),
+				DOMExceptionName.NamespaceError,
+				'namespace is the XMLNS namespace'
+			);
+		});
+		test('should throw NamespaceError DOMException if it is the xmlns namespace but qualifiedName is not xmlns', () => {
+			const doc = new DOMImplementation().createDocument(null, 'doc');
+			expectDOMException(
+				() => doc.documentElement.setAttributeNS(NAMESPACE.XMLNS, 'abc', ''),
+				DOMExceptionName.NamespaceError,
+				'namespace is the XMLNS namespace'
+			);
 		});
 	});
 });

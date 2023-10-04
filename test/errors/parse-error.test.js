@@ -1,5 +1,6 @@
 'use strict';
-const { ParseError } = require('../../lib/conventions');
+const { describe, expect, test } = require('@jest/globals');
+const { ParseError } = require('../../lib/errors');
 
 describe('ParseError', () => {
 	test('should have name ParseError', () => {

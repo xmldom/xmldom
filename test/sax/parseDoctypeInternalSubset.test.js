@@ -19,7 +19,7 @@ describe('parseDoctypeCommentOrCData', () => {
 		var source = '<!D';
 		const errorHandler = { fatalError: jest.fn() };
 
-		const returned = parseDoctypeCommentOrCData(source, start, undefined, errorHandler);
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler);
 
 		expect(returned).toBe(undefined);
 		expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining(g.DOCTYPE_DECL_START));
@@ -29,7 +29,7 @@ describe('parseDoctypeCommentOrCData', () => {
 		var source = g.DOCTYPE_DECL_START + 'Name';
 		const errorHandler = { fatalError: jest.fn() };
 
-		const returned = parseDoctypeCommentOrCData(source, start, undefined, errorHandler);
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler);
 
 		expect(returned).toBe(undefined);
 		expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining('whitespace after ' + g.DOCTYPE_DECL_START));
@@ -39,7 +39,7 @@ describe('parseDoctypeCommentOrCData', () => {
 		var source = g.DOCTYPE_DECL_START;
 		const errorHandler = { fatalError: jest.fn() };
 
-		const returned = parseDoctypeCommentOrCData(source, start, undefined, errorHandler);
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler);
 
 		expect(returned).toBe(undefined);
 		expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining('whitespace after ' + g.DOCTYPE_DECL_START));
@@ -49,7 +49,7 @@ describe('parseDoctypeCommentOrCData', () => {
 		var source = g.DOCTYPE_DECL_START + ' .';
 		const errorHandler = { fatalError: jest.fn() };
 
-		const returned = parseDoctypeCommentOrCData(source, start, undefined, errorHandler);
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler);
 
 		expect(returned).toBe(undefined);
 		expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining('doctype name missing'));
@@ -59,7 +59,7 @@ describe('parseDoctypeCommentOrCData', () => {
 		var source = g.DOCTYPE_DECL_START + ' ';
 		const errorHandler = { fatalError: jest.fn() };
 
-		const returned = parseDoctypeCommentOrCData(source, start, undefined, errorHandler);
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler);
 
 		expect(returned).toBe(undefined);
 		// the error message is complaining about whitespace even though that was correctly skipped,
@@ -71,7 +71,7 @@ describe('parseDoctypeCommentOrCData', () => {
 		var source = g.DOCTYPE_DECL_START + ' Name [';
 		const errorHandler = { fatalError: jest.fn() };
 
-		const returned = parseDoctypeCommentOrCData(source, start, undefined, errorHandler);
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler);
 
 		expect(returned).toBe(undefined);
 		expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining('doctype internal subset is not well-formed'));
@@ -81,7 +81,7 @@ describe('parseDoctypeCommentOrCData', () => {
 		var source = g.DOCTYPE_DECL_START + ' Name [ <?Name';
 		const errorHandler = { fatalError: jest.fn() };
 
-		const returned = parseDoctypeCommentOrCData(source, start, undefined, errorHandler);
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler);
 
 		expect(returned).toBe(undefined);
 		expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining('processing instruction is not well-formed'));
@@ -91,10 +91,20 @@ describe('parseDoctypeCommentOrCData', () => {
 		var source = g.DOCTYPE_DECL_START + ' Name [ <?Xml version="1.0"?>';
 		const errorHandler = { fatalError: jest.fn() };
 
-		const returned = parseDoctypeCommentOrCData(source, start, undefined, errorHandler);
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler);
 
 		expect(returned).toBe(undefined);
 		expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining('xml declaration is only allowed'));
+	});
+	test('should report fatal error and return with DOCTYPE inside documentElement', () => {
+		const start = 0;
+		var source = g.DOCTYPE_DECL_START + '';
+		const errorHandler = { fatalError: jest.fn() };
+
+		const returned = parseDoctypeCommentOrCData(source, start, { doc: { documentElement: {} } }, errorHandler);
+
+		expect(returned).toBe(undefined);
+		expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining('Doctype not allowed'));
 	});
 	test('should call domHandler method with correct values when everything is well-formed', () => {
 		const start = 0;

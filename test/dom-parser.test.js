@@ -2,8 +2,9 @@
 
 const { describe, expect, test } = require('@jest/globals');
 const { DOMParser } = require('../lib');
-const { assign, MIME_TYPE, NAMESPACE, ParseError } = require('../lib/conventions');
+const { assign, MIME_TYPE, NAMESPACE } = require('../lib/conventions');
 const { __DOMHandler, onErrorStopParsing, onWarningStopParsing } = require('../lib/dom-parser');
+const { ParseError } = require('../lib/errors');
 
 const NS_CUSTOM = 'custom-default-ns';
 
@@ -284,6 +285,17 @@ describe('DOMParser', () => {
 			const onError = jest.fn();
 			expect(() => new DOMParser({ onError }).parseFromString('<!-- only comment -->', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
 			expect(onError).toHaveBeenCalledWith('fatalError', expect.stringContaining('root'), expect.any(__DOMHandler));
+		});
+		test('should report fatalError when doctype is inside element', () => {
+			const onError = jest.fn();
+			expect(() =>
+				new DOMParser({ onError }).parseFromString('<root><!DOCTYPE root PUBLIC "pubId" "systemId"></root>', MIME_TYPE.XML_TEXT)
+			).toThrow(ParseError);
+			expect(onError).toHaveBeenCalledWith(
+				'fatalError',
+				expect.stringContaining('Doctype not allowed'),
+				expect.any(__DOMHandler)
+			);
 		});
 	});
 });

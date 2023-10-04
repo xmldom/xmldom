@@ -6,7 +6,7 @@ const path = require('path');
 const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
 const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib/dom-parser');
-const { ParseError } = require('../../lib/sax');
+const { ParseError } = require('../../lib/errors');
 const { getTestParser } = require('../get-test-parser');
 describe('reported.json', () => {
 	Object.entries(LINE_TO_ERROR_INDEX)
