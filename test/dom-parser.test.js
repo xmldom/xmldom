@@ -2,8 +2,9 @@
 
 const { describe, expect, test } = require('@jest/globals');
 const { DOMParser } = require('../lib');
-const { assign, MIME_TYPE, NAMESPACE, ParseError } = require('../lib/conventions');
+const { assign, MIME_TYPE, NAMESPACE } = require('../lib/conventions');
 const { __DOMHandler, onErrorStopParsing, onWarningStopParsing } = require('../lib/dom-parser');
+const { ParseError } = require('../lib/errors');
 
 const NS_CUSTOM = 'custom-default-ns';
 

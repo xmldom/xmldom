@@ -236,9 +236,9 @@ exports[`xmltest/not-wellformed standalone should match 038.xml with snapshot: c
 
 exports[`xmltest/not-wellformed standalone should match 039.xml with snapshot: caught 1`] = `"Opening and ending tag mismatch: "a" != "aa""`;
 
-exports[`xmltest/not-wellformed standalone should match 040.xml with snapshot: caught 1`] = `"DOMException: Hierarchy request error: Only one element can be added and only after doctype"`;
+exports[`xmltest/not-wellformed standalone should match 040.xml with snapshot: caught 1`] = `"HierarchyRequestError: Only one element can be added and only after doctype"`;
 
-exports[`xmltest/not-wellformed standalone should match 041.xml with snapshot: caught 1`] = `"DOMException: Hierarchy request error: Only one element can be added and only after doctype"`;
+exports[`xmltest/not-wellformed standalone should match 041.xml with snapshot: caught 1`] = `"HierarchyRequestError: Only one element can be added and only after doctype"`;
 
 exports[`xmltest/not-wellformed standalone should match 042.xml with snapshot: caught 1`] = `"end tag name contains invalid characters: "doc/""`;
 
@@ -258,7 +258,7 @@ exports[`xmltest/not-wellformed standalone should match 043.xml with snapshot: r
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 044.xml with snapshot: caught 1`] = `"DOMException: Hierarchy request error: Only one element can be added and only after doctype"`;
+exports[`xmltest/not-wellformed standalone should match 044.xml with snapshot: caught 1`] = `"HierarchyRequestError: Only one element can be added and only after doctype"`;
 
 exports[`xmltest/not-wellformed standalone should match 045.xml with snapshot: reported 1`] = `
 {

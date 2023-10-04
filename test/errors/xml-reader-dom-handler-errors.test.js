@@ -1,8 +1,9 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { MIME_TYPE, ParseError } = require('../../lib/conventions');
+const { MIME_TYPE } = require('../../lib/conventions');
 const { __DOMHandler, DOMParser } = require('../../lib/dom-parser');
+const { ParseError } = require('../../lib/errors');
 
 /**
  * All methods implemented on the DOMHandler prototype.

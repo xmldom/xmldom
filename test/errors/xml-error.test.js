@@ -1,7 +1,7 @@
 'use strict';
 
-const { getTestParser } = require('../get-test-parser');
 const { describe, expect, test } = require('@jest/globals');
+const { getTestParser } = require('../get-test-parser');
 const { MIME_TYPE } = require('../../lib/conventions');
 
 describe('html without reported errors', () => {

@@ -3,7 +3,8 @@
 const { describe, expect, test } = require('@jest/globals');
 const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib');
 const { MIME_TYPE, NAMESPACE } = require('../../lib/conventions');
-const { Element, DOMException, Node } = require('../../lib/dom');
+const { Element, Node } = require('../../lib/dom');
+const { DOMException } = require('../../lib/errors');
 
 describe('documentElement', () => {
 	test('can properly append exist child', () => {
