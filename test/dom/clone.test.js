@@ -1,7 +1,7 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { MIME_TYPE } = require('../../lib/conventions');
+const { XML_TEXT } = require('../../lib/conventions').MIME_TYPE;
 const { XMLSerializer } = require('../../lib/dom');
 const { DOMParser } = require('../../lib/dom-parser');
 
@@ -11,7 +11,7 @@ describe('XML Namespace Parse', () => {
 			"<doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1>",
 			MIME_TYPE.XML_TEXT
 		);
-		const doc1s = new XMLSerializer().serializeToString(doc1);
+		const doc1s = new XMLSerializer().serializeToString(doc1)
 		const n = doc1.cloneNode(true);
 		expect(n.toString()).toBe(doc1s.toString());
 	});
