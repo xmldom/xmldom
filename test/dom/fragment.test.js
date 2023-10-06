@@ -2,17 +2,15 @@
 
 const { describe, expect, test } = require('@jest/globals');
 
-const { MIME_TYPE } = require('../../lib/conventions');
-const { DOMParser } = require('../../lib/dom-parser');
+  const { XML_TEXT } = require('../../lib/conventions').MIME_TYPE;
+  const { DOMParser } = require('../../lib/dom-parser');
+  const { XMLSerializer } = require('../../lib/dom');
 
-describe('DOM DocumentFragment', () => {
-	// see: http://jsfiddle.net/9Wmh2/1/
-	test('append empty fragment', () => {
-		const document = new DOMParser().parseFromString('<p id="p"/>', MIME_TYPE.XML_TEXT);
-		const fragment = document.createDocumentFragment();
-		document.getElementById('p').insertBefore(fragment, null);
-		fragment.appendChild(document.createTextNode('a'));
-		document.getElementById('p').insertBefore(fragment, null);
-		expect(document.toString()).toBe('<p id="p">a</p>');
-	});
-});
+  test('append empty fragment', () => {
+    const document = new DOMParser().parseFromString('<p id="p"/>', XML_TEXT);
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(document.createTextNode('a'));
+    document.getElementById('p').insertBefore(fragment, null);
+    expect(new XMLSerializer().serializeToString(document))
+      .toBe('<p id="p">a</p>');
+  });
