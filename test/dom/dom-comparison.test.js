@@ -1,4 +1,5 @@
 'use strict';
+const { Node } = require('../../lib/dom');
 const { DOMParser } = require('../../lib/dom-parser');
 const { MIME_TYPE } = require('../../lib/conventions');
 
@@ -32,7 +33,7 @@ describe('DOM position comparison', () => {
 		expect(text.compareDocumentPosition(text));
 	});
 	test('Step 5 2 1 1', async () => {
-		let result = x0.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC + x0.DOCUMENT_POSITION_PRECEDING;
+		let result = Node.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC + Node.DOCUMENT_POSITION_PRECEDING;
 		expect(bar.compareDocumentPosition(foo)).toBe(result);
 	});
 	test('Step 5 2 1 2', async () => {

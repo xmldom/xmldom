@@ -127,6 +127,11 @@ describe('Element', () => {
 	const ATTR_MIXED_CASE = 'AttR';
 	const ATTR_LOWER_CASE = 'attr';
 	const VALUE = '2039e2dk';
+	describe('constructor', () => {
+		const element = new DOMImplementation().createDocument(null, 'doc').documentElement;
+		expect(element._nsMap).not.toHaveProperty('prototype');
+		expect(element._nsMap).not.toHaveProperty('__proto__');
+	});
 	describe('getAttribute', () => {
 		const doc = new DOMImplementation().createDocument(null, 'xml');
 		expect(doc.documentElement.getAttribute('no')).toBeNull();

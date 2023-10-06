@@ -1,10 +1,11 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { DOMParser } = require('../lib');
+const { DOMParser, XMLSerializer } = require('../lib');
 const { assign, MIME_TYPE, NAMESPACE } = require('../lib/conventions');
 const { __DOMHandler, onErrorStopParsing, onWarningStopParsing } = require('../lib/dom-parser');
 const { ParseError } = require('../lib/errors');
+const { getTestParser } = require('./get-test-parser');
 
 const NS_CUSTOM = 'custom-default-ns';
 
@@ -52,13 +53,15 @@ describe('DOMParser', () => {
 			expect(doc.documentElement.namespaceURI).toBeNull();
 		});
 
-		test('should set the default namespace to null by default', () => {
-			const options = { xmlns: {} };
+		test('should not use a reference of the xmlns option and not have a prototype', () => {
+			const options = { xmlns: { test: 'a' } };
 			const it = new DOMParser(options);
 
-			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
-
-			expect(doc.documentElement.namespaceURI).toBeNull();
+			expect(it.xmlns).toEqual(options.xmlns);
+			expect(it.xmlns).not.toHaveProperty('__proto__');
+			expect(it.xmlns).not.toHaveProperty('prototype');
+			options.xmlns.test = 'b';
+			expect(it.xmlns.test).toBe('a');
 		});
 
 		test('should store passed options.xmlns for default mime type', () => {
@@ -82,7 +85,7 @@ describe('DOMParser', () => {
 			expect(xmlns['']).toBe(NS_CUSTOM);
 		});
 
-		test('should store the default namespace for html mime type', () => {
+		test('should not store the default namespace for html mime type', () => {
 			const xmlns = {};
 			const it = new DOMParser({ xmlns });
 
@@ -90,9 +93,10 @@ describe('DOMParser', () => {
 
 			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.HTML);
 			expect(xmlns).not.toHaveProperty('');
+			expect(it.xmlns).not.toHaveProperty('');
 		});
 
-		test('should store default namespace for XHTML mime type', () => {
+		test('should not store default namespace for XHTML mime type', () => {
 			const xmlns = {};
 			const it = new DOMParser({ xmlns });
 
@@ -100,6 +104,7 @@ describe('DOMParser', () => {
 
 			expect(doc.documentElement.namespaceURI).toBe(NAMESPACE.HTML);
 			expect(xmlns).not.toHaveProperty('');
+			expect(it.xmlns).not.toHaveProperty('');
 		});
 
 		test('should override default namespace for XHTML mime type', () => {
@@ -296,6 +301,13 @@ describe('DOMParser', () => {
 				expect.stringContaining('Doctype not allowed'),
 				expect.any(__DOMHandler)
 			);
+		});
+		test('should be able to parse and serialize XML containing "prototype" namespace prefix', () => {
+			const onError = jest.fn();
+			const { parser } = getTestParser({ onError });
+			const source = `<prototype:test xmlns:prototype="prototype" xmlns:__proto__="__proto__" __proto__:attr="value"/>`;
+			const doc = parser.parseFromString(source, MIME_TYPE.XML_TEXT);
+			expect(new XMLSerializer().serializeToString(doc)).toEqual(source);
 		});
 	});
 });

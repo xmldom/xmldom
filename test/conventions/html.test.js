@@ -1,5 +1,6 @@
 'use strict';
 
+const { describe, test, expect } = require('@jest/globals');
 const {
 	HTML_BOOLEAN_ATTRIBUTES,
 	isHTMLBooleanAttribute,
@@ -20,6 +21,10 @@ describe('HTML_BOOLEAN_ATTRIBUTES', () => {
 			} catch {}
 			expect(HTML_BOOLEAN_ATTRIBUTES[key]).toBe(value);
 		});
+	});
+	test('should not have a prototype', () => {
+		expect(HTML_BOOLEAN_ATTRIBUTES).not.toHaveProperty('prototype');
+		expect(HTML_BOOLEAN_ATTRIBUTES).not.toHaveProperty('__proto__');
 	});
 });
 describe('isHTMLBooleanAttribute', () => {
@@ -54,6 +59,10 @@ describe('HTML_VOID_ELEMENTS', () => {
 			expect(HTML_VOID_ELEMENTS[key]).toBe(true);
 		});
 	});
+	test('should not have a prototype', () => {
+		expect(HTML_VOID_ELEMENTS).not.toHaveProperty('prototype');
+		expect(HTML_VOID_ELEMENTS).not.toHaveProperty('__proto__');
+	});
 });
 describe('isHTMLVoidElement', () => {
 	Object.keys(HTML_VOID_ELEMENTS).forEach((key) => {
@@ -86,6 +95,10 @@ describe('HTML_RAW_TEXT_ELEMENTS', () => {
 			} catch {}
 			expect(HTML_RAW_TEXT_ELEMENTS[key]).toBe(value);
 		});
+	});
+	test('should not have a prototype', () => {
+		expect(HTML_RAW_TEXT_ELEMENTS).not.toHaveProperty('prototype');
+		expect(HTML_RAW_TEXT_ELEMENTS).not.toHaveProperty('__proto__');
 	});
 });
 describe('isHTMLRawTextElement', () => {
