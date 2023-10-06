@@ -43,7 +43,7 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"@homer0/prettier-plugin-jsdoc": "7.0.3",
+		"@homer0/prettier-plugin-jsdoc": "8.0.0",
 		"auto-changelog": "2.4.0",
 		"eslint": "8.50.0",
 		"eslint-config-prettier": "9.0.0",
