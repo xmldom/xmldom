@@ -16,6 +16,8 @@ rules:
   linebreak-style:
     - error
     - unix
+  no-prototype-builtins:
+    - error
   strict:
     - error
     - global

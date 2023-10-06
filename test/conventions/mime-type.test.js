@@ -1,6 +1,7 @@
 'use strict';
 
 const { hasDefaultHTMLNamespace, isHTMLMimeType, isValidMimeType, MIME_TYPE } = require('../../lib/conventions');
+const { test, expect } = require('@jest/globals');
 
 describe('isHTMLMimeType', () => {
 	test("should return true for 'text/html'", () => {
@@ -9,7 +10,7 @@ describe('isHTMLMimeType', () => {
 	test('should return true for MIME_TYPE.HTML', () => {
 		expect(isHTMLMimeType(MIME_TYPE.HTML)).toBe(true);
 	});
-	test.each([undefined, null, 0, 1, false, true, '', MIME_TYPE.XML_XHTML_APPLICATION])(
+	test.each([undefined, null, 0, 1, false, true, '', MIME_TYPE.XML_XHTML_APPLICATION, 'prototype', '__proto__'])(
 		"should return false for '%s'",
 		(value) => {
 			expect(isHTMLMimeType(value)).toBe(false);
@@ -29,7 +30,7 @@ describe('hasDefaultHTMLNamespace', () => {
 	test('should return true for MIME_TYPE.HTML', () => {
 		expect(hasDefaultHTMLNamespace(MIME_TYPE.XML_XHTML_APPLICATION)).toBe(true);
 	});
-	test.each([undefined, null, 0, 1, false, true, ''])("should return false for '%s'", (value) => {
+	test.each([undefined, null, 0, 1, false, true, '', 'prototype', '__proto__'])("should return false for '%s'", (value) => {
 		expect(hasDefaultHTMLNamespace(value)).toBe(false);
 	});
 });
@@ -46,5 +47,11 @@ describe('MIME_TYPE', () => {
 		test(`should be a valid mimeType`, () => {
 			expect(isValidMimeType(mimeType)).toBe(true);
 		});
+	});
+	test('should not have a prototype', () => {
+		expect(MIME_TYPE).not.toHaveProperty('prototype');
+		expect(isValidMimeType('prototype')).toBe(false);
+		expect(MIME_TYPE).not.toHaveProperty('__proto__');
+		expect(isValidMimeType('__proto__')).toBe(false);
 	});
 });

@@ -1,12 +1,13 @@
 'use strict';
 
+const { describe, test, expect } = require('@jest/globals');
 const { freeze } = require('../../lib/conventions');
 
 describe('freeze', () => {
-	test('should return the frozen object (works in node)', () => {
+	test('should return a frozen object with the same props (works in node)', () => {
 		const input = { k: 'v' };
 		const actual = freeze(input);
-		expect(actual).toBe(input);
+		expect(actual).toEqual(input);
 
 		try {
 			actual.k = 0;
@@ -18,6 +19,8 @@ describe('freeze', () => {
 			// (most commonly, but not exclusively, when in strict mode).
 		}
 		expect(actual).toEqual(input);
+		expect(actual).not.toHaveProperty('prototype');
+		expect(actual).not.toHaveProperty('__proto__');
 	});
 	test('should return `input` if `Object.freeze` is not available', () => {
 		const input = { k: 'v' };

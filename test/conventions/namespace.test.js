@@ -1,5 +1,6 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
 const { NAMESPACE } = require('../../lib/conventions');
 
 describe('NAMESPACE', () => {
@@ -12,5 +13,9 @@ describe('NAMESPACE', () => {
 			} catch {}
 			expect(NAMESPACE[key]).toBe(value);
 		});
+	});
+	test('should not have a prototype', () => {
+		expect(NAMESPACE).not.toHaveProperty('prototype');
+		expect(NAMESPACE).not.toHaveProperty('__proto__');
 	});
 });
