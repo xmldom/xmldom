@@ -1,6 +1,6 @@
 /node_modules
 /reports
-/test/error/reported.json
+/test/errors/reported.json
 
 docs/*.jar
 
@@ -13,3 +13,5 @@ coverage
 .envrc
 
 /.idea
+/.fuzzer*
+crash-*
