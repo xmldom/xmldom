@@ -15,7 +15,7 @@ TARGETS.forEach((target) => {
 	afterAll(() => {
 		// avoid silently failing for targets that have no test input
 		// there is one call with an empty buffer
-		// expect(spy).toBeCalledTimes(testfiles.length + 1);
+		expect(spy).toBeCalledTimes(testfiles.length + 1);
 	});
 	test.fuzz(target, (data) => module.fuzz(data));
 });
