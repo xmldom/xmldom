@@ -1,6 +1,6 @@
 'use strict';
 
-const { DOMParser, ParseError, MIME_TYPE, XMLSerializer } = require('../lib');
+const { DOMParser, ParseError, MIME_TYPE, XMLSerializer } = require('../../lib');
 
 module.exports.fuzz = (buffer) => {
 	try {

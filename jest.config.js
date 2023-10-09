@@ -97,7 +97,7 @@ module.exports = {
 				name: 'Jazzer.js',
 				color: 'cyan',
 			},
-			testMatch: ['<rootDir>/test/*.test.fuzz.js'],
+			testMatch: ['<rootDir>/test/fuzz/*.test.fuzz.js'],
 			testRunner: '@jazzer.js/jest-runner',
 		},
 	],

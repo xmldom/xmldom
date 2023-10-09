@@ -2,8 +2,8 @@
 	"includes": ["lib"],
 	"excludes": ["node_modules"],
 	"customHooks": [],
-	"fuzzerOptions": [],
+	"fuzzerOptions": ["--sync", "--timeout=10"],
 	"sync": true,
-	"timeout": 10,
-  "verbose": false
+	"timeout": 500,
+	"verbose": false
 }
