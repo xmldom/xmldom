@@ -88,7 +88,19 @@ module.exports = {
 	// preset: undefined,
 
 	// Run tests from one or more projects
-	// projects: undefined,
+	projects: [
+		{
+			displayName: 'test',
+		},
+		{
+			displayName: {
+				name: 'Jazzer.js',
+				color: 'cyan',
+			},
+			testMatch: ['<rootDir>/test/*.test.fuzz.js'],
+			testRunner: '@jazzer.js/jest-runner',
+		},
+	],
 
 	// Use this configuration option to add custom reporters to Jest
 	// reporters: undefined,
