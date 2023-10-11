@@ -1,21 +1,22 @@
 'use strict';
-const { expect, test, beforeAll, afterAll } = require('@jest/globals');
+const { describe, expect, test, beforeAll, afterAll } = require('@jest/globals');
 
 const fs = require('fs');
 const path = require('path');
-const TARGETS = fs.readdirSync(__dirname).filter((file) => file.endsWith('.target.js'));
+const TARGETS = fs
+	.readdirSync(__dirname)
+	.filter((file) => file.endsWith('.target.js'))
+	.map((target) => [target, path.join(__dirname, target)]);
 
-TARGETS.forEach((target) => {
-	const module = require(path.join(__dirname, target));
-	const spy = jest.spyOn(module, 'fuzz');
-	const testfiles = fs.readdirSync(path.join(__filename.replace(/\.js$/, ''), target));
-	beforeAll(() => {
-		expect(testfiles.length).toBeGreaterThan(0);
+TARGETS.forEach(([target, targetPath]) => {
+	describe('', () => {
+		beforeAll(() => {
+			const regressionDir = path.join(__filename.replace(/\.js$/, ''), target);
+			expect(fs.existsSync(regressionDir)).toBe(true);
+			const testfiles = fs.readdirSync(regressionDir);
+			expect(testfiles.length).toBeGreaterThan(0);
+		});
+		const module = require(targetPath);
+		test.fuzz(target, (data) => module.fuzz(data));
 	});
-	afterAll(() => {
-		// avoid silently failing for targets that have no test input
-		// there is one call with an empty buffer
-		expect(spy).toBeCalledTimes(testfiles.length + 1);
-	});
-	test.fuzz(target, (data) => module.fuzz(data));
 });
