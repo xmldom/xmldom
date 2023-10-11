@@ -88,19 +88,7 @@ module.exports = {
 	// preset: undefined,
 
 	// Run tests from one or more projects
-	// projects: [
-	// 	{
-	// 		displayName: 'test',
-	// 	},
-	// 	{
-	// 		displayName: {
-	// 			name: 'Jazzer.js',
-	// 			color: 'cyan',
-	// 		},
-	// 		testMatch: ['<rootDir>/test/fuzz/*.test.fuzz.js'],
-	// 		testRunner: '@jazzer.js/jest-runner',
-	// 	},
-	// ],
+	// projects: undefined,
 
 	// Use this configuration option to add custom reporters to Jest
 	// reporters: undefined,
@@ -121,7 +109,7 @@ module.exports = {
 	// rootDir: undefined,
 
 	// A list of paths to directories that Jest should use to search for files in
-	roots: ['<rootDir>/test'],
+	roots: ['<rootDir>/fuzz'],
 
 	// Allows you to use a custom runner instead of Jest's default test runner
 	// runner: "jest-runner",
@@ -148,10 +136,7 @@ module.exports = {
 	// testLocationInResults: false,
 
 	// The glob patterns Jest uses to detect test files
-	// testMatch: [
-	//   "**/__tests__/**/*.[jt]s?(x)",
-	//   "**/?(*.)+(spec|test).[tj]s?(x)"
-	// ],
+	testMatch: ['<rootDir>/fuzz/*.test.js'],
 
 	// An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
 	// testPathIgnorePatterns: [
@@ -159,13 +144,13 @@ module.exports = {
 	// ],
 
 	// The regexp pattern or array of patterns that Jest uses to detect test files
-	testRegex: ['.test.js$'],
+	// testRegex: ['test/**/*.test.js$'],
 
 	// This option allows the use of a custom results processor
 	// testResultsProcessor: undefined,
 
 	// This option allows use of a custom test runner
-	// testRunner: "jasmine2",
+	testRunner: '@jazzer.js/jest-runner',
 
 	// This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
 	// testURL: "http://localhost",

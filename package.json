@@ -33,6 +33,7 @@
 		"changelog": "auto-changelog --unreleased-only",
 		"start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
 		"test": "jest",
+		"fuzz": "jest --config=./jest.fuzz.config.js",
 		"test:types": "cd examples/typescript-node-es6 && ./pretest.sh 3 && ./pretest.sh 4 && ./pretest.sh 5 && node dist/index.js",
 		"testrelease": "npm test && eslint lib",
 		"version": "./changelog-has-version.sh",
@@ -41,9 +42,10 @@
 	"engines": {
 		"node": ">=10.0.0"
 	},
-	"dependencies": {},
 	"devDependencies": {
 		"@homer0/prettier-plugin-jsdoc": "8.0.0",
+		"@jazzer.js/core": "2.0.0",
+		"@jazzer.js/jest-runner": "2.0.0",
 		"auto-changelog": "2.4.0",
 		"eslint": "8.50.0",
 		"eslint-config-prettier": "9.0.0",

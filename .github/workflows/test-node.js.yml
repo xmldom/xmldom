@@ -41,6 +41,8 @@ jobs:
       if: matrix.node-version != 16
     - run: npm run test -- --coverage
       if: matrix.node-version == 16
+    - run: npm run fuzz
+      if: matrix.node-version == 16
     - if: matrix.node-version == 16
       uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3.1.4
       env:
