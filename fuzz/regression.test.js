@@ -1,5 +1,5 @@
 'use strict';
-const { describe, expect, test, beforeAll, afterAll } = require('@jest/globals');
+const { describe, expect, test, beforeAll } = require('@jest/globals');
 
 const fs = require('fs');
 const path = require('path');
