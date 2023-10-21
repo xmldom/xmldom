@@ -1,7 +1,7 @@
 # @xmldom/xmldom
 
 ***Since version 0.7.0 this package is published to npm as [`@xmldom/xmldom`](https://www.npmjs.com/package/@xmldom/xmldom) and no longer as [`xmldom`](https://www.npmjs.com/package/xmldom), because [we are no longer able to publish `xmldom`](https://github.com/xmldom/xmldom/issues/271).***  
-*For better readability in the docs we will continue to talk about this library as "xmldom".*
+*For better readability in the docs, we will continue to talk about this library as "xmldom".*
 
 [![license(MIT)](https://img.shields.io/npm/l/@xmldom/xmldom?color=blue&style=flat-square)](https://github.com/xmldom/xmldom/blob/master/LICENSE)
 [![no dependencies](https://img.shields.io/badge/dependencies-0-lightgreen)](https://socket.dev/npm/package/@xmldom/xmldom)
@@ -312,7 +312,7 @@ Note: [The latest version of this spec](https://w3c.github.io/DOM-Parsing/) has 
 ### DOM
 
 The original author claims that xmldom implements [DOM Level 2] in a "fully compatible" way and some parts of [DOM Level 3], but there are not enough tests to prove this. Both Specifications are now superseded by the [DOM Level 4 aka Living standard] wich has a much broader scope than xmldom.
-In the past there have been multiple (even breaking) changes to align xmldom with the living standard,
+In the past, there have been multiple (even breaking) changes to align xmldom with the living standard,
 so if you find a difference that is not documented, any contribution to resolve the difference is very welcome (even just reporting it as an issue). 
 
 xmldom implements the following interfaces (only the ones marked with `*` are currently exposed):
