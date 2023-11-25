@@ -10,7 +10,7 @@ const { expectDOMException } = require('../errors/expectDOMException');
 
 const INPUT = (first = '', second = '', third = '', fourth = '') => `
 <html >
-	<body id='body'>
+	<body id='body' class="body">
 		<p id='p1' class=' quote first   odd ${first} '>Lorem ipsum</p>
 		<p id='p2' class=' quote second  even ${second} '>Lorem ipsum</p>
 		<p id='p3' class=' quote third   odd ${third} '>Lorem ipsum</p>
@@ -94,6 +94,13 @@ describe('Document.prototype', () => {
 			MIXED_CASES.forEach((className) => {
 				expect(doc.getElementsByClassName(className)).toHaveLength(1);
 			});
+		});
+		test('getElementsByClassName function should be called after finding the LiveNode', () => {
+			const doc = getTestParser().parser.parseFromString(INPUT(), MIME_TYPE.XML_TEXT);
+			const body = doc.getElementsByClassName('body');
+			const spy = jest.spyOn(body, 'getElementsByClassName');
+			body.getElementsByClassName('quote');
+			expect(spy).toHaveBeenCalled();
 		});
 	});
 	test('getElementById', () => {
