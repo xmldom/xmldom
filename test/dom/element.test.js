@@ -301,16 +301,7 @@ describe('Element', () => {
 	});
 
 	describe('getElementsByClassName', () => {
-		test('Elements of related classes should be found', () => {
-			const doc = new DOMImplementation().createDocument(null, 'xml');
-
-			const element = doc.createElement('div');
-			element.className = 'abc';
-			doc.documentElement.appendChild(element);
-			console.log(doc.documentElement);
-
-			// should find both elements
-			expect(doc.documentElement.getElementsByClassName('abc'));
-		});
+		const doc = new DOMImplementation().createDocument(null, 'xml');
+		expect(doc.documentElement.getElementsByClassName('no')).toHaveLength(0);
 	});
 });
