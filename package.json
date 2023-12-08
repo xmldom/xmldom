@@ -48,7 +48,7 @@
 		"@jazzer.js/jest-runner": "2.1.0",
 		"auto-changelog": "2.4.0",
 		"eslint": "8.55.0",
-		"eslint-config-prettier": "9.0.0",
+		"eslint-config-prettier": "9.1.0",
 		"eslint-plugin-anti-trojan-source": "1.1.1",
 		"eslint-plugin-es5": "1.5.0",
 		"eslint-plugin-node": "11.1.0",
