@@ -1,9 +1,66 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { NodeList, LiveNodeList, DOMImplementation } = require('../../lib/dom');
+const { NodeList, LiveNodeList, DOMImplementation, Element } = require('../../lib/dom');
 
 describe('NodeList', () => {
+	describe('Iterator', () => {
+		test('should iterate over 3/3 items when using a for...of loop without interruption', () => {
+			const it = new NodeList();
+			const first = new Element();
+			it[0] = first;
+			const second = new Element();
+			it[1] = second;
+			const third = new Element();
+			it[2] = third;
+			it.length = 3;
+
+			let count = 0;
+			for (const item of it) {
+				count++;
+			}
+			expect(count).toBe(it.length);
+		});
+		test('should iterate over 1/3 items when using a for...of loop and breaking after first iteration', () => {
+			const it = new NodeList();
+			const first = new Element();
+			it[0] = first;
+			const second = new Element();
+			it[1] = second;
+			const third = new Element();
+			it[2] = third;
+			it.length = 3;
+
+			let count = 0;
+			for (const item of it) {
+				count++;
+				break;
+			}
+			expect(count).toBe(1);
+		});
+		test('should iterate over 3/3 items when using two for...of loops subsequently', () => {
+			const it = new NodeList();
+			const first = new Element();
+			it[0] = first;
+			const second = new Element();
+			it[1] = second;
+			const third = new Element();
+			it[2] = third;
+			it.length = 3;
+
+			let firstCount = 0;
+			for (const item of it) {
+				firstCount++;
+			}
+			let secondCount = 0;
+			for (const item of it) {
+				secondCount++;
+			}
+
+			expect(firstCount).toBe(it.length);
+			expect(secondCount).toBe(it.length);
+		});
+	});
 	describe('item', () => {
 		test('should return null for items outside length', () => {
 			const it = new NodeList();
