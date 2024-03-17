@@ -7,6 +7,63 @@ const HTML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => true };
 const XML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => false };
 
 describe('NamedNodeMap', () => {
+	describe('Iterator', () => {
+		test('should iterate over 3/3 items when using a for...of loop without interruption', () => {
+			const it = new NamedNodeMap();
+			const first = new Attr();
+			it[0] = first;
+			const second = new Attr();
+			it[1] = second;
+			const third = new Attr();
+			it[2] = third;
+			it.length = 3;
+
+			let count = 0;
+			for (const _item of it) {
+				count++;
+			}
+			expect(count).toBe(it.length);
+		});
+		test('should iterate over 1/3 items when using a for...of loop and breaking after first iteration', () => {
+			const it = new NamedNodeMap();
+			const first = new Attr();
+			it[0] = first;
+			const second = new Attr();
+			it[1] = second;
+			const third = new Attr();
+			it[2] = third;
+			it.length = 3;
+
+			let count = 0;
+			for (const _item of it) {
+				count++;
+				break;
+			}
+			expect(count).toBe(1);
+		});
+		test('should iterate over 3/3 items when using two for...of loops subsequently', () => {
+			const it = new NamedNodeMap();
+			const first = new Attr();
+			it[0] = first;
+			const second = new Attr();
+			it[1] = second;
+			const third = new Attr();
+			it[2] = third;
+			it.length = 3;
+
+			let firstCount = 0;
+			for (const _item of it) {
+				firstCount++;
+			}
+			let secondCount = 0;
+			for (const _item of it) {
+				secondCount++;
+			}
+
+			expect(firstCount).toBe(it.length);
+			expect(secondCount).toBe(it.length);
+		});
+	});
 	describe('getNamedItem', () => {
 		test('should return null when no attribute is found', () => {
 			const it = new NamedNodeMap();
