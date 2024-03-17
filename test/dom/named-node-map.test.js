@@ -19,7 +19,7 @@ describe('NamedNodeMap', () => {
 			it.length = 3;
 
 			let count = 0;
-			for (const item of it) {
+			for (const _item of it) {
 				count++;
 			}
 			expect(count).toBe(it.length);
@@ -35,7 +35,7 @@ describe('NamedNodeMap', () => {
 			it.length = 3;
 
 			let count = 0;
-			for (const item of it) {
+			for (const _item of it) {
 				count++;
 				break;
 			}
@@ -52,11 +52,11 @@ describe('NamedNodeMap', () => {
 			it.length = 3;
 
 			let firstCount = 0;
-			for (const item of it) {
+			for (const _item of it) {
 				firstCount++;
 			}
 			let secondCount = 0;
-			for (const item of it) {
+			for (const _item of it) {
 				secondCount++;
 			}
 
