@@ -2,16 +2,17 @@
 
 const { describe, expect, test } = require('@jest/globals');
 const { NodeList, LiveNodeList, DOMImplementation, Element } = require('../../lib/dom');
+const { INTERNAL_SYMBOL } = require('../../lib/conventions');
 
 describe('NodeList', () => {
 	describe('Iterator', () => {
 		test('should iterate over 3/3 items when using a for...of loop without interruption', () => {
 			const it = new NodeList();
-			const first = new Element();
+			const first = new Element(INTERNAL_SYMBOL);
 			it[0] = first;
-			const second = new Element();
+			const second = new Element(INTERNAL_SYMBOL);
 			it[1] = second;
-			const third = new Element();
+			const third = new Element(INTERNAL_SYMBOL);
 			it[2] = third;
 			it.length = 3;
 
@@ -23,11 +24,11 @@ describe('NodeList', () => {
 		});
 		test('should iterate over 1/3 items when using a for...of loop and breaking after first iteration', () => {
 			const it = new NodeList();
-			const first = new Element();
+			const first = new Element(INTERNAL_SYMBOL);
 			it[0] = first;
-			const second = new Element();
+			const second = new Element(INTERNAL_SYMBOL);
 			it[1] = second;
-			const third = new Element();
+			const third = new Element(INTERNAL_SYMBOL);
 			it[2] = third;
 			it.length = 3;
 
@@ -40,11 +41,11 @@ describe('NodeList', () => {
 		});
 		test('should iterate over 3/3 items when using two for...of loops subsequently', () => {
 			const it = new NodeList();
-			const first = new Element();
+			const first = new Element(INTERNAL_SYMBOL);
 			it[0] = first;
-			const second = new Element();
+			const second = new Element(INTERNAL_SYMBOL);
 			it[1] = second;
-			const third = new Element();
+			const third = new Element(INTERNAL_SYMBOL);
 			it[2] = third;
 			it.length = 3;
 
