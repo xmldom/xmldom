@@ -1,12 +1,12 @@
 'use strict';
 
 const { describe, test } = require('@jest/globals');
-const { Attr } = require('../../lib/dom');
+const { Entity } = require('../../lib/dom');
 
-describe('Attr.prototype', () => {
+describe('Entity.prototype', () => {
 	describe('constructor', () => {
 		test('should throw Illegal constructor TypeError when trying to access constructor directly', () => {
-			expect(() => new Attr()).toThrow(TypeError);
+			expect(() => new Entity()).toThrow(TypeError);
 		});
 	});
 });

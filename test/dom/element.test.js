@@ -8,6 +8,11 @@ const { DOMException, DOMExceptionName } = require('../../lib/errors');
 const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('documentElement', () => {
+	describe('constructor', () => {
+		test('should throw Illegal constructor TypeError when trying to access constructor directly', () => {
+			expect(() => new Element()).toThrow(TypeError);
+		});
+	});
 	test('can properly append exist child', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
