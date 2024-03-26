@@ -65,13 +65,13 @@ function StubDOMHandlerWith(throwingMethod, ErrorClass) {
 			method === throwingMethod
 				? () => {
 						throw new (ErrorClass || ParseError)(`StubDOMHandler throwing in ${throwingMethod}`);
-				  }
+					}
 				: method === 'warning' || method === 'error' || method === 'fatalError'
-				? noop // prevent log output
-				: // use default implementation
-				  function (...args) {
-						return __DOMHandler.prototype[method].apply(this, args);
-				  }
+					? noop // prevent log output
+					: // use default implementation
+						function (...args) {
+							return __DOMHandler.prototype[method].apply(this, args);
+						}
 		);
 		impl.mockName(method);
 		StubDOMHandler.prototype[method] = impl;
