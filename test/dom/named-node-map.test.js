@@ -1,7 +1,9 @@
 'use strict';
 const { describe, it, expect } = require('@jest/globals');
-const { Attr, NamedNodeMap } = require('../../lib/dom');
+const { DOMImplementation, NamedNodeMap } = require('../../lib/dom');
 const { DOMException } = require('../../lib/errors');
+
+const doc = new DOMImplementation().createDocument(null, 'xml');
 
 const HTML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => true };
 const XML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => false };
@@ -10,11 +12,11 @@ describe('NamedNodeMap', () => {
 	describe('Iterator', () => {
 		test('should iterate over 3/3 items when using a for...of loop without interruption', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
+			const second = doc.createAttribute('second');
 			it[1] = second;
-			const third = new Attr();
+			const third = doc.createAttribute('third');
 			it[2] = third;
 			it.length = 3;
 
@@ -26,11 +28,11 @@ describe('NamedNodeMap', () => {
 		});
 		test('should iterate over 1/3 items when using a for...of loop and breaking after first iteration', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
+			const second = doc.createAttribute('second');
 			it[1] = second;
-			const third = new Attr();
+			const third = doc.createAttribute('third');
 			it[2] = third;
 			it.length = 3;
 
@@ -43,11 +45,11 @@ describe('NamedNodeMap', () => {
 		});
 		test('should iterate over 3/3 items when using two for...of loops subsequently', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
+			const second = doc.createAttribute('second');
 			it[1] = second;
-			const third = new Attr();
+			const third = doc.createAttribute('third');
 			it[2] = third;
 			it.length = 3;
 
@@ -71,14 +73,11 @@ describe('NamedNodeMap', () => {
 		});
 		test('should return first matching attr by nodeName', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
-			first.nodeName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
-			second.nodeName = 'second';
+			const second = doc.createAttribute('second');
 			it[1] = second;
-			const third = new Attr();
-			third.nodeName = second.nodeName;
+			const third = doc.createAttribute(second.nodeName);
 			it[2] = third;
 			it.length = 3;
 			expect(it.getNamedItem(second.nodeName)).toBe(second);
@@ -86,14 +85,11 @@ describe('NamedNodeMap', () => {
 		test('should return first matching attr by lowercase nodeName in HTML', () => {
 			const it = new NamedNodeMap();
 			it._ownerElement = HTML_OWNER_ELEMENT;
-			const first = new Attr();
-			first.nodeName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
-			second.nodeName = 'second';
+			const second = doc.createAttribute('second');
 			it[1] = second;
-			const third = new Attr();
-			third.nodeName = second.nodeName;
+			const third = doc.createAttribute(second.nodeName);
 			it[2] = third;
 			it.length = 3;
 			expect(it.getNamedItem(second.nodeName.toUpperCase())).toBe(second);
@@ -101,11 +97,9 @@ describe('NamedNodeMap', () => {
 		test('should return null for attr with different case nodeName in XML', () => {
 			const it = new NamedNodeMap();
 			it._ownerElement = XML_OWNER_ELEMENT;
-			const first = new Attr();
-			first.nodeName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
-			second.nodeName = 'second';
+			const second = doc.createAttribute('second');
 			it[1] = second;
 			it.length = 2;
 			expect(it.getNamedItem(second.nodeName.toUpperCase())).toBeNull();
@@ -120,16 +114,13 @@ describe('NamedNodeMap', () => {
 		});
 		test('should return first matching attr by nodeName', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
-			first.localName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
 
-			const second = new Attr();
-			second.localName = 'second';
+			const second = doc.createAttribute('second');
 			it[1] = second;
 
-			const third = new Attr();
-			third.localName = second.localName;
+			const third = doc.createAttribute(second.localName);
 			it[2] = third;
 			it.length = 3;
 			expect(it.getNamedItemNS(null, second.localName)).toBe(second);
@@ -137,18 +128,15 @@ describe('NamedNodeMap', () => {
 		});
 		test('should return first matching attr by nodeName and namespaceURI', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
-			first.localName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
 
-			const second = new Attr();
+			const second = doc.createAttribute('second');
 			second.namespaceURI = 'A';
-			second.localName = 'second';
 			it[1] = second;
 
-			const third = new Attr();
+			const third = doc.createAttribute(second.localName);
 			third.namespaceURI = 'B';
-			third.localName = second.localName;
 			it[2] = third;
 			it.length = 3;
 			expect(it.getNamedItemNS('A', second.localName)).toBe(second);
@@ -156,11 +144,9 @@ describe('NamedNodeMap', () => {
 		});
 		test('should return null for attr with different case nodeName', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
-			first.localName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
-			second.localName = 'second';
+			const second = doc.createAttribute('second');
 			it[1] = second;
 			it.length = 2;
 			expect(it.getNamedItemNS(null, second.localName.toUpperCase())).toBeNull();
@@ -171,7 +157,7 @@ describe('NamedNodeMap', () => {
 			test('should throw error if attr.ownerElement is set and not the same', () => {
 				const it = new NamedNodeMap();
 				it._ownerElement = {};
-				const attr = new Attr();
+				const attr = doc.createAttribute('attr');
 				attr.ownerElement = {};
 
 				expect(() => it[setNamedItemMethod](attr)).toThrow(new DOMException(DOMException.INUSE_ATTRIBUTE_ERR));
@@ -179,8 +165,7 @@ describe('NamedNodeMap', () => {
 			test('should only add the same attribute (instance) once', () => {
 				const it = new NamedNodeMap();
 				it._ownerElement = XML_OWNER_ELEMENT;
-				const attr = new Attr();
-				attr.nodeName = attr.localName = 'attr';
+				const attr = doc.createAttribute('attr');
 				attr.ownerElement = it._ownerElement;
 
 				expect(it[setNamedItemMethod](attr)).toBeNull();
@@ -195,16 +180,14 @@ describe('NamedNodeMap', () => {
 			test('should add the attribute with different case in nodeName', () => {
 				const it = new NamedNodeMap();
 				it._ownerElement = {};
-				const attr = new Attr();
-				attr.nodeName = attr.localName = 'attr';
+				const attr = doc.createAttribute('attr');
 				attr.ownerElement = it._ownerElement;
 
 				expect(it[setNamedItemMethod](attr)).toBeNull();
 				expect(it[0]).toBe(attr);
 				expect(it.length).toBe(1);
 
-				const upper = new Attr();
-				upper.nodeName = attr.nodeName.toUpperCase();
+				const upper = doc.createAttribute(attr.nodeName.toUpperCase());
 
 				expect(it[setNamedItemMethod](upper)).toBeNull();
 				expect(it[0]).toBe(attr);
@@ -221,14 +204,11 @@ describe('NamedNodeMap', () => {
 		});
 		test('should remove first matching attr by nodeName', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
-			first.nodeName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
-			second.nodeName = 'second';
+			const second = doc.createAttribute('second');
 			it[1] = second;
-			const third = new Attr();
-			third.nodeName = second.nodeName;
+			const third = doc.createAttribute(second.nodeName);
 			it[2] = third;
 			it.length = 3;
 			expect(it.removeNamedItem(second.nodeName)).toBe(second);
@@ -239,15 +219,12 @@ describe('NamedNodeMap', () => {
 		test('should remove first matching attr by lowercase nodeName in HTML', () => {
 			const it = new NamedNodeMap();
 			it._ownerElement = HTML_OWNER_ELEMENT;
-			const first = new Attr();
-			first.nodeName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
-			second.nodeName = 'second';
+			const second = doc.createAttribute('second');
 			second.ownerElement = it._ownerElement;
 			it[1] = second;
-			const third = new Attr();
-			third.nodeName = second.nodeName;
+			const third = doc.createAttribute(second.nodeName);
 			it[2] = third;
 			it.length = 3;
 			expect(it.removeNamedItem(second.nodeName.toUpperCase())).toBe(second);
@@ -259,11 +236,9 @@ describe('NamedNodeMap', () => {
 		test('should throw for attr with different case nodeName in XML', () => {
 			const it = new NamedNodeMap();
 			it._ownerElement = XML_OWNER_ELEMENT;
-			const first = new Attr();
-			first.nodeName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
-			second.nodeName = 'second';
+			const second = doc.createAttribute('second');
 			it[1] = second;
 			it.length = 2;
 			const localName = second.nodeName.toUpperCase();
@@ -280,17 +255,14 @@ describe('NamedNodeMap', () => {
 		test('should remove first matching attr by nodeName', () => {
 			const it = new NamedNodeMap();
 			it._ownerElement = XML_OWNER_ELEMENT;
-			const first = new Attr();
-			first.localName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
 
-			const second = new Attr();
-			second.localName = 'second';
+			const second = doc.createAttribute('second');
 			second.ownerElement = it._ownerElement;
 			it[1] = second;
 
-			const third = new Attr();
-			third.localName = second.localName;
+			const third = doc.createAttribute(second.localName);
 			third.ownerElement = it._ownerElement;
 			it[2] = third;
 			it.length = 3;
@@ -308,11 +280,9 @@ describe('NamedNodeMap', () => {
 		});
 		test('should throw for attr with different case nodeName', () => {
 			const it = new NamedNodeMap();
-			const first = new Attr();
-			first.localName = 'first';
+			const first = doc.createAttribute('first');
 			it[0] = first;
-			const second = new Attr();
-			second.localName = 'second';
+			const second = doc.createAttribute('second');
 			it[1] = second;
 			it.length = 2;
 			const localName = second.localName.toUpperCase();

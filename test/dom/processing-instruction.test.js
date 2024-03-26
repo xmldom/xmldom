@@ -2,9 +2,15 @@
 
 const { DOMParser, XMLSerializer } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
-const { Node } = require('../../lib/dom');
+const { Node, ProcessingInstruction } = require('../../lib/dom');
 
 describe('ProcessingInstruction', () => {
+	describe('constructor', () => {
+		test('should throw Illegal constructor TypeError when trying to access constructor directly', () => {
+			expect(() => new ProcessingInstruction()).toThrow(TypeError);
+		});
+	});
+
 	test('can properly create a ProcessingInstruction', () => {
 		const doc = new DOMParser().parseFromString('<xml></xml>', MIME_TYPE.XML_TEXT);
 		const pi = doc.createProcessingInstruction('xml-stylesheet', 'href="mycss.css" type="text/css"');

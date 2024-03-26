@@ -1,11 +1,16 @@
 'use strict';
 
 const { describe, test } = require('@jest/globals');
-const { DOMImplementation } = require('../../lib/dom');
+const { DOMImplementation, Node } = require('../../lib/dom');
 const { DOMExceptionName } = require('../../lib/errors');
 const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('Node.prototype', () => {
+	describe('constructor', () => {
+		test('should throw Illegal constructor TypeError when trying to access constructor directly', () => {
+			expect(() => new Node()).toThrow(TypeError);
+		});
+	});
 	describe('appendChild', () => {
 		const impl = new DOMImplementation();
 		const doc = impl.createDocument(null, '');
