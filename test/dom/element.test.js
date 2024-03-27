@@ -16,8 +16,8 @@ describe('documentElement', () => {
 	test('can properly append exist child', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
-				'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
-				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>',
+				'<child1 id="a1" class="a1" title="1"><child11 id="a2" class="a2" title="2"/></child1>' +
+				'<child2 id="a1" class="a1"  title="3"/><child3 id="a1" class="a2"  title="3"/></xml>',
 			MIME_TYPE.XML_TEXT
 		);
 
@@ -303,5 +303,10 @@ describe('Element', () => {
 				'namespace is the XMLNS namespace'
 			);
 		});
+	});
+
+	describe('getElementsByClassName', () => {
+		const doc = new DOMImplementation().createDocument(null, 'xml');
+		expect(doc.documentElement.getElementsByClassName('no')).toHaveLength(0);
 	});
 });
