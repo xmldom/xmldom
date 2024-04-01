@@ -46,7 +46,9 @@ This project was forked from it's [original source](https://github.com/jindw/xml
 
 ### Install:
 
-> npm install @xmldom/xmldom
+``` 
+npm install @xmldom/xmldom
+```
 
 ### Example:
 
