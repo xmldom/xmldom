@@ -124,6 +124,10 @@ describe('documentElement', () => {
 		expect(doc.childElementCount).toBe(3);
 		expect(doc.firstElementChild).toBe(arr[0]);
 		expect(doc.childNodes.toString()).toBe(`<A/>x<B/>y<C/>`);
+
+		doc.removeChild(doc.lastChild);
+		expect(doc.lastElementChild).toBe(arr[2]);
+		expect(doc.lastElementChild.nextElementSibling).toBeNull();
 	});
 
 	test('should throw DOMException when trying to append a doctype', () => {
