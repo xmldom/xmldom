@@ -92,7 +92,7 @@ import { DOMParser } from '@xmldom/xmldom'
 	```javascript
 	serializeToString(node)
 	```
-### DOM level2 method and attribute:
+### DOM level 2 method and attribute:
 
 * [Node](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247)
 
@@ -289,6 +289,24 @@ import { DOMParser } from '@xmldom/xmldom'
   - `isDefaultNamespace(namespaceURI)`
   - `lookupNamespaceURI(prefix)`
 
+### DOM level 4 support:
+
+* [Element](https://dom.spec.whatwg.org/#interface-element) (via `ParentNode` and `NonDocumentTypeChildNode` mixins)
+		
+  attribute:
+  - `firstElementChild`
+  - `lastElementChild`
+  - `childElementCount`
+  - `previousElementSibling`
+  - `nextElementSibling`
+
+* [Document](https://dom.spec.whatwg.org/#interface-document) and [DocumentFragment](https://dom.spec.whatwg.org/#interface-documentfragment) (via `ParentNode` mixin)
+		
+  attribute:
+  - `firstElementChild`
+  - `lastElementChild`
+  - `childElementCount`
+  
 ### DOM extension by xmldom
 
 * [Node] Source position extension; 
