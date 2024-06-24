@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 
-declare module '@xmldom/xmldom' {
+declare module '@logerzhu/xmldom' {
 	// START ./lib/conventions.js
 	/**
 	 * Since xmldom can not rely on `Object.assign`,
@@ -284,7 +284,7 @@ declare module '@xmldom/xmldom' {
 		 */
 		parseFromString(
 			source: string,
-			mimeType: MIME_TYPE = MIME_TYPE.XML_TEXT
+			mimeType: MIME_TYPE
 		): Document;
 	}
 
