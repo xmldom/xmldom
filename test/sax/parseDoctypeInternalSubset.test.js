@@ -124,7 +124,6 @@ describe('parseDoctypeCommentOrCData', () => {
 
 	test('should call domHandler method with correct values when everything is well-formed and empty', () => {
 		const start = 0;
-		const pi = '<?pi simple ?>';
 		const Name = 'Name';
 		var source = g.DOCTYPE_DECL_START + ' ' + Name + ' PUBLIC "pubId" "sysId" [ ]>';
 		const errorHandler = { fatalError: jest.fn() };
