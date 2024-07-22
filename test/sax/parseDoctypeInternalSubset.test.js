@@ -133,7 +133,7 @@ describe('parseDoctypeCommentOrCData', () => {
 
 		expect(errorHandler.fatalError).not.toHaveBeenCalled();
 		expect(returned).toBe(source.length);
-		expect(domBuilder.startDTD).toHaveBeenCalledWith(Name, '"pubId"', '"sysId"', "");
+		expect(domBuilder.startDTD).toHaveBeenCalledWith(Name, '"pubId"', '"sysId"', '');
 		expect(domBuilder.endDTD).toHaveBeenCalled();
 	});
 
@@ -148,7 +148,7 @@ describe('parseDoctypeCommentOrCData', () => {
 
 		expect(errorHandler.fatalError).not.toHaveBeenCalled();
 		expect(returned).toBe(source.length);
-		expect(domBuilder.startDTD).toHaveBeenCalledWith(Name, '"pubId"', '"sysId"', " ");
+		expect(domBuilder.startDTD).toHaveBeenCalledWith(Name, '"pubId"', '"sysId"', ' ');
 		expect(domBuilder.endDTD).toHaveBeenCalled();
 	});
 });
