@@ -125,6 +125,21 @@ describe('parseDoctypeCommentOrCData', () => {
 	test('should call domHandler method with correct values when everything is well-formed and empty', () => {
 		const start = 0;
 		const Name = 'Name';
+		var source = g.DOCTYPE_DECL_START + ' ' + Name + ' PUBLIC "pubId" "sysId" []>';
+		const errorHandler = { fatalError: jest.fn() };
+		const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+
+		const returned = parseDoctypeCommentOrCData(source, start, domBuilder, errorHandler);
+
+		expect(errorHandler.fatalError).not.toHaveBeenCalled();
+		expect(returned).toBe(source.length);
+		expect(domBuilder.startDTD).toHaveBeenCalledWith(Name, '"pubId"', '"sysId"', "");
+		expect(domBuilder.endDTD).toHaveBeenCalled();
+	});
+
+	test('should call domHandler method with correct values when everything is well-formed and empty with spaces', () => {
+		const start = 0;
+		const Name = 'Name';
 		var source = g.DOCTYPE_DECL_START + ' ' + Name + ' PUBLIC "pubId" "sysId" [ ]>';
 		const errorHandler = { fatalError: jest.fn() };
 		const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
