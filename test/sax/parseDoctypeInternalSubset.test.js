@@ -108,7 +108,7 @@ describe('parseDoctypeCommentOrCData', () => {
 	});
 	test('should call domHandler method with correct values when everything is well-formed', () => {
 		const start = 0;
-		const pi = '<?pi simple ?>';
+		const pi = '<?pi simple ?> ';
 		const Name = 'Name';
 		var source = g.DOCTYPE_DECL_START + ' ' + Name + ' PUBLIC "pubId" "sysId" [' + pi + ']>';
 		const errorHandler = { fatalError: jest.fn() };
@@ -149,6 +149,22 @@ describe('parseDoctypeCommentOrCData', () => {
 		expect(errorHandler.fatalError).not.toHaveBeenCalled();
 		expect(returned).toBe(source.length);
 		expect(domBuilder.startDTD).toHaveBeenCalledWith(Name, '"pubId"', '"sysId"', ' ');
+		expect(domBuilder.endDTD).toHaveBeenCalled();
+	});
+
+	test('should call domHandler method with correct values when everything is well-formed and empty with comment', () => {
+		const start = 0;
+		const Name = 'Name';
+		const internalSubset = ' <!-- comment --> ';
+		var source = g.DOCTYPE_DECL_START + ' ' + Name + ' PUBLIC "pubId" "sysId" [' + internalSubset + ']>';
+		const errorHandler = { fatalError: jest.fn() };
+		const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+
+		const returned = parseDoctypeCommentOrCData(source, start, domBuilder, errorHandler);
+
+		expect(errorHandler.fatalError).not.toHaveBeenCalled();
+		expect(returned).toBe(source.length);
+		expect(domBuilder.startDTD).toHaveBeenCalledWith(Name, '"pubId"', '"sysId"', internalSubset);
 		expect(domBuilder.endDTD).toHaveBeenCalled();
 	});
 });
