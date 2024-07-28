@@ -1,0 +1,18 @@
+# source https://github.com/direnv/direnv/wiki/Node#using-nvm
+
+# It's possible to use nvm to manage Node versions and direnv to load them.
+# For this add the following function (drop the # at the beginning) to the ~/.config/direnv/direnvrc file:
+# use_nvm() {
+#   local node_version=$1
+#
+#   nvm_sh="$NVM_DIR/nvm.sh"
+#   if [[ -e $nvm_sh ]]; then
+#     source $nvm_sh
+#     nvm use $node_version
+#   fi
+# }
+
+# so the following line picks up .nvmrc/.node-version file
+# to setup the right node version for development
+
+use nvm

@@ -1,18 +1,95 @@
-/node_modules
+### Add your custom ignores below after making a copy
 /reports
 /test/errors/reported.json
 
+
 docs/*.jar
 
-coverage
+/.fuzzer*
+./crash-*
+/.cifuzz-corpus
 
+
+
+## README & SOURCE https://github.com/bettermarks/.github#gitignore
+
+###User related files
+
+## Secrets / env variables
 # user specific config for direnv
 # https://github.com/direnv/direnv/blob/master/docs/installation.md
 # can be used to install node with the correct version when entering the directory
 # https://github.com/direnv/direnv/wiki/Node
-.envrc
+.env*
+!.env*.sample
+!.env*.template
 
-/.idea
-/.fuzzer*
-./crash-*
-/.cifuzz-corpus
+## personal file based notes
+.*.md
+todo.md
+notes.md
+
+## MacOS
+.DS_Store
+
+## VS Code
+.vscode
+
+## JetBrains / IntelliJ / WebStorm / PyCharm / ...
+.idea
+*.iml
+out
+gen
+
+## Vim template
+# Swap
+[._]*.s[a-v][a-z]
+!*.svg  # comment out if you don't need vector files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+# Session
+Session.vim
+Sessionx.vim
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
+
+
+### NodeJS / Javascript / Infrastructure as Code
+# Logs
+logs
+*.log
+*-debug.log*
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+.nyc_output
+# Dependency directories
+node_modules
+# TypeScript cache
+*.tsbuildinfo
+# cache/temp directories
+.cache
+.eslintcache
+.stylelintcache
+.temp
+.gen
+.npm
+# Optional REPL history
+.node_repl_history
+# Output of 'npm pack'
+*.tgz
+# Yarn Integrity file
+.yarn-integrity
+# build output
+.next
+.nuxt
+dist
