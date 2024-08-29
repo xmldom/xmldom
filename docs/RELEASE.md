@@ -45,8 +45,8 @@ Currently, the release process is not fully automated, so here is how we do it.
   .
 - All related PRs are connected to the current milestone
 - The default branch is checked out and up to date.
-  `git fetch --all && git checkout -B master upstream/master`
-- Make sure all dependencies up-to-date locally: `nvm i 12 && npm ci`
+  `git fetch --all && git checkout -B master origin/master`
+- Make sure all dependencies up-to-date locally: `nvm i 18 && npm ci`
 - determine the upcoming `$NEXT_VERSION` number according
   to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
     - it should already be reflected in the current milestone
@@ -71,9 +71,9 @@ version is part of the changelog before publishing.
 
 ### 2. Create and publish the release
 
-- `git fetch --all && git checkout -B master upstream/master`
+- `git fetch --all && git checkout -B master origin/master`
 - `npm run release -- $bump` and follow the instructions
-    - to release an update to an oder minor version from a `release-0.N.x` branch, you have to use `npm run release`, all other parameters are preconfigured on the release branches.
+    - to release an update to an older minor version from a `release-0.N.x` branch, you have to use `npm run release`, all other parameters are preconfigured on the release branches.
 - Copy the content of the changelog to the release draft
 - Change the first headline to be just a link with the text `Commits`
 - Run `npm pack @xmldom/xmldom[@version-or-dist-tag]` to **download** the published binary
