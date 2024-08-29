@@ -45,8 +45,8 @@ Currently, the release process is not fully automated, so here is how we do it.
   .
 - All related PRs are connected to the current milestone
 - The default branch is checked out and up to date.
-  `git fetch --all && git checkout -B master upstream/master`
-- Make sure all dependencies up-to-date locally: `nvm i 12 && npm ci`
+  `git fetch --all && git checkout -B master origin/master`
+- Make sure all dependencies up-to-date locally: `nvm i 18 && npm ci`
 - determine the upcoming `$NEXT_VERSION` number according
   to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
     - it should already be reflected in the current milestone

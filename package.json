@@ -68,7 +68,7 @@
 	"license": "MIT",
 	"auto-changelog": {
 		"prepend": true,
-		"remote": "upstream",
+		"remote": "origin",
 		"tagPrefix": "",
 		"template": "./auto-changelog.hbs"
 	}

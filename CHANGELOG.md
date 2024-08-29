@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0](https://github.com/xmldom/xmldom/compare/0.9.0-beta.11...0.9.0)
+
+[Discussion](https://github.com/xmldom/xmldom/discussions/435)
+[Summary on dev.to](https://dev.to/karfau/release-090-of-xmldomxmldom-4106)
+
+### Features
+
+- feat: expose all DOM level 2 element prototypes [`#637`](https://github.com/xmldom/xmldom/pull/637) / [`#40`](https://github.com/xmldom/xmldom/issues/40)
+- feat: add iterator function to NodeList and NamedNodeMap [`#634`](https://github.com/xmldom/xmldom/pull/634) / [`#633`](https://github.com/xmldom/xmldom/issues/633)
+
+### Fixed
+
+- parse empty/whitspace only doctype internal subset [`#692`](https://github.com/xmldom/xmldom/pull/692)
+- avoid prototype clash in namespace prefix [`#554`](https://github.com/xmldom/xmldom/pull/554)
+- report fatalError when doctype is inside elements [`#550`](https://github.com/xmldom/xmldom/pull/550)
+
+### Other
+
+- test: add fuzz target and regression tests [`#556`](https://github.com/xmldom/xmldom/pull/556)
+- chore: improve .gitignore and provide .envrc.template [`#697`](https://github.com/xmldom/xmldom/pull/697)
+- chore: Apply security best practices [`#546`](https://github.com/xmldom/xmldom/pull/546)
+- ci: check test coverage in PRs [`#524`](https://github.com/xmldom/xmldom/pull/524)
+- docs: add missing commas to readme [`#566`](https://github.com/xmldom/xmldom/pull/566)
+- docs: click to copy install command in readme [`#644`](https://github.com/xmldom/xmldom/pull/644)
+- docs: enhance jsdoc comments [`#511`](https://github.com/xmldom/xmldom/pull/511)
+
+Thank you, [@kboshold](https://github.com/kboshold), [@edi9999](https://github.com/edi9999), [@apupier](https://github.com/apupier), 
+[@shunkica](https://github.com/shunkica), [@homer0](https://github.com/homer0), [@jhauga](https://github.com/jhauga), 
+[@UdayKharatmol](https://github.com/UdayKharatmol), for your contributions
+
+
 ## [0.9.0-beta.11](https://github.com/xmldom/xmldom/compare/0.9.0-beta.10...0.9.0-beta.11)
 
 ### Fixed
