@@ -71,9 +71,9 @@ version is part of the changelog before publishing.
 
 ### 2. Create and publish the release
 
-- `git fetch --all && git checkout -B master upstream/master`
+- `git fetch --all && git checkout -B master origin/master`
 - `npm run release -- $bump` and follow the instructions
-    - to release an update to an oder minor version from a `release-0.N.x` branch, you have to use `npm run release`, all other parameters are preconfigured on the release branches.
+    - to release an update to an older minor version from a `release-0.N.x` branch, you have to use `npm run release`, all other parameters are preconfigured on the release branches.
 - Copy the content of the changelog to the release draft
 - Change the first headline to be just a link with the text `Commits`
 - Run `npm pack @xmldom/xmldom[@version-or-dist-tag]` to **download** the published binary
