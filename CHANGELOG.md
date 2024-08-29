@@ -6,8 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [0.9.0](https://github.com/xmldom/xmldom/compare/0.9.0-beta.11...0.9.0)
 
-[Discussion](https://github.com/xmldom/xmldom/discussions/435)
-[Summary on dev.to](https://dev.to/karfau/release-090-of-xmldomxmldom-4106)
+- [Discussion](https://github.com/xmldom/xmldom/discussions/435)
+- [Summary on dev.to](https://dev.to/karfau/release-090-of-xmldomxmldom-4106)
 
 ### Features
 
