@@ -59,8 +59,8 @@
 		"np": "8.0.4",
 		"prettier": "3.3.3",
 		"rxjs": "7.8.1",
-		"xmltest": "1.5.0",
-		"yauzl": "2.10.0"
+		"xmltest": "2.0.1",
+		"yauzl": "3.1.3"
 	},
 	"bugs": {
 		"url": "https://github.com/xmldom/xmldom/issues"
