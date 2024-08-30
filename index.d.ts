@@ -20,7 +20,7 @@ declare module '@xmldom/xmldom' {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
 	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring
 	 */
-	function isHtmlMimeType(mimeType: string): mimeType is MIME_TYPE.HTML;
+	function isHTMLMimeType(mimeType: string): mimeType is MIME_TYPE.HTML;
 	/**
 	 * Only returns true if `mimeType` is one of the allowed values for `DOMParser.parseFromString`.
 	 */
