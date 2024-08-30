@@ -24,6 +24,7 @@ jobs:
         - 16
         - 18
         - 20
+        - 22
 
     steps:
     - name: Harden Runner
@@ -38,12 +39,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci --no-audit
     - run: npm run test
-      if: matrix.node-version != 16
+      if: matrix.node-version != 18
     - run: npm run test -- --coverage
-      if: matrix.node-version == 16
+      if: matrix.node-version == 18
     - run: npm run fuzz
-      if: matrix.node-version == 16
-    - if: matrix.node-version == 16
+      if: matrix.node-version == 18
+    - if: matrix.node-version == 18
       uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

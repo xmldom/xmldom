@@ -18,12 +18,11 @@ jobs:
     strategy:
       matrix:
         node-version:
-        - 10
-        - 12
         - 14
         - 16
         - 18
         - 20
+        - 22
 
     steps:
     - name: Harden Runner
@@ -50,48 +49,13 @@ jobs:
         - 3
         - 4
         - "5.0" # requires node version 12.20
-        # starting with typescript 5.1 the minimum required node version is 14.17
-        # so current versions have a separate job without node v12
-        node-version:
-        - 12
-        - 14
-        - 16
-        - 18
-        - 20
-
-    steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@5c7944e73c4c2a096b17a9cb74d65b6c2bbafbde # v2.9.1
-      with:
-        egress-policy: audit
-
-    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: ./pretest.sh ${{ matrix.ts-version }}
-      working-directory: examples/typescript-node-es6
-    - run: node --experimental-modules dist/index.js
-      if: ${{ matrix.node-version == 12 }}
-      working-directory: examples/typescript-node-es6
-    - run: node dist/index.js
-      if: ${{ matrix.node-version > 12 }}
-      working-directory: examples/typescript-node-es6
-  typescript51-node-es6:
-    # starting with typescript 5.1 the minimum required node version is 14.17
-
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        ts-version:
-        - 5
+        - 5 # typescript >=5.1 requires node version >=14.17
         node-version:
         - 14
         - 16
         - 18
         - 20
+        - 22
 
     steps:
     - name: Harden Runner
