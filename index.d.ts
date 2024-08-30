@@ -284,7 +284,7 @@ declare module '@xmldom/xmldom' {
 		 */
 		parseFromString(
 			source: string,
-			mimeType: MIME_TYPE = MIME_TYPE.XML_TEXT
+			mimeType: MIME_TYPE
 		): Document;
 	}
 
