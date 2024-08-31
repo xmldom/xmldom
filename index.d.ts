@@ -498,9 +498,10 @@ declare module '@xmldom/xmldom' {
 		readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 0x20;
 	}
 	var Node: {
-		prototype: Node;
-		// from ts 5.3
-		[Symbol.hasInstance](val: unknown): val is Node
+		// instanceof pre ts 5.3
+		(val: unknown): val is Node;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is Node;
 		/** node is an element. */
 		readonly ELEMENT_NODE: 1;
 		readonly ATTRIBUTE_NODE: 2;
@@ -655,8 +656,9 @@ declare module '@xmldom/xmldom' {
 		importNode<T extends Node>(node: T, deep?: boolean): T;
 	}
 	var Document: {
-		prototype: Document;
-		// from ts 5.3
+		// instanceof pre ts 5.3
+		(val: unknown): val is Document;
+		// instanceof post ts 5.3
 		[Symbol.hasInstance](val: unknown): val is Document;
 	}
 	/**
@@ -675,8 +677,9 @@ declare module '@xmldom/xmldom' {
 	}
 
 	var DocumentType: {
-		prototype: DocumentType;
-		// from ts 5.3
+		// instanceof pre ts 5.3
+		(val: unknown): val is DocumentType;
+		// instanceof post ts 5.3
 		[Symbol.hasInstance](val: unknown): val is DocumentType;
 	};
 	class DOMImplementation {
