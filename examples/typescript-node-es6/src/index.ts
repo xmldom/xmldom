@@ -12,60 +12,81 @@ import {
 	NAMESPACE,
 	onWarningStopParsing,
 	ParseError,
-	XMLSerializer, Node, DocumentType
-} from "@xmldom/xmldom";
+	XMLSerializer,
+	Node,
+	DocumentType,
+} from '@xmldom/xmldom';
+
+const failedAssertions: Error[] = [];
+let assertions = 0;
+const assert = <T>(
+	actual: T,
+	expected: T,
+	message: string = `#${++assertions}`
+) => {
+	if (actual === expected) {
+		console.error(`assert ${message} passed: ${actual}`);
+	} else {
+		failedAssertions.push(
+			new Error(
+				`assert ${message} failed: expected ${JSON.stringify(expected)}, but was ${JSON.stringify(
+					actual
+				)}`
+			)
+		);
+	}
+};
 
 // lib/conventions
 
-isHTMLMimeType(MIME_TYPE.HTML);
-hasDefaultHTMLNamespace(MIME_TYPE.XML_XHTML_APPLICATION);
-isValidMimeType(MIME_TYPE.XML_SVG_IMAGE);
-isValidMimeType(MIME_TYPE.XML_APPLICATION);
+assert(isHTMLMimeType(MIME_TYPE.HTML), true);
+assert(hasDefaultHTMLNamespace(MIME_TYPE.XML_XHTML_APPLICATION), true);
+assert(isValidMimeType(MIME_TYPE.XML_SVG_IMAGE), true);
+assert(isValidMimeType(MIME_TYPE.XML_APPLICATION), true);
 
 // lib/errors
 
 const domException = new DOMException();
-domException.code; // 0
-domException.name; // "Error"
-domException.message; // ""
-domException.INDEX_SIZE_ERR;
+assert(domException.code, 0);
+assert(domException.name, 'Error');
+assert(domException.message, undefined);
 new DOMException('message', DOMExceptionName.SyntaxError);
 new DOMException(DOMException.DATA_CLONE_ERR);
 new DOMException(ExceptionCode.INDEX_SIZE_ERR, 'message');
 
 const parseError = new ParseError('message');
-parseError.message;
-parseError.cause;
-parseError.locator;
+assert(parseError.message, 'message');
 new ParseError('message', {}, domException);
 
 // lib/dom
-Node.ATTRIBUTE_NODE
-Node.DOCUMENT_POSITION_CONTAINS
-
+assert(Node.ATTRIBUTE_NODE, 2);
+assert(Node.DOCUMENT_POSITION_CONTAINS, 8);
 
 const impl = new DOMImplementation();
 const document = impl.createDocument(null, 'qualifiedName');
-document.contentType;
-document.type;
-document.ATTRIBUTE_NODE;
-document.DOCUMENT_POSITION_CONTAINS;
-document instanceof Node;
-document instanceof Document;
+assert(document.contentType, MIME_TYPE.XML_APPLICATION);
+assert(document.type, 'xml');
+assert(document.ATTRIBUTE_NODE, 2);
+assert(document.DOCUMENT_POSITION_CONTAINS, 8);
+assert(document instanceof Node, true);
+assert(document instanceof Document, true);
 
 impl.createDocument(
 	NAMESPACE.XML,
 	'qualifiedName',
 	impl.createDocumentType('qualifiedName')
 );
-const doctype = impl.createDocumentType('qualifiedName', 'publicId', 'systemId');
-document instanceof Node;
-document instanceof DocumentType;
-
+const doctype = impl.createDocumentType(
+	'qualifiedName',
+	'publicId',
+	'systemId'
+);
+assert(doctype instanceof Node, true);
+assert(doctype instanceof DocumentType, true);
 impl.createDocumentType('qualifiedName', 'publicId');
-impl.createHTMLDocument();
-impl.createHTMLDocument(false);
-impl.createHTMLDocument('title');
+assert(impl.createHTMLDocument().type, 'html');
+assert(impl.createHTMLDocument(false).childNodes.length, 0);
+assert(impl.createHTMLDocument('title').childNodes.length, 2);
 
 const source = `<xml xmlns="a">
 	<child>test</child>
@@ -74,11 +95,9 @@ const source = `<xml xmlns="a">
 const doc = new DOMParser({
 	onError: onWarningStopParsing,
 }).parseFromString(source, MIME_TYPE.XML_TEXT);
+assert(new XMLSerializer().serializeToString(doc), source);
 
-const serialized = new XMLSerializer().serializeToString(doc);
-
-if (source !== serialized) {
-	throw `expected\n${source}\nbut was\n${serialized}`;
-} else {
-	console.log(serialized);
+if (failedAssertions.length > 0) {
+	failedAssertions.forEach((error) => console.error(error));
+	process.exit(1);
 }
