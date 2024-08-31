@@ -1,36 +1,28 @@
 import {
+	Document,
+	DOMImplementation,
+	DOMException,
+	DOMExceptionName,
 	DOMParser,
+	ExceptionCode,
 	hasDefaultHTMLNamespace,
 	isHTMLMimeType,
 	isValidMimeType,
 	MIME_TYPE,
 	NAMESPACE,
 	onWarningStopParsing,
-	XMLSerializer,
-	DOMImplementation,
-	DOMException,
-	DOMExceptionName,
-	ExceptionCode,
 	ParseError,
-} from '@xmldom/xmldom';
+	XMLSerializer, Node, DocumentType
+} from "@xmldom/xmldom";
+
+// lib/conventions
 
 isHTMLMimeType(MIME_TYPE.HTML);
 hasDefaultHTMLNamespace(MIME_TYPE.XML_XHTML_APPLICATION);
 isValidMimeType(MIME_TYPE.XML_SVG_IMAGE);
 isValidMimeType(MIME_TYPE.XML_APPLICATION);
 
-const impl = new DOMImplementation();
-impl.createDocument(null, 'qualifiedName');
-impl.createDocument(
-	NAMESPACE.XML,
-	'qualifiedName',
-	impl.createDocumentType('qualifiedName')
-);
-impl.createDocumentType('qualifiedName', 'publicId', 'systemId');
-impl.createDocumentType('qualifiedName', 'publicId');
-impl.createHTMLDocument();
-impl.createHTMLDocument(false);
-impl.createHTMLDocument('title');
+// lib/errors
 
 const domException = new DOMException();
 domException.code; // 0
@@ -46,6 +38,34 @@ parseError.message;
 parseError.cause;
 parseError.locator;
 new ParseError('message', {}, domException);
+
+// lib/dom
+Node.ATTRIBUTE_NODE
+Node.DOCUMENT_POSITION_CONTAINS
+
+
+const impl = new DOMImplementation();
+const document = impl.createDocument(null, 'qualifiedName');
+document.contentType;
+document.type;
+document.ATTRIBUTE_NODE;
+document.DOCUMENT_POSITION_CONTAINS;
+document instanceof Node;
+document instanceof Document;
+
+impl.createDocument(
+	NAMESPACE.XML,
+	'qualifiedName',
+	impl.createDocumentType('qualifiedName')
+);
+const doctype = impl.createDocumentType('qualifiedName', 'publicId', 'systemId');
+document instanceof Node;
+document instanceof DocumentType;
+
+impl.createDocumentType('qualifiedName', 'publicId');
+impl.createHTMLDocument();
+impl.createHTMLDocument(false);
+impl.createHTMLDocument('title');
 
 const source = `<xml xmlns="a">
 	<child>test</child>

@@ -323,7 +323,364 @@ declare module '@xmldom/xmldom' {
 	// END ./lib/errors.js
 
 	// START ./lib/dom.js
+	/**
+	 * The DOM Node interface is an abstract base class upon which many other DOM API objects are
+	 * based, thus letting those object types to be used similarly and often interchangeably. As an
+	 * abstract class, there is no such thing as a plain Node object. All objects that implement
+	 * Node functionality are based on one of its subclasses. Most notable are Document, Element,
+	 * and DocumentFragment.
+	 *
+	 * In addition, every kind of DOM node is represented by an interface based on Node. These
+	 * include Attr, CharacterData (which Text, Comment, CDATASection and ProcessingInstruction are
+	 * all based on), and DocumentType.
+	 *
+	 * In some cases, a particular feature of the base Node interface may not apply to one of its
+	 * child interfaces; in that case, the inheriting node may return null or throw an exception,
+	 * depending on circumstances. For example, attempting to add children to a node type that
+	 * cannot have children will throw an exception.
+	 *
+	 * **This behavior is slightly different from the in the specs**:
+	 * - undeclared properties: nodeType, baseURI, isConnected, parentElement, textContent
+	 * - missing methods: contains, getRootNode, isEqualNode, isSameNode
+	 *
+	 * @see http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247
+	 * @see https://dom.spec.whatwg.org/#node
+	 * @prettierignore
+	 */
+	interface Node {
+		/**
+		 * Returns the children.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/childNodes)
+		 */
+		readonly childNodes: NodeListOf<ChildNode>;
+		/**
+		 * Returns the first child.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/firstChild)
+		 */
+		readonly firstChild: ChildNode | null;
+		/**
+		 * Returns the last child.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/lastChild)
+		 */
+		readonly lastChild: ChildNode | null;
+		/**
+		 * The local part of the qualified name of this node.
+		 */
+		localName: string | null,
+		/**
+		 * The namespace URI of this node.
+		 */
+		readonly namespaceURI: string | null,
+		/**
+		 * Returns the next sibling.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/nextSibling)
+		 */
+		readonly nextSibling: ChildNode | null;
+		/**
+		 * Returns a string appropriate for the type of node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/nodeName)
+		 */
+		readonly nodeName: string;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/nodeValue) */
+		nodeValue: string | null;
+		/**
+		 * Returns the node document. Returns null for documents.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/ownerDocument)
+		 */
+		readonly ownerDocument: Document | null;
+		/**
+		 * Returns the parent.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/parentNode)
+		 */
+		readonly parentNode: ParentNode | null;
+		/**
+		 * The prefix of the namespace for this node.
+		 */
+		prefix: string | null,
+		/**
+		 * Returns the previous sibling.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/previousSibling)
+		 */
+		readonly previousSibling: ChildNode | null;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/appendChild) */
+		appendChild<T extends Node>(node: T): T;
+		/**
+		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
+		 *
+		 * @throws {DOMException}
+		 * May throw a DOMException if operations within {@link Element#setAttributeNode} or
+		 * {@link Node#appendChild} (which are potentially invoked in this method) do not meet their
+		 * specific constraints.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/cloneNode)
+		 */
+		cloneNode(deep?: boolean): Node;
+		/**
+		 * Returns a bitmask indicating the position of other relative to node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/compareDocumentPosition)
+		 */
+		compareDocumentPosition(other: Node): number;
+		/**
+		 * Returns whether node has children.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/hasChildNodes)
+		 */
+		hasChildNodes(): boolean;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/insertBefore) */
+		insertBefore<T extends Node>(node: T, child: Node | null): T;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/isDefaultNamespace) */
+		isDefaultNamespace(namespace: string | null): boolean;
+		/**
+		 * Checks whether the DOM implementation implements a specific feature and its version.
+		 *
+		 * @deprecated
+		 * Since `DOMImplementation.hasFeature` is deprecated and always returns true.
+		 * @param feature
+		 * The package name of the feature to test. This is the same name that can be passed to the
+		 * method `hasFeature` on `DOMImplementation`.
+		 * @param version
+		 * This is the version number of the package name to test.
+		 * @since Introduced in DOM Level 2
+		 * @see {@link DOMImplementation.hasFeature}
+		 */
+		isSupported(feature:string, version:string): true;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/lookupNamespaceURI) */
+		lookupNamespaceURI(prefix: string | null): string | null;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/lookupPrefix) */
+		lookupPrefix(namespace: string | null): string | null;
+		/**
+		 * Removes empty exclusive Text nodes and concatenates the data of remaining contiguous exclusive Text nodes into the first of their nodes.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/normalize)
+		 */
+		normalize(): void;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/removeChild) */
+		removeChild<T extends Node>(child: T): T;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/replaceChild) */
+		replaceChild<T extends Node>(node: Node, child: T): T;
+		/** node is an element. */
+		readonly ELEMENT_NODE: 1;
+		readonly ATTRIBUTE_NODE: 2;
+		/** node is a Text node. */
+		readonly TEXT_NODE: 3;
+		/** node is a CDATASection node. */
+		readonly CDATA_SECTION_NODE: 4;
+		readonly ENTITY_REFERENCE_NODE: 5;
+		readonly ENTITY_NODE: 6;
+		/** node is a ProcessingInstruction node. */
+		readonly PROCESSING_INSTRUCTION_NODE: 7;
+		/** node is a Comment node. */
+		readonly COMMENT_NODE: 8;
+		/** node is a document. */
+		readonly DOCUMENT_NODE: 9;
+		/** node is a doctype. */
+		readonly DOCUMENT_TYPE_NODE: 10;
+		/** node is a DocumentFragment node. */
+		readonly DOCUMENT_FRAGMENT_NODE: 11;
+		readonly NOTATION_NODE: 12;
+		/** Set when node and other are not in the same tree. */
+		readonly DOCUMENT_POSITION_DISCONNECTED: 0x01;
+		/** Set when other is preceding node. */
+		readonly DOCUMENT_POSITION_PRECEDING: 0x02;
+		/** Set when other is following node. */
+		readonly DOCUMENT_POSITION_FOLLOWING: 0x04;
+		/** Set when other is an ancestor of node. */
+		readonly DOCUMENT_POSITION_CONTAINS: 0x08;
+		/** Set when other is a descendant of node. */
+		readonly DOCUMENT_POSITION_CONTAINED_BY: 0x10;
+		readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 0x20;
+	}
+	var Node: {
+		prototype: Node;
+		// from ts 5.3
+		[Symbol.hasInstance](val: unknown): val is Node
+		/** node is an element. */
+		readonly ELEMENT_NODE: 1;
+		readonly ATTRIBUTE_NODE: 2;
+		/** node is a Text node. */
+		readonly TEXT_NODE: 3;
+		/** node is a CDATASection node. */
+		readonly CDATA_SECTION_NODE: 4;
+		readonly ENTITY_REFERENCE_NODE: 5;
+		readonly ENTITY_NODE: 6;
+		/** node is a ProcessingInstruction node. */
+		readonly PROCESSING_INSTRUCTION_NODE: 7;
+		/** node is a Comment node. */
+		readonly COMMENT_NODE: 8;
+		/** node is a document. */
+		readonly DOCUMENT_NODE: 9;
+		/** node is a doctype. */
+		readonly DOCUMENT_TYPE_NODE: 10;
+		/** node is a DocumentFragment node. */
+		readonly DOCUMENT_FRAGMENT_NODE: 11;
+		readonly NOTATION_NODE: 12;
+		/** Set when node and other are not in the same tree. */
+		readonly DOCUMENT_POSITION_DISCONNECTED: 0x01;
+		/** Set when other is preceding node. */
+		readonly DOCUMENT_POSITION_PRECEDING: 0x02;
+		/** Set when other is following node. */
+		readonly DOCUMENT_POSITION_FOLLOWING: 0x04;
+		/** Set when other is an ancestor of node. */
+		readonly DOCUMENT_POSITION_CONTAINS: 0x08;
+		/** Set when other is a descendant of node. */
+		readonly DOCUMENT_POSITION_CONTAINED_BY: 0x10;
+		readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 0x20;
+	};
 
+	interface Document extends Node {
+		/**
+		 * The mime type of the document is determined at creation time and can not be modified.
+		 *
+		 * @see https://dom.spec.whatwg.org/#concept-document-content-type
+		 * @see {@link DOMImplementation}
+		 * @see {@link MIME_TYPE}
+		 */
+		readonly contentType:MIME_TYPE;
+		/**
+		 * @see https://dom.spec.whatwg.org/#concept-document-type
+		 * @see {@link DOMImplementation}
+		 */
+		readonly type: 'html' | 'xml';
+		/**
+		 * The implementation that created this document.
+		 *
+		 * @type DOMImplementation
+		 * @readonly
+		 */
+		readonly implementation: DOMImplementation;
+		readonly ownerDocument: Document;
+		readonly nodeName: '#document',
+		readonly nodeType: typeof Node.DOCUMENT_NODE,
+		readonly doctype: DocumentType | null
+		/**
+		 * Creates an attribute object with a specified name.
+		 * @param name String that sets the attribute object's name.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createAttribute)
+		 */
+		createAttribute(localName: string): Attr;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createAttributeNS) */
+		createAttributeNS(namespace: string | null, qualifiedName: string): Attr;
+		/**
+		 * Returns a CDATASection node whose data is data.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createCDATASection)
+		 */
+		createCDATASection(data: string): CDATASection;
+		/**
+		 * Creates a comment object with the specified data.
+		 * @param data Sets the comment object's data.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createComment)
+		 */
+		createComment(data: string): Comment;
+		/**
+		 * Creates a new document.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createDocumentFragment)
+		 */
+		createDocumentFragment(): DocumentFragment;
+		/**
+		 * Creates an instance of the element for the specified tag.
+		 * @param tagName The name of an element.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElement)
+		 */
+		createElement<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HTMLElementTagNameMap[K];
+		/** @deprecated */
+		createElement<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): HTMLElementDeprecatedTagNameMap[K];
+		createElement(tagName: string, options?: ElementCreationOptions): HTMLElement;
+		/**
+		 * Returns an element with namespace namespace. Its namespace prefix will be everything before ":" (U+003E) in qualifiedName or null. Its local name will be everything after ":" (U+003E) in qualifiedName or qualifiedName.
+		 *
+		 * If localName does not match the Name production an "InvalidCharacterError" DOMException will be thrown.
+		 *
+		 * If one of the following conditions is true a "NamespaceError" DOMException will be thrown:
+		 *
+		 * localName does not match the QName production.
+		 * Namespace prefix is not null and namespace is the empty string.
+		 * Namespace prefix is "xml" and namespace is not the XML namespace.
+		 * qualifiedName or namespace prefix is "xmlns" and namespace is not the XMLNS namespace.
+		 * namespace is the XMLNS namespace and neither qualifiedName nor namespace prefix is "xmlns".
+		 *
+		 * When supplied, options's is can be used to create a customized built-in element.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElementNS)
+		 */
+		createElementNS(namespaceURI: "http://www.w3.org/1999/xhtml", qualifiedName: string): HTMLElement;
+		createElementNS<K extends keyof SVGElementTagNameMap>(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: K): SVGElementTagNameMap[K];
+		createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: string): SVGElement;
+		createElementNS<K extends keyof MathMLElementTagNameMap>(namespaceURI: "http://www.w3.org/1998/Math/MathML", qualifiedName: K): MathMLElementTagNameMap[K];
+		createElementNS(namespaceURI: "http://www.w3.org/1998/Math/MathML", qualifiedName: string): MathMLElement;
+		createElementNS(namespaceURI: string | null, qualifiedName: string, options?: ElementCreationOptions): Element;
+		createElementNS(namespace: string | null, qualifiedName: string, options?: string | ElementCreationOptions): Element;
+		/**
+		 * Returns a ProcessingInstruction node whose target is target and data is data. If target does not match the Name production an "InvalidCharacterError" DOMException will be thrown. If data contains "?>" an "InvalidCharacterError" DOMException will be thrown.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction)
+		 */
+		createProcessingInstruction(target: string, data: string): ProcessingInstruction;
+		/**
+		 * Creates a text string from the specified value.
+		 * @param data String that specifies the nodeValue property of the text node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createTextNode)
+		 */
+		createTextNode(data: string): Text;
+		/**
+		 * Returns a reference to the first object with the specified value of the ID attribute.
+		 * @param elementId String that specifies the ID value.
+		 */
+		getElementById(elementId: string): HTMLElement | null;
+		/**
+		 * Returns a HTMLCollection of the elements in the object on which the method was invoked (a document or an element) that have all the classes given by classNames. The classNames argument is interpreted as a space-separated list of classes.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/getElementsByClassName)
+		 */
+		getElementsByClassName(classNames: string): HTMLCollectionOf<Element>;
+		/**
+		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
+		 *
+		 * If node is a document or a shadow root, throws a "NotSupportedError" DOMException.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/importNode)
+		 */
+		importNode<T extends Node>(node: T, deep?: boolean): T;
+	}
+	var Document: {
+		prototype: Document;
+		// from ts 5.3
+		[Symbol.hasInstance](val: unknown): val is Document;
+	}
+	/**
+	 * A Node containing a doctype.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType)
+	 */
+	interface DocumentType extends Node {
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/name) */
+		readonly name: string;
+		readonly internalSubset: string;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/publicId) */
+		readonly publicId: string;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/systemId) */
+		readonly systemId: string;
+	}
+
+	var DocumentType: {
+		prototype: DocumentType;
+		// from ts 5.3
+		[Symbol.hasInstance](val: unknown): val is DocumentType;
+	};
 	class DOMImplementation {
 		/**
 		 * The DOMImplementation interface represents an object providing methods which are not
