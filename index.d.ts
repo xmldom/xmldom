@@ -13,6 +13,17 @@ declare module '@xmldom/xmldom' {
 	 */
 	function assign<T, S>(target: T, source: S): T & S;
 	/**
+	 * For both the `text/html` and the `application/xhtml+xml` namespace the spec defines that the
+	 * HTML namespace is provided as the default.
+	 *
+	 * @param {string} mimeType
+	 * @returns {boolean}
+	 * @see https://dom.spec.whatwg.org/#dom-document-createelement
+	 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument
+	 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument
+	 */
+	function hasDefaultHTMLNamespace(mimeType: string): mimeType is MIME_TYPE.HTML | MIME_TYPE.XML_XHTML_APPLICATION;
+	/**
 	 * Only returns true if `value` matches MIME_TYPE.HTML, which indicates an HTML document.
 	 *
 	 * @see https://www.iana.org/assignments/media-types/text/html
@@ -114,28 +125,206 @@ declare module '@xmldom/xmldom' {
 		 */
 		XMLNS = 'http://www.w3.org/2000/xmlns/',
 	}
-
-	/**
-	 * A custom error that will not be caught by XMLReader aka the SAX parser.
-	 */
-	class ParseError extends Error {
-		constructor(message: string, locator?: any);
-	}
 	// END ./lib/conventions.js
 
-	// START ./lib/dom.js
+	// START ./lib/errors.js
+	enum DOMExceptionName {
+		/**
+		 * the default value as defined by the spec
+		 */
+		Error = 'Error',
+		/**
+		 * @deprecated
+		 * Use RangeError instead.
+		 */
+		IndexSizeError = 'IndexSizeError',
+		/**
+		 * @deprecated
+		 * Just to match the related static code, not part of the spec.
+		 */
+		DomstringSizeError = 'DomstringSizeError',
+		HierarchyRequestError = 'HierarchyRequestError',
+		WrongDocumentError = 'WrongDocumentError',
+		InvalidCharacterError = 'InvalidCharacterError',
+		/**
+		 * @deprecated
+		 * Just to match the related static code, not part of the spec.
+		 */
+		NoDataAllowedError = 'NoDataAllowedError',
+		NoModificationAllowedError = 'NoModificationAllowedError',
+		NotFoundError = 'NotFoundError',
+		NotSupportedError = 'NotSupportedError',
+		InUseAttributeError = 'InUseAttributeError',
+		InvalidStateError = 'InvalidStateError',
+		SyntaxError = 'SyntaxError',
+		InvalidModificationError = 'InvalidModificationError',
+		NamespaceError = 'NamespaceError',
+		/**
+		 * @deprecated
+		 * Use TypeError for invalid arguments,
+		 * "NotSupportedError" DOMException for unsupported operations,
+		 * and "NotAllowedError" DOMException for denied requests instead.
+		 */
+		InvalidAccessError = 'InvalidAccessError',
+		/**
+		 * @deprecated
+		 * Just to match the related static code, not part of the spec.
+		 */
+		ValidationError = 'ValidationError',
+		/**
+		 * @deprecated
+		 * Use TypeError instead.
+		 */
+		TypeMismatchError = 'TypeMismatchError',
+		SecurityError = 'SecurityError',
+		NetworkError = 'NetworkError',
+		AbortError = 'AbortError',
+		/**
+		 * @deprecated
+		 * Just to match the related static code, not part of the spec.
+		 */
+		URLMismatchError = 'URLMismatchError',
+		QuotaExceededError = 'QuotaExceededError',
+		TimeoutError = 'TimeoutError',
+		InvalidNodeTypeError = 'InvalidNodeTypeError',
+		DataCloneError = 'DataCloneError',
+		EncodingError = 'EncodingError',
+		NotReadableError = 'NotReadableError',
+		UnknownError = 'UnknownError',
+		ConstraintError = 'ConstraintError',
+		DataError = 'DataError',
+		TransactionInactiveError = 'TransactionInactiveError',
+		ReadOnlyError = 'ReadOnlyError',
+		VersionError = 'VersionError',
+		OperationError = 'OperationError',
+		NotAllowedError = 'NotAllowedError',
+		OptOutError = 'OptOutError',
+}
+	enum ExceptionCode {
+		INDEX_SIZE_ERR = 1,
+		DOMSTRING_SIZE_ERR = 2,
+		HIERARCHY_REQUEST_ERR = 3,
+		WRONG_DOCUMENT_ERR = 4,
+		INVALID_CHARACTER_ERR = 5,
+		NO_DATA_ALLOWED_ERR = 6,
+		NO_MODIFICATION_ALLOWED_ERR = 7,
+		NOT_FOUND_ERR = 8,
+		NOT_SUPPORTED_ERR = 9,
+		INUSE_ATTRIBUTE_ERR = 10,
+		INVALID_STATE_ERR = 11,
+		SYNTAX_ERR = 12,
+		INVALID_MODIFICATION_ERR = 13,
+		NAMESPACE_ERR = 14,
+		INVALID_ACCESS_ERR = 15,
+		VALIDATION_ERR = 16,
+		TYPE_MISMATCH_ERR = 17,
+		SECURITY_ERR = 18,
+		NETWORK_ERR = 19,
+		ABORT_ERR = 20,
+		URL_MISMATCH_ERR = 21,
+		QUOTA_EXCEEDED_ERR = 22,
+		TIMEOUT_ERR = 23,
+		INVALID_NODE_TYPE_ERR = 24,
+		DATA_CLONE_ERR = 25,
+	};
 	/**
-	 * The error class for errors reported by the DOM API.
+	 * DOM operations only raise exceptions in "exceptional" circumstances, i.e., when an operation
+	 * is impossible to perform (either for logical reasons, because data is lost, or because the
+	 * implementation has become unstable). In general, DOM methods return specific error values in
+	 * ordinary processing situations, such as out-of-bound errors when using NodeList.
 	 *
-	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMException
+	 * Implementations should raise other exceptions under other circumstances. For example,
+	 * implementations should raise an implementation-dependent exception if a null argument is
+	 * passed when null was not expected.
+	 *
+	 * This implementation supports the following usages:
+	 * 1. according to the living standard (both arguments are optional):
+	 * ```
+	 * new DOMException("message (can be empty)", DOMExceptionNames.HierarchyRequestError)
+	 * ```
+	 * 2. according to previous xmldom implementation (only the first argument is required):
+	 * ```
+	 * new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "optional message")
+	 * ```
+	 * both result in the proper name being set.
+	 *
+	 * @see https://webidl.spec.whatwg.org/#idl-DOMException
+	 * @see https://webidl.spec.whatwg.org/#dfn-error-names-table
+	 * @see https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-17189187
 	 * @see http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html
 	 * @see http://www.w3.org/TR/REC-DOM-Level-1/ecma-script-language-binding.html
 	 */
 	class DOMException extends Error {
-		constructor(code: number, message: string);
+		constructor(message?: string, name?: DOMExceptionName | string);
+		constructor(code?: ExceptionCode, message?: string);
+		readonly name: DOMExceptionName;
+		readonly code: ExceptionCode | 0;
+		static readonly INDEX_SIZE_ERR: 1;
+		static readonly DOMSTRING_SIZE_ERR: 2;
+		static readonly HIERARCHY_REQUEST_ERR: 3;
+		static readonly WRONG_DOCUMENT_ERR: 4;
+		static readonly INVALID_CHARACTER_ERR: 5;
+		static readonly NO_DATA_ALLOWED_ERR: 6;
+		static readonly NO_MODIFICATION_ALLOWED_ERR: 7;
+		static readonly NOT_FOUND_ERR: 8;
+		static readonly NOT_SUPPORTED_ERR: 9;
+		static readonly INUSE_ATTRIBUTE_ERR: 10;
+		static readonly INVALID_STATE_ERR: 11;
+		static readonly SYNTAX_ERR: 12;
+		static readonly INVALID_MODIFICATION_ERR: 13;
+		static readonly NAMESPACE_ERR: 14;
+		static readonly INVALID_ACCESS_ERR: 15;
+		static readonly VALIDATION_ERR: 16;
+		static readonly TYPE_MISMATCH_ERR: 17;
+		static readonly SECURITY_ERR: 18;
+		static readonly NETWORK_ERR: 19;
+		static readonly ABORT_ERR: 20;
+		static readonly URL_MISMATCH_ERR: 21;
+		static readonly QUOTA_EXCEEDED_ERR: 22;
+		static readonly TIMEOUT_ERR: 23;
+		static readonly INVALID_NODE_TYPE_ERR: 24;
+		static readonly DATA_CLONE_ERR: 25;
+		readonly INDEX_SIZE_ERR: 1;
+		readonly DOMSTRING_SIZE_ERR: 2;
+		readonly HIERARCHY_REQUEST_ERR: 3;
+		readonly WRONG_DOCUMENT_ERR: 4;
+		readonly INVALID_CHARACTER_ERR: 5;
+		readonly NO_DATA_ALLOWED_ERR: 6;
+		readonly NO_MODIFICATION_ALLOWED_ERR: 7;
+		readonly NOT_FOUND_ERR: 8;
+		readonly NOT_SUPPORTED_ERR: 9;
+		readonly INUSE_ATTRIBUTE_ERR: 10;
+		readonly INVALID_STATE_ERR: 11;
+		readonly SYNTAX_ERR: 12;
+		readonly INVALID_MODIFICATION_ERR: 13;
+		readonly NAMESPACE_ERR: 14;
+		readonly INVALID_ACCESS_ERR: 15;
+		readonly VALIDATION_ERR: 16;
+		readonly TYPE_MISMATCH_ERR: 17;
+		readonly SECURITY_ERR: 18;
+		readonly NETWORK_ERR: 19;
+		readonly ABORT_ERR: 20;
+		readonly URL_MISMATCH_ERR: 21;
+		readonly QUOTA_EXCEEDED_ERR: 22;
+		readonly TIMEOUT_ERR: 23;
+		readonly INVALID_NODE_TYPE_ERR: 24;
+		readonly DATA_CLONE_ERR: 25;
 	}
 
-	interface DOMImplementation {
+	/**
+	 * Creates an error that will not be caught by XMLReader aka the SAX parser.
+	 */
+	class ParseError extends Error {
+		constructor(message: string, locator?: any, cause?: Error);
+		readonly message: string;
+		readonly locator?: any;
+		readonly cause?: Error;
+	}
+	// END ./lib/errors.js
+
+	// START ./lib/dom.js
+
+	class DOMImplementation {
 		/**
 		 * The DOMImplementation interface represents an object providing methods which are not
 		 * dependent on any particular document.
@@ -151,7 +340,7 @@ declare module '@xmldom/xmldom' {
 		 * @see https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-102161490 DOM Level 3 Core
 		 * @see https://dom.spec.whatwg.org/#domimplementation DOM Living Standard
 		 */
-		new (): DOMImplementation;
+		constructor();
 
 		/**
 		 * Creates an XML Document object of the specified type with its document element.
@@ -226,15 +415,23 @@ declare module '@xmldom/xmldom' {
 		hasFeature(feature: string, version?: string): true;
 	}
 
-	var XMLSerializer: XMLSerializerStatic;
-	interface XMLSerializerStatic {
-		new (): XMLSerializer;
+	class XMLSerializer {
+		serializeToString(node: Node, nodeFilter?: (node: Node) => boolean): string;
 	}
 	// END ./lib/dom.js
 
 	// START ./lib/dom-parser.js
-	var DOMParser: DOMParserStatic;
-	interface DOMParserStatic {
+	/**
+	 * The DOMParser interface provides the ability to parse XML or HTML source code from a string
+	 * into a DOM `Document`.
+	 *
+	 * _xmldom is different from the spec in that it allows an `options` parameter,
+	 * to control the behavior._.
+	 *
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
+	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-parsing-and-serialization
+	 */
+	class DOMParser {
 		/**
 		 * The DOMParser interface provides the ability to parse XML or HTML source code from a
 		 * string into a DOM `Document`.
@@ -247,20 +444,7 @@ declare module '@xmldom/xmldom' {
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
 		 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-parsing-and-serialization
 		 */
-		new (options?: DOMParserOptions): DOMParser;
-	}
-
-	/**
-	 * The DOMParser interface provides the ability to parse XML or HTML source code from a string
-	 * into a DOM `Document`.
-	 *
-	 * _xmldom is different from the spec in that it allows an `options` parameter,
-	 * to control the behavior._.
-	 *
-	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
-	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-parsing-and-serialization
-	 */
-	interface DOMParser {
+		constructor(options?: DOMParserOptions);
 		/**
 		 * Parses `source` using the options in the way configured by the `DOMParserOptions` of
 		 * `this`
@@ -288,17 +472,13 @@ declare module '@xmldom/xmldom' {
 		): Document;
 	}
 
-	interface XMLSerializer {
-		serializeToString(node: Node, nodeFilter?: (node: Node) => boolean): string;
-	}
-
 	interface DOMParserOptions {
 		/**
 		 * The method to use instead of `Object.assign` (defaults to `conventions.assign`),
 		 * which is used to copy values from the options before they are used for parsing.
 		 *
 		 * @private
-		 * @see {@link conventions.assign}
+		 * @see {@link assign}
 		 */
 		readonly assign?: typeof Object.assign;
 		/**
