@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-
 declare module '@xmldom/xmldom' {
 	// START ./lib/conventions.js
 	/**
