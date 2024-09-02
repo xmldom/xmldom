@@ -15,6 +15,8 @@ import {
 	XMLSerializer,
 	Node,
 	DocumentType,
+	NodeList,
+	LiveNodeList,
 } from '@xmldom/xmldom';
 
 const failedAssertions: Error[] = [];
@@ -66,6 +68,8 @@ new ParseError('message', {}, domException);
 assert(Node.ATTRIBUTE_NODE, 2);
 assert(Node.DOCUMENT_POSITION_CONTAINS, 8);
 
+assert(new NodeList().length, 0);
+
 const impl = new DOMImplementation();
 const document = impl.createDocument(null, 'qualifiedName');
 assert(document.contentType, MIME_TYPE.XML_APPLICATION);
@@ -74,6 +78,8 @@ assert(document.ATTRIBUTE_NODE, 2);
 assert(document.DOCUMENT_POSITION_CONTAINS, 8);
 assert(document instanceof Node, true);
 assert(document instanceof Document, true);
+assert(document.childNodes instanceof NodeList, true);
+assert(document.getElementsByClassName('hide') instanceof LiveNodeList, true);
 
 impl.createDocument(
 	NAMESPACE.XML,
@@ -92,7 +98,10 @@ assert(impl.createHTMLDocument().type, 'html');
 assert(impl.createHTMLDocument(false).childNodes.length, 0);
 assert(impl.createHTMLDocument('title').childNodes.length, 2);
 
-assert(new DOMParser().parseFromString(`<div/>`, mimeHtml).childNodes.length, 1)
+assert(
+	new DOMParser().parseFromString(`<div/>`, mimeHtml).childNodes.length,
+	1
+);
 
 const source = `<xml xmlns="a">
 	<child>test</child>

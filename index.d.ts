@@ -100,8 +100,7 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * `image/svg+xml`,
 		 *
-		 * @see https://www.iana.org/assignments/media-types/image/svg+xml IANA MimeType
-		 *      registration
+		 * @see https://www.iana.org/assignments/media-types/image/svg+xml IANA MimeType registration
 		 * @see https://www.w3.org/TR/SVG11/ W3C SVG 1.1
 		 * @see https://en.wikipedia.org/wiki/Scalable_Vector_Graphics Wikipedia
 		 */
@@ -357,19 +356,19 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/childNodes)
 		 */
-		readonly childNodes: NodeListOf<ChildNode>;
+		readonly childNodes: NodeList;
 		/**
 		 * Returns the first child.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/firstChild)
 		 */
-		readonly firstChild: ChildNode | null;
+		readonly firstChild: Node | null;
 		/**
 		 * Returns the last child.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/lastChild)
 		 */
-		readonly lastChild: ChildNode | null;
+		readonly lastChild: Node | null;
 		/**
 		 * The local part of the qualified name of this node.
 		 */
@@ -383,7 +382,7 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/nextSibling)
 		 */
-		readonly nextSibling: ChildNode | null;
+		readonly nextSibling: Node | null;
 		/**
 		 * Returns a string appropriate for the type of node.
 		 *
@@ -413,18 +412,18 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/previousSibling)
 		 */
-		readonly previousSibling: ChildNode | null;
+		readonly previousSibling: Node | null;
 
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/appendChild) */
-		appendChild<T extends Node>(node: T): T;
+		appendChild(node: Node): Node;
 
 		/**
 		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
 		 *
 		 * @throws {DOMException}
 		 * May throw a DOMException if operations within {@link Element#setAttributeNode} or
-		 * {@link Node#appendChild} (which are potentially invoked in this method) do not meet
-		 * their specific constraints.
+		 * {@link Node#appendChild} (which are potentially invoked in this method) do not meet their
+		 * specific constraints.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/cloneNode)
 		 */
@@ -445,7 +444,7 @@ declare module '@xmldom/xmldom' {
 		hasChildNodes(): boolean;
 
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/insertBefore) */
-		insertBefore<T extends Node>(node: T, child: Node | null): T;
+		insertBefore(node: Node, child: Node | null): Node;
 
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/isDefaultNamespace) */
 		isDefaultNamespace(namespace: string | null): boolean;
@@ -480,10 +479,10 @@ declare module '@xmldom/xmldom' {
 		normalize(): void;
 
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/removeChild) */
-		removeChild<T extends Node>(child: T): T;
+		removeChild(child: Node): Node;
 
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/replaceChild) */
-		replaceChild<T extends Node>(node: Node, child: T): T;
+		replaceChild(node: Node, child: Node): Node;
 
 		/** node is an element. */
 		readonly ELEMENT_NODE: 1;
@@ -554,6 +553,63 @@ declare module '@xmldom/xmldom' {
 		/** Set when other is a descendant of node. */
 		readonly DOCUMENT_POSITION_CONTAINED_BY: 0x10;
 		readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 0x20;
+	};
+
+	/**
+	 * NodeList objects are collections of nodes, usually returned by properties such as
+	 * Node.childNodes and methods such as document.querySelectorAll().
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/NodeList)
+	 */
+	class NodeList implements Iterable<Node> {
+		/**
+		 * Returns the number of nodes in the collection.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/NodeList/length)
+		 */
+		readonly length: number;
+		/**
+		 * Returns the node with index index from the collection. The nodes are sorted in tree order.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/NodeList/item)
+		 */
+		item(index: number): Node | null;
+		/**
+		 * Returns a string representation of the NodeList.
+		 */
+		toString(nodeFilter: (node: Node) => Node | undefined): string;
+		/**
+		 * Filters the NodeList based on a predicate.
+		 *
+		 * @private
+		 */
+		filter(predicate: (node: Node) => boolean): Node[];
+		/**
+		 * Returns the first index at which a given node can be found in the NodeList, or -1 if it is
+		 * not present.
+		 *
+		 * @private
+		 */
+		indexOf(node: Node): number;
+		[index: number]: Node | undefined;
+
+		[Symbol.iterator](): Iterator<Node>;
+	}
+
+	/**
+	 * Represents a live collection of nodes that is automatically updated when its associated
+	 * document changes.
+	 */
+	interface LiveNodeList extends NodeList {}
+	/**
+	 * Represents a live collection of nodes that is automatically updated when its associated
+	 * document changes.
+	 */
+	var LiveNodeList: {
+		// instanceof pre ts 5.3
+		(val: unknown): val is LiveNodeList;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is LiveNodeList;
 	};
 
 	interface Document extends Node {
@@ -734,13 +790,24 @@ declare module '@xmldom/xmldom' {
 		getElementById(elementId: string): HTMLElement | null;
 
 		/**
-		 * Returns a HTMLCollection of the elements in the object on which the method was invoked (a
-		 * document or an element) that have all the classes given by classNames. The classNames
-		 * argument is interpreted as a space-separated list of classes.
+		 * The `getElementsByClassName` method of `Document` interface returns an array-like object
+		 * of all child elements which have **all** of the given class name(s).
 		 *
-		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/getElementsByClassName)
+		 * Returns an empty list if `classeNames` is an empty string or only contains HTML white
+		 * space characters.
+		 *
+		 * Warning: This is a live LiveNodeList.
+		 * Changes in the DOM will reflect in the array as the changes occur.
+		 * If an element selected by this array no longer qualifies for the selector,
+		 * it will automatically be removed. Be aware of this for iteration purposes.
+		 *
+		 * @param {string} classNames
+		 * Is a string representing the class name(s) to match; multiple class names are separated by
+		 * (ASCII-)whitespace.
+		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName
+		 * @see https://dom.spec.whatwg.org/#concept-getelementsbyclassname
 		 */
-		getElementsByClassName(classNames: string): HTMLCollectionOf<Element>;
+		getElementsByClassName(classNames: string): LiveNodeList;
 
 		/**
 		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
@@ -810,10 +877,9 @@ declare module '@xmldom/xmldom' {
 		 * @returns {Document}
 		 * The XML document.
 		 * @see {@link DOMImplementation.createHTMLDocument}
-		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createDocument
-		 *      MDN
-		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocument
-		 *      DOM Level 2 Core (initial)
+		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createDocument MDN
+		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocument DOM
+		 *      Level 2 Core (initial)
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument DOM Level 2 Core
 		 */
 		createDocument(
@@ -849,8 +915,8 @@ declare module '@xmldom/xmldom' {
 		 * Returns an HTML document, that might already have a basic DOM structure.
 		 *
 		 * __It behaves slightly different from the description in the living standard__:
-		 * - If the first argument is `false` no initial nodes are added (steps 3-7 in the specs
-		 * are omitted)
+		 * - If the first argument is `false` no initial nodes are added (steps 3-7 in the specs are
+		 * omitted)
 		 * - several properties and methods are missing - Nothing related to events is implemented.
 		 *
 		 * @see {@link DOMImplementation.createDocument}
@@ -883,8 +949,8 @@ declare module '@xmldom/xmldom' {
 
 	// START ./lib/dom-parser.js
 	/**
-	 * The DOMParser interface provides the ability to parse XML or HTML source code from a
-	 * string into a DOM `Document`.
+	 * The DOMParser interface provides the ability to parse XML or HTML source code from a string
+	 * into a DOM `Document`.
 	 *
 	 * _xmldom is different from the spec in that it allows an `options` parameter,
 	 * to control the behavior._.
@@ -910,8 +976,8 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Parses `source` using the options in the way configured by the `DOMParserOptions` of
 		 * `this`
-		 * `DOMParser`. If `mimeType` is `text/html` an HTML `Document` is created, otherwise an
-		 * XML `Document` is created.
+		 * `DOMParser`. If `mimeType` is `text/html` an HTML `Document` is created, otherwise an XML
+		 * `Document` is created.
 		 *
 		 * __It behaves different from the description in the living standard__:
 		 * - Uses the `options` passed to the `DOMParser` constructor to modify the behavior.
@@ -919,8 +985,7 @@ declare module '@xmldom/xmldom' {
 		 * `fatalError` level.
 		 * - Any `fatalError` throws a `ParseError` which prevents further processing.
 		 * - Any error thrown by `onError` is converted to a `ParseError` which prevents further
-		 * processing - If no `Document` was created during parsing it is reported as a
-		 * `fatalError`.
+		 * processing - If no `Document` was created during parsing it is reported as a `fatalError`.
 		 *
 		 * @returns
 		 * The `Document` node.
@@ -944,8 +1009,8 @@ declare module '@xmldom/xmldom' {
 		 */
 		readonly assign?: typeof Object.assign;
 		/**
-		 * For internal testing: The class for creating an instance for handling events from the
-		 * SAX parser.
+		 * For internal testing: The class for creating an instance for handling events from the SAX
+		 * parser.
 		 * *****Warning: By configuring a faulty implementation,
 		 * the specified behavior can completely be broken*****.
 		 *
@@ -988,8 +1053,8 @@ declare module '@xmldom/xmldom' {
 		 * If the provided method throws, a `ParserError` is thrown,
 		 * which prevents any further processing.
 		 *
-		 * Be aware that many `warning`s are considered an error that prevents further processing
-		 * in most implementations.
+		 * Be aware that many `warning`s are considered an error that prevents further processing in
+		 * most implementations.
 		 *
 		 * @param level
 		 * The error level as reported by the SAXParser.
