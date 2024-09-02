@@ -10,9 +10,10 @@ declare module '@xmldom/xmldom' {
 	 * @see https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object.assign
 	 */
 	function assign<T, S>(target: T, source: S): T & S;
+
 	/**
-	 * For both the `text/html` and the `application/xhtml+xml` namespace the spec defines that the
-	 * HTML namespace is provided as the default.
+	 * For both the `text/html` and the `application/xhtml+xml` namespace the spec defines that
+	 * the HTML namespace is provided as the default.
 	 *
 	 * @param {string} mimeType
 	 * @returns {boolean}
@@ -20,7 +21,10 @@ declare module '@xmldom/xmldom' {
 	 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument
 	 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument
 	 */
-	function hasDefaultHTMLNamespace(mimeType: string): mimeType is MIME_TYPE.HTML | MIME_TYPE.XML_XHTML_APPLICATION;
+	function hasDefaultHTMLNamespace(
+		mimeType: string
+	): mimeType is typeof MIME_TYPE.HTML | typeof MIME_TYPE.XML_XHTML_APPLICATION;
+
 	/**
 	 * Only returns true if `value` matches MIME_TYPE.HTML, which indicates an HTML document.
 	 *
@@ -29,7 +33,8 @@ declare module '@xmldom/xmldom' {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
 	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring
 	 */
-	function isHTMLMimeType(mimeType: string): mimeType is MIME_TYPE.HTML;
+	function isHTMLMimeType(mimeType: string): mimeType is typeof MIME_TYPE.HTML;
+
 	/**
 	 * Only returns true if `mimeType` is one of the allowed values for `DOMParser.parseFromString`.
 	 */
@@ -41,10 +46,20 @@ declare module '@xmldom/xmldom' {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString#Argument02
 	 *      MDN
 	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#domparsersupportedtype
-	 *   WHATWG HTML Spec
+	 *      WHATWG HTML Spec
 	 * @see {@link DOMParser.prototype.parseFromString}
 	 */
-	enum MIME_TYPE {
+	type MIME_TYPE = (typeof MIME_TYPE)[keyof typeof MIME_TYPE];
+	/**
+	 * All mime types that are allowed as input to `DOMParser.parseFromString`
+	 *
+	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString#Argument02
+	 *      MDN
+	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#domparsersupportedtype
+	 *      WHATWG HTML Spec
+	 * @see {@link DOMParser.prototype.parseFromString}
+	 */
+	var MIME_TYPE: {
 		/**
 		 * `text/html`, the only mime type that triggers treating an XML document as HTML.
 		 *
@@ -52,9 +67,9 @@ declare module '@xmldom/xmldom' {
 		 * @see https://en.wikipedia.org/wiki/HTML Wikipedia
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString MDN
 		 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring
-		 *   WHATWG HTML Spec
+		 *      WHATWG HTML Spec
 		 */
-		HTML = 'text/html',
+		readonly HTML: 'text/html';
 		/**
 		 * `application/xml`, the standard mime type for XML documents.
 		 *
@@ -63,7 +78,7 @@ declare module '@xmldom/xmldom' {
 		 * @see https://tools.ietf.org/html/rfc7303#section-9.1 RFC 7303
 		 * @see https://en.wikipedia.org/wiki/XML_and_MIME Wikipedia
 		 */
-		XML_APPLICATION = 'application/xml',
+		readonly XML_APPLICATION: 'application/xml';
 		/**
 		 * `text/html`, an alias for `application/xml`.
 		 *
@@ -71,7 +86,7 @@ declare module '@xmldom/xmldom' {
 		 * @see https://www.iana.org/assignments/media-types/text/xml IANA MimeType registration
 		 * @see https://en.wikipedia.org/wiki/XML_and_MIME Wikipedia
 		 */
-		XML_TEXT = 'text/xml',
+		readonly XML_TEXT: 'text/xml';
 		/**
 		 * `application/xhtml+xml`, indicates an XML document that has the default HTML namespace,
 		 * but is parsed as an XML document.
@@ -81,155 +96,169 @@ declare module '@xmldom/xmldom' {
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument WHATWG DOM Spec
 		 * @see https://en.wikipedia.org/wiki/XHTML Wikipedia
 		 */
-		XML_XHTML_APPLICATION = 'application/xhtml+xml',
+		readonly XML_XHTML_APPLICATION: 'application/xhtml+xml';
 		/**
 		 * `image/svg+xml`,
 		 *
-		 * @see https://www.iana.org/assignments/media-types/image/svg+xml IANA MimeType registration
+		 * @see https://www.iana.org/assignments/media-types/image/svg+xml IANA MimeType
+		 *      registration
 		 * @see https://www.w3.org/TR/SVG11/ W3C SVG 1.1
 		 * @see https://en.wikipedia.org/wiki/Scalable_Vector_Graphics Wikipedia
 		 */
-		XML_SVG_IMAGE = 'image/svg+xml',
-	}
+		readonly XML_SVG_IMAGE: 'image/svg+xml';
+	};
 	/**
 	 * Namespaces that are used in xmldom.
 	 *
 	 * @see http://www.w3.org/TR/REC-xml-names
 	 */
-	enum NAMESPACE {
+	type NAMESPACE = (typeof NAMESPACE)[keyof typeof NAMESPACE];
+	/**
+	 * Namespaces that are used in xmldom.
+	 *
+	 * @see http://www.w3.org/TR/REC-xml-names
+	 */
+	var NAMESPACE: {
 		/**
 		 * The XHTML namespace.
 		 *
 		 * @see http://www.w3.org/1999/xhtml
 		 */
-		HTML = 'http://www.w3.org/1999/xhtml',
+		readonly HTML: 'http://www.w3.org/1999/xhtml';
 		/**
 		 * The SVG namespace.
 		 *
 		 * @see http://www.w3.org/2000/svg
 		 */
-		SVG = 'http://www.w3.org/2000/svg',
+		readonly SVG: 'http://www.w3.org/2000/svg';
 		/**
 		 * The `xml:` namespace.
 		 *
 		 * @see http://www.w3.org/XML/1998/namespace
 		 */
-		XML = 'http://www.w3.org/XML/1998/namespace',
+		readonly XML: 'http://www.w3.org/XML/1998/namespace';
 
 		/**
 		 * The `xmlns:` namespace.
 		 *
 		 * @see https://www.w3.org/2000/xmlns/
 		 */
-		XMLNS = 'http://www.w3.org/2000/xmlns/',
-	}
+		readonly XMLNS: 'http://www.w3.org/2000/xmlns/';
+	};
+
 	// END ./lib/conventions.js
 
 	// START ./lib/errors.js
-	enum DOMExceptionName {
+	type DOMExceptionName =
+		(typeof DOMExceptionName)[keyof typeof DOMExceptionName];
+	var DOMExceptionName: {
 		/**
 		 * the default value as defined by the spec
 		 */
-		Error = 'Error',
+		readonly Error: 'Error';
 		/**
 		 * @deprecated
 		 * Use RangeError instead.
 		 */
-		IndexSizeError = 'IndexSizeError',
+		readonly IndexSizeError: 'IndexSizeError';
 		/**
 		 * @deprecated
 		 * Just to match the related static code, not part of the spec.
 		 */
-		DomstringSizeError = 'DomstringSizeError',
-		HierarchyRequestError = 'HierarchyRequestError',
-		WrongDocumentError = 'WrongDocumentError',
-		InvalidCharacterError = 'InvalidCharacterError',
+		readonly DomstringSizeError: 'DomstringSizeError';
+		readonly HierarchyRequestError: 'HierarchyRequestError';
+		readonly WrongDocumentError: 'WrongDocumentError';
+		readonly InvalidCharacterError: 'InvalidCharacterError';
 		/**
 		 * @deprecated
 		 * Just to match the related static code, not part of the spec.
 		 */
-		NoDataAllowedError = 'NoDataAllowedError',
-		NoModificationAllowedError = 'NoModificationAllowedError',
-		NotFoundError = 'NotFoundError',
-		NotSupportedError = 'NotSupportedError',
-		InUseAttributeError = 'InUseAttributeError',
-		InvalidStateError = 'InvalidStateError',
-		SyntaxError = 'SyntaxError',
-		InvalidModificationError = 'InvalidModificationError',
-		NamespaceError = 'NamespaceError',
+		readonly NoDataAllowedError: 'NoDataAllowedError';
+		readonly NoModificationAllowedError: 'NoModificationAllowedError';
+		readonly NotFoundError: 'NotFoundError';
+		readonly NotSupportedError: 'NotSupportedError';
+		readonly InUseAttributeError: 'InUseAttributeError';
+		readonly InvalidStateError: 'InvalidStateError';
+		readonly SyntaxError: 'SyntaxError';
+		readonly InvalidModificationError: 'InvalidModificationError';
+		readonly NamespaceError: 'NamespaceError';
 		/**
 		 * @deprecated
 		 * Use TypeError for invalid arguments,
 		 * "NotSupportedError" DOMException for unsupported operations,
 		 * and "NotAllowedError" DOMException for denied requests instead.
 		 */
-		InvalidAccessError = 'InvalidAccessError',
+		readonly InvalidAccessError: 'InvalidAccessError';
 		/**
 		 * @deprecated
 		 * Just to match the related static code, not part of the spec.
 		 */
-		ValidationError = 'ValidationError',
+		readonly ValidationError: 'ValidationError';
 		/**
 		 * @deprecated
 		 * Use TypeError instead.
 		 */
-		TypeMismatchError = 'TypeMismatchError',
-		SecurityError = 'SecurityError',
-		NetworkError = 'NetworkError',
-		AbortError = 'AbortError',
+		readonly TypeMismatchError: 'TypeMismatchError';
+		readonly SecurityError: 'SecurityError';
+		readonly NetworkError: 'NetworkError';
+		readonly AbortError: 'AbortError';
 		/**
 		 * @deprecated
 		 * Just to match the related static code, not part of the spec.
 		 */
-		URLMismatchError = 'URLMismatchError',
-		QuotaExceededError = 'QuotaExceededError',
-		TimeoutError = 'TimeoutError',
-		InvalidNodeTypeError = 'InvalidNodeTypeError',
-		DataCloneError = 'DataCloneError',
-		EncodingError = 'EncodingError',
-		NotReadableError = 'NotReadableError',
-		UnknownError = 'UnknownError',
-		ConstraintError = 'ConstraintError',
-		DataError = 'DataError',
-		TransactionInactiveError = 'TransactionInactiveError',
-		ReadOnlyError = 'ReadOnlyError',
-		VersionError = 'VersionError',
-		OperationError = 'OperationError',
-		NotAllowedError = 'NotAllowedError',
-		OptOutError = 'OptOutError',
-}
-	enum ExceptionCode {
-		INDEX_SIZE_ERR = 1,
-		DOMSTRING_SIZE_ERR = 2,
-		HIERARCHY_REQUEST_ERR = 3,
-		WRONG_DOCUMENT_ERR = 4,
-		INVALID_CHARACTER_ERR = 5,
-		NO_DATA_ALLOWED_ERR = 6,
-		NO_MODIFICATION_ALLOWED_ERR = 7,
-		NOT_FOUND_ERR = 8,
-		NOT_SUPPORTED_ERR = 9,
-		INUSE_ATTRIBUTE_ERR = 10,
-		INVALID_STATE_ERR = 11,
-		SYNTAX_ERR = 12,
-		INVALID_MODIFICATION_ERR = 13,
-		NAMESPACE_ERR = 14,
-		INVALID_ACCESS_ERR = 15,
-		VALIDATION_ERR = 16,
-		TYPE_MISMATCH_ERR = 17,
-		SECURITY_ERR = 18,
-		NETWORK_ERR = 19,
-		ABORT_ERR = 20,
-		URL_MISMATCH_ERR = 21,
-		QUOTA_EXCEEDED_ERR = 22,
-		TIMEOUT_ERR = 23,
-		INVALID_NODE_TYPE_ERR = 24,
-		DATA_CLONE_ERR = 25,
+		readonly URLMismatchError: 'URLMismatchError';
+		readonly QuotaExceededError: 'QuotaExceededError';
+		readonly TimeoutError: 'TimeoutError';
+		readonly InvalidNodeTypeError: 'InvalidNodeTypeError';
+		readonly DataCloneError: 'DataCloneError';
+		readonly EncodingError: 'EncodingError';
+		readonly NotReadableError: 'NotReadableError';
+		readonly UnknownError: 'UnknownError';
+		readonly ConstraintError: 'ConstraintError';
+		readonly DataError: 'DataError';
+		readonly TransactionInactiveError: 'TransactionInactiveError';
+		readonly ReadOnlyError: 'ReadOnlyError';
+		readonly VersionError: 'VersionError';
+		readonly OperationError: 'OperationError';
+		readonly NotAllowedError: 'NotAllowedError';
+		readonly OptOutError: 'OptOutError';
 	};
+	type ExceptionCode = (typeof ExceptionCode)[keyof typeof ExceptionCode];
+
+	var ExceptionCode: {
+		readonly INDEX_SIZE_ERR: 1;
+		readonly DOMSTRING_SIZE_ERR: 2;
+		readonly HIERARCHY_REQUEST_ERR: 3;
+		readonly WRONG_DOCUMENT_ERR: 4;
+		readonly INVALID_CHARACTER_ERR: 5;
+		readonly NO_DATA_ALLOWED_ERR: 6;
+		readonly NO_MODIFICATION_ALLOWED_ERR: 7;
+		readonly NOT_FOUND_ERR: 8;
+		readonly NOT_SUPPORTED_ERR: 9;
+		readonly INUSE_ATTRIBUTE_ERR: 10;
+		readonly INVALID_STATE_ERR: 11;
+		readonly SYNTAX_ERR: 12;
+		readonly INVALID_MODIFICATION_ERR: 13;
+		readonly NAMESPACE_ERR: 14;
+		readonly INVALID_ACCESS_ERR: 15;
+		readonly VALIDATION_ERR: 16;
+		readonly TYPE_MISMATCH_ERR: 17;
+		readonly SECURITY_ERR: 18;
+		readonly NETWORK_ERR: 19;
+		readonly ABORT_ERR: 20;
+		readonly URL_MISMATCH_ERR: 21;
+		readonly QUOTA_EXCEEDED_ERR: 22;
+		readonly TIMEOUT_ERR: 23;
+		readonly INVALID_NODE_TYPE_ERR: 24;
+		readonly DATA_CLONE_ERR: 25;
+	};
+
 	/**
-	 * DOM operations only raise exceptions in "exceptional" circumstances, i.e., when an operation
-	 * is impossible to perform (either for logical reasons, because data is lost, or because the
-	 * implementation has become unstable). In general, DOM methods return specific error values in
-	 * ordinary processing situations, such as out-of-bound errors when using NodeList.
+	 * DOM operations only raise exceptions in "exceptional" circumstances, i.e., when an
+	 * operation is impossible to perform (either for logical reasons, because data is lost, or
+	 * because the implementation has become unstable). In general, DOM methods return specific
+	 * error values in ordinary processing situations, such as out-of-bound errors when using
+	 * NodeList.
 	 *
 	 * Implementations should raise other exceptions under other circumstances. For example,
 	 * implementations should raise an implementation-dependent exception if a null argument is
@@ -255,6 +284,7 @@ declare module '@xmldom/xmldom' {
 	class DOMException extends Error {
 		constructor(message?: string, name?: DOMExceptionName | string);
 		constructor(code?: ExceptionCode, message?: string);
+
 		readonly name: DOMExceptionName;
 		readonly code: ExceptionCode | 0;
 		static readonly INDEX_SIZE_ERR: 1;
@@ -289,9 +319,11 @@ declare module '@xmldom/xmldom' {
 	 */
 	class ParseError extends Error {
 		constructor(message: string, locator?: any, cause?: Error);
+
 		readonly message: string;
 		readonly locator?: any;
 	}
+
 	// END ./lib/errors.js
 
 	// START ./lib/dom.js
@@ -341,11 +373,11 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * The local part of the qualified name of this node.
 		 */
-		localName: string | null,
+		localName: string | null;
 		/**
 		 * The namespace URI of this node.
 		 */
-		readonly namespaceURI: string | null,
+		readonly namespaceURI: string | null;
 		/**
 		 * Returns the next sibling.
 		 *
@@ -375,42 +407,49 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * The prefix of the namespace for this node.
 		 */
-		prefix: string | null,
+		prefix: string | null;
 		/**
 		 * Returns the previous sibling.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/previousSibling)
 		 */
 		readonly previousSibling: ChildNode | null;
+
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/appendChild) */
 		appendChild<T extends Node>(node: T): T;
+
 		/**
 		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
 		 *
 		 * @throws {DOMException}
 		 * May throw a DOMException if operations within {@link Element#setAttributeNode} or
-		 * {@link Node#appendChild} (which are potentially invoked in this method) do not meet their
-		 * specific constraints.
+		 * {@link Node#appendChild} (which are potentially invoked in this method) do not meet
+		 * their specific constraints.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/cloneNode)
 		 */
 		cloneNode(deep?: boolean): Node;
+
 		/**
 		 * Returns a bitmask indicating the position of other relative to node.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/compareDocumentPosition)
 		 */
 		compareDocumentPosition(other: Node): number;
+
 		/**
 		 * Returns whether node has children.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/hasChildNodes)
 		 */
 		hasChildNodes(): boolean;
+
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/insertBefore) */
 		insertBefore<T extends Node>(node: T, child: Node | null): T;
+
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/isDefaultNamespace) */
 		isDefaultNamespace(namespace: string | null): boolean;
+
 		/**
 		 * Checks whether the DOM implementation implements a specific feature and its version.
 		 *
@@ -424,21 +463,28 @@ declare module '@xmldom/xmldom' {
 		 * @since Introduced in DOM Level 2
 		 * @see {@link DOMImplementation.hasFeature}
 		 */
-		isSupported(feature:string, version:string): true;
+		isSupported(feature: string, version: string): true;
+
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/lookupNamespaceURI) */
 		lookupNamespaceURI(prefix: string | null): string | null;
+
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/lookupPrefix) */
 		lookupPrefix(namespace: string | null): string | null;
+
 		/**
-		 * Removes empty exclusive Text nodes and concatenates the data of remaining contiguous exclusive Text nodes into the first of their nodes.
+		 * Removes empty exclusive Text nodes and concatenates the data of remaining contiguous
+		 * exclusive Text nodes into the first of their nodes.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/normalize)
 		 */
 		normalize(): void;
+
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/removeChild) */
 		removeChild<T extends Node>(child: T): T;
+
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/replaceChild) */
 		replaceChild<T extends Node>(node: Node, child: T): T;
+
 		/** node is an element. */
 		readonly ELEMENT_NODE: 1;
 		readonly ATTRIBUTE_NODE: 2;
@@ -471,6 +517,7 @@ declare module '@xmldom/xmldom' {
 		readonly DOCUMENT_POSITION_CONTAINED_BY: 0x10;
 		readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 0x20;
 	}
+
 	var Node: {
 		// instanceof pre ts 5.3
 		(val: unknown): val is Node;
@@ -517,7 +564,7 @@ declare module '@xmldom/xmldom' {
 		 * @see {@link DOMImplementation}
 		 * @see {@link MIME_TYPE}
 		 */
-		readonly contentType:MIME_TYPE;
+		readonly contentType: MIME_TYPE;
 		/**
 		 * @see https://dom.spec.whatwg.org/#concept-document-type
 		 * @see {@link DOMImplementation}
@@ -531,51 +578,80 @@ declare module '@xmldom/xmldom' {
 		 */
 		readonly implementation: DOMImplementation;
 		readonly ownerDocument: Document;
-		readonly nodeName: '#document',
-		readonly nodeType: typeof Node.DOCUMENT_NODE,
-		readonly doctype: DocumentType | null
+		readonly nodeName: '#document';
+		readonly nodeType: typeof Node.DOCUMENT_NODE;
+		readonly doctype: DocumentType | null;
+
 		/**
 		 * Creates an attribute object with a specified name.
-		 * @param name String that sets the attribute object's name.
+		 *
+		 * @param name
+		 * String that sets the attribute object's name.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createAttribute)
 		 */
 		createAttribute(localName: string): Attr;
+
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createAttributeNS) */
 		createAttributeNS(namespace: string | null, qualifiedName: string): Attr;
+
 		/**
 		 * Returns a CDATASection node whose data is data.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createCDATASection)
 		 */
 		createCDATASection(data: string): CDATASection;
+
 		/**
 		 * Creates a comment object with the specified data.
-		 * @param data Sets the comment object's data.
+		 *
+		 * @param data
+		 * Sets the comment object's data.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createComment)
 		 */
 		createComment(data: string): Comment;
+
 		/**
 		 * Creates a new document.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createDocumentFragment)
 		 */
 		createDocumentFragment(): DocumentFragment;
+
 		/**
 		 * Creates an instance of the element for the specified tag.
-		 * @param tagName The name of an element.
+		 *
+		 * @param tagName
+		 * The name of an element.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElement)
 		 */
-		createElement<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HTMLElementTagNameMap[K];
-		/** @deprecated */
-		createElement<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): HTMLElementDeprecatedTagNameMap[K];
-		createElement(tagName: string, options?: ElementCreationOptions): HTMLElement;
+		createElement<K extends keyof HTMLElementTagNameMap>(
+			tagName: K,
+			options?: ElementCreationOptions
+		): HTMLElementTagNameMap[K];
+
 		/**
-		 * Returns an element with namespace namespace. Its namespace prefix will be everything before ":" (U+003E) in qualifiedName or null. Its local name will be everything after ":" (U+003E) in qualifiedName or qualifiedName.
+		 * @deprecated
+		 */
+		createElement<K extends keyof HTMLElementDeprecatedTagNameMap>(
+			tagName: K,
+			options?: ElementCreationOptions
+		): HTMLElementDeprecatedTagNameMap[K];
+
+		createElement(
+			tagName: string,
+			options?: ElementCreationOptions
+		): HTMLElement;
+
+		/**
+		 * Returns an element with namespace namespace. Its namespace prefix will be everything before
+		 * ":" (U+003E) in qualifiedName or null. Its local name will be everything after ":" (U+003E)
+		 * in qualifiedName or qualifiedName.
 		 *
-		 * If localName does not match the Name production an "InvalidCharacterError" DOMException will be thrown.
+		 * If localName does not match the Name production an "InvalidCharacterError" DOMException will
+		 * be thrown.
 		 *
 		 * If one of the following conditions is true a "NamespaceError" DOMException will be thrown:
 		 *
@@ -589,37 +665,83 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElementNS)
 		 */
-		createElementNS(namespaceURI: "http://www.w3.org/1999/xhtml", qualifiedName: string): HTMLElement;
-		createElementNS<K extends keyof SVGElementTagNameMap>(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: K): SVGElementTagNameMap[K];
-		createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: string): SVGElement;
-		createElementNS<K extends keyof MathMLElementTagNameMap>(namespaceURI: "http://www.w3.org/1998/Math/MathML", qualifiedName: K): MathMLElementTagNameMap[K];
-		createElementNS(namespaceURI: "http://www.w3.org/1998/Math/MathML", qualifiedName: string): MathMLElement;
-		createElementNS(namespaceURI: string | null, qualifiedName: string, options?: ElementCreationOptions): Element;
-		createElementNS(namespace: string | null, qualifiedName: string, options?: string | ElementCreationOptions): Element;
+		createElementNS(
+			namespaceURI: 'http://www.w3.org/1999/xhtml',
+			qualifiedName: string
+		): HTMLElement;
+
+		createElementNS<K extends keyof SVGElementTagNameMap>(
+			namespaceURI: 'http://www.w3.org/2000/svg',
+			qualifiedName: K
+		): SVGElementTagNameMap[K];
+
+		createElementNS(
+			namespaceURI: 'http://www.w3.org/2000/svg',
+			qualifiedName: string
+		): SVGElement;
+
+		createElementNS<K extends keyof MathMLElementTagNameMap>(
+			namespaceURI: 'http://www.w3.org/1998/Math/MathML',
+			qualifiedName: K
+		): MathMLElementTagNameMap[K];
+
+		createElementNS(
+			namespaceURI: 'http://www.w3.org/1998/Math/MathML',
+			qualifiedName: string
+		): MathMLElement;
+
+		createElementNS(
+			namespaceURI: string | null,
+			qualifiedName: string,
+			options?: ElementCreationOptions
+		): Element;
+
+		createElementNS(
+			namespace: string | null,
+			qualifiedName: string,
+			options?: string | ElementCreationOptions
+		): Element;
+
 		/**
-		 * Returns a ProcessingInstruction node whose target is target and data is data. If target does not match the Name production an "InvalidCharacterError" DOMException will be thrown. If data contains "?>" an "InvalidCharacterError" DOMException will be thrown.
+		 * Returns a ProcessingInstruction node whose target is target and data is data. If target does
+		 * not match the Name production an "InvalidCharacterError" DOMException will be thrown. If
+		 * data contains "?>" an "InvalidCharacterError" DOMException will be thrown.
 		 *
-		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction)
+		 * [MDN
+		 * Reference](https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction)
 		 */
-		createProcessingInstruction(target: string, data: string): ProcessingInstruction;
+		createProcessingInstruction(
+			target: string,
+			data: string
+		): ProcessingInstruction;
+
 		/**
 		 * Creates a text string from the specified value.
-		 * @param data String that specifies the nodeValue property of the text node.
+		 *
+		 * @param data
+		 * String that specifies the nodeValue property of the text node.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createTextNode)
 		 */
 		createTextNode(data: string): Text;
+
 		/**
 		 * Returns a reference to the first object with the specified value of the ID attribute.
-		 * @param elementId String that specifies the ID value.
+		 *
+		 * @param elementId
+		 * String that specifies the ID value.
 		 */
 		getElementById(elementId: string): HTMLElement | null;
+
 		/**
-		 * Returns a HTMLCollection of the elements in the object on which the method was invoked (a document or an element) that have all the classes given by classNames. The classNames argument is interpreted as a space-separated list of classes.
+		 * Returns a HTMLCollection of the elements in the object on which the method was invoked (a
+		 * document or an element) that have all the classes given by classNames. The classNames
+		 * argument is interpreted as a space-separated list of classes.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/getElementsByClassName)
 		 */
 		getElementsByClassName(classNames: string): HTMLCollectionOf<Element>;
+
 		/**
 		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
 		 *
@@ -629,12 +751,14 @@ declare module '@xmldom/xmldom' {
 		 */
 		importNode<T extends Node>(node: T, deep?: boolean): T;
 	}
+
 	var Document: {
 		// instanceof pre ts 5.3
 		(val: unknown): val is Document;
 		// instanceof post ts 5.3
 		[Symbol.hasInstance](val: unknown): val is Document;
-	}
+	};
+
 	/**
 	 * A Node containing a doctype.
 	 *
@@ -656,6 +780,7 @@ declare module '@xmldom/xmldom' {
 		// instanceof post ts 5.3
 		[Symbol.hasInstance](val: unknown): val is DocumentType;
 	};
+
 	class DOMImplementation {
 		/**
 		 * The DOMImplementation interface represents an object providing methods which are not
@@ -682,15 +807,17 @@ declare module '@xmldom/xmldom' {
 		 * `type` set to `'xml'`).
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
-		 * @returns {Document} The XML document.
+		 * @returns {Document}
+		 * The XML document.
 		 * @see {@link DOMImplementation.createHTMLDocument}
-		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createDocument MDN
-		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocument DOM
-		 *      Level 2 Core (initial)
+		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createDocument
+		 *      MDN
+		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocument
+		 *      DOM Level 2 Core (initial)
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument DOM Level 2 Core
 		 */
 		createDocument(
-			namespaceURI: string | null,
+			namespaceURI: NAMESPACE | string | null,
 			qualifiedName: string,
 			doctype?: DocumentType | null
 		): Document;
@@ -701,9 +828,10 @@ declare module '@xmldom/xmldom' {
 		 * __This behavior is slightly different from the in the specs__:
 		 * - `encoding`, `mode`, `origin`, `url` fields are currently not declared.
 		 *
-		 * @returns {DocumentType} which can either be used with `DOMImplementation.createDocument`
-		 *                         upon document creation or can be put into the document via methods
-		 *                         like `Node.insertBefore()` or `Node.replaceChild()`
+		 * @returns {DocumentType}
+		 * which can either be used with `DOMImplementation.createDocument`
+		 * upon document creation or can be put into the document via methods like
+		 * `Node.insertBefore()` or `Node.replaceChild()`
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createDocumentType
 		 *      MDN
 		 * @see https://www.w3.org/TR/DOM-Level-2-Core/core.html#Level-2-Core-DOM-createDocType DOM
@@ -721,10 +849,9 @@ declare module '@xmldom/xmldom' {
 		 * Returns an HTML document, that might already have a basic DOM structure.
 		 *
 		 * __It behaves slightly different from the description in the living standard__:
-		 * - If the first argument is `false` no initial nodes are added (steps 3-7 in the specs are
-		 * omitted)
-		 * - several properties and methods are missing
-		 * - Nothing related to events is implemented
+		 * - If the first argument is `false` no initial nodes are added (steps 3-7 in the specs
+		 * are omitted)
+		 * - several properties and methods are missing - Nothing related to events is implemented.
 		 *
 		 * @see {@link DOMImplementation.createDocument}
 		 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument
@@ -751,12 +878,13 @@ declare module '@xmldom/xmldom' {
 	class XMLSerializer {
 		serializeToString(node: Node, nodeFilter?: (node: Node) => boolean): string;
 	}
+
 	// END ./lib/dom.js
 
 	// START ./lib/dom-parser.js
 	/**
-	 * The DOMParser interface provides the ability to parse XML or HTML source code from a string
-	 * into a DOM `Document`.
+	 * The DOMParser interface provides the ability to parse XML or HTML source code from a
+	 * string into a DOM `Document`.
 	 *
 	 * _xmldom is different from the spec in that it allows an `options` parameter,
 	 * to control the behavior._.
@@ -778,11 +906,12 @@ declare module '@xmldom/xmldom' {
 		 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-parsing-and-serialization
 		 */
 		constructor(options?: DOMParserOptions);
+
 		/**
 		 * Parses `source` using the options in the way configured by the `DOMParserOptions` of
 		 * `this`
-		 * `DOMParser`. If `mimeType` is `text/html` an HTML `Document` is created, otherwise an XML
-		 * `Document` is created.
+		 * `DOMParser`. If `mimeType` is `text/html` an HTML `Document` is created, otherwise an
+		 * XML `Document` is created.
 		 *
 		 * __It behaves different from the description in the living standard__:
 		 * - Uses the `options` passed to the `DOMParser` constructor to modify the behavior.
@@ -790,19 +919,19 @@ declare module '@xmldom/xmldom' {
 		 * `fatalError` level.
 		 * - Any `fatalError` throws a `ParseError` which prevents further processing.
 		 * - Any error thrown by `onError` is converted to a `ParseError` which prevents further
-		 * processing - If no `Document` was created during parsing it is reported as a `fatalError`.
+		 * processing - If no `Document` was created during parsing it is reported as a
+		 * `fatalError`.
 		 *
-		 * @returns The `Document` node.
+		 * @returns
+		 * The `Document` node.
 		 * @throws {ParseError}
 		 * for any `fatalError` or anything that is thrown by `onError`
-		 * @throws {TypeError} for any invalid `mimeType`
+		 * @throws {TypeError}
+		 * for any invalid `mimeType`
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
 		 * @see https://html.spec.whatwg.org/#dom-domparser-parsefromstring-dev
 		 */
-		parseFromString(
-			source: string,
-			mimeType: MIME_TYPE
-		): Document;
+		parseFromString(source: string, mimeType: MIME_TYPE | string): Document;
 	}
 
 	interface DOMParserOptions {
@@ -815,8 +944,8 @@ declare module '@xmldom/xmldom' {
 		 */
 		readonly assign?: typeof Object.assign;
 		/**
-		 * For internal testing: The class for creating an instance for handling events from the SAX
-		 * parser.
+		 * For internal testing: The class for creating an instance for handling events from the
+		 * SAX parser.
 		 * *****Warning: By configuring a faulty implementation,
 		 * the specified behavior can completely be broken*****.
 		 *
@@ -832,7 +961,8 @@ declare module '@xmldom/xmldom' {
 		 * but it receives different argument types than before 0.9.0.
 		 *
 		 * @deprecated
-		 * @throws {TypeError} If it is an object.
+		 * @throws {TypeError}
+		 * If it is an object.
 		 */
 		readonly errorHandler?: ErrorHandlerFunction;
 
@@ -858,8 +988,8 @@ declare module '@xmldom/xmldom' {
 		 * If the provided method throws, a `ParserError` is thrown,
 		 * which prevents any further processing.
 		 *
-		 * Be aware that many `warning`s are considered an error that prevents further processing in
-		 * most implementations.
+		 * Be aware that many `warning`s are considered an error that prevents further processing
+		 * in most implementations.
 		 *
 		 * @param level
 		 * The error level as reported by the SAXParser.
@@ -894,6 +1024,7 @@ declare module '@xmldom/xmldom' {
 	 * @see {@link onWarningStopParsing}
 	 */
 	function onErrorStopParsing(): void | never;
+
 	/**
 	 * A method that prevents any further parsing when an `error`
 	 * with any level is reported during parsing.
@@ -902,5 +1033,6 @@ declare module '@xmldom/xmldom' {
 	 * @see {@link onErrorStopParsing}
 	 */
 	function onWarningStopParsing(): never;
+
 	// END ./lib/dom-parser.js
 }

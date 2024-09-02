@@ -38,9 +38,13 @@ const assert = <T>(
 };
 
 // lib/conventions
-
+// widen type to string to check that any string can be passed
+const mimeHtml: string = MIME_TYPE.HTML;
+assert(isHTMLMimeType(mimeHtml), true);
 assert(isHTMLMimeType(MIME_TYPE.HTML), true);
+assert(hasDefaultHTMLNamespace(mimeHtml), true);
 assert(hasDefaultHTMLNamespace(MIME_TYPE.XML_XHTML_APPLICATION), true);
+assert(isValidMimeType(mimeHtml), true);
 assert(isValidMimeType(MIME_TYPE.XML_SVG_IMAGE), true);
 assert(isValidMimeType(MIME_TYPE.XML_APPLICATION), true);
 
@@ -87,6 +91,8 @@ impl.createDocumentType('qualifiedName', 'publicId');
 assert(impl.createHTMLDocument().type, 'html');
 assert(impl.createHTMLDocument(false).childNodes.length, 0);
 assert(impl.createHTMLDocument('title').childNodes.length, 2);
+
+assert(new DOMParser().parseFromString(`<div/>`, mimeHtml).childNodes.length, 1)
 
 const source = `<xml xmlns="a">
 	<child>test</child>
