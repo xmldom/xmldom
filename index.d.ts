@@ -555,6 +555,43 @@ declare module '@xmldom/xmldom' {
 		readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 0x20;
 	};
 
+
+	/**
+	 * A DOM element's attribute as an object. In most DOM methods, you will probably directly retrieve the attribute as a string (e.g., Element.getAttribute(), but certain functions (e.g., Element.getAttributeNode()) or means of iterating give Attr types.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr)
+	 */
+	interface Attr extends Node {
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/name) */
+		readonly name: string;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/namespaceURI) */
+		readonly namespaceURI: string | null;
+		readonly ownerDocument: Document;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/ownerElement) */
+		readonly ownerElement: Element | null;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/prefix) */
+		readonly prefix: string | null;
+		/**
+		 * @deprecated
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/specified)
+		 */
+		readonly specified: true;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/value) */
+		value: string;
+	}
+	/**
+	 * A DOM element's attribute as an object. In most DOM methods, you will probably directly retrieve the attribute as a string (e.g., Element.getAttribute(), but certain functions (e.g., Element.getAttributeNode()) or means of iterating give Attr types.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr)
+	 */
+	var Attr: {
+		// instanceof pre ts 5.3
+		(val: unknown): val is Attr;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is Attr;
+	};
+
 	/**
 	 * NodeList objects are collections of nodes, usually returned by properties such as
 	 * Node.childNodes and methods such as document.querySelectorAll().
@@ -699,7 +736,7 @@ declare module '@xmldom/xmldom' {
 		createElement(
 			tagName: string,
 			options?: ElementCreationOptions
-		): HTMLElement;
+		): Element;
 
 		/**
 		 * Returns an element with namespace namespace. Its namespace prefix will be everything before
@@ -724,7 +761,7 @@ declare module '@xmldom/xmldom' {
 		createElementNS(
 			namespaceURI: 'http://www.w3.org/1999/xhtml',
 			qualifiedName: string
-		): HTMLElement;
+		): Element;
 
 		createElementNS<K extends keyof SVGElementTagNameMap>(
 			namespaceURI: 'http://www.w3.org/2000/svg',
@@ -787,7 +824,7 @@ declare module '@xmldom/xmldom' {
 		 * @param elementId
 		 * String that specifies the ID value.
 		 */
-		getElementById(elementId: string): HTMLElement | null;
+		getElementById(elementId: string): Element | null;
 
 		/**
 		 * The `getElementsByClassName` method of `Document` interface returns an array-like object

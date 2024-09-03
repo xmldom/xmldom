@@ -1,23 +1,24 @@
 import {
+	Attr,
 	Document,
-	DOMImplementation,
+	DocumentType,
 	DOMException,
 	DOMExceptionName,
+	DOMImplementation,
 	DOMParser,
 	ExceptionCode,
 	hasDefaultHTMLNamespace,
 	isHTMLMimeType,
 	isValidMimeType,
+	LiveNodeList,
 	MIME_TYPE,
 	NAMESPACE,
+	Node,
+	NodeList,
 	onWarningStopParsing,
 	ParseError,
-	XMLSerializer,
-	Node,
-	DocumentType,
-	NodeList,
-	LiveNodeList,
-} from '@xmldom/xmldom';
+	XMLSerializer
+} from "@xmldom/xmldom";
 
 const failedAssertions: Error[] = [];
 let assertions = 0;
@@ -80,6 +81,11 @@ assert(document instanceof Node, true);
 assert(document instanceof Document, true);
 assert(document.childNodes instanceof NodeList, true);
 assert(document.getElementsByClassName('hide') instanceof LiveNodeList, true);
+
+const attr = document.createAttribute('attr')
+assert(attr.ownerDocument, document);
+assert(attr.value, undefined);
+assert(attr instanceof Attr, true);
 
 impl.createDocument(
 	NAMESPACE.XML,
