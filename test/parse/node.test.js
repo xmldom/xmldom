@@ -141,7 +141,12 @@ describe('XML Node Parse', () => {
 
 			expectNeighbours(first, last);
 			expect(fragment.firstChild).toStrictEqual(first);
+			expect(fragment.firstElementChild).toStrictEqual(first);
+			expect(fragment.firstElementChild.nextElementSibling).toStrictEqual(last);
 			expect(fragment.lastChild).toStrictEqual(last);
+			expect(fragment.lastElementChild).toStrictEqual(last);
+			expect(fragment.lastElementChild.previousElementSibling).toStrictEqual(first);
+			expect(fragment.childElementCount).toBe(2);
 		});
 	});
 
@@ -163,10 +168,20 @@ describe('XML Node Parse', () => {
 			const first = fragment.appendChild(dom.createElement('first'));
 			const second = fragment.appendChild(dom.createElement('second'));
 
-			child.parentNode.insertBefore(fragment, child);
+			const parent = child.parentNode;
+			parent.insertBefore(fragment, child);
 
 			expectNeighbours(first, second, child);
-			expect(child.parentNode.firstChild).toStrictEqual(first);
+			expect(parent.firstChild).toStrictEqual(first);
+			expect(parent.childElementCount).toStrictEqual(3);
+			expect(parent.firstElementChild).toStrictEqual(first);
+			expect(parent.lastElementChild).toStrictEqual(child);
+			expect(first.previousElementSibling).toBeNull();
+			expect(first.nextElementSibling).toStrictEqual(second);
+			expect(second.previousElementSibling).toStrictEqual(first);
+			expect(second.nextElementSibling).toStrictEqual(child);
+			expect(child.previousElementSibling).toStrictEqual(second);
+			expect(child.nextElementSibling).toBeNull();
 		});
 	});
 
