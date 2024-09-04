@@ -326,6 +326,13 @@ declare module '@xmldom/xmldom' {
 	// END ./lib/errors.js
 
 	// START ./lib/dom.js
+
+	type InstanceOf<T> = {
+		// instanceof pre ts 5.3
+		(val: unknown): val is T;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is T;
+	};
 	/**
 	 * The DOM Node interface is an abstract base class upon which many other DOM API objects are
 	 * based, thus letting those object types to be used similarly and often interchangeably. As an
@@ -517,11 +524,7 @@ declare module '@xmldom/xmldom' {
 		readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 0x20;
 	}
 
-	var Node: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is Node;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is Node;
+	var Node: InstanceOf<Node> & {
 		/** node is an element. */
 		readonly ELEMENT_NODE: 1;
 		readonly ATTRIBUTE_NODE: 2;
@@ -556,7 +559,9 @@ declare module '@xmldom/xmldom' {
 	};
 
 	/**
-	 * A DOM element's attribute as an object. In most DOM methods, you will probably directly retrieve the attribute as a string (e.g., Element.getAttribute(), but certain functions (e.g., Element.getAttributeNode()) or means of iterating give Attr types.
+	 * A DOM element's attribute as an object. In most DOM methods, you will probably directly
+	 * retrieve the attribute as a string (e.g., Element.getAttribute(), but certain functions (e.g.,
+	 * Element.getAttributeNode()) or means of iterating give Attr types.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr)
 	 */
@@ -580,16 +585,13 @@ declare module '@xmldom/xmldom' {
 		value: string;
 	}
 	/**
-	 * A DOM element's attribute as an object. In most DOM methods, you will probably directly retrieve the attribute as a string (e.g., Element.getAttribute(), but certain functions (e.g., Element.getAttributeNode()) or means of iterating give Attr types.
+	 * A DOM element's attribute as an object. In most DOM methods, you will probably directly
+	 * retrieve the attribute as a string (e.g., Element.getAttribute(), but certain functions (e.g.,
+	 * Element.getAttributeNode()) or means of iterating give Attr types.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr)
 	 */
-	var Attr: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is Attr;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is Attr;
-	};
+	var Attr: InstanceOf<Attr>;
 
 	/**
 	 * Objects implementing the NamedNodeMap interface are used to represent collections of nodes
@@ -754,15 +756,12 @@ declare module '@xmldom/xmldom' {
 	 * Represents a live collection of nodes that is automatically updated when its associated
 	 * document changes.
 	 */
-	var LiveNodeList: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is LiveNodeList;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is LiveNodeList;
-	};
+	var LiveNodeList: InstanceOf<LiveNodeList>;
 
 	/**
-	 * Element is the most general base class from which all objects in a Document inherit. It only has methods and properties common to all kinds of elements. More specific classes inherit from Element.
+	 * Element is the most general base class from which all objects in a Document inherit. It only
+	 * has methods and properties common to all kinds of elements. More specific classes inherit from
+	 * Element.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element)
 	 */
@@ -772,13 +771,15 @@ declare module '@xmldom/xmldom' {
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attributes) */
 		readonly attributes: NamedNodeMap;
 		/**
-		 * Returns element's first attribute whose qualified name is qualifiedName, and null if there is no such attribute otherwise.
+		 * Returns element's first attribute whose qualified name is qualifiedName, and null if there
+		 * is no such attribute otherwise.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getAttribute)
 		 */
 		getAttribute(qualifiedName: string): string | null;
 		/**
-		 * Returns element's attribute whose namespace is namespace and local name is localName, and null if there is no such attribute otherwise.
+		 * Returns element's attribute whose namespace is namespace and local name is localName, and
+		 * null if there is no such attribute otherwise.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getAttributeNS)
 		 */
@@ -823,9 +824,9 @@ declare module '@xmldom/xmldom' {
 		getElementsByTagName(qualifiedName: string): LiveNodeList;
 
 		/**
-		 * Returns a `LiveNodeList` of elements with the given tag name belonging to the given namespace.
-		 * It is similar to `Document.getElementsByTagNameNS`,
-		 * except that its search is restricted to descendants of the specified element.
+		 * Returns a `LiveNodeList` of elements with the given tag name belonging to the given
+		 * namespace. It is similar to `Document.getElementsByTagNameNS`, except that its search is
+		 * restricted to descendants of the specified element.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getElementsByTagNameNS)
 		 * */
@@ -836,13 +837,15 @@ declare module '@xmldom/xmldom' {
 
 		getQualifiedName(): string;
 		/**
-		 * Returns true if element has an attribute whose qualified name is qualifiedName, and false otherwise.
+		 * Returns true if element has an attribute whose qualified name is qualifiedName, and false
+		 * otherwise.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/hasAttribute)
 		 */
 		hasAttribute(qualifiedName: string): boolean;
 		/**
-		 * Returns true if element has an attribute whose namespace is namespace and local name is localName.
+		 * Returns true if element has an attribute whose namespace is namespace and local name is
+		 * localName.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/hasAttributeNS)
 		 */
@@ -874,7 +877,8 @@ declare module '@xmldom/xmldom' {
 		 */
 		setAttribute(qualifiedName: string, value: string): void;
 		/**
-		 * Sets the value of element's attribute whose namespace is namespace and local name is localName to value.
+		 * Sets the value of element's attribute whose namespace is namespace and local name is
+		 * localName to value.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttributeNS)
 		 */
@@ -889,19 +893,19 @@ declare module '@xmldom/xmldom' {
 		setAttributeNodeNS(attr: Attr): Attr | null;
 	}
 	/**
-	 * Element is the most general base class from which all objects in a Document inherit. It only has methods and properties common to all kinds of elements. More specific classes inherit from Element.
+	 * Element is the most general base class from which all objects in a Document inherit. It only
+	 * has methods and properties common to all kinds of elements. More specific classes inherit from
+	 * Element.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element)
 	 */
-	var Element: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is Element;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is Element;
-	};
+	var Element: InstanceOf<Element>;
 
 	/**
-	 * The CharacterData abstract interface represents a Node object that contains characters. This is an abstract interface, meaning there aren't any object of type CharacterData: it is implemented by other interfaces, like Text, Comment, or ProcessingInstruction which aren't abstract.
+	 * The CharacterData abstract interface represents a Node object that contains characters. This
+	 * is an abstract interface, meaning there aren't any object of type CharacterData: it is
+	 * implemented by other interfaces, like Text, Comment, or ProcessingInstruction which aren't
+	 * abstract.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData)
 	 */
@@ -923,7 +927,10 @@ declare module '@xmldom/xmldom' {
 		substringData(offset: number, count: number): string;
 	}
 	/**
-	 * The CharacterData abstract interface represents a Node object that contains characters. This is an abstract interface, meaning there aren't any object of type CharacterData: it is implemented by other interfaces, like Text, Comment, or ProcessingInstruction which aren't abstract.
+	 * The CharacterData abstract interface represents a Node object that contains characters. This
+	 * is an abstract interface, meaning there aren't any object of type CharacterData: it is
+	 * implemented by other interfaces, like Text, Comment, or ProcessingInstruction which aren't
+	 * abstract.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData)
 	 */
@@ -935,13 +942,15 @@ declare module '@xmldom/xmldom' {
 	};
 
 	/**
-	 * The textual content of Element or Attr. If an element has no markup within its content, it has a single child implementing Text that contains the element's text. However, if the element contains markup, it is parsed into information items and Text nodes that form its children.
+	 * The textual content of Element or Attr. If an element has no markup within its content, it has
+	 * a single child implementing Text that contains the element's text. However, if the element
+	 * contains markup, it is parsed into information items and Text nodes that form its children.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Text)
 	 */
 	interface Text extends CharacterData {
-		nodeName: '#text';
-		nodeType: typeof Node.TEXT_NODE;
+		nodeName: '#text' | '#cdata-section';
+		nodeType: typeof Node.TEXT_NODE | typeof Node.CDATA_SECTION_NODE;
 		/**
 		 * Splits data at the given offset and returns the remainder as Text node.
 		 *
@@ -951,20 +960,19 @@ declare module '@xmldom/xmldom' {
 	}
 
 	/**
-	 * The textual content of Element or Attr. If an element has no markup within its content, it has a single child implementing Text that contains the element's text. However, if the element contains markup, it is parsed into information items and Text nodes that form its children.
+	 * The textual content of Element or Attr. If an element has no markup within its content, it has
+	 * a single child implementing Text that contains the element's text. However, if the element
+	 * contains markup, it is parsed into information items and Text nodes that form its children.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Text)
 	 */
-	var Text: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is Text;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is Text;
-	};
+	var Text: InstanceOf<Text>;
 
 	/**
-	 * The Comment interface represents textual notations within markup; although it is generally not visually shown, such comments are available to be read in the source view.
-	 * Comments are represented in HTML and XML as content between '<!--' and '-->'. In XML, like inside SVG or MathML markup, the character sequence '--' cannot be used within a comment.
+	 * The Comment interface represents textual notations within markup; although it is generally not
+	 * visually shown, such comments are available to be read in the source view. Comments are
+	 * represented in HTML and XML as content between '<!--' and '-->'. In XML, like inside SVG or
+	 * MathML markup, the character sequence '--' cannot be used within a comment.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Comment)
 	 */
@@ -973,20 +981,18 @@ declare module '@xmldom/xmldom' {
 		nodeType: typeof Node.COMMENT_NODE;
 	}
 	/**
-	 * The Comment interface represents textual notations within markup; although it is generally not visually shown, such comments are available to be read in the source view.
-	 * Comments are represented in HTML and XML as content between '<!--' and '-->'. In XML, like inside SVG or MathML markup, the character sequence '--' cannot be used within a comment.
+	 * The Comment interface represents textual notations within markup; although it is generally not
+	 * visually shown, such comments are available to be read in the source view. Comments are
+	 * represented in HTML and XML as content between '<!--' and '-->'. In XML, like inside SVG or
+	 * MathML markup, the character sequence '--' cannot be used within a comment.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Comment)
 	 */
-	var Comment: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is Comment;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is Comment;
-	};
+	var Comment: InstanceOf<Comment>;
 
 	/**
-	 * A CDATA section that can be used within XML to include extended portions of unescaped text. The symbols < and & don’t need escaping as they normally do when inside a CDATA section.
+	 * A CDATA section that can be used within XML to include extended portions of unescaped text.
+	 * The symbols < and & don’t need escaping as they normally do when inside a CDATA section.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CDATASection)
 	 */
@@ -995,16 +1001,46 @@ declare module '@xmldom/xmldom' {
 		nodeType: typeof Node.CDATA_SECTION_NODE;
 	}
 	/**
-	 * A CDATA section that can be used within XML to include extended portions of unescaped text. The symbols < and & don’t need escaping as they normally do when inside a CDATA section.
+	 * A CDATA section that can be used within XML to include extended portions of unescaped text.
+	 * The symbols < and & don’t need escaping as they normally do when inside a CDATA section.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CDATASection)
 	 */
-	var CDATASection: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is CDATASection;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is CDATASection;
-	};
+	var CDATASection: InstanceOf<CDATASection>;
+
+	/**
+	 * The DocumentFragment interface represents a minimal document object that has no parent.
+	 * It is used as a lightweight version of Document that stores a segment of a document structure
+	 * comprised of nodes just like a standard document.
+	 * The key difference is due to the fact that the document fragment isn't part
+	 * of the active document tree structure.
+	 * Changes made to the fragment don't affect the document.
+	 */
+	interface DocumentFragment extends Node {
+		readonly ownerDocument: Document;
+		getElementById(elementId: string): Element | null;
+	}
+	var DocumentFragment: InstanceOf<DocumentFragment>;
+
+	interface Entity extends Node {
+		nodeType: typeof Node.ENTITY_NODE;
+	}
+	var Entity: InstanceOf<Entity>;
+
+	interface EntityReference extends Node {
+		nodeType: typeof Node.ENTITY_REFERENCE_NODE;
+	}
+	var EntityReference: InstanceOf<EntityReference>;
+
+	interface Notation extends Node {
+		nodeType: typeof Node.NOTATION_NODE;
+	}
+	var Notation: InstanceOf<Notation>;
+
+	interface ProcessingInstruction extends Node {
+		nodeType: typeof Node.PROCESSING_INSTRUCTION_NODE;
+	}
+	var ProcessingInstruction: InstanceOf<ProcessingInstruction>;
 
 	interface Document extends Node {
 		/**
@@ -1225,8 +1261,8 @@ declare module '@xmldom/xmldom' {
 		getElementsByTagName(qualifiedName: string): LiveNodeList;
 
 		/**
-		 * Returns a `LiveNodeList` of elements with the given tag name belonging to the given namespace.
-		 * The complete document is searched, including the root node.
+		 * Returns a `LiveNodeList` of elements with the given tag name belonging to the given
+		 * namespace. The complete document is searched, including the root node.
 		 *
 		 * The returned list is live, which means it updates itself with the DOM tree automatically.
 		 * Therefore, there is no need to call `Element.getElementsByTagName()`
@@ -1248,12 +1284,7 @@ declare module '@xmldom/xmldom' {
 		importNode<T extends Node>(node: T, deep?: boolean): T;
 	}
 
-	var Document: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is Document;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is Document;
-	};
+	var Document: InstanceOf<Document>;
 
 	/**
 	 * A Node containing a doctype.
@@ -1270,12 +1301,7 @@ declare module '@xmldom/xmldom' {
 		readonly systemId: string;
 	}
 
-	var DocumentType: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is DocumentType;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is DocumentType;
-	};
+	var DocumentType: InstanceOf<DocumentFragment>;
 
 	class DOMImplementation {
 		/**

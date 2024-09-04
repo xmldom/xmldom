@@ -22,8 +22,8 @@ import {
 	onWarningStopParsing,
 	ParseError,
 	Text,
-	XMLSerializer
-} from "@xmldom/xmldom";
+	XMLSerializer,
+} from '@xmldom/xmldom';
 
 const failedAssertions: Error[] = [];
 let assertions = 0;
