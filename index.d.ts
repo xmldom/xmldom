@@ -900,6 +900,112 @@ declare module '@xmldom/xmldom' {
 		[Symbol.hasInstance](val: unknown): val is Element;
 	};
 
+	/**
+	 * The CharacterData abstract interface represents a Node object that contains characters. This is an abstract interface, meaning there aren't any object of type CharacterData: it is implemented by other interfaces, like Text, Comment, or ProcessingInstruction which aren't abstract.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData)
+	 */
+	interface CharacterData extends Node {
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/data) */
+		data: string;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/length) */
+		readonly length: number;
+		readonly ownerDocument: Document;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/appendData) */
+		appendData(data: string): void;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/deleteData) */
+		deleteData(offset: number, count: number): void;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/insertData) */
+		insertData(offset: number, data: string): void;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/replaceData) */
+		replaceData(offset: number, count: number, data: string): void;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/substringData) */
+		substringData(offset: number, count: number): string;
+	}
+	/**
+	 * The CharacterData abstract interface represents a Node object that contains characters. This is an abstract interface, meaning there aren't any object of type CharacterData: it is implemented by other interfaces, like Text, Comment, or ProcessingInstruction which aren't abstract.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData)
+	 */
+	var CharacterData: {
+		// instanceof pre ts 5.3
+		(val: unknown): val is CharacterData;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is CharacterData;
+	};
+
+	/**
+	 * The textual content of Element or Attr. If an element has no markup within its content, it has a single child implementing Text that contains the element's text. However, if the element contains markup, it is parsed into information items and Text nodes that form its children.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Text)
+	 */
+	interface Text extends CharacterData {
+		nodeName: '#text';
+		nodeType: typeof Node.TEXT_NODE;
+		/**
+		 * Splits data at the given offset and returns the remainder as Text node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Text/splitText)
+		 */
+		splitText(offset: number): Text;
+	}
+
+	/**
+	 * The textual content of Element or Attr. If an element has no markup within its content, it has a single child implementing Text that contains the element's text. However, if the element contains markup, it is parsed into information items and Text nodes that form its children.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Text)
+	 */
+	var Text: {
+		// instanceof pre ts 5.3
+		(val: unknown): val is Text;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is Text;
+	};
+
+	/**
+	 * The Comment interface represents textual notations within markup; although it is generally not visually shown, such comments are available to be read in the source view.
+	 * Comments are represented in HTML and XML as content between '<!--' and '-->'. In XML, like inside SVG or MathML markup, the character sequence '--' cannot be used within a comment.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Comment)
+	 */
+	interface Comment extends CharacterData {
+		nodeName: '#comment';
+		nodeType: typeof Node.COMMENT_NODE;
+	}
+	/**
+	 * The Comment interface represents textual notations within markup; although it is generally not visually shown, such comments are available to be read in the source view.
+	 * Comments are represented in HTML and XML as content between '<!--' and '-->'. In XML, like inside SVG or MathML markup, the character sequence '--' cannot be used within a comment.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Comment)
+	 */
+	var Comment: {
+		// instanceof pre ts 5.3
+		(val: unknown): val is Comment;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is Comment;
+	};
+
+	/**
+	 * A CDATA section that can be used within XML to include extended portions of unescaped text. The symbols < and & don’t need escaping as they normally do when inside a CDATA section.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CDATASection)
+	 */
+	interface CDATASection extends Text {
+		nodeName: '#cdata-section';
+		nodeType: typeof Node.CDATA_SECTION_NODE;
+	}
+	/**
+	 * A CDATA section that can be used within XML to include extended portions of unescaped text. The symbols < and & don’t need escaping as they normally do when inside a CDATA section.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CDATASection)
+	 */
+	var CDATASection: {
+		// instanceof pre ts 5.3
+		(val: unknown): val is CDATASection;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is CDATASection;
+	};
+
 	interface Document extends Node {
 		/**
 		 * The mime type of the document is determined at creation time and can not be modified.

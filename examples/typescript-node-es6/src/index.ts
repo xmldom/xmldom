@@ -1,5 +1,8 @@
 import {
 	Attr,
+	CDATASection,
+	CharacterData,
+	Comment,
 	Document,
 	DocumentType,
 	DOMException,
@@ -18,8 +21,9 @@ import {
 	NodeList,
 	onWarningStopParsing,
 	ParseError,
-	XMLSerializer,
-} from '@xmldom/xmldom';
+	Text,
+	XMLSerializer
+} from "@xmldom/xmldom";
 
 const failedAssertions: Error[] = [];
 let assertions = 0;
@@ -93,6 +97,16 @@ const element = document.createElement('a');
 assert(element.nodeType, Node.ELEMENT_NODE);
 assert(element.ownerDocument, document);
 assert(element.attributes instanceof NamedNodeMap, true);
+
+const cdata = document.createCDATASection('< &');
+assert(cdata instanceof CharacterData, true);
+assert(cdata instanceof CDATASection, true);
+const comment = document.createComment('< &');
+assert(comment instanceof CharacterData, true);
+assert(comment instanceof Comment, true);
+const text = document.createTextNode('text');
+assert(text instanceof CharacterData, true);
+assert(text instanceof Text, true);
 
 impl.createDocument(
 	NAMESPACE.XML,
