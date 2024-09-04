@@ -77,34 +77,34 @@ assert(Node.DOCUMENT_POSITION_CONTAINS, 8);
 assert(new NodeList().length, 0);
 
 const impl = new DOMImplementation();
-const document = impl.createDocument(null, 'qualifiedName');
-assert(document.contentType, MIME_TYPE.XML_APPLICATION);
-assert(document.type, 'xml');
-assert(document.ATTRIBUTE_NODE, 2);
-assert(document.DOCUMENT_POSITION_CONTAINS, 8);
-assert(document instanceof Node, true);
-assert(document instanceof Document, true);
-assert(document.childNodes instanceof NodeList, true);
-assert(document.getElementsByClassName('hide') instanceof LiveNodeList, true);
+const doc1 = impl.createDocument(null, 'qualifiedName');
+assert(doc1.contentType, MIME_TYPE.XML_APPLICATION);
+assert(doc1.type, 'xml');
+assert(doc1.ATTRIBUTE_NODE, 2);
+assert(doc1.DOCUMENT_POSITION_CONTAINS, 8);
+assert(doc1 instanceof Node, true);
+assert(doc1 instanceof Document, true);
+assert(doc1.childNodes instanceof NodeList, true);
+assert(doc1.getElementsByClassName('hide') instanceof LiveNodeList, true);
 
-const attr = document.createAttribute('attr');
+const attr = doc1.createAttribute('attr');
 assert(attr.nodeType, Node.ATTRIBUTE_NODE);
-assert(attr.ownerDocument, document);
+assert(attr.ownerDocument, doc1);
 assert(attr.value, undefined);
 assert(attr instanceof Attr, true);
 
-const element = document.createElement('a');
+const element = doc1.createElement('a');
 assert(element.nodeType, Node.ELEMENT_NODE);
-assert(element.ownerDocument, document);
+assert(element.ownerDocument, doc1);
 assert(element.attributes instanceof NamedNodeMap, true);
 
-const cdata = document.createCDATASection('< &');
+const cdata = doc1.createCDATASection('< &');
 assert(cdata instanceof CharacterData, true);
 assert(cdata instanceof CDATASection, true);
-const comment = document.createComment('< &');
+const comment = doc1.createComment('< &');
 assert(comment instanceof CharacterData, true);
 assert(comment instanceof Comment, true);
-const text = document.createTextNode('text');
+const text = doc1.createTextNode('text');
 assert(text instanceof CharacterData, true);
 assert(text instanceof Text, true);
 

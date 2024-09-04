@@ -409,7 +409,7 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/parentNode)
 		 */
-		readonly parentNode: ParentNode | null;
+		readonly parentNode: Node | null;
 		/**
 		 * The prefix of the namespace for this node.
 		 */
@@ -1105,28 +1105,8 @@ declare module '@xmldom/xmldom' {
 		 */
 		createDocumentFragment(): DocumentFragment;
 
-		/**
-		 * Creates an instance of the element for the specified tag.
-		 *
-		 * @param tagName
-		 * The name of an element.
-		 *
-		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElement)
-		 */
-		createElement<K extends keyof HTMLElementTagNameMap>(
-			tagName: K,
-			options?: ElementCreationOptions
-		): HTMLElementTagNameMap[K];
 
-		/**
-		 * @deprecated
-		 */
-		createElement<K extends keyof HTMLElementDeprecatedTagNameMap>(
-			tagName: K,
-			options?: ElementCreationOptions
-		): HTMLElementDeprecatedTagNameMap[K];
-
-		createElement(tagName: string, options?: ElementCreationOptions): Element;
+		createElement(tagName: string): Element;
 
 		/**
 		 * Returns an element with namespace namespace. Its namespace prefix will be everything before
@@ -1149,40 +1129,8 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElementNS)
 		 */
 		createElementNS(
-			namespaceURI: 'http://www.w3.org/1999/xhtml',
-			qualifiedName: string
-		): Element;
-
-		createElementNS<K extends keyof SVGElementTagNameMap>(
-			namespaceURI: 'http://www.w3.org/2000/svg',
-			qualifiedName: K
-		): SVGElementTagNameMap[K];
-
-		createElementNS(
-			namespaceURI: 'http://www.w3.org/2000/svg',
-			qualifiedName: string
-		): SVGElement;
-
-		createElementNS<K extends keyof MathMLElementTagNameMap>(
-			namespaceURI: 'http://www.w3.org/1998/Math/MathML',
-			qualifiedName: K
-		): MathMLElementTagNameMap[K];
-
-		createElementNS(
-			namespaceURI: 'http://www.w3.org/1998/Math/MathML',
-			qualifiedName: string
-		): MathMLElement;
-
-		createElementNS(
-			namespaceURI: string | null,
-			qualifiedName: string,
-			options?: ElementCreationOptions
-		): Element;
-
-		createElementNS(
 			namespace: string | null,
 			qualifiedName: string,
-			options?: string | ElementCreationOptions
 		): Element;
 
 		/**
