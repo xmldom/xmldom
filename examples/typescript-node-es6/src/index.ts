@@ -12,13 +12,14 @@ import {
 	isValidMimeType,
 	LiveNodeList,
 	MIME_TYPE,
+	NamedNodeMap,
 	NAMESPACE,
 	Node,
 	NodeList,
 	onWarningStopParsing,
 	ParseError,
-	XMLSerializer
-} from "@xmldom/xmldom";
+	XMLSerializer,
+} from '@xmldom/xmldom';
 
 const failedAssertions: Error[] = [];
 let assertions = 0;
@@ -82,10 +83,16 @@ assert(document instanceof Document, true);
 assert(document.childNodes instanceof NodeList, true);
 assert(document.getElementsByClassName('hide') instanceof LiveNodeList, true);
 
-const attr = document.createAttribute('attr')
+const attr = document.createAttribute('attr');
+assert(attr.nodeType, Node.ATTRIBUTE_NODE);
 assert(attr.ownerDocument, document);
 assert(attr.value, undefined);
 assert(attr instanceof Attr, true);
+
+const element = document.createElement('a');
+assert(element.nodeType, Node.ELEMENT_NODE);
+assert(element.ownerDocument, document);
+assert(element.attributes instanceof NamedNodeMap, true);
 
 impl.createDocument(
 	NAMESPACE.XML,

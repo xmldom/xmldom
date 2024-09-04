@@ -555,13 +555,13 @@ declare module '@xmldom/xmldom' {
 		readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 0x20;
 	};
 
-
 	/**
 	 * A DOM element's attribute as an object. In most DOM methods, you will probably directly retrieve the attribute as a string (e.g., Element.getAttribute(), but certain functions (e.g., Element.getAttributeNode()) or means of iterating give Attr types.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr)
 	 */
 	interface Attr extends Node {
+		readonly nodeType: typeof Node.ATTRIBUTE_NODE;
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/name) */
 		readonly name: string;
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/namespaceURI) */
@@ -573,7 +573,6 @@ declare module '@xmldom/xmldom' {
 		readonly prefix: string | null;
 		/**
 		 * @deprecated
-		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Attr/specified)
 		 */
 		readonly specified: true;
@@ -591,6 +590,119 @@ declare module '@xmldom/xmldom' {
 		// instanceof post ts 5.3
 		[Symbol.hasInstance](val: unknown): val is Attr;
 	};
+
+	/**
+	 * Objects implementing the NamedNodeMap interface are used to represent collections of nodes
+	 * that can be accessed by name.
+	 * Note that NamedNodeMap does not inherit from NodeList;
+	 * NamedNodeMaps are not maintained in any particular order.
+	 * Objects contained in an object implementing NamedNodeMap may also be accessed by an ordinal
+	 * index,
+	 * but this is simply to allow convenient enumeration of the contents of a NamedNodeMap,
+	 * and does not imply that the DOM specifies an order to these Nodes.
+	 * NamedNodeMap objects in the DOM are live.
+	 * used for attributes or DocumentType entities
+	 *
+	 * This implementation only supports property indices, but does not support named properties,
+	 * as specified in the living standard.
+	 *
+	 * @see https://dom.spec.whatwg.org/#interface-namednodemap
+	 * @see https://webidl.spec.whatwg.org/#dfn-supported-property-names
+	 */
+	class NamedNodeMap implements Iterable<Attr> {
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/NamedNodeMap/length) */
+		readonly length: number;
+		/**
+		 * Get an attribute by name. Note: Name is in lower case in case of HTML namespace and
+		 * document.
+		 *
+		 * @param {string} localName
+		 * The local name of the attribute.
+		 * @returns {Attr | null}
+		 * The attribute with the given local name, or null if no such attribute exists.
+		 * @see https://dom.spec.whatwg.org/#concept-element-attributes-get-by-name
+		 */
+		getNamedItem(qualifiedName: string): Attr | null;
+		/**
+		 * Get an attribute by namespace and local name.
+		 *
+		 * @param {string | null} namespaceURI
+		 * The namespace URI of the attribute.
+		 * @param {string} localName
+		 * The local name of the attribute.
+		 * @returns {Attr | null}
+		 * The attribute with the given namespace URI and local name, or null if no such attribute
+		 * exists.
+		 * @see https://dom.spec.whatwg.org/#concept-element-attributes-get-by-namespace
+		 */
+		getNamedItemNS(namespace: string | null, localName: string): Attr | null;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/NamedNodeMap/item) */
+		item(index: number): Attr | null;
+
+		/**
+		 * Removes an attribute specified by the local name.
+		 *
+		 * @param {string} localName
+		 * The local name of the attribute to be removed.
+		 * @returns {Attr}
+		 * The attribute node that was removed.
+		 * @throws {DOMException}
+		 * With code:
+		 * - {@link DOMException.NOT_FOUND_ERR} if no attribute with the given name is found.
+		 * @see https://dom.spec.whatwg.org/#dom-namednodemap-removenameditem
+		 * @see https://dom.spec.whatwg.org/#concept-element-attributes-remove-by-name
+		 */
+		removeNamedItem(qualifiedName: string): Attr;
+		/**
+		 * Removes an attribute specified by the namespace and local name.
+		 *
+		 * @param {string | null} namespaceURI
+		 * The namespace URI of the attribute to be removed.
+		 * @param {string} localName
+		 * The local name of the attribute to be removed.
+		 * @returns {Attr}
+		 * The attribute node that was removed.
+		 * @throws {DOMException}
+		 * With code:
+		 * - {@link DOMException.NOT_FOUND_ERR} if no attribute with the given namespace URI and
+		 * local name is found.
+		 * @see https://dom.spec.whatwg.org/#dom-namednodemap-removenameditemns
+		 * @see https://dom.spec.whatwg.org/#concept-element-attributes-remove-by-namespace
+		 */
+		removeNamedItemNS(namespace: string | null, localName: string): Attr;
+		/**
+		 * Set an attribute.
+		 *
+		 * @param {Attr} attr
+		 * The attribute to set.
+		 * @returns {Attr | null}
+		 * The old attribute with the same local name and namespace URI as the new one, or null if no
+		 * such attribute exists.
+		 * @throws {DOMException}
+		 * With code:
+		 * - {@link INUSE_ATTRIBUTE_ERR} - If the attribute is already an attribute of another
+		 * element.
+		 * @see https://dom.spec.whatwg.org/#concept-element-attributes-set
+		 */
+		setNamedItem(attr: Attr): Attr | null;
+		/**
+		 * Set an attribute, replacing an existing attribute with the same local name and namespace
+		 * URI if one exists.
+		 *
+		 * @param {Attr} attr
+		 * The attribute to set.
+		 * @returns {Attr | null}
+		 * The old attribute with the same local name and namespace URI as the new one, or null if no
+		 * such attribute exists.
+		 * @throws {DOMException}
+		 * Throws a DOMException with the name "InUseAttributeError" if the attribute is already an
+		 * attribute of another element.
+		 * @see https://dom.spec.whatwg.org/#concept-element-attributes-set
+		 */
+		setNamedItemNS(attr: Attr): Attr | null;
+		[index: number]: Attr;
+		[Symbol.iterator](): Iterator<Attr>;
+	}
 
 	/**
 	 * NodeList objects are collections of nodes, usually returned by properties such as
@@ -647,6 +759,145 @@ declare module '@xmldom/xmldom' {
 		(val: unknown): val is LiveNodeList;
 		// instanceof post ts 5.3
 		[Symbol.hasInstance](val: unknown): val is LiveNodeList;
+	};
+
+	/**
+	 * Element is the most general base class from which all objects in a Document inherit. It only has methods and properties common to all kinds of elements. More specific classes inherit from Element.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element)
+	 */
+	interface Element extends Node {
+		readonly nodeType: typeof Node.ELEMENT_NODE;
+
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attributes) */
+		readonly attributes: NamedNodeMap;
+		/**
+		 * Returns element's first attribute whose qualified name is qualifiedName, and null if there is no such attribute otherwise.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getAttribute)
+		 */
+		getAttribute(qualifiedName: string): string | null;
+		/**
+		 * Returns element's attribute whose namespace is namespace and local name is localName, and null if there is no such attribute otherwise.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getAttributeNS)
+		 */
+		getAttributeNS(namespace: string | null, localName: string): string | null;
+		/**
+		 * Returns the qualified names of all element's attributes. Can contain duplicates.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getAttributeNames)
+		 */
+		getAttributeNames(): string[];
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getAttributeNode) */
+		getAttributeNode(qualifiedName: string): Attr | null;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getAttributeNodeNS) */
+		getAttributeNodeNS(
+			namespace: string | null,
+			localName: string
+		): Attr | null;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getBoundingClientRect) */
+
+		/**
+		 * Returns a LiveNodeList of elements with the given qualifiedName.
+		 * Searching for all descendants can be done by passing `*` as `qualifiedName`.
+		 *
+		 * All descendants of the specified element are searched, but not the element itself.
+		 * The returned list is live, which means it updates itself with the DOM tree automatically.
+		 * Therefore, there is no need to call `Element.getElementsByTagName()`
+		 * with the same element and arguments repeatedly if the DOM changes in between calls.
+		 *
+		 * When called on an HTML element in an HTML document,
+		 * `getElementsByTagName` lower-cases the argument before searching for it.
+		 * This is undesirable when trying to match camel-cased SVG elements (such as
+		 * `<linearGradient>`) in an HTML document.
+		 * Instead, use `Element.getElementsByTagNameNS()`,
+		 * which preserves the capitalization of the tag name.
+		 *
+		 * `Element.getElementsByTagName` is similar to `Document.getElementsByTagName()`,
+		 * except that it only searches for elements that are descendants of the specified element.
+		 *
+		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByTagName
+		 * @see https://dom.spec.whatwg.org/#concept-getelementsbytagname
+		 */
+		getElementsByTagName(qualifiedName: string): LiveNodeList;
+
+		/**
+		 * Returns a `LiveNodeList` of elements with the given tag name belonging to the given namespace.
+		 * It is similar to `Document.getElementsByTagNameNS`,
+		 * except that its search is restricted to descendants of the specified element.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getElementsByTagNameNS)
+		 * */
+		getElementsByTagNameNS(
+			namespaceURI: string | null,
+			localName: string
+		): LiveNodeList;
+
+		getQualifiedName(): string;
+		/**
+		 * Returns true if element has an attribute whose qualified name is qualifiedName, and false otherwise.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/hasAttribute)
+		 */
+		hasAttribute(qualifiedName: string): boolean;
+		/**
+		 * Returns true if element has an attribute whose namespace is namespace and local name is localName.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/hasAttributeNS)
+		 */
+		hasAttributeNS(namespace: string | null, localName: string): boolean;
+		/**
+		 * Returns true if element has attributes, and false otherwise.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/hasAttributes)
+		 */
+		hasAttributes(): boolean;
+		/**
+		 * Removes element's first attribute whose qualified name is qualifiedName.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/removeAttribute)
+		 */
+		removeAttribute(qualifiedName: string): void;
+		/**
+		 * Removes element's attribute whose namespace is namespace and local name is localName.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/removeAttributeNS)
+		 */
+		removeAttributeNS(namespace: string | null, localName: string): void;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/removeAttributeNode) */
+		removeAttributeNode(attr: Attr): Attr;
+		/**
+		 * Sets the value of element's first attribute whose qualified name is qualifiedName to value.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttribute)
+		 */
+		setAttribute(qualifiedName: string, value: string): void;
+		/**
+		 * Sets the value of element's attribute whose namespace is namespace and local name is localName to value.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttributeNS)
+		 */
+		setAttributeNS(
+			namespace: string | null,
+			qualifiedName: string,
+			value: string
+		): void;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttributeNode) */
+		setAttributeNode(attr: Attr): Attr | null;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttributeNodeNS) */
+		setAttributeNodeNS(attr: Attr): Attr | null;
+	}
+	/**
+	 * Element is the most general base class from which all objects in a Document inherit. It only has methods and properties common to all kinds of elements. More specific classes inherit from Element.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element)
+	 */
+	var Element: {
+		// instanceof pre ts 5.3
+		(val: unknown): val is Element;
+		// instanceof post ts 5.3
+		[Symbol.hasInstance](val: unknown): val is Element;
 	};
 
 	interface Document extends Node {
@@ -733,10 +984,7 @@ declare module '@xmldom/xmldom' {
 			options?: ElementCreationOptions
 		): HTMLElementDeprecatedTagNameMap[K];
 
-		createElement(
-			tagName: string,
-			options?: ElementCreationOptions
-		): Element;
+		createElement(tagName: string, options?: ElementCreationOptions): Element;
 
 		/**
 		 * Returns an element with namespace namespace. Its namespace prefix will be everything before
@@ -846,6 +1094,44 @@ declare module '@xmldom/xmldom' {
 		 */
 		getElementsByClassName(classNames: string): LiveNodeList;
 
+		/**
+		 * Returns a LiveNodeList of elements with the given qualifiedName.
+		 * Searching for all descendants can be done by passing `*` as `qualifiedName`.
+		 *
+		 * The complete document is searched, including the root node.
+		 * The returned list is live, which means it updates itself with the DOM tree automatically.
+		 * Therefore, there is no need to call `Element.getElementsByTagName()`
+		 * with the same element and arguments repeatedly if the DOM changes in between calls.
+		 *
+		 * When called on an HTML element in an HTML document,
+		 * `getElementsByTagName` lower-cases the argument before searching for it.
+		 * This is undesirable when trying to match camel-cased SVG elements (such as
+		 * `<linearGradient>`) in an HTML document.
+		 * Instead, use `Element.getElementsByTagNameNS()`,
+		 * which preserves the capitalization of the tag name.
+		 *
+		 * `Element.getElementsByTagName` is similar to `Document.getElementsByTagName()`,
+		 * except that it only searches for elements that are descendants of the specified element.
+		 *
+		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByTagName
+		 * @see https://dom.spec.whatwg.org/#concept-getelementsbytagname
+		 */
+		getElementsByTagName(qualifiedName: string): LiveNodeList;
+
+		/**
+		 * Returns a `LiveNodeList` of elements with the given tag name belonging to the given namespace.
+		 * The complete document is searched, including the root node.
+		 *
+		 * The returned list is live, which means it updates itself with the DOM tree automatically.
+		 * Therefore, there is no need to call `Element.getElementsByTagName()`
+		 * with the same element and arguments repeatedly if the DOM changes in between calls.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getElementsByTagNameNS)
+		 * */
+		getElementsByTagNameNS(
+			namespaceURI: string | null,
+			localName: string
+		): LiveNodeList;
 		/**
 		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
 		 *
