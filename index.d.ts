@@ -804,7 +804,22 @@ declare module '@xmldom/xmldom' {
 			namespace: string | null,
 			localName: string
 		): Attr | null;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/getBoundingClientRect) */
+		/**
+		 * Returns a LiveNodeList of all child elements which have **all** of the given class
+		 * name(s).
+		 *
+		 * Returns an empty list if `classNames` is an empty string or only contains HTML white space
+		 * characters.
+		 *
+		 * Warning: This returns a live LiveNodeList.
+		 * Changes in the DOM will reflect in the array as the changes occur.
+		 * If an element selected by this array no longer qualifies for the selector,
+		 * it will automatically be removed. Be aware of this for iteration purposes.
+		 *
+		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByClassName
+		 * @see https://dom.spec.whatwg.org/#concept-getelementsbyclassname
+		 */
+		getElementsByClassName(classNames: string): LiveNodeList;
 
 		/**
 		 * Returns a LiveNodeList of elements with the given qualifiedName.
@@ -1118,7 +1133,6 @@ declare module '@xmldom/xmldom' {
 		 */
 		createDocumentFragment(): DocumentFragment;
 
-
 		createElement(tagName: string): Element;
 
 		/**
@@ -1141,10 +1155,7 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElementNS)
 		 */
-		createElementNS(
-			namespace: string | null,
-			qualifiedName: string,
-		): Element;
+		createElementNS(namespace: string | null, qualifiedName: string): Element;
 
 		/**
 		 * Returns a ProcessingInstruction node whose target is target and data is data. If target does
@@ -1178,20 +1189,17 @@ declare module '@xmldom/xmldom' {
 		getElementById(elementId: string): Element | null;
 
 		/**
-		 * The `getElementsByClassName` method of `Document` interface returns an array-like object
-		 * of all child elements which have **all** of the given class name(s).
+		 * Returns a LiveNodeList of all child elements which have **all** of the given class
+		 * name(s).
 		 *
-		 * Returns an empty list if `classeNames` is an empty string or only contains HTML white
-		 * space characters.
+		 * Returns an empty list if `classNames` is an empty string or only contains HTML white space
+		 * characters.
 		 *
-		 * Warning: This is a live LiveNodeList.
+		 * Warning: This returns a live LiveNodeList.
 		 * Changes in the DOM will reflect in the array as the changes occur.
 		 * If an element selected by this array no longer qualifies for the selector,
 		 * it will automatically be removed. Be aware of this for iteration purposes.
 		 *
-		 * @param {string} classNames
-		 * Is a string representing the class name(s) to match; multiple class names are separated by
-		 * (ASCII-)whitespace.
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName
 		 * @see https://dom.spec.whatwg.org/#concept-getelementsbyclassname
 		 */

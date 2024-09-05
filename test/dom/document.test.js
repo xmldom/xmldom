@@ -92,7 +92,7 @@ describe('Document.prototype', () => {
 
 			expect(doc.getElementsByClassName(' \f\n\r\t')).toHaveLength(0);
 		});
-		test('should return only the case insensitive matching names', () => {
+		test('should return only the case sensitive matching names', () => {
 			const MIXED_CASES = ['AAA', 'AAa', 'AaA', 'aAA'];
 			const doc = getTestParser().parser.parseFromString(INPUT(...MIXED_CASES), MIME_TYPE.XML_TEXT);
 
