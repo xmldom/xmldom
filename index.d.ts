@@ -771,6 +771,13 @@ declare module '@xmldom/xmldom' {
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attributes) */
 		readonly attributes: NamedNodeMap;
 		/**
+		 * Returns the HTML-uppercased qualified name.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/tagName)
+		 */
+		readonly tagName: string;
+
+		/**
 		 * Returns element's first attribute whose qualified name is qualifiedName, and null if there
 		 * is no such attribute otherwise.
 		 *
@@ -1067,6 +1074,12 @@ declare module '@xmldom/xmldom' {
 		readonly nodeName: '#document';
 		readonly nodeType: typeof Node.DOCUMENT_NODE;
 		readonly doctype: DocumentType | null;
+		/**
+		 * Gets a reference to the root node of the document.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/documentElement)
+		 */
+		readonly documentElement: Element | null;
 
 		/**
 		 * Creates an attribute object with a specified name.
