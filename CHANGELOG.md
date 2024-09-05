@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.2](https://github.com/xmldom/xmldom/compare/0.9.1...0.9.2)
+
+### Feature
+
+- add `Element.getElementsByClassName` [`#722`](https://github.com/xmldom/xmldom/pull/722)
+
+### Fixed
+
+- add missing types for `Document.documentElement` and `Element.tagName` [`#721`](https://github.com/xmldom/xmldom/pull/721) [`#720`](https://github.com/xmldom/xmldom/issues/720)
+
+Thank you, [@censujiang](https://github.com/censujiang), [@Mathias-S](https://github.com/Mathias-S), for your contributions
+
+
 ## [0.9.1](https://github.com/xmldom/xmldom/compare/0.9.0...0.9.1)
 
 ### Fixed
@@ -16,8 +29,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - minimum tested node version is 14 [`#710`](https://github.com/xmldom/xmldom/pull/710)
 
-Thank you, [@krystofwoldrich](https://github.com/krystofwoldrich), [@marvinruder](https://github.com/marvinruder), 
-[@amacneil](https://github.com/amacneil), [@defunctzombie](https://github.com/defunctzombie), 
+Thank you, [@krystofwoldrich](https://github.com/krystofwoldrich), [@marvinruder](https://github.com/marvinruder), [@amacneil](https://github.com/amacneil), [@defunctzombie](https://github.com/defunctzombie), 
 [@tjhorner](https://github.com/tjhorner), [@danon](https://github.com/danon), for your contributions
 
 
