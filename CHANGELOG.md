@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.1](https://github.com/xmldom/xmldom/compare/0.9.0...0.9.1)
+
+### Fixed
+
+- DOMParser.parseFromString requires mimeType as second argument [`#713`](https://github.com/xmldom/xmldom/pull/713)
+- correct spelling of `isHTMLMimeType` in type definition [`#715`](https://github.com/xmldom/xmldom/pull/715) / [`#712`](https://github.com/xmldom/xmldom/issues/712)
+- sync types with exports [`#717`](https://github.com/xmldom/xmldom/pull/717) / [`#285`](https://github.com/xmldom/xmldom/issues/285) / [`#695`](https://github.com/xmldom/xmldom/issues/695)
+
+### Other
+
+- minimum tested node version is 14 [`#710`](https://github.com/xmldom/xmldom/pull/710)
+
+Thank you, [@krystofwoldrich](https://github.com/krystofwoldrich), [@marvinruder](https://github.com/marvinruder), 
+[@amacneil](https://github.com/amacneil), [@defunctzombie](https://github.com/defunctzombie), 
+[@tjhorner](https://github.com/tjhorner), [@danon](https://github.com/danon), for your contributions
+
+
 ## [0.9.0](https://github.com/xmldom/xmldom/compare/0.9.0-beta.11...0.9.0)
 
 - [Discussion](https://github.com/xmldom/xmldom/discussions/435)
