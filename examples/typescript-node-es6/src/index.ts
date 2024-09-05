@@ -23,6 +23,7 @@ import {
 	ParseError,
 	Text,
 	XMLSerializer,
+	Element,
 } from '@xmldom/xmldom';
 
 const failedAssertions: Error[] = [];
@@ -85,6 +86,8 @@ assert(doc1.DOCUMENT_POSITION_CONTAINS, 8);
 assert(doc1 instanceof Node, true);
 assert(doc1 instanceof Document, true);
 assert(doc1.childNodes instanceof NodeList, true);
+assert(doc1.documentElement instanceof Element, true);
+assert(doc1.documentElement?.tagName, 'qualifiedName');
 assert(doc1.getElementsByClassName('hide') instanceof LiveNodeList, true);
 
 const attr = doc1.createAttribute('attr');
