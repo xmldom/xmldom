@@ -317,23 +317,23 @@ The original author claims that xmldom implements [DOM Level 2] in a "fully comp
 In the past, there have been multiple (even breaking) changes to align xmldom with the living standard,
 so if you find a difference that is not documented, any contribution to resolve the difference is very welcome (even just reporting it as an issue). 
 
-xmldom implements the following interfaces (only the ones marked with `*` are currently exposed):
-- `Attr` *
+xmldom implements the following interfaces:
+- `Attr`
 - `CDATASection`
 - `CharacterData`
 - `Comment`
-- `Document` *
+- `Document`
 - `DocumentFragment`
-- `DocumentType` *
-- `DOMException` * 
-- `DOMImplementation` *
-- `Element` *
+- `DocumentType`
+- `DOMException` 
+- `DOMImplementation`
+- `Element`
 - `Entity`
 - `EntityReference`
 - `LiveNodeList`
-- `NamedNodeMap` *
-- `Node` *
-- `NodeList` *
+- `NamedNodeMap`
+- `Node`
+- `NodeList`
 - `Notation`
 - `ProcessingInstruction`
 - `Text`
