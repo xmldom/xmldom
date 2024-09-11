@@ -333,6 +333,11 @@ declare module '@xmldom/xmldom' {
 		// instanceof post ts 5.3
 		[Symbol.hasInstance](val: unknown): val is T;
 	};
+
+	type GetRootNodeOptions = {
+		composed?: boolean;
+	};
+
 	/**
 	 * The DOM Node interface is an abstract base class upon which many other DOM API objects are
 	 * based, thus letting those object types to be used similarly and often interchangeably. As an
@@ -381,6 +386,18 @@ declare module '@xmldom/xmldom' {
 		 */
 		localName: string | null;
 		/**
+		 * Always returns `about:blank` currently.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/baseURI)
+		 */
+		readonly baseURI: string;
+		/**
+		 * Returns true if this node is inside of a document or is the document node itself.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isConnected)
+		 */
+		readonly isConnected: boolean;
+		/**
 		 * The namespace URI of this node.
 		 */
 		readonly namespaceURI: string | null;
@@ -417,6 +434,12 @@ declare module '@xmldom/xmldom' {
 		 */
 		readonly parentNode: Node | null;
 		/**
+		 * Returns the parent element.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/parentElement)
+		 */
+		readonly parentElement: Element | null;
+		/**
 		 * The prefix of the namespace for this node.
 		 */
 		prefix: string | null;
@@ -442,6 +465,37 @@ declare module '@xmldom/xmldom' {
 
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/appendChild) */
 		appendChild(node: Node): Node;
+
+		/**
+		 * Checks whether or not `other` is an inclusive descendant of this node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/contains)
+		 */
+		contains(other: Node): boolean;
+
+		/**
+		 * Searches for the root node of this node.
+		 *
+		 * Difference to the specs:
+		 * options.compose doesn't change this behaviour.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode)
+		 */
+		getRootNode(options: GetRootNodeOptions): Node;
+
+		/**
+		 * Checks whether or not the given node is equal to this node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode)
+		 */
+		isEqualNode(other: Node): boolean;
+
+		/**
+		 * Checks whether or not the given node is this node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isSameNode)
+		 */
+		isSameNode(other: Node): boolean;
 
 		/**
 		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.

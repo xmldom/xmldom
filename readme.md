@@ -99,7 +99,7 @@ import { DOMParser } from '@xmldom/xmldom'
   readonly class properties (aka `NodeType`),  
   these can be accessed from any `Node` instance `node`:  
   `if (node.nodeType === node.ELEMENT_NODE) {...`
-  
+
     1. `ELEMENT_NODE` (`1`)
     2. `ATTRIBUTE_NODE` (`2`)
     3. `TEXT_NODE` (`3`)
@@ -112,14 +112,14 @@ import { DOMParser } from '@xmldom/xmldom'
     10. `DOCUMENT_TYPE_NODE` (`10`)
     11. `DOCUMENT_FRAGMENT_NODE` (`11`)
     12. `NOTATION_NODE` (`12`)
-  
+
   attribute:
-    - `nodeValue` | `prefix`
-  
+    - `nodeValue` | `prefix` | `textContent`
+
   readonly attribute:
-    - `nodeName` | `nodeType` | `parentNode` | `childNodes` | `firstChild` | `lastChild` | `previousSibling` | `nextSibling` | `attributes` | `ownerDocument` | `namespaceURI` | `localName`
-  
-  method:	
+    - `nodeName` | `nodeType` | `parentNode` | `parentElement` | `childNodes` | `firstChild` | `lastChild` | `previousSibling` | `nextSibling` | `attributes` | `ownerDocument` | `namespaceURI` | `localName` | `isConnected` | `baseURI`
+
+  method:
     * `insertBefore(newChild, refChild)`
     * `replaceChild(newChild, oldChild)`
     * `removeChild(oldChild)`
@@ -127,6 +127,10 @@ import { DOMParser } from '@xmldom/xmldom'
     * `hasChildNodes()`
     * `cloneNode(deep)`
     * `normalize()`
+    * `contains(otherNode)`
+    * `getRootNode()`
+    * `isEqualNode(otherNode)`
+    * `isSameNode(otherNode)`
     * `isSupported(feature, version)`
     * `hasAttributes()`
 * [DOMException](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html)
@@ -149,7 +153,7 @@ import { DOMParser } from '@xmldom/xmldom'
   - `INVALID_MODIFICATION_ERR` (`13`)
   - `NAMESPACE_ERR` (`14`)
   - `INVALID_ACCESS_ERR` (`15`)
-   
+
   attributes:
   -  `code` with a value matching one of the above constants.
 
@@ -183,7 +187,7 @@ import { DOMParser } from '@xmldom/xmldom'
 
 * [DocumentFragment](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-B63ED1A3) : Node
 * [Element](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-745549614) : Node
-		
+
   readonly attribute:
   - `tagName`
 
