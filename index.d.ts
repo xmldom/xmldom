@@ -354,10 +354,6 @@ declare module '@xmldom/xmldom' {
 	 * depending on circumstances. For example, attempting to add children to a node type that
 	 * cannot have children will throw an exception.
 	 *
-	 * **This behavior is slightly different from the in the specs**:
-	 * - undeclared properties: baseURI, isConnected, parentElement
-	 * - missing methods: contains, getRootNode, isEqualNode, isSameNode
-	 *
 	 * @see http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247
 	 * @see https://dom.spec.whatwg.org/#node
 	 * @prettierignore
