@@ -1073,7 +1073,7 @@ declare module '@xmldom/xmldom' {
 	}
 	var Notation: InstanceOf<Notation>;
 
-	interface ProcessingInstruction extends Node {
+	interface ProcessingInstruction extends CharacterData {
 		nodeType: typeof Node.PROCESSING_INSTRUCTION_NODE;
 		/**
 		 * A string representing the textual data contained in this object.

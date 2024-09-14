@@ -24,6 +24,7 @@ import {
 	Text,
 	XMLSerializer,
 	Element,
+	ProcessingInstruction,
 } from '@xmldom/xmldom';
 
 const failedAssertions: Error[] = [];
@@ -113,6 +114,8 @@ const pi = doc1.createProcessingInstruction('target', 'data');
 assert(pi.nodeType, Node.PROCESSING_INSTRUCTION_NODE);
 assert(pi.target, pi.nodeName);
 assert(pi.data, pi.nodeValue);
+assert(pi instanceof ProcessingInstruction, true);
+assert(pi instanceof CharacterData, true);
 
 const cdata = doc1.createCDATASection('< &');
 assert(cdata instanceof CharacterData, true);
