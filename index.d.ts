@@ -975,12 +975,7 @@ declare module '@xmldom/xmldom' {
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData)
 	 */
-	var CharacterData: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is CharacterData;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is CharacterData;
-	};
+	var CharacterData: InstanceOf<CharacterData>;
 
 	/**
 	 * The textual content of Element or Attr. If an element has no markup within its content, it has
@@ -1081,11 +1076,16 @@ declare module '@xmldom/xmldom' {
 	interface ProcessingInstruction extends Node {
 		nodeType: typeof Node.PROCESSING_INSTRUCTION_NODE;
 		/**
-		 * Everything that goes after the target, excluding `?>`.
+		 * A string representing the textual data contained in this object.
+		 * For `ProcessingInstruction`, that means everything that goes after the `target`, excluding
+		 * `?>`.
+		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/data)
 		 */
 		data: string;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/ProcessingInstruction/target) */
+		/**
+		 * A string containing the name of the application.
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ProcessingInstruction/target) */
 		readonly target: string;
 	}
 	var ProcessingInstruction: InstanceOf<ProcessingInstruction>;
@@ -1394,7 +1394,6 @@ declare module '@xmldom/xmldom' {
 	class XMLSerializer {
 		serializeToString(node: Node, nodeFilter?: (node: Node) => boolean): string;
 	}
-
 	// END ./lib/dom.js
 
 	// START ./lib/dom-parser.js
