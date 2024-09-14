@@ -46,7 +46,7 @@
 		"@homer0/prettier-plugin-jsdoc": "9.0.2",
 		"@jazzer.js/core": "2.1.0",
 		"@jazzer.js/jest-runner": "2.1.0",
-		"auto-changelog": "2.4.0",
+		"auto-changelog": "2.5.0",
 		"eslint": "8.57.0",
 		"eslint-config-prettier": "9.1.0",
 		"eslint-plugin-anti-trojan-source": "1.1.1",
