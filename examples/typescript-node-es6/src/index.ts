@@ -24,6 +24,7 @@ import {
 	Text,
 	XMLSerializer,
 	Element,
+	ProcessingInstruction,
 } from '@xmldom/xmldom';
 
 const failedAssertions: Error[] = [];
@@ -75,6 +76,14 @@ new ParseError('message', {}, domException);
 assert(Node.ATTRIBUTE_NODE, 2);
 assert(Node.DOCUMENT_POSITION_CONTAINS, 8);
 
+// there are no real Node instances,
+// but we want to check that the Node type provides these props
+const fakeNode = {} as unknown as Node;
+assert(fakeNode.nodeType, undefined);
+assert(fakeNode.lineNumber, undefined);
+assert(fakeNode.columnNumber, undefined);
+assert(fakeNode.textContent, undefined);
+
 assert(new NodeList().length, 0);
 
 const impl = new DOMImplementation();
@@ -100,6 +109,15 @@ const element = doc1.createElement('a');
 assert(element.nodeType, Node.ELEMENT_NODE);
 assert(element.ownerDocument, doc1);
 assert(element.attributes instanceof NamedNodeMap, true);
+
+const pi = doc1.createProcessingInstruction('target', 'data');
+assert(pi.nodeType, Node.PROCESSING_INSTRUCTION_NODE);
+assert(pi.target, 'target');
+assert(pi.data, 'data');
+assert(pi.target, pi.nodeName);
+assert(pi.data, pi.nodeValue);
+assert(pi instanceof ProcessingInstruction, true);
+assert(pi instanceof CharacterData, true);
 
 const cdata = doc1.createCDATASection('< &');
 assert(cdata instanceof CharacterData, true);

@@ -350,7 +350,7 @@ declare module '@xmldom/xmldom' {
 	 * cannot have children will throw an exception.
 	 *
 	 * **This behavior is slightly different from the in the specs**:
-	 * - undeclared properties: nodeType, baseURI, isConnected, parentElement, textContent
+	 * - undeclared properties: baseURI, isConnected, parentElement
 	 * - missing methods: contains, getRootNode, isEqualNode, isSameNode
 	 *
 	 * @see http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247
@@ -396,6 +396,12 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/nodeName)
 		 */
 		readonly nodeName: string;
+		/**
+		 * Returns the type of node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/nodeType)
+		 */
+		readonly nodeType: number;
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/nodeValue) */
 		nodeValue: string | null;
 		/**
@@ -420,6 +426,19 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/previousSibling)
 		 */
 		readonly previousSibling: Node | null;
+		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/textContent) */
+		textContent: string | null;
+
+		/**
+		 * Zero based line position inside the parsed source,
+		 * if the `locator` was not disabled.
+		 */
+		lineNumber?: number;
+		/**
+		 * One based column position inside the parsed source,
+		 * if the `locator` was not disabled.
+		 */
+		columnNumber?: number;
 
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/appendChild) */
 		appendChild(node: Node): Node;
@@ -956,12 +975,7 @@ declare module '@xmldom/xmldom' {
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData)
 	 */
-	var CharacterData: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is CharacterData;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is CharacterData;
-	};
+	var CharacterData: InstanceOf<CharacterData>;
 
 	/**
 	 * The textual content of Element or Attr. If an element has no markup within its content, it has
@@ -1059,8 +1073,20 @@ declare module '@xmldom/xmldom' {
 	}
 	var Notation: InstanceOf<Notation>;
 
-	interface ProcessingInstruction extends Node {
+	interface ProcessingInstruction extends CharacterData {
 		nodeType: typeof Node.PROCESSING_INSTRUCTION_NODE;
+		/**
+		 * A string representing the textual data contained in this object.
+		 * For `ProcessingInstruction`, that means everything that goes after the `target`, excluding
+		 * `?>`.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/data)
+		 */
+		data: string;
+		/**
+		 * A string containing the name of the application.
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ProcessingInstruction/target) */
+		readonly target: string;
 	}
 	var ProcessingInstruction: InstanceOf<ProcessingInstruction>;
 
@@ -1368,7 +1394,6 @@ declare module '@xmldom/xmldom' {
 	class XMLSerializer {
 		serializeToString(node: Node, nodeFilter?: (node: Node) => boolean): string;
 	}
-
 	// END ./lib/dom.js
 
 	// START ./lib/dom-parser.js
