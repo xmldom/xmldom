@@ -112,6 +112,8 @@ assert(element.attributes instanceof NamedNodeMap, true);
 
 const pi = doc1.createProcessingInstruction('target', 'data');
 assert(pi.nodeType, Node.PROCESSING_INSTRUCTION_NODE);
+assert(pi.target, 'target');
+assert(pi.data, 'data');
 assert(pi.target, pi.nodeName);
 assert(pi.data, pi.nodeValue);
 assert(pi instanceof ProcessingInstruction, true);
