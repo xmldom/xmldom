@@ -98,6 +98,11 @@ assert(doc1.childNodes instanceof NodeList, true);
 assert(doc1.documentElement instanceof Element, true);
 assert(doc1.documentElement?.tagName, 'qualifiedName');
 assert(doc1.getElementsByClassName('hide') instanceof LiveNodeList, true);
+Array.from(doc1.getElementsByTagName('img')).find(
+	// just a type check, since the document doesn't return any img elements,
+	// so this method will never be executed
+	(element) => assert(element instanceof Element, true)
+);
 
 const attr = doc1.createAttribute('attr');
 assert(attr.nodeType, Node.ATTRIBUTE_NODE);
