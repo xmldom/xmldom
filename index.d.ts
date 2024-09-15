@@ -389,7 +389,7 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/baseURI)
 		 */
-		readonly baseURI: string;
+		readonly baseURI: 'about:blank';
 		/**
 		 * Returns true if this node is inside of a document or is the document node itself.
 		 *
@@ -433,7 +433,7 @@ declare module '@xmldom/xmldom' {
 		 */
 		readonly parentNode: Node | null;
 		/**
-		 * Returns the parent element.
+		 * Returns the parent `Node` if it is of type `Element`, otherwise `null`.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/parentElement)
 		 */
@@ -471,14 +471,16 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/contains)
 		 */
 		contains(other: Node): boolean;
-
 		/**
 		 * Searches for the root node of this node.
 		 *
-		 * Difference to the specs:
-		 * options.compose doesn't change this behaviour.
+		 * **This behavior is slightly different from the in the specs**:
+		 * - ignores `options.composed`, since `ShadowRoot`s are unsupported, always returns root.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode)
+		 *
+		 * @see https://dom.spec.whatwg.org/#dom-node-getrootnode
+		 * @see https://dom.spec.whatwg.org/#concept-shadow-including-root
 		 */
 		getRootNode(options: GetRootNodeOptions): Node;
 
