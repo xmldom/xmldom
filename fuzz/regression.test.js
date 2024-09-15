@@ -1,4 +1,5 @@
 'use strict';
+// wallaby:file.skip since wallaby is not concerned with fuzz testing
 const { describe, expect, test, beforeAll } = require('@jest/globals');
 
 const fs = require('fs');
