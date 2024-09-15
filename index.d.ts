@@ -474,8 +474,8 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Searches for the root node of this node.
 		 *
-		 * **This behavior is slightly different from the in the specs**:
-		 * - ignores `options.composed`, since `ShadowRoot`s are unsupported, always returns root.
+		 * **This behavior is slightly different from the one in the specs**:
+		 * - ignores `options.composed`, since `ShadowRoot`s are unsupported, therefore always returning root.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode)
 		 *
