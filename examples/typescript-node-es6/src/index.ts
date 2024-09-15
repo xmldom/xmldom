@@ -99,8 +99,8 @@ assert(doc1.documentElement instanceof Element, true);
 assert(doc1.documentElement?.tagName, 'qualifiedName');
 assert(doc1.getElementsByClassName('hide') instanceof LiveNodeList, true);
 Array.from(doc1.getElementsByTagName('img')).find(
-	// just a type check, since the document doesn't return any img elements,
-	// so this method will never be executed
+	// just a type check, since the document doesn't contain any img elements,
+	// this method will never be executed, but typescript checks need to pass
 	(element) => assert(element instanceof Element, true)
 );
 
