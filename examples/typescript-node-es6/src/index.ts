@@ -24,6 +24,7 @@ import {
 	Text,
 	XMLSerializer,
 	Element,
+	ProcessingInstruction,
 } from '@xmldom/xmldom';
 
 const failedAssertions: Error[] = [];
@@ -97,6 +98,11 @@ assert(doc1.childNodes instanceof NodeList, true);
 assert(doc1.documentElement instanceof Element, true);
 assert(doc1.documentElement?.tagName, 'qualifiedName');
 assert(doc1.getElementsByClassName('hide') instanceof LiveNodeList, true);
+Array.from(doc1.getElementsByTagName('img')).find(
+	// just a type check, since the document doesn't contain any img elements,
+	// this method will never be executed, but typescript checks need to pass
+	(element) => assert(element instanceof Element, true)
+);
 
 const attr = doc1.createAttribute('attr');
 assert(attr.nodeType, Node.ATTRIBUTE_NODE);
@@ -111,8 +117,12 @@ assert(element.attributes instanceof NamedNodeMap, true);
 
 const pi = doc1.createProcessingInstruction('target', 'data');
 assert(pi.nodeType, Node.PROCESSING_INSTRUCTION_NODE);
+assert(pi.target, 'target');
+assert(pi.data, 'data');
 assert(pi.target, pi.nodeName);
 assert(pi.data, pi.nodeValue);
+assert(pi instanceof ProcessingInstruction, true);
+assert(pi instanceof CharacterData, true);
 
 const cdata = doc1.createCDATASection('< &');
 assert(cdata instanceof CharacterData, true);

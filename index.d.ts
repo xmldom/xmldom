@@ -354,6 +354,9 @@ declare module '@xmldom/xmldom' {
 	 * depending on circumstances. For example, attempting to add children to a node type that
 	 * cannot have children will throw an exception.
 	 *
+	 * **This behavior is slightly different from the in the specs**:
+	 * - unimplemented interfaces: EventTarget
+	 *
 	 * @see http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247
 	 * @see https://dom.spec.whatwg.org/#node
 	 * @prettierignore
@@ -687,23 +690,12 @@ declare module '@xmldom/xmldom' {
 		 * Get an attribute by name. Note: Name is in lower case in case of HTML namespace and
 		 * document.
 		 *
-		 * @param {string} localName
-		 * The local name of the attribute.
-		 * @returns {Attr | null}
-		 * The attribute with the given local name, or null if no such attribute exists.
 		 * @see https://dom.spec.whatwg.org/#concept-element-attributes-get-by-name
 		 */
 		getNamedItem(qualifiedName: string): Attr | null;
 		/**
 		 * Get an attribute by namespace and local name.
 		 *
-		 * @param {string | null} namespaceURI
-		 * The namespace URI of the attribute.
-		 * @param {string} localName
-		 * The local name of the attribute.
-		 * @returns {Attr | null}
-		 * The attribute with the given namespace URI and local name, or null if no such attribute
-		 * exists.
 		 * @see https://dom.spec.whatwg.org/#concept-element-attributes-get-by-namespace
 		 */
 		getNamedItemNS(namespace: string | null, localName: string): Attr | null;
@@ -713,10 +705,6 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Removes an attribute specified by the local name.
 		 *
-		 * @param {string} localName
-		 * The local name of the attribute to be removed.
-		 * @returns {Attr}
-		 * The attribute node that was removed.
 		 * @throws {DOMException}
 		 * With code:
 		 * - {@link DOMException.NOT_FOUND_ERR} if no attribute with the given name is found.
@@ -727,12 +715,6 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Removes an attribute specified by the namespace and local name.
 		 *
-		 * @param {string | null} namespaceURI
-		 * The namespace URI of the attribute to be removed.
-		 * @param {string} localName
-		 * The local name of the attribute to be removed.
-		 * @returns {Attr}
-		 * The attribute node that was removed.
 		 * @throws {DOMException}
 		 * With code:
 		 * - {@link DOMException.NOT_FOUND_ERR} if no attribute with the given namespace URI and
@@ -744,11 +726,6 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Set an attribute.
 		 *
-		 * @param {Attr} attr
-		 * The attribute to set.
-		 * @returns {Attr | null}
-		 * The old attribute with the same local name and namespace URI as the new one, or null if no
-		 * such attribute exists.
 		 * @throws {DOMException}
 		 * With code:
 		 * - {@link INUSE_ATTRIBUTE_ERR} - If the attribute is already an attribute of another
@@ -760,11 +737,6 @@ declare module '@xmldom/xmldom' {
 		 * Set an attribute, replacing an existing attribute with the same local name and namespace
 		 * URI if one exists.
 		 *
-		 * @param {Attr} attr
-		 * The attribute to set.
-		 * @returns {Attr | null}
-		 * The old attribute with the same local name and namespace URI as the new one, or null if no
-		 * such attribute exists.
 		 * @throws {DOMException}
 		 * Throws a DOMException with the name "InUseAttributeError" if the attribute is already an
 		 * attribute of another element.
@@ -781,7 +753,7 @@ declare module '@xmldom/xmldom' {
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/NodeList)
 	 */
-	class NodeList implements Iterable<Node> {
+	class NodeList<T extends Node = Node> implements Iterable<T> {
 		/**
 		 * Returns the number of nodes in the collection.
 		 *
@@ -793,34 +765,40 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/NodeList/item)
 		 */
-		item(index: number): Node | null;
+		item(index: number): T | null;
 		/**
 		 * Returns a string representation of the NodeList.
 		 */
-		toString(nodeFilter: (node: Node) => Node | undefined): string;
+		toString(nodeFilter: (node: T) => T | undefined): string;
 		/**
 		 * Filters the NodeList based on a predicate.
 		 *
 		 * @private
 		 */
-		filter(predicate: (node: Node) => boolean): Node[];
+		filter(predicate: (node: T) => boolean): T[];
 		/**
 		 * Returns the first index at which a given node can be found in the NodeList, or -1 if it is
 		 * not present.
 		 *
 		 * @private
 		 */
-		indexOf(node: Node): number;
-		[index: number]: Node | undefined;
+		indexOf(node: T): number;
 
-		[Symbol.iterator](): Iterator<Node>;
+		/**
+		 * Index based access returns `undefined`, when accessing indexes >= `length`.
+		 * But it would break a lot of code (like `Array.from` usages),
+		 * if it would be typed as `T | undefined`.
+		 */
+		[index: number]: T;
+
+		[Symbol.iterator](): Iterator<T>;
 	}
 
 	/**
 	 * Represents a live collection of nodes that is automatically updated when its associated
 	 * document changes.
 	 */
-	interface LiveNodeList extends NodeList {}
+	interface LiveNodeList<T extends Node = Node> extends NodeList<T> {}
 	/**
 	 * Represents a live collection of nodes that is automatically updated when its associated
 	 * document changes.
@@ -888,7 +866,7 @@ declare module '@xmldom/xmldom' {
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByClassName
 		 * @see https://dom.spec.whatwg.org/#concept-getelementsbyclassname
 		 */
-		getElementsByClassName(classNames: string): LiveNodeList;
+		getElementsByClassName(classNames: string): LiveNodeList<Element>;
 
 		/**
 		 * Returns a LiveNodeList of elements with the given qualifiedName.
@@ -912,7 +890,7 @@ declare module '@xmldom/xmldom' {
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByTagName
 		 * @see https://dom.spec.whatwg.org/#concept-getelementsbytagname
 		 */
-		getElementsByTagName(qualifiedName: string): LiveNodeList;
+		getElementsByTagName(qualifiedName: string): LiveNodeList<Element>;
 
 		/**
 		 * Returns a `LiveNodeList` of elements with the given tag name belonging to the given
@@ -924,7 +902,7 @@ declare module '@xmldom/xmldom' {
 		getElementsByTagNameNS(
 			namespaceURI: string | null,
 			localName: string
-		): LiveNodeList;
+		): LiveNodeList<Element>;
 
 		getQualifiedName(): string;
 		/**
@@ -1025,12 +1003,7 @@ declare module '@xmldom/xmldom' {
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData)
 	 */
-	var CharacterData: {
-		// instanceof pre ts 5.3
-		(val: unknown): val is CharacterData;
-		// instanceof post ts 5.3
-		[Symbol.hasInstance](val: unknown): val is CharacterData;
-	};
+	var CharacterData: InstanceOf<CharacterData>;
 
 	/**
 	 * The textual content of Element or Attr. If an element has no markup within its content, it has
@@ -1128,14 +1101,19 @@ declare module '@xmldom/xmldom' {
 	}
 	var Notation: InstanceOf<Notation>;
 
-	interface ProcessingInstruction extends Node {
+	interface ProcessingInstruction extends CharacterData {
 		nodeType: typeof Node.PROCESSING_INSTRUCTION_NODE;
 		/**
-		 * Everything that goes after the target, excluding `?>`.
+		 * A string representing the textual data contained in this object.
+		 * For `ProcessingInstruction`, that means everything that goes after the `target`, excluding
+		 * `?>`.
+		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CharacterData/data)
 		 */
 		data: string;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/ProcessingInstruction/target) */
+		/**
+		 * A string containing the name of the application.
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ProcessingInstruction/target) */
 		readonly target: string;
 	}
 	var ProcessingInstruction: InstanceOf<ProcessingInstruction>;
@@ -1157,7 +1135,6 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * The implementation that created this document.
 		 *
-		 * @type DOMImplementation
 		 * @readonly
 		 */
 		readonly implementation: DOMImplementation;
@@ -1175,9 +1152,6 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Creates an attribute object with a specified name.
 		 *
-		 * @param name
-		 * String that sets the attribute object's name.
-		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createAttribute)
 		 */
 		createAttribute(localName: string): Attr;
@@ -1194,9 +1168,6 @@ declare module '@xmldom/xmldom' {
 
 		/**
 		 * Creates a comment object with the specified data.
-		 *
-		 * @param data
-		 * Sets the comment object's data.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createComment)
 		 */
@@ -1258,9 +1229,6 @@ declare module '@xmldom/xmldom' {
 
 		/**
 		 * Returns a reference to the first object with the specified value of the ID attribute.
-		 *
-		 * @param elementId
-		 * String that specifies the ID value.
 		 */
 		getElementById(elementId: string): Element | null;
 
@@ -1279,7 +1247,7 @@ declare module '@xmldom/xmldom' {
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName
 		 * @see https://dom.spec.whatwg.org/#concept-getelementsbyclassname
 		 */
-		getElementsByClassName(classNames: string): LiveNodeList;
+		getElementsByClassName(classNames: string): LiveNodeList<Element>;
 
 		/**
 		 * Returns a LiveNodeList of elements with the given qualifiedName.
@@ -1303,7 +1271,7 @@ declare module '@xmldom/xmldom' {
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByTagName
 		 * @see https://dom.spec.whatwg.org/#concept-getelementsbytagname
 		 */
-		getElementsByTagName(qualifiedName: string): LiveNodeList;
+		getElementsByTagName(qualifiedName: string): LiveNodeList<Element>;
 
 		/**
 		 * Returns a `LiveNodeList` of elements with the given tag name belonging to the given
@@ -1318,7 +1286,7 @@ declare module '@xmldom/xmldom' {
 		getElementsByTagNameNS(
 			namespaceURI: string | null,
 			localName: string
-		): LiveNodeList;
+		): LiveNodeList<Element>;
 		/**
 		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
 		 *
@@ -1444,7 +1412,6 @@ declare module '@xmldom/xmldom' {
 	class XMLSerializer {
 		serializeToString(node: Node, nodeFilter?: (node: Node) => boolean): string;
 	}
-
 	// END ./lib/dom.js
 
 	// START ./lib/dom-parser.js
