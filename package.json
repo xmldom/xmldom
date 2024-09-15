@@ -40,7 +40,7 @@
 		"release": "np --no-yarn --test-script testrelease"
 	},
 	"engines": {
-		"node": ">=14.0.0"
+		"node": ">=14.6"
 	},
 	"devDependencies": {
 		"@homer0/prettier-plugin-jsdoc": "9.0.2",
