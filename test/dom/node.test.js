@@ -112,18 +112,6 @@ describe('Node.prototype', () => {
 		const el3 = doc.createElement('test3');
 		const el4 = doc.createElement('test3'); // Same element name as el3 for comparison
 
-		const textNode1 = doc.createTextNode('some text');
-		const textNode2 = doc.createTextNode('some text');
-		const textNode3 = doc.createTextNode('different text');
-
-		const commentNode1 = doc.createComment('This is a comment');
-		const commentNode2 = doc.createComment('This is a comment');
-		const commentNode3 = doc.createComment('This is a different comment');
-
-		const docType1 = impl.createDocumentType('html', '', '');
-		const docType2 = impl.createDocumentType('html', '', '');
-		const docType3 = impl.createDocumentType('svg', '', ''); // Different doctype for comparison
-
 		test('should return false when other node is null', () => {
 			expect(el1.isEqualNode(null)).toBe(false);
 		});
@@ -142,27 +130,35 @@ describe('Node.prototype', () => {
 		});
 
 		test('should return true for text nodes with the same data', () => {
-			expect(textNode1.isEqualNode(textNode2)).toBe(true);
+			expect(doc.createTextNode('some text').isEqualNode(doc.createTextNode('some text'))).toBe(true);
 		});
 
 		test('should return false for text nodes with different data', () => {
-			expect(textNode1.isEqualNode(textNode3)).toBe(false);
+			expect(doc.createTextNode('some text').isEqualNode(doc.createTextNode('different text'))).toBe(false);
 		});
 
 		test('should return true for comment nodes with the same data', () => {
-			expect(commentNode1.isEqualNode(commentNode2)).toBe(true);
+			expect(doc.createComment('This is a comment').isEqualNode(doc.createComment('This is a comment'))).toBe(true);
 		});
 
 		test('should return false for comment nodes with different data', () => {
-			expect(commentNode1.isEqualNode(commentNode3)).toBe(false);
+			expect(doc.createComment('This is a comment').isEqualNode(doc.createComment('This is a different comment'))).toBe(false);
 		});
 
 		test('should return true for document type nodes with identical names and IDs', () => {
-			expect(docType1.isEqualNode(docType2)).toBe(true);
+			expect(impl.createDocumentType('html').isEqualNode(impl.createDocumentType('html'))).toBe(true);
 		});
 
 		test('should return false for document type nodes with different names', () => {
-			expect(docType1.isEqualNode(docType3)).toBe(false);
+			expect(impl.createDocumentType('html').isEqualNode(impl.createDocumentType('svg', '', ''))).toBe(false);
+		});
+
+		test('should return false for document type nodes with different publicId', () => {
+			expect(impl.createDocumentType('xml', 'pubId').isEqualNode(impl.createDocumentType('xml', ''))).toBe(false);
+		});
+
+		test('should return false for document type nodes with different systemId', () => {
+			expect(impl.createDocumentType('xml', 'pubId').isEqualNode(impl.createDocumentType('xml', 'pubId', 'sysId'))).toBe(false);
 		});
 
 		test('should return false for elements with different attributes', () => {
