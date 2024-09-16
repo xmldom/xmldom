@@ -99,76 +99,96 @@ describe('Node.prototype', () => {
 		const impl = new DOMImplementation();
 		const doc = impl.createDocument(null, '');
 
-		const el1 = doc.createElement('test1');
-		const el1Child1 = doc.createElement('child1');
-		const el1Child2 = doc.createElement('child2');
-		el1.appendChild(el1Child1);
-		el1.appendChild(el1Child2);
-
-		const el2 = doc.createElement('test2');
-		const el2Child1 = doc.createElement('child1');
-		el2.appendChild(el2Child1);
-
-		const el3 = doc.createElement('test3');
-		const el4 = doc.createElement('test3'); // Same element name as el3 for comparison
-
 		test('should return false when other node is null', () => {
-			expect(el1.isEqualNode(null)).toBe(false);
+			expect(doc.isEqualNode(null)).toBe(false);
 		});
 
 		test("should return false when node types don't match", () => {
-			const attr1 = doc.createAttribute('attr1');
-			expect(el1.isEqualNode(attr1)).toBe(false);
+			expect(doc.isEqualNode(doc.createAttribute('attr1'))).toBe(false);
 		});
 
-		test('should return false when both nodes have a different amount of child nodes', () => {
-			expect(el1.isEqualNode(el2)).toBe(false);
+		describe('Element', () => {
+			test('should return false when both elements have a different amount of child nodes', () => {
+				const el1 = doc.createElement('p');
+				el1.appendChild(doc.createElement('child1'));
+				el1.appendChild(doc.createElement('child2'));
+
+				const el2 = doc.createElement('p');
+				el2.appendChild(doc.createElement('child1'));
+				expect(el1.tagName).toBe(el2.tagName);
+				expect(el1.firstChild.isEqualNode(el2.firstChild)).toBe(true);
+				expect(el1.isEqualNode(el2)).toBe(false);
+			});
+
+			test('should return false for elements with different localName', () => {
+				expect(doc.createElement('one').isEqualNode(doc.createElement('two'))).toBe(false);
+			});
+
+			test('should return false for elements with same namespace and localName but different prefix', () => {
+				const oneLocal = doc.createElementNS('namespaceURI', 'one:local');
+				const twoLocal = doc.createElementNS('namespaceURI', 'two:local');
+				expect(oneLocal.isEqualNode(twoLocal)).toBe(false);
+			});
+			test('should return false for elements with different attributes', () => {
+				const el3 = doc.createElement('test3');
+				const el4 = doc.createElement('test3');
+
+				el3.setAttribute('class', 'test-class');
+				expect(el3.isEqualNode(el4)).toBe(false);
+			});
+
+			test('should return true for elements with identical attributes in a different order', () => {
+				const el3 = doc.createElement('test3');
+				el3.setAttribute('style', '');
+				el3.setAttribute('class', 'test-class');
+				const el4 = doc.createElement('test3');
+				el4.setAttribute('class', 'test-class');
+				el4.setAttribute('style', '');
+				expect(el3.toString()).not.toEqual(el4.toString());
+				expect(el3.isEqualNode(el4)).toBe(true);
+			});
+
+			test('should return true for identical elements with the same tag name and no children', () => {
+				const el3 = doc.createElement('test3');
+				const el4 = doc.createElement('test3');
+				expect(el3.isEqualNode(el4)).toBe(true);
+			});
 		});
 
-		test('should return true for identical elements with the same tag name and no children', () => {
-			expect(el3.isEqualNode(el4)).toBe(true);
-		});
+		describe('Text', () => {
+			test('should return true for text nodes with the same data', () => {
+				expect(doc.createTextNode('some text').isEqualNode(doc.createTextNode('some text'))).toBe(true);
+			});
 
-		test('should return true for text nodes with the same data', () => {
-			expect(doc.createTextNode('some text').isEqualNode(doc.createTextNode('some text'))).toBe(true);
+			test('should return false for text nodes with different data', () => {
+				expect(doc.createTextNode('some text').isEqualNode(doc.createTextNode('different text'))).toBe(false);
+			});
 		});
+		describe('Comment', () => {
+			test('should return true for comment nodes with the same data', () => {
+				expect(doc.createComment('This is a comment').isEqualNode(doc.createComment('This is a comment'))).toBe(true);
+			});
 
-		test('should return false for text nodes with different data', () => {
-			expect(doc.createTextNode('some text').isEqualNode(doc.createTextNode('different text'))).toBe(false);
+			test('should return false for comment nodes with different data', () => {
+				expect(doc.createComment('This is a comment').isEqualNode(doc.createComment('This is a different comment'))).toBe(false);
+			});
 		});
+		describe('DocumentType', () => {
+			test('should return true for document type nodes with identical names and IDs', () => {
+				expect(impl.createDocumentType('html').isEqualNode(impl.createDocumentType('html'))).toBe(true);
+			});
 
-		test('should return true for comment nodes with the same data', () => {
-			expect(doc.createComment('This is a comment').isEqualNode(doc.createComment('This is a comment'))).toBe(true);
-		});
+			test('should return false for document type nodes with different names', () => {
+				expect(impl.createDocumentType('html').isEqualNode(impl.createDocumentType('svg', '', ''))).toBe(false);
+			});
 
-		test('should return false for comment nodes with different data', () => {
-			expect(doc.createComment('This is a comment').isEqualNode(doc.createComment('This is a different comment'))).toBe(false);
-		});
+			test('should return false for document type nodes with different publicId', () => {
+				expect(impl.createDocumentType('xml', 'pubId').isEqualNode(impl.createDocumentType('xml', ''))).toBe(false);
+			});
 
-		test('should return true for document type nodes with identical names and IDs', () => {
-			expect(impl.createDocumentType('html').isEqualNode(impl.createDocumentType('html'))).toBe(true);
-		});
-
-		test('should return false for document type nodes with different names', () => {
-			expect(impl.createDocumentType('html').isEqualNode(impl.createDocumentType('svg', '', ''))).toBe(false);
-		});
-
-		test('should return false for document type nodes with different publicId', () => {
-			expect(impl.createDocumentType('xml', 'pubId').isEqualNode(impl.createDocumentType('xml', ''))).toBe(false);
-		});
-
-		test('should return false for document type nodes with different systemId', () => {
-			expect(impl.createDocumentType('xml', 'pubId').isEqualNode(impl.createDocumentType('xml', 'pubId', 'sysId'))).toBe(false);
-		});
-
-		test('should return false for elements with different attributes', () => {
-			el3.setAttribute('class', 'test-class');
-			expect(el3.isEqualNode(el4)).toBe(false);
-		});
-
-		test('should return true for elements with identical attributes', () => {
-			el4.setAttribute('class', 'test-class');
-			expect(el3.isEqualNode(el4)).toBe(true);
+			test('should return false for document type nodes with different systemId', () => {
+				expect(impl.createDocumentType('xml', 'pubId').isEqualNode(impl.createDocumentType('xml', 'pubId', 'sysId'))).toBe(false);
+			});
 		});
 
 		test('should return false for elements with different namespaces', () => {
@@ -183,23 +203,6 @@ describe('Node.prototype', () => {
 			expect(el5.isEqualNode(el6)).toBe(true);
 		});
 
-		test('should return false for elements with different child nodes', () => {
-			el1Child2.textContent = 'New text';
-			expect(el1.isEqualNode(el2)).toBe(false);
-		});
-
-		test('should return true for processing instruction nodes with the same target and data', () => {
-			const pi1 = doc.createProcessingInstruction('xml-stylesheet', 'href="mystyle.css"');
-			const pi2 = doc.createProcessingInstruction('xml-stylesheet', 'href="mystyle.css"');
-			expect(pi1.isEqualNode(pi2)).toBe(true);
-		});
-
-		test('should return false for processing instruction nodes with different target or data', () => {
-			const pi1 = doc.createProcessingInstruction('xml-stylesheet', 'href="mystyle.css"');
-			const pi2 = doc.createProcessingInstruction('xml-stylesheet', 'href="yourstyle.css"');
-			expect(pi1.isEqualNode(pi2)).toBe(false);
-		});
-
 		test('should return false when attributes are not equal even if the rest of the node is', () => {
 			const el7 = doc.createElement('test7');
 			const el8 = doc.createElement('test7');
@@ -207,15 +210,39 @@ describe('Node.prototype', () => {
 			el8.setAttribute('attr', 'value2');
 			expect(el7.isEqualNode(el8)).toBe(false);
 		});
+		describe('ProcessingInstruction', () => {
+			test('should return true for processing instruction nodes with the same target and data', () => {
+				const pi1 = doc.createProcessingInstruction('xml-stylesheet', 'href="mystyle.css"');
+				const pi2 = doc.createProcessingInstruction('xml-stylesheet', 'href="mystyle.css"');
+				expect(pi1.isEqualNode(pi2)).toBe(true);
+			});
 
-		test('should return true for nodes with equal child nodes', () => {
-			const el9 = doc.createElement('parent');
-			const el10 = doc.createElement('parent');
-			const child1 = doc.createElement('child');
-			const child2 = doc.createElement('child');
-			el9.appendChild(child1);
-			el10.appendChild(child2);
-			expect(el9.isEqualNode(el10)).toBe(true);
+			test('should return false for processing instruction nodes with different target or data', () => {
+				const pi1 = doc.createProcessingInstruction('xml-stylesheet', 'href="mystyle.css"');
+				const pi2 = doc.createProcessingInstruction('xml-stylesheet', 'href="yourstyle.css"');
+				expect(pi1.isEqualNode(pi2)).toBe(false);
+			});
+		});
+
+		describe('childNodes', () => {
+			test('should return false for elements with different child nodes', () => {
+				const el1 = doc.createElement('p');
+				el1.appendChild(doc.createElement('child1'));
+				el1.firstChild.textContent = 'New text';
+
+				const el2 = doc.createElement('p');
+				el2.appendChild(doc.createElement('child1'));
+
+				expect(el1.isEqualNode(el2)).toBe(false);
+			});
+
+			test('should return true for nodes with equal child nodes', () => {
+				const el9 = doc.createElement('parent');
+				el9.appendChild(doc.createElement('child'));
+				const el10 = doc.createElement('parent');
+				el10.appendChild(doc.createElement('child'));
+				expect(el9.isEqualNode(el10)).toBe(true);
+			});
 		});
 	});
 	describe('isSameNode', () => {
