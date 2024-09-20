@@ -466,11 +466,11 @@ declare module '@xmldom/xmldom' {
 		appendChild(node: Node): Node;
 
 		/**
-		 * Checks whether or not `other` is an inclusive descendant of this node.
+		 * Checks whether `other` is an inclusive descendant of this node.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/contains)
 		 */
-		contains(other: Node): boolean;
+		contains(other: Node | null | undefined): boolean;
 		/**
 		 * Searches for the root node of this node.
 		 *
@@ -486,14 +486,14 @@ declare module '@xmldom/xmldom' {
 		getRootNode(options: GetRootNodeOptions): Node;
 
 		/**
-		 * Checks whether or not the given node is equal to this node.
+		 * Checks whether the given node is equal to this node.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode)
 		 */
 		isEqualNode(other: Node): boolean;
 
 		/**
-		 * Checks whether or not the given node is this node.
+		 * Checks whether the given node is this node.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isSameNode)
 		 */

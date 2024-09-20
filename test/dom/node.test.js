@@ -76,6 +76,10 @@ describe('Node.prototype', () => {
 		test('should return false if otherNode is a parent of this node', () => {
 			expect(el2.contains(el1)).toBe(false);
 		});
+		test('should return false if otherNode null or undefined', () => {
+			expect(el2.contains(undefined)).toBe(false);
+			expect(el2.contains(null)).toBe(false);
+		});
 	});
 	describe('getRootNode', () => {
 		const impl = new DOMImplementation();
