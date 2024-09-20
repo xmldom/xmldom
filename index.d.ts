@@ -333,6 +333,11 @@ declare module '@xmldom/xmldom' {
 		// instanceof post ts 5.3
 		[Symbol.hasInstance](val: unknown): val is T;
 	};
+
+	type GetRootNodeOptions = {
+		composed?: boolean;
+	};
+
 	/**
 	 * The DOM Node interface is an abstract base class upon which many other DOM API objects are
 	 * based, thus letting those object types to be used similarly and often interchangeably. As an
@@ -350,8 +355,7 @@ declare module '@xmldom/xmldom' {
 	 * cannot have children will throw an exception.
 	 *
 	 * **This behavior is slightly different from the in the specs**:
-	 * - undeclared properties: baseURI, isConnected, parentElement
-	 * - missing methods: contains, getRootNode, isEqualNode, isSameNode
+	 * - unimplemented interfaces: EventTarget
 	 *
 	 * @see http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247
 	 * @see https://dom.spec.whatwg.org/#node
@@ -380,6 +384,18 @@ declare module '@xmldom/xmldom' {
 		 * The local part of the qualified name of this node.
 		 */
 		localName: string | null;
+		/**
+		 * Always returns `about:blank` currently.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/baseURI)
+		 */
+		readonly baseURI: 'about:blank';
+		/**
+		 * Returns true if this node is inside of a document or is the document node itself.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isConnected)
+		 */
+		readonly isConnected: boolean;
 		/**
 		 * The namespace URI of this node.
 		 */
@@ -417,6 +433,12 @@ declare module '@xmldom/xmldom' {
 		 */
 		readonly parentNode: Node | null;
 		/**
+		 * Returns the parent `Node` if it is of type `Element`, otherwise `null`.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/parentElement)
+		 */
+		readonly parentElement: Element | null;
+		/**
 		 * The prefix of the namespace for this node.
 		 */
 		prefix: string | null;
@@ -442,6 +464,40 @@ declare module '@xmldom/xmldom' {
 
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/appendChild) */
 		appendChild(node: Node): Node;
+
+		/**
+		 * Checks whether `other` is an inclusive descendant of this node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/contains)
+		 */
+		contains(other: Node | null | undefined): boolean;
+		/**
+		 * Searches for the root node of this node.
+		 *
+		 * **This behavior is slightly different from the one in the specs**:
+		 * - ignores `options.composed`, since `ShadowRoot`s are unsupported, therefore always
+		 * returning root.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode)
+		 *
+		 * @see https://dom.spec.whatwg.org/#dom-node-getrootnode
+		 * @see https://dom.spec.whatwg.org/#concept-shadow-including-root
+		 */
+		getRootNode(options: GetRootNodeOptions): Node;
+
+		/**
+		 * Checks whether the given node is equal to this node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode)
+		 */
+		isEqualNode(other: Node): boolean;
+
+		/**
+		 * Checks whether the given node is this node.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isSameNode)
+		 */
+		isSameNode(other: Node): boolean;
 
 		/**
 		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
@@ -1150,6 +1206,23 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElementNS)
 		 */
 		createElementNS(namespace: string | null, qualifiedName: string): Element;
+		/**
+		 * Creates an EntityReference object.
+		 * The current implementation does not fill the `childNodes` with those of the corresponding
+		 * `Entity`
+		 *
+		 * The name of the entity to reference. No namespace well-formedness checks are performed.
+		 *
+		 * @deprecated
+		 * In DOM Level 4.
+		 * @returns {EntityReference}
+		 * @throws {DOMException}
+		 * With code `INVALID_CHARACTER_ERR` when `name` is not valid.
+		 * @throws {DOMException}
+		 * with code `NOT_SUPPORTED_ERR` when the document is of type `html`
+		 * @see https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-392B75AE
+		 */
+		createEntityReference(name: string): EntityReference;
 
 		/**
 		 * Returns a ProcessingInstruction node whose target is target and data is data. If target does

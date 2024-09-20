@@ -318,6 +318,29 @@ describe('Document.prototype', () => {
 			expectDOMException(() => doc.createAttribute('123'), DOMExceptionName.InvalidCharacterError, 'in name "123"');
 		});
 	});
+	describe('createEntityReference', () => {
+		const NAME = 'NaMe';
+		test('should create EntityReference in XML documents', () => {
+			const doc = new DOMImplementation().createDocument(null, '');
+
+			const eref = doc.createEntityReference(NAME);
+
+			expect(eref.ownerDocument).toBe(doc);
+			expect(eref.nodeType).toBe(doc.ENTITY_REFERENCE_NODE);
+			expect(eref.nodeName).toBe(NAME);
+			expect(eref.childNodes).toHaveLength(0);
+		});
+		test('should throw NotSupportedError in HTML document', () => {
+			const doc = new DOMImplementation().createHTMLDocument(false);
+
+			expectDOMException(() => doc.createEntityReference('valid'), DOMExceptionName.NotSupportedError, 'html');
+		});
+		test('should throw InvalidCharacter DOMException if name is not matching Name', () => {
+			const doc = new DOMImplementation().createHTMLDocument(false);
+
+			expectDOMException(() => doc.createEntityReference('123'), DOMExceptionName.InvalidCharacterError, 'name "123"');
+		});
+	});
 	describe('insertBefore', () => {
 		test('should insert the first element and set `documentElement`', () => {
 			const doc = new DOMImplementation().createDocument(null, '');
