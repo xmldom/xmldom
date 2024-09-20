@@ -154,6 +154,30 @@ describe('Node.prototype', () => {
 				expect(el3.isEqualNode(el4)).toBe(true);
 			});
 		});
+		describe('Attribute', () => {
+			test('should return false if namespaceURI is different', () => {
+				const attr1 = doc.createAttributeNS('namespace1', 'ns:a');
+				const attr2 = doc.createAttributeNS('namespace2', 'ns:a');
+				expect(attr1.isEqualNode(attr2)).toBe(false);
+			});
+			test('should return false if localName is different in namespaced attribute', () => {
+				const attr1 = doc.createAttributeNS('namespace1', 'ns:a');
+				const attr2 = doc.createAttributeNS('namespace1', 'ns:b');
+				expect(attr1.isEqualNode(attr2)).toBe(false);
+			});
+			test('should return false if localName is different in attribute without namespace', () => {
+				const attr1 = doc.createAttribute('a');
+				const attr2 = doc.createAttribute('b');
+				expect(attr1.isEqualNode(attr2)).toBe(false);
+			});
+			test('should return false if value is different', () => {
+				const attr1 = doc.createAttribute('a');
+				attr1.value = 'first';
+				const attr2 = doc.createAttribute('a');
+				attr2.value = 'second';
+				expect(attr1.isEqualNode(attr2)).toBe(false);
+			});
+		});
 
 		describe('Text', () => {
 			test('should return true for text nodes with the same data', () => {
