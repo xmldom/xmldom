@@ -475,7 +475,8 @@ declare module '@xmldom/xmldom' {
 		 * Searches for the root node of this node.
 		 *
 		 * **This behavior is slightly different from the one in the specs**:
-		 * - ignores `options.composed`, since `ShadowRoot`s are unsupported, therefore always returning root.
+		 * - ignores `options.composed`, since `ShadowRoot`s are unsupported, therefore always
+		 * returning root.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode)
 		 *
@@ -1205,6 +1206,23 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createElementNS)
 		 */
 		createElementNS(namespace: string | null, qualifiedName: string): Element;
+		/**
+		 * Creates an EntityReference object.
+		 * The current implementation does not fill the `childNodes` with those of the corresponding
+		 * `Entity`
+		 *
+		 * The name of the entity to reference. No namespace well-formedness checks are performed.
+		 *
+		 * @deprecated
+		 * In DOM Level 4.
+		 * @returns {EntityReference}
+		 * @throws {DOMException}
+		 * With code `INVALID_CHARACTER_ERR` when `name` is not valid.
+		 * @throws {DOMException}
+		 * with code `NOT_SUPPORTED_ERR` when the document is of type `html`
+		 * @see https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-392B75AE
+		 */
+		createEntityReference(name: string): EntityReference;
 
 		/**
 		 * Returns a ProcessingInstruction node whose target is target and data is data. If target does
