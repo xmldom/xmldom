@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.3](https://github.com/xmldom/xmldom/compare/0.9.2...0.9.3)
+
+### Fixed
+
+- restore more `Node` and `ProcessingInstruction` types [`#725`](https://github.com/xmldom/xmldom/issues/725) / [`#726`](https://github.com/xmldom/xmldom/pull/726)
+- `getElements*` methods return `LiveNodeList&lt;Element&gt;` [`#731`](https://github.com/xmldom/xmldom/issues/731) / [`#734`](https://github.com/xmldom/xmldom/pull/734)
+- Add more missing `Node` props [`#728`](https://github.com/xmldom/xmldom/pull/728), triggered by unclosed [`#724`](https://github.com/xmldom/xmldom/pull/724)
+
+### Docs
+
+- Update supported runtimes in readme (NodeJS >= 14.6 and other [ES5 compatible runtimes](https://compat-table.github.io/compat-table/es5/))
+
+### Chore
+
+- updates devDependencies
+
+Thank you,
+[@Ponynjaa](https://github.com/Ponynjaa),
+[@ayZagen](https://github.com/ayZagen),
+[@sserdyuk](https://github.com/sserdyuk),
+[@wydengyre](https://github.com/wydengyre),
+[@mykola-mokhnach](https://github.com/mykola-mokhnach),
+[@benkroeger](https://github.com/benkroeger),
+for your contributions.
+
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [0.9.2](https://github.com/xmldom/xmldom/compare/0.9.1...0.9.2)
 
 ### Feature
