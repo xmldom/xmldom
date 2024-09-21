@@ -34,7 +34,7 @@ xmldom is a javascript [ponyfill](https://ponyfill.com/) to provide the followin
   new XMLSerializer().serializeToString(node) => string
   ```
 
-The target runtimes `xmldom` supports are currently Node >= v10 (ES5) and Rhino ([not tested as part of CI](https://github.com/xmldom/xmldom/discussions/214)).
+The target runtimes `xmldom` supports are currently Node >= v14.6 (and very likely any other [ES5 compatible runtime](https://compat-table.github.io/compat-table/es5/)).
 
 When deciding how to fix bugs or implement features, `xmldom` tries to stay as close  as possible to the various [related specifications/standards](#specs).  
 As indicated by the version starting with `0.`, this implementation is not feature complete and some implemented features differ from what the specifications describe.  
