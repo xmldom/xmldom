@@ -2,7 +2,7 @@
 const { DOMParser } = require('../lib/dom-parser');
 
 /**
- * {'warn' | 'error' | 'fatalError'}
+ * {'warning' | 'error' | 'fatalError'}
  *
  * @typedef ErrorLevel
  */

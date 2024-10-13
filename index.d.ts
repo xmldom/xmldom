@@ -1565,7 +1565,11 @@ declare module '@xmldom/xmldom' {
 	}
 
 	interface ErrorHandlerFunction {
-		(level: 'warn' | 'error' | 'fatalError', msg: string, context: any): void;
+		(
+			level: 'warning' | 'error' | 'fatalError',
+			msg: string,
+			context: any
+		): void;
 	}
 
 	/**
