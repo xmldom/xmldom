@@ -6,6 +6,7 @@ const { DOMParser } = require('../../lib/dom-parser');
 const { DOMExceptionName } = require('../../lib/errors');
 const { expectDOMException } = require('../errors/expectDOMException');
 const { MIME_TYPE } = require('../../lib/conventions');
+const { performance } = require('perf_hooks');
 
 describe('Node.prototype', () => {
 	describe('constructor', () => {
