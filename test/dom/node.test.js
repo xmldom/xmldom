@@ -2,8 +2,11 @@
 
 const { describe, test, expect } = require('@jest/globals');
 const { DOMImplementation, Node } = require('../../lib/dom');
+const { DOMParser } = require('../../lib/dom-parser');
 const { DOMExceptionName } = require('../../lib/errors');
 const { expectDOMException } = require('../errors/expectDOMException');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { performance } = require('perf_hooks');
 
 describe('Node.prototype', () => {
 	describe('constructor', () => {
@@ -27,6 +30,17 @@ describe('Node.prototype', () => {
 					`Unexpected parent node type ${node.nodeType}`
 				);
 			});
+		});
+		const MANY = 10 * 1000;
+		const huge = `<xml>${[...Array(MANY).keys()].map((i) => `<node index="${i}"/>`).join('\n\t')}</xml>`;
+		test(`should be able to parse and append ${MANY / 1000}k nodes with a good performance`, () => {
+			const start = performance.now();
+			new DOMParser().parseFromString(huge, MIME_TYPE.XML_TEXT);
+			const duration = performance.now() - start;
+			// with the issue the test was introduced for,
+			// it took minutes for such an amount of nodes to be appended
+			// it usually takes < 1sec on my machine, but let's make sure the test is not flaky anywhere
+			expect(duration).toBeLessThanOrEqual(1500);
 		});
 	});
 	describe('isConnected', () => {
