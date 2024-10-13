@@ -1,0 +1,3 @@
+﻿<?xml version="1.0" ?>
+<!-- sed -i '1s/^/\xef\xbb\xbf/' test/parse/file-bom.xml -->
+<xml/>
