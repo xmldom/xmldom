@@ -164,6 +164,16 @@ const doc = new DOMParser({
 	onError: onWarningStopParsing,
 }).parseFromString(source, MIME_TYPE.XML_TEXT);
 assert(new XMLSerializer().serializeToString(doc), source);
+new DOMParser({
+	onError: (level, msg) => {
+		switch (level) {
+			case 'error':
+			case 'fatalError':
+			case 'warning':
+				assert(typeof msg, 'string');
+		}
+	},
+});
 
 if (failedAssertions.length > 0) {
 	failedAssertions.forEach((error) => console.error(error));
