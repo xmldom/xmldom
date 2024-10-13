@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.4](https://github.com/xmldom/xmldom/compare/0.9.3...0.9.4)
+
+### Fixed
+
+- restore performance for large amount of child nodes [`#748`](https://github.com/xmldom/xmldom/issues/748) /  [`#760`](https://github.com/xmldom/xmldom/pull/760)
+- types: correct error handler level to `warning` (#759) [`#754`](https://github.com/xmldom/xmldom/issues/754) / [`#759`](https://github.com/xmldom/xmldom/pull/759)
+
+### Docs
+
+- test: verify BOM handling [`#758`](https://github.com/xmldom/xmldom/pull/758)
+
+Thank you,
+[@luffynando](https://github.com/luffynando),
+[@mattiasw](https://github.com/mattiasw),
+[@JoinerDev](https://github.com/JoinerDev),
+for your contributions.
+
+
 ## [0.9.3](https://github.com/xmldom/xmldom/compare/0.9.2...0.9.3)
 
 ### Fixed
