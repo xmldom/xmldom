@@ -9,11 +9,6 @@ const { DOMException, DOMExceptionName } = require('../../lib/errors');
 const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('documentElement', () => {
-	describe('constructor', () => {
-		test('should throw Illegal constructor TypeError when trying to access constructor directly', () => {
-			expect(() => new Element()).toThrow(TypeError);
-		});
-	});
 	test('can properly append exist child', () => {
 		const doc = new DOMParser().parseFromString(
 			'<xml xmlns="http://test.com" id="root">' +
@@ -157,6 +152,11 @@ describe('Element', () => {
 	const ATTR_LOWER_CASE = 'attr';
 	const VALUE = '2039e2dk';
 	describe('constructor', () => {
+		test('should throw Illegal constructor TypeError when trying to access constructor directly', () => {
+			expect(() => new Element()).toThrow(TypeError);
+		});
+	});
+	test('_nsMap has no prototype properties', () => {
 		const element = new DOMImplementation().createDocument(null, 'doc').documentElement;
 		expect(element._nsMap).not.toHaveProperty('prototype');
 		expect(element._nsMap).not.toHaveProperty('__proto__');

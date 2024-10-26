@@ -416,6 +416,33 @@ describe('Document.prototype', () => {
 			expect(doc.childNodes).toHaveLength(0);
 			expect(root.parentNode).toBeNull();
 		});
+		test('should insert doctype between processing instruction and element', () => {
+			const doc = new DOMImplementation().createDocument(null, '');
+			expect(doc.childNodes).toHaveLength(0);
+			expect(doc.documentElement).toBeNull();
+
+			const instruction = doc.createProcessingInstruction('target', 'data');
+			doc.appendChild(instruction);
+
+			const root = doc.createElement('root');
+			doc.appendChild(root);
+			expect(doc.childNodes).toHaveLength(2);
+			expect(doc.childNodes.item(0)).toBe(instruction);
+			expect(doc.childNodes.item(1)).toBe(root);
+
+			const doctype = doc.implementation.createDocumentType('qualifiedName', '', '');
+			doc.insertBefore(doctype, root);
+			expect(doc.childNodes).toHaveLength(3);
+			expect(instruction.previousSibling).toBeNull();
+			expect(doc.childNodes.item(0)).toBe(instruction);
+			expect(instruction.nextSibling).toBe(doctype);
+			expect(doctype.previousSibling).toBe(instruction);
+			expect(doc.childNodes.item(1)).toBe(doctype);
+			expect(doctype.nextSibling).toBe(root);
+			expect(root.previousSibling).toBe(doctype);
+			expect(doc.childNodes.item(2)).toBe(root);
+			expect(root.nextSibling).toBeNull();
+		});
 	});
 	describe('replaceChild', () => {
 		test('should remove the only element and add the new one', () => {
