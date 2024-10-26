@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.5](https://github.com/xmldom/xmldom/compare/0.9.4...0.9.5)
+
+### Fixed
+
+- fix: re-index childNodes on insertBefore [`#763`](https://github.com/xmldom/xmldom/issues/763) / [`#766`](https://github.com/xmldom/xmldom/pull/766)
+
+Thank you,
+[@mureinik](https://github.com/mureinik),
+for your contributions.
+
+
 ## [0.9.4](https://github.com/xmldom/xmldom/compare/0.9.3...0.9.4)
 
 ### Fixed
