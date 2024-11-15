@@ -45,7 +45,7 @@ jobs:
     - run: npm run fuzz
       if: matrix.node-version == 18
     - if: matrix.node-version == 18
-      uses: codecov/codecov-action@968872560f81e7bdde9272853e65f2507c0eca7c # v5.0.0
+      uses: codecov/codecov-action@3b1354a6c45db9f1008891f4eafc1a7e94ce1d18 # v5.0.1
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
