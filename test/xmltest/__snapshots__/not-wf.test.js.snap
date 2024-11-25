@@ -1176,11 +1176,53 @@ exports[`xmltest/not-wellformed standalone should match 167.xml with snapshot: r
 }
 `;
 
-exports[`xmltest/not-wellformed standalone should match 168.xml with snapshot: caught 1`] = `"Unicode replacement character detected, source encoding issues?"`;
+exports[`xmltest/not-wellformed standalone should match 168.xml with snapshot: reported 1`] = `
+{
+  "actual": "<doc>���</doc>",
+  "errors": [
+    [
+      "warning",
+      "Unicode replacement character detected, source encoding issues?",
+      {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
+  ],
+}
+`;
 
-exports[`xmltest/not-wellformed standalone should match 169.xml with snapshot: caught 1`] = `"Unicode replacement character detected, source encoding issues?"`;
+exports[`xmltest/not-wellformed standalone should match 169.xml with snapshot: reported 1`] = `
+{
+  "actual": "<doc>���</doc>",
+  "errors": [
+    [
+      "warning",
+      "Unicode replacement character detected, source encoding issues?",
+      {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
+  ],
+}
+`;
 
-exports[`xmltest/not-wellformed standalone should match 170.xml with snapshot: caught 1`] = `"Unicode replacement character detected, source encoding issues?"`;
+exports[`xmltest/not-wellformed standalone should match 170.xml with snapshot: reported 1`] = `
+{
+  "actual": "<doc>����</doc>",
+  "errors": [
+    [
+      "warning",
+      "Unicode replacement character detected, source encoding issues?",
+      {
+        "columnNumber": 6,
+        "lineNumber": 1,
+      },
+    ],
+  ],
+}
+`;
 
 exports[`xmltest/not-wellformed standalone should match 171.xml with snapshot: caught 1`] = `"comment is not well-formed at position 0"`;
 
