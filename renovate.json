@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     ":preserveSemverRanges",
     ":ignoreUnstable",
     ":respectLatest",
@@ -13,7 +13,7 @@
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "packageNames": ["node"],
+      "matchPackageNames": ["node"],
       "enabled": false
     }
   ]
