@@ -19,10 +19,20 @@ const skippedInHtml = true;
  * to call methods on `errorHandler`.
  */
 const REPORTED = {
+	/**
+	 * There are well-formed documents containing the unicode replacement character,
+	 * e.g. https://en.wikipedia.org/wiki/Mojibake
+	 * see https://github.com/xmldom/xmldom/issues/790#issuecomment-2493975063
+	 * But reading files in a different encoding than they have been written with,
+	 * will also lead to these characters being present.
+	 * Which is why this is reported once at the beginning,
+	 * before parsing any content.
+	 * Use `onWarningStopParsing` to prevent parsing documents containing these characters.
+	 */
 	Encoding_ReplacementCharacter: {
-		source: '\ufffd',
-		level: 'fatalError',
-		match: (msg) => /Unicode replacement character/.test(msg),
+		source: '<doc>\ufffd</doc>',
+		level: 'warning',
+		match: (msg) => /unicode replacement character/i.test(msg),
 	},
 	/**
 	 * Well-formedness constraint: Element Type Match

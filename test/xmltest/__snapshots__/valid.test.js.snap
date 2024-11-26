@@ -535,24 +535,63 @@ exports[`xmltest/valid standalone should match 048.xml with snapshot 1`] = `
 }
 `;
 
-exports[`xmltest/valid standalone should match 049.xml with snapshot: caught 1`] = `
+exports[`xmltest/valid standalone should match 049.xml with snapshot 1`] = `
 {
-  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
-  "expected": "<doc>£</doc>",
+  "actual": "﻿<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>£</doc>",
+  "errors": [
+    [
+      "error",
+      "Unexpected content outside root element: '﻿'",
+      {
+        "columnNumber": 6,
+        "lineNumber": 4,
+      },
+    ],
+  ],
+  "expected": "搼捯숾㲣搯捯",
 }
 `;
 
-exports[`xmltest/valid standalone should match 050.xml with snapshot: caught 1`] = `
+exports[`xmltest/valid standalone should match 050.xml with snapshot 1`] = `
 {
-  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
-  "expected": "<doc>เจมส์</doc>",
+  "actual": "﻿<!DOCTYPE doc [
+<!ELEMENT doc (#PCDATA)>
+]>
+<doc>เจมส์</doc>",
+  "errors": [
+    [
+      "error",
+      "Unexpected content outside root element: '﻿'",
+      {
+        "columnNumber": 6,
+        "lineNumber": 4,
+      },
+    ],
+  ],
+  "expected": "搼捯肹룠ꆸ룠貹⼼潤㹣",
 }
 `;
 
-exports[`xmltest/valid standalone should match 051.xml with snapshot: caught 1`] = `
+exports[`xmltest/valid standalone should match 051.xml with snapshot 1`] = `
 {
-  "error": [ParseError: Unicode replacement character detected, source encoding issues?],
-  "expected": "<เจมส์></เจมส์>",
+  "actual": "﻿<!DOCTYPE เจมส์ [
+<!ELEMENT เจมส์  (#PCDATA)>
+]>
+<เจมส์/>",
+  "errors": [
+    [
+      "error",
+      "Unexpected content outside root element: '﻿'",
+      {
+        "columnNumber": 1,
+        "lineNumber": 4,
+      },
+    ],
+  ],
+  "expected": "肹룠ꆸ룠貹㰾肹룠ꆸ룠貹",
 }
 `;
 
