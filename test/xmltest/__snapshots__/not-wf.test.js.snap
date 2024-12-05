@@ -1178,7 +1178,7 @@ exports[`xmltest/not-wellformed standalone should match 167.xml with snapshot: r
 
 exports[`xmltest/not-wellformed standalone should match 168.xml with snapshot: reported 1`] = `
 {
-  "actual": "<doc>���</doc>",
+  "actual": "<doc>{!fffd!}{!fffd!}{!fffd!}</doc>",
   "errors": [
     [
       "warning",
@@ -1194,7 +1194,7 @@ exports[`xmltest/not-wellformed standalone should match 168.xml with snapshot: r
 
 exports[`xmltest/not-wellformed standalone should match 169.xml with snapshot: reported 1`] = `
 {
-  "actual": "<doc>���</doc>",
+  "actual": "<doc>{!fffd!}{!fffd!}{!fffd!}</doc>",
   "errors": [
     [
       "warning",
@@ -1210,7 +1210,7 @@ exports[`xmltest/not-wellformed standalone should match 169.xml with snapshot: r
 
 exports[`xmltest/not-wellformed standalone should match 170.xml with snapshot: reported 1`] = `
 {
-  "actual": "<doc>����</doc>",
+  "actual": "<doc>{!fffd!}{!fffd!}{!fffd!}{!fffd!}</doc>",
   "errors": [
     [
       "warning",
