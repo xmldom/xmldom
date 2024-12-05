@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.6](https://github.com/xmldom/xmldom/compare/0.9.5...0.9.6)
+
+### Fixed
+
+- lower error level for unicode replacement character [`#790`](https://github.com/xmldom/xmldom/issues/790) / [`#794`](https://github.com/xmldom/xmldom/pull/794) / [`#797`](https://github.com/xmldom/xmldom/pull/797)
+
+### Chore
+
+- updated devDependencies
+- migrate renovate config [`#792`](https://github.com/xmldom/xmldom/pull/792)
+
+Thank you, [@eglitise](https://github.com/eglitise), for your contributions.
+
+
 ## [0.9.5](https://github.com/xmldom/xmldom/compare/0.9.4...0.9.5)
 
 ### Fixed
