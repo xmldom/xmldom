@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Encoding_ReplacementCharacter with mimeType text/html should be reported 1`] = `
+[
+  [
+    "warning",
+    "Unicode replacement character detected, source encoding issues?",
+    {
+      "columnNumber": 6,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`Encoding_ReplacementCharacter with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "warning: Unicode replacement character detected, source encoding issues?
+    at warning (lib/sax.js:#0)",
+]
+`;
+
+exports[`Encoding_ReplacementCharacter with mimeType text/xml should be reported 1`] = `
+[
+  [
+    "warning",
+    "Unicode replacement character detected, source encoding issues?",
+    {
+      "columnNumber": 6,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`Encoding_ReplacementCharacter with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "warning: Unicode replacement character detected, source encoding issues?
+    at warning (lib/sax.js:#0)",
+]
+`;
+
 exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/html should be reported 1`] = `
 [
   [

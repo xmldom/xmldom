@@ -1,6 +1,6 @@
 {
 	"name": "@xmldom/xmldom",
-	"version": "0.9.5",
+	"version": "0.9.6",
 	"description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
 	"keywords": [
 		"w3c",
@@ -57,9 +57,9 @@
 		"jest": "29.7.0",
 		"nodemon": "3.1.7",
 		"np": "8.0.4",
-		"prettier": "3.3.3",
+		"prettier": "3.4.1",
 		"rxjs": "7.8.1",
-		"xmltest": "2.0.1",
+		"xmltest": "2.0.3",
 		"yauzl": "3.2.0"
 	},
 	"bugs": {
