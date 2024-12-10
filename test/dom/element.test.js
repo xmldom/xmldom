@@ -395,4 +395,17 @@ describe('Element', () => {
 			);
 		});
 	});
+        describe('hasAttributes', () => {
+                test('empty document', () => {
+		        const doc = new DOMImplementation().createDocument(null, 'xml');
+		        expect(doc.documentElement.hasAttributes()).toBe(false);
+                });
+	        test('xml elements', () => {
+		        const doc = new DOMParser().parseFromString('<test><a/><b a0="v0"><c a1="v1" a2="v2"/></b></test>', MIME_TYPE.XML_TEXT);
+		        expect(doc.documentElement.hasAttributes()).toBe(false);
+		        expect(doc.documentElement.childNodes[0].hasAttributes()).toBe(false);
+		        expect(doc.documentElement.childNodes[1].hasAttributes()).toBe(true);
+		        expect(doc.documentElement.childNodes[1].childNodes[0].hasAttributes()).toBe(true);
+                });
+	});
 });
