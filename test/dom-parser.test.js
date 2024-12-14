@@ -34,8 +34,22 @@ describe('DOMParser', () => {
 			};
 			expect(doc.documentElement).toMatchObject(expected);
 		});
-		test("should not use locator when it's not set in options", () => {
+		test("should use locator when it's not explicitly set to false in options", () => {
 			const options = {};
+			const it = new DOMParser(options);
+
+			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
+
+			const expected = {
+				columnNumber: 1,
+				lineNumber: 1,
+			};
+			expect(doc.documentElement).toMatchObject(expected);
+		});
+		test("should not use locator when it's set to false in options", () => {
+			const options = {
+				locator: false,
+			};
 			const it = new DOMParser(options);
 
 			const doc = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
