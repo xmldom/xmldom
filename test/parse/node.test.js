@@ -179,9 +179,7 @@ describe('XML Node Parse', () => {
 	});
 
 	test('preserves doctype with public id and sysid', () => {
-		const DOCTYPE =
-			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"' +
-			' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+		const DOCTYPE = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">`;
 
 		const actual = new DOMParser().parseFromString(`${DOCTYPE}<html/>`, 'text/html').toString();
 

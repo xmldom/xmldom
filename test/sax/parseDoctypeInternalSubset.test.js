@@ -167,4 +167,114 @@ describe('parseDoctypeCommentOrCData', () => {
 		expect(domBuilder.startDTD).toHaveBeenCalledWith(Name, '"pubId"', '"sysId"', internalSubset);
 		expect(domBuilder.endDTD).toHaveBeenCalled();
 	});
+	describe('when isHtml is true', () => {
+		const html = 'html';
+		const HTML = 'HTML';
+		const isHtml = true;
+		test('should report fatal error and return with incomplete DOCTYPE decl', () => {
+			const start = 0;
+			var source = '<!d';
+			const errorHandler = { fatalError: jest.fn() };
+
+			const returned = parseDoctypeCommentOrCData(source, start, { doc: {} }, errorHandler, isHtml);
+
+			expect(returned).toBe(undefined);
+			expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining(g.DOCTYPE_DECL_START));
+		});
+		test('should report warning when doctype name is not html', () => {
+			const start = 0;
+			var source = '<!doctype fantasy>';
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const errorHandler = { warning: jest.fn() };
+
+			const returned = parseDoctypeCommentOrCData(source, start, domBuilder, errorHandler, isHtml);
+
+			expect(returned).toBe(source.length);
+			expect(errorHandler.warning).toHaveBeenCalledWith(expect.stringContaining('Unexpected DOCTYPE in HTML document'));
+		});
+
+		it('should accept upper case doctype and name', () => {
+			const source = `${g.DOCTYPE_DECL_START} ${HTML}>`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, {}, isHtml);
+
+			expect(returned).toBe(source.length);
+			expect(domBuilder.startDTD).toHaveBeenCalledWith(HTML, undefined, undefined, undefined);
+			expect(domBuilder.endDTD).toHaveBeenCalled();
+		});
+		it('should accept lower case doctype and name', () => {
+			const source = `${g.DOCTYPE_DECL_START.toLowerCase()} ${html}>`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, {}, isHtml);
+
+			expect(returned).toBe(source.length);
+			expect(domBuilder.startDTD).toHaveBeenCalledWith(html, undefined, undefined, undefined);
+			expect(domBuilder.endDTD).toHaveBeenCalled();
+		});
+		it('should accept mixed case doctype and name', () => {
+			const source = `<!DocType Html>`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, {}, isHtml);
+
+			expect(returned).toBe(source.length);
+			expect(domBuilder.startDTD).toHaveBeenCalledWith('Html', undefined, undefined, undefined);
+			expect(domBuilder.endDTD).toHaveBeenCalled();
+		});
+		it(`should accept and preserve doctype with lower case system and '${g.ABOUT_LEGACY_COMPAT}'`, () => {
+			const source = `${g.DOCTYPE_DECL_START} ${HTML} system '${g.ABOUT_LEGACY_COMPAT}'>`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, {}, isHtml);
+
+			expect(returned).toBe(source.length);
+			expect(domBuilder.startDTD).toHaveBeenCalledWith(HTML, undefined, `'${g.ABOUT_LEGACY_COMPAT}'`, undefined);
+			expect(domBuilder.endDTD).toHaveBeenCalled();
+		});
+		it(`should accept and preserve doctype with upper case system and "${g.ABOUT_LEGACY_COMPAT}"`, () => {
+			const source = `${g.DOCTYPE_DECL_START} ${HTML} ${g.SYSTEM} "${g.ABOUT_LEGACY_COMPAT}">`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, {}, isHtml);
+
+			expect(returned).toBe(source.length);
+			expect(domBuilder.startDTD).toHaveBeenCalledWith(HTML, undefined, `"${g.ABOUT_LEGACY_COMPAT}"`, undefined);
+			expect(domBuilder.endDTD).toHaveBeenCalled();
+		});
+		it(`should report fatal error and return if system is not ${g.ABOUT_LEGACY_COMPAT}`, () => {
+			const source = `${g.DOCTYPE_DECL_START} ${HTML} ${g.SYSTEM} "${g.ABOUT_LEGACY_COMPAT}">`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, {}, isHtml);
+
+			expect(returned).toBe(source.length);
+			expect(domBuilder.startDTD).toHaveBeenCalledWith(HTML, undefined, `"${g.ABOUT_LEGACY_COMPAT}"`, undefined);
+			expect(domBuilder.endDTD).toHaveBeenCalled();
+		});
+		it('should accept and preserve XHTML doctype', () => {
+			const source = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const errorHandler = { warning: jest.fn() };
+
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, errorHandler, isHtml);
+
+			expect(returned).toBe(source.length);
+			expect(errorHandler.warning).toHaveBeenCalledWith(expect.stringContaining('Unexpected doctype.systemId in HTML document'));
+			expect(domBuilder.startDTD).toHaveBeenCalledWith(
+				html,
+				'"-//W3C//DTD XHTML 1.0 Transitional//EN"',
+				'"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"',
+				undefined
+			);
+			expect(domBuilder.endDTD).toHaveBeenCalled();
+		});
+		it('should fail on doctype with DTD', () => {
+			const source = `${g.DOCTYPE_DECL_START} ${HTML} ${g.SYSTEM} "${g.ABOUT_LEGACY_COMPAT}" [<!ENTITY foo "foo">]>`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const errorHandler = { fatalError: jest.fn() };
+
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, errorHandler, isHtml);
+
+			expect(returned).toBeUndefined();
+			expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining('doctype not terminated with > at position'));
+			expect(domBuilder.startDTD).not.toHaveBeenCalled();
+			expect(domBuilder.endDTD).not.toHaveBeenCalled();
+		});
+	});
 });
