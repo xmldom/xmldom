@@ -238,14 +238,31 @@ describe('parseDoctypeCommentOrCData', () => {
 			expect(domBuilder.startDTD).toHaveBeenCalledWith(HTML, undefined, `"${g.ABOUT_LEGACY_COMPAT}"`, undefined);
 			expect(domBuilder.endDTD).toHaveBeenCalled();
 		});
-		it(`should report fatal error and return if system is not ${g.ABOUT_LEGACY_COMPAT}`, () => {
-			const source = `${g.DOCTYPE_DECL_START} ${HTML} ${g.SYSTEM} "${g.ABOUT_LEGACY_COMPAT}">`;
+		it(`should report fatal error if system is lower case and systemId is not ${g.ABOUT_LEGACY_COMPAT}`, () => {
+			const source = `${g.DOCTYPE_DECL_START} ${HTML} ${g.SYSTEM.toLowerCase()} "whatever">`;
 			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
-			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, {}, isHtml);
+			const errorHandler = { fatalError: jest.fn() };
 
-			expect(returned).toBe(source.length);
-			expect(domBuilder.startDTD).toHaveBeenCalledWith(HTML, undefined, `"${g.ABOUT_LEGACY_COMPAT}"`, undefined);
-			expect(domBuilder.endDTD).toHaveBeenCalled();
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, errorHandler, isHtml);
+
+			expect(errorHandler.fatalError).toHaveBeenCalledWith(
+				expect.stringContaining('Expected ' + g.ABOUT_LEGACY_COMPAT + ' in single or double quotes after ' + g.SYSTEM)
+			);
+			expect(returned).toBeUndefined();
+			expect(domBuilder.startDTD).not.toHaveBeenCalled();
+			expect(domBuilder.endDTD).not.toHaveBeenCalled();
+		});
+		it(`should report fatal error and return if system is lower case and is not followed by whitespace`, () => {
+			const source = `${g.DOCTYPE_DECL_START} ${HTML} ${g.SYSTEM.toLowerCase()}"${g.ABOUT_LEGACY_COMPAT}">`;
+			const domBuilder = { startDTD: jest.fn(), endDTD: jest.fn() };
+			const errorHandler = { fatalError: jest.fn() };
+
+			const returned = parseDoctypeCommentOrCData(source, 0, domBuilder, errorHandler, isHtml);
+
+			expect(returned).toBeUndefined();
+			expect(errorHandler.fatalError).toHaveBeenCalledWith(expect.stringContaining(''));
+			expect(domBuilder.startDTD).not.toHaveBeenCalledWith(HTML, undefined, `"${g.ABOUT_LEGACY_COMPAT}"`, undefined);
+			expect(domBuilder.endDTD).not.toHaveBeenCalled();
 		});
 		it('should accept and preserve XHTML doctype', () => {
 			const source = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">`;
