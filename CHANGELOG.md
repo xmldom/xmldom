@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.7](https://github.com/xmldom/xmldom/compare/0.9.6...0.9.7)
+
+### Added
+
+- Implementation of `hasAttributes` [`#804`](https://github.com/xmldom/xmldom/pull/804)
+
+### Fixed
+
+- locator is now true even when other options are being used for the DOMParser [`#802`](https://github.com/xmldom/xmldom/issues/802) / [`#803`](https://github.com/xmldom/xmldom/pull/803)
+- allow case-insensitive DOCTYPE in HTML [`#817`](https://github.com/xmldom/xmldom/issues/817) / [`#819`](https://github.com/xmldom/xmldom/pull/819)
+
+### Performance
+
+- simplify `DOM.compareDocumentPosition` [`#805`](https://github.com/xmldom/xmldom/pull/805)
+
+### Chore
+
+- updated devDependencies
+
+Thank you,
+[@zorkow](https://github.com/zorkow),
+[@Ponynjaa](https://github.com/Ponynjaa),
+[@WesselKroos](https://github.com/WesselKroos),
+for your contributions.
+
+
 ## [0.9.6](https://github.com/xmldom/xmldom/compare/0.9.5...0.9.6)
 
 ### Fixed
