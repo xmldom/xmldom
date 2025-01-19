@@ -5,6 +5,7 @@ exports[`all grammar regular expressions should have the expected keys 1`] = `
   "S",
   "S_OPT",
   "SystemLiteral",
+  "ABOUT_LEGACY_COMPAT_SystemLiteral",
   "Char",
   "CDSect",
   "PubidLiteral",
