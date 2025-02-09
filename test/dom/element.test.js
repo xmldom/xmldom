@@ -75,8 +75,8 @@ describe('documentElement', () => {
 		expect(doc.documentElement.toString()).toBe('<test>bye</test>');
 	});
 
-	test('appendElement and removeElement', () => {
-		const dom = new DOMParser().parseFromString(`<root><A/><B/><C/></root>`, MIME_TYPE.XML_TEXT);
+	test('appendChild and removeChild', () => {
+		const dom = new DOMParser().parseFromString(`<root><A/>x<B/>y<C/></root>`, MIME_TYPE.XML_TEXT);
 		const doc = dom.documentElement;
 		const arr = [];
 		while (doc.firstChild) {
@@ -85,26 +85,45 @@ describe('documentElement', () => {
 			expect(node.parentNode).toBeNull();
 			expect(node.previousSibling).toBeNull();
 			expect(node.nextSibling).toBeNull();
+			if (node.nodeType == Node.ELEMENT_NODE) {
+				expect(node.previousElementSibling).toBeNull();
+				expect(node.nextElementSibling).toBeNull();
+			}
 			expect(node.ownerDocument).toBe(dom);
 			expect(doc.firstChild).not.toBe(node);
-			const expectedLength = 3 - arr.length;
+			expect(doc.firstElementChild).not.toBe(node);
+			expect(doc.lastElementChild).not.toBe(node);
+			const expectedLength = 5 - arr.length;
 			expect(doc.childNodes).toHaveLength(expectedLength);
 			expect(doc.childNodes.item(expectedLength)).toBeNull();
 		}
-		expect(arr).toHaveLength(3);
-		while (arr.length) {
-			const node = arr.shift();
+		expect(arr).toHaveLength(5);
+		expect(doc.childElementCount).toBe(0);
+		expect(doc.firstElementChild).toBeNull();
+		expect(doc.lastElementChild).toBeNull();
+		for (let i = 0; i < arr.length; i++) {
+			const node = arr[i];
 			expect(doc.appendChild(node)).toBe(node);
+			expect(doc.childNodes).toHaveLength(i + 1);
+			expect(doc.childNodes.item(i)).toBe(node);
 			expect(node.parentNode).toBe(doc);
-			const expectedLength = 3 - arr.length;
-			expect(doc.childNodes).toHaveLength(expectedLength);
-			expect(doc.childNodes.item(expectedLength - 1)).toBe(node);
-			if (expectedLength > 1) {
-				expect(node.previousSibling).toBeInstanceOf(Element);
-				expect(node.previousSibling.nextSibling).toBe(node);
+			expect(node.previousSibling).toBe(i == 0 ? null : arr[i - 1]);
+			expect(node.nextSibling).toBe(null);
+			if (i > 0) expect(node.previousSibling.nextSibling).toBe(node);
+			if (node.nodeType == Node.ELEMENT_NODE) {
+				expect(doc.lastElementChild).toBe(node);
+				expect(node.previousElementSibling).toBe(i <= 1 ? null : arr[i - 2]);
+				expect(node.nextElementSibling).toBe(null);
+				if (i > 1) expect(node.previousElementSibling.nextElementSibling).toBe(node);
 			}
 		}
-		expect(doc.childNodes.toString()).toBe(`<A/><B/><C/>`);
+		expect(doc.childElementCount).toBe(3);
+		expect(doc.firstElementChild).toBe(arr[0]);
+		expect(doc.childNodes.toString()).toBe(`<A/>x<B/>y<C/>`);
+
+		doc.removeChild(doc.lastChild);
+		expect(doc.lastElementChild).toBe(arr[2]);
+		expect(doc.lastElementChild.nextElementSibling).toBeNull();
 	});
 
 	test('should throw DOMException when trying to append a doctype', () => {
