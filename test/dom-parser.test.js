@@ -327,7 +327,7 @@ describe('DOMParser', () => {
 			// issue: https://github.com/xmldom/xmldom/issues/838
 			const onError = jest.fn();
 			const { parser } = getTestParser({ onError });
-			const source = `<root>${"A".repeat(50_000)}\u2029${"A".repeat(50_000)}\u0085${"A".repeat(50_000)}\u2028${"A".repeat(50_000)}\u2029</root>`;
+			const source = `<root>${'A'.repeat(50000)}\u2029${'A'.repeat(50000)}\u0085${'A'.repeat(50000)}\u2028${'A'.repeat(50000)}\u2029</root>`;
 			const doc = parser.parseFromString(source, MIME_TYPE.XML_TEXT);
 			expect(new XMLSerializer().serializeToString(doc)).toEqual(source.replace(/[\u0085\u2028\u2029]/g, '\n'));
 		}, 500);
