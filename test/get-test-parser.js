@@ -25,7 +25,7 @@ const { DOMParser } = require('../lib/dom-parser');
  * locator?: boolean }}
  * @returns {{ parser: DOMParser; errors: [ErrorLevel, string, Object][] }}
  */
-function getTestParser({ onError, errors = [], locator = true } = {}) {
+function getTestParser({ onError, errors = [], locator = true, normalizeLineEndings } = {}) {
 	onError =
 		onError ||
 		((level, msg, { locator }) => {
@@ -33,7 +33,7 @@ function getTestParser({ onError, errors = [], locator = true } = {}) {
 		});
 	return {
 		errors,
-		parser: new DOMParser({ onError, locator }),
+		parser: new DOMParser({ onError, locator, normalizeLineEndings }),
 	};
 }
 
