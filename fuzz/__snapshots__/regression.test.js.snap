@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dom-parser.html.target.js crash-doctype-in-element.xml 1`] = `-1`;
+
+exports[`dom-parser.html.target.js crash-proto-prefix.xml 1`] = `-1`;
+
+exports[`dom-parser.xml.target.js crash-doctype-in-element.xml 1`] = `-1`;
+
+exports[`dom-parser.xml.target.js crash-proto-prefix.xml 1`] = `-1`;

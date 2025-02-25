@@ -44,8 +44,6 @@
 	},
 	"devDependencies": {
 		"@homer0/prettier-plugin-jsdoc": "9.1.0",
-		"@jazzer.js/core": "2.1.0",
-		"@jazzer.js/jest-runner": "2.1.0",
 		"auto-changelog": "2.5.0",
 		"eslint": "8.57.1",
 		"eslint-config-prettier": "10.0.1",
@@ -58,7 +56,6 @@
 		"nodemon": "3.1.9",
 		"np": "8.0.4",
 		"prettier": "3.5.1",
-		"rxjs": "7.8.1",
 		"xmltest": "2.0.3",
 		"yauzl": "3.2.0"
 	},
@@ -71,5 +68,6 @@
 		"remote": "origin",
 		"tagPrefix": "",
 		"template": "./auto-changelog.hbs"
-	}
+	},
+	"packageManager": "npm@11.1.0+sha512.acf301ad9b9ddba948fcb72341e2f0fcae477f56a95cc2a092934d133a7461062633cefbf93d5934a3dc0768674e2edee9f04dcfcc4bb4c327ff0e3a7d552a1b"
 }
