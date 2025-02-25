@@ -1,7 +1,7 @@
 'use strict';
 
 const { performance } = require('node:perf_hooks');
-const { describe, expect, test, beforeEach, afterEach, afterAll } = require('@jest/globals');
+const { describe, expect, test } = require('@jest/globals');
 const { DOMParser, XMLSerializer } = require('../lib');
 const { assign, MIME_TYPE, NAMESPACE } = require('../lib/conventions');
 const { __DOMHandler, onErrorStopParsing, onWarningStopParsing } = require('../lib/dom-parser');
