@@ -325,12 +325,12 @@ describe('DOMParser', () => {
 		});
 		test('should be able to open documents with alternative whitespace without creating a bottleneck and replacing them with \\n', () => {
 			// issue: https://github.com/xmldom/xmldom/issues/838
-			const start = performance.now();
+			const start = process.hrtime.bigint();
 			const onError = jest.fn();
 			const { parser } = getTestParser({ onError });
 			const source = `<root>${'A'.repeat(50000)}\u2029${'A'.repeat(50000)}\u0085${'A'.repeat(50000)}\u2028${'A'.repeat(50000)}\u2029</root>`;
 			parser.parseFromString(source, MIME_TYPE.XML_TEXT);
-			const duration = performance.now() - start;
+			const duration = Number(process.hrtime.bigint() - start) / 1_000_000;
 			expect(duration).toBeLessThan(500);
 		});
 	});
