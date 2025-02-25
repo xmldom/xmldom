@@ -10,14 +10,18 @@ const TARGETS = fs
 	.map((target) => [target, path.join(__dirname, target)]);
 
 TARGETS.forEach(([target, targetPath]) => {
-	describe('', () => {
+	describe(target, () => {
+		const regressionDir = path.join(__filename.replace(/\.js$/, ''), target);
+		const testfiles = fs.readdirSync(regressionDir);
+		const module = require(targetPath);
 		beforeAll(() => {
-			const regressionDir = path.join(__filename.replace(/\.js$/, ''), target);
 			expect(fs.existsSync(regressionDir)).toBe(true);
-			const testfiles = fs.readdirSync(regressionDir);
 			expect(testfiles.length).toBeGreaterThan(0);
 		});
-		const module = require(targetPath);
-		test.fuzz(target, (data) => module.fuzz(data));
+		testfiles.forEach((testfile) => {
+			test(path.basename(testfile), () => {
+				expect(module.fuzz(fs.readFileSync(path.join(regressionDir, testfile)))).toMatchSnapshot();
+			});
+		});
 	});
 });
