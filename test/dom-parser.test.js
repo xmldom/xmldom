@@ -330,7 +330,9 @@ describe('DOMParser', () => {
 			const { parser } = getTestParser({ onError });
 			const source = `<root>${'A'.repeat(50000)}\u2029${'A'.repeat(50000)}\u0085${'A'.repeat(50000)}\u2028${'A'.repeat(50000)}\u2029</root>`;
 			parser.parseFromString(source, MIME_TYPE.XML_TEXT);
-			const duration = Number(process.hrtime.bigint() - start) / 1_000_000;
+
+			// convert nanoseconds to milliseconds
+			const duration = Number(process.hrtime.bigint() - start) / 1000000;
 			expect(duration).toBeLessThan(500);
 		});
 	});
