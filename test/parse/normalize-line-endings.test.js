@@ -1,7 +1,9 @@
 'use strict';
 
+const { describe, expect, test } = require('@jest/globals');
 const { DOMParser, normalizeLineEndings } = require('../../lib/dom-parser');
 const { MIME_TYPE } = require('../../lib/conventions');
+
 const whitespaceToHex = (str) => str.replace(/\s/g, (c) => `#x${c.charCodeAt(0).toString(16)}`);
 
 describe('DOMParser constructor option normalizeLineEndings', () => {
@@ -39,6 +41,10 @@ describe('normalizeLineEndings', () => {
 
 	test('should normalize the single character #x2028', () => {
 		expect(whitespaceToHex(normalizeLineEndings('\u2028'))).toBe('#xa');
+	});
+
+	test('should normalize the single character #x2029', () => {
+		expect(whitespaceToHex(normalizeLineEndings('\u2029'))).toBe('#xa');
 	});
 
 	test('should normalize any #xD character that is not immediately followed by #xA or #x85', () => {

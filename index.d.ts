@@ -1527,12 +1527,15 @@ declare module '@xmldom/xmldom' {
 		readonly locator?: boolean;
 
 		/**
-		 * used to replace line endings before parsing, defaults to `normalizeLineEndings`,
-		 * which normalizes line endings according to <https://www.w3.org/TR/xml11/#sec-line-ends>.
+		 * used to replace line endings before parsing, defaults to exported `normalizeLineEndings`,
+		 * which normalizes line endings according to <https://www.w3.org/TR/xml11/#sec-line-ends>,
+		 * including some Unicode "newline" characters.
+		 *
+		 * @see {@link normalizeLineEndings}
 		 */
 		readonly normalizeLineEndings?: (source: string) => string;
 		/**
-		 * A function that is invoked for every error that occurs during parsing.
+		 * A function invoked for every error that occurs during parsing.
 		 *
 		 * If it is not provided, all errors are reported to `console.error`
 		 * and only `fatalError`s are thrown as a `ParseError`,
@@ -1572,6 +1575,29 @@ declare module '@xmldom/xmldom' {
 		): void;
 	}
 
+	/**
+	 * Normalizes line ending according to <https://www.w3.org/TR/xml11/#sec-line-ends>,
+	 * including some Unicode "newline" characters:
+	 *
+	 * > XML parsed entities are often stored in computer files which,
+	 * > for editing convenience, are organized into lines.
+	 * > These lines are typically separated by some combination
+	 * > of the characters CARRIAGE RETURN (#xD) and LINE FEED (#xA).
+	 * >
+	 * > To simplify the tasks of applications, the XML processor must behave
+	 * > as if it normalized all line breaks in external parsed entities (including the document entity)
+	 * > on input, before parsing, by translating the following to a single #xA character:
+	 * >
+	 * > 1. the two-character sequence #xD #xA,
+	 * > 2. the two-character sequence #xD #x85,
+	 * > 3. the single character #x85,
+	 * > 4. the single character #x2028,
+	 * > 5. the single character #x2029,
+	 * > 6. any #xD character that is not immediately followed by #xA or #x85.
+	 *
+	 * @prettierignore
+	 */
+	function normalizeLineEndings(input: string): string;
 	/**
 	 * A method that prevents any further parsing when an `error`
 	 * with level `error` is reported during parsing.
