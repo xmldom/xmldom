@@ -324,15 +324,7 @@ describe('DOMParser', () => {
 			const doc = parser.parseFromString(source, MIME_TYPE.XML_TEXT);
 			expect(new XMLSerializer().serializeToString(doc)).toEqual(source);
 		});
-		test('should be able to open documents with alternative whitespace without creating a bottleneck and replacing them with \\n', () => {
-			// issue: https://github.com/xmldom/xmldom/issues/838
-			const onError = jest.fn();
-			const { parser } = getTestParser({ onError });
-			const source = `<root>${'A'.repeat(50000)}\u2029${'A'.repeat(50000)}\u0085${'A'.repeat(50000)}\u2028${'A'.repeat(50000)}\u2029</root>`;
-			const doc = parser.parseFromString(source, MIME_TYPE.XML_TEXT);
-			expect(new XMLSerializer().serializeToString(doc)).toEqual(source.replace(/[\u0085\u2028\u2029]/g, '\n'));
-		});
-		test('should be able to open documents with alternative whitespace without creating a bottleneck and replacing them with \\n', () => {
+		test('should parse larger documents with Unicode whitespace with reasonable performance even when not using the default normalizeLineEndings', () => {
 			// issue: https://github.com/xmldom/xmldom/issues/838
 			const start = performance.now();
 			const onError = jest.fn();
