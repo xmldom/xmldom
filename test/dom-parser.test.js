@@ -330,7 +330,7 @@ describe('DOMParser', () => {
 			const onError = jest.fn();
 			const normalizeLineEndings = jest.fn((source) => source);
 			const { parser } = getTestParser({ onError, normalizeLineEndings });
-			const source = `<root>${'A'.repeat(15000)}\u2029${'A'.repeat(15000)}\u0085${'A'.repeat(15000)}\u2028${'A'.repeat(15000)}\u2029</root>`;
+			const source = `<root>${'A'.repeat(15000)}\n${'A'.repeat(15000)}\u0085${'A'.repeat(15000)}\u2028${'A'.repeat(15000)}\u2029</root>`;
 			const doc = parser.parseFromString(source, MIME_TYPE.XML_TEXT);
 			expect(normalizeLineEndings).toHaveBeenCalledWith(source);
 			expect(new XMLSerializer().serializeToString(doc)).toEqual(source);
