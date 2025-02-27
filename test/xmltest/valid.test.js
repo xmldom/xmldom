@@ -24,7 +24,7 @@ describe('xmltest/valid', () => {
 					expect({ error, expected }).toMatchSnapshot('caught');
 				}
 				actual && expect(generateSnapshot(actual, errors, expected)).toMatchSnapshot();
-			});
+			}, 2000);
 		});
 	});
 });

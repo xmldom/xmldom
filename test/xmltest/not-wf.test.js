@@ -25,7 +25,7 @@ describe('xmltest/not-wellformed', () => {
 					expect(e.message).toMatchSnapshot('caught');
 				}
 				actual && expect(generateSnapshot(actual, errors)).toMatchSnapshot('reported');
-			});
+			}, 2000);
 		});
 	});
 });
