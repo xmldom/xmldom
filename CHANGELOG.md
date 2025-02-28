@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.8](https://github.com/xmldom/xmldom/compare/0.9.8...0.9.7)
+
+### Fixed
+
+- fix: replace \u2029 as part of normalizeLineEndings [`#839`](https://github.com/xmldom/xmldom/pull/839) / [`#838`](https://github.com/xmldom/xmldom/issues/838)
+- perf: speed up line detection [`#847`](https://github.com/xmldom/xmldom/pull/847) / [`#838`](https://github.com/xmldom/xmldom/issues/838)
+
+### Chore
+
+- updated dependencies
+- drop jazzer and rxjs devDependencies [`#845`](https://github.com/xmldom/xmldom/pull/845)
+
+Thank you,
+[@kboshold](https://github.com/kboshold),
+[@Ponynjaa](https://github.com/Ponynjaa),
+for your contributions.
+
+
 ## [0.9.7](https://github.com/xmldom/xmldom/compare/0.9.6...0.9.7)
 
 ### Added
