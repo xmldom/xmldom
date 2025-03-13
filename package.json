@@ -1,6 +1,6 @@
 {
 	"name": "@logerzhu/xmldom",
-	"version": "0.9.0-beta.12",
+	"version": "0.9.0-beta.13",
 	"description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
 	"keywords": [
 		"w3c",
