@@ -43,7 +43,7 @@
 		"node": ">=14.6"
 	},
 	"devDependencies": {
-		"@homer0/prettier-plugin-jsdoc": "9.1.0",
+		"@homer0/prettier-plugin-jsdoc": "10.0.0",
 		"auto-changelog": "2.5.0",
 		"eslint": "8.57.1",
 		"eslint-config-prettier": "10.1.1",
