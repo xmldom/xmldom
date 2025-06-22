@@ -1,5 +1,6 @@
 'use strict';
 
+const { describe, it, expect } = require('@jest/globals');
 const { DOMParser, XMLSerializer } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
 
@@ -224,6 +225,35 @@ describe('XML Serializer', () => {
 			expect(new XMLSerializer().serializeToString(doc.documentElement.firstChild)).toBe(
 				'<test xmlns:attr="&quot;&amp;&lt;" attr:test="" xmlns="&lt;&amp;&quot;"/>'
 			);
+		});
+	});
+
+	describe('properly handles the addition of namespaced unprefixed attributes', () => {
+		test('should add applicable local namespace to unprefixed attributes', () => {
+			const str = '<foo xmlns:a="uri:a"/>';
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+
+			const attr = doc.createAttributeNS('uri:a', 'a');
+			attr.value = 'value';
+			root.setAttributeNode(attr);
+			expect(new XMLSerializer().serializeToString(root)).toBe('<foo xmlns:a="uri:a" a:a="value"/>');
+		});
+
+		test('should invent novel unused prefix as needed for unprefixed namespaced attributes', () => {
+			const str = '<foo/>';
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+
+			const attr = doc.createAttributeNS('uri:a', 'a');
+			attr.value = 'value';
+			root.setAttributeNode(attr);
+
+			const serializedResult = new XMLSerializer().serializeToString(root);
+			const generatedPrefixMatch = /xmlns:(?<prefix>\w+)="uri:a"/.exec(serializedResult);
+			expect(generatedPrefixMatch).not.toBeNull();
+			const serializedAttributeMatch = new RegExp(`${generatedPrefixMatch.groups.prefix}:a="value"`).exec(serializedResult);
+			expect(serializedAttributeMatch).not.toBeNull();
 		});
 	});
 });
