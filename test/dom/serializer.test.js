@@ -250,10 +250,25 @@ describe('XML Serializer', () => {
 			root.setAttributeNode(attr);
 
 			const serializedResult = new XMLSerializer().serializeToString(root);
-			const generatedPrefixMatch = /xmlns:(?<prefix>\w+)="uri:a"/.exec(serializedResult);
-			expect(generatedPrefixMatch).not.toBeNull();
-			const serializedAttributeMatch = new RegExp(`${generatedPrefixMatch.groups.prefix}:a="value"`).exec(serializedResult);
-			expect(serializedAttributeMatch).not.toBeNull();
+			expect(serializedResult).toBe('<foo xmlns:ns1="uri:a" ns1:a="value"/>')
+
+			// If we want a more generic approach to the test:
+			// const generatedPrefixMatch = /xmlns:(?<prefix>\w+)="uri:a"/.exec(serializedResult);
+			// expect(generatedPrefixMatch).not.toBeNull();
+			// const serializedAttributeMatch = new RegExp(`${generatedPrefixMatch.groups.prefix}:a="value"`).exec(serializedResult);
+			// expect(serializedAttributeMatch).not.toBeNull();
+		});
+
+		test('multiple assumed prefixes', () => {
+			const str = '<foo><child/></foo>';
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+
+			root.setAttributeNS("uri:a","a","a");
+			root.setAttributeNS("uri:b","b","b");
+
+			const serializedResult = new XMLSerializer().serializeToString(root);
+			expect(serializedResult).toBe('<foo xmlns:ns1="uri:a" ns1:a="a" xmlns:ns2="uri:b" ns2:b="b"><child/></foo>')
 		});
 	});
 });
