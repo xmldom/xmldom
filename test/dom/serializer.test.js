@@ -2,7 +2,7 @@
 
 const { describe, expect, test } = require('@jest/globals');
 const { DOMParser, XMLSerializer } = require('../../lib');
-const { MIME_TYPE } = require('../../lib/conventions');
+const { NAMESPACE, MIME_TYPE } = require('../../lib/conventions');
 
 describe('XML Serializer', () => {
 	test('supports text node containing "]]>"', () => {
@@ -270,6 +270,45 @@ describe('XML Serializer', () => {
 
 			const serializedResult = new XMLSerializer().serializeToString(root);
 			expect(serializedResult).toBe('<foo xmlns:ns1="uri:a" ns1:a="a" xmlns:ns2="uri:b" ns2:b="b"><child ns1:a2="a"/></foo>');
+		});
+
+		test('do not assume prefixes for attributes whose namespaceURI matches the xmlns namespace', () => {
+			const str = '<foo/>';
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+
+			const attr = doc.createAttribute('xmlns');
+			attr.namespaceURI = NAMESPACE.XMLNS;
+			attr.value = 'uri:value';
+			root.setAttributeNode(attr);
+
+			const serializedResult = new XMLSerializer().serializeToString(doc);
+			expect(serializedResult).toBe('<foo xmlns="uri:value"/>');
+		});
+
+		test('do not assume prefixes for empty string namespaceURIs', () => {
+			const str = '<foo/>';
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+
+			const attr = doc.createAttribute('example');
+			attr.namespaceURI = '';
+			attr.value = 'value';
+			root.setAttributeNode(attr);
+
+			const serializedResult = new XMLSerializer().serializeToString(doc);
+			expect(serializedResult).toBe('<foo example="value"/>');
+		});
+
+		test('gracefully handle existing prefixes that match the pattern of generated prefixes', () => {
+			const str = '<foo xmlns:ns1="uri:a" xmlns:nsx="uri:x"/>';
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+
+			root.setAttributeNS('uri:b', 'b', 'b');
+
+			const serializedResult = new XMLSerializer().serializeToString(doc);
+			expect(serializedResult).toBe('<foo xmlns:ns1="uri:a" xmlns:nsx="uri:x" xmlns:ns2="uri:b" ns2:b="b"/>');
 		});
 	});
 });
