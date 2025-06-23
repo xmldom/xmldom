@@ -1,6 +1,6 @@
 'use strict';
 
-const { describe, it, expect } = require('@jest/globals');
+const { describe, expect, test } = require('@jest/globals');
 const { DOMParser, XMLSerializer } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
 
