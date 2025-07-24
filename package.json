@@ -46,7 +46,7 @@
 		"@homer0/prettier-plugin-jsdoc": "10.0.0",
 		"auto-changelog": "2.5.0",
 		"eslint": "8.57.1",
-		"eslint-config-prettier": "10.1.5",
+		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-anti-trojan-source": "1.1.1",
 		"eslint-plugin-es5": "1.5.0",
 		"eslint-plugin-n": "17.21.0",
