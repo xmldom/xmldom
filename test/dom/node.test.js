@@ -79,10 +79,15 @@ describe('Node.prototype', () => {
 		const doc = impl.createDocument(null, '');
 		const el1 = doc.createElement('test1');
 		const el2 = doc.createElement('test2');
+		const el3 = doc.createElement('test3');
 		el1.appendChild(el2);
+		el2.appendChild(el3);
 
 		test('should return true if otherNode is a child of this node', () => {
 			expect(el1.contains(el2)).toBe(true);
+		});
+		test('should return true if otherNode is a descendant of this node', () => {
+			expect(el1.contains(el3)).toBe(true);
 		});
 		test('should return true if otherNode is this node', () => {
 			expect(el1.contains(el1)).toBe(true);
