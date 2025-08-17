@@ -211,4 +211,127 @@ describe('Document', () => {
 	xit('nested append failed', () => {})
 
 	xit('self append failed', () => {})
+
+	describe('ownerDocument updates', () => {
+		let doc1, doc2, element, childElement
+
+		beforeEach(() => {
+			const impl = new DOMImplementation()
+			doc1 = impl.createDocument(null, 'root1', null)
+			doc2 = impl.createDocument(null, 'root2', null)
+
+			element = doc1.createElement('test')
+			childElement = doc1.createElement('child')
+			element.appendChild(childElement)
+			doc1.documentElement.appendChild(element)
+		})
+
+		describe('appendChild', () => {
+			it('should update ownerDocument when moving element between documents', () => {
+				expect(element.ownerDocument).toBe(doc1)
+				expect(childElement.ownerDocument).toBe(doc1)
+
+				doc2.documentElement.appendChild(element)
+
+				expect(element.ownerDocument).toBe(doc2)
+				expect(childElement.ownerDocument).toBe(doc2)
+			})
+
+			it('should update ownerDocument for deeply nested children', () => {
+				const grandChild = doc1.createElement('grandchild')
+				const greatGrandChild = doc1.createElement('greatgrandchild')
+
+				grandChild.appendChild(greatGrandChild)
+				childElement.appendChild(grandChild)
+
+				expect(grandChild.ownerDocument).toBe(doc1)
+				expect(greatGrandChild.ownerDocument).toBe(doc1)
+
+				doc2.documentElement.appendChild(element)
+
+				expect(element.ownerDocument).toBe(doc2)
+				expect(childElement.ownerDocument).toBe(doc2)
+				expect(grandChild.ownerDocument).toBe(doc2)
+				expect(greatGrandChild.ownerDocument).toBe(doc2)
+			})
+
+			it('should update ownerDocument for text nodes', () => {
+				const textNode = doc1.createTextNode('test text')
+				element.appendChild(textNode)
+
+				expect(textNode.ownerDocument).toBe(doc1)
+
+				doc2.documentElement.appendChild(element)
+
+				expect(textNode.ownerDocument).toBe(doc2)
+			})
+		})
+
+		describe('insertBefore', () => {
+			it('should update ownerDocument when moving element between documents', () => {
+				const existingChild = doc2.createElement('existing')
+				doc2.documentElement.appendChild(existingChild)
+
+				expect(element.ownerDocument).toBe(doc1)
+				expect(childElement.ownerDocument).toBe(doc1)
+
+				doc2.documentElement.insertBefore(element, existingChild)
+
+				expect(element.ownerDocument).toBe(doc2)
+				expect(childElement.ownerDocument).toBe(doc2)
+			})
+		})
+
+		describe('replaceChild', () => {
+			it('should update ownerDocument when replacing with element from another document', () => {
+				const existingChild = doc2.createElement('existing')
+				doc2.documentElement.appendChild(existingChild)
+
+				expect(element.ownerDocument).toBe(doc1)
+				expect(childElement.ownerDocument).toBe(doc1)
+
+				doc2.documentElement.replaceChild(element, existingChild)
+
+				expect(element.ownerDocument).toBe(doc2)
+				expect(childElement.ownerDocument).toBe(doc2)
+			})
+		})
+
+		describe('DocumentFragment', () => {
+			it('should update ownerDocument when appending fragment with elements from another document', () => {
+				const fragment = doc1.createDocumentFragment()
+				const fragElement1 = doc1.createElement('frag1')
+				const fragElement2 = doc1.createElement('frag2')
+				const fragChild = doc1.createElement('fragchild')
+
+				fragElement1.appendChild(fragChild)
+				fragment.appendChild(fragElement1)
+				fragment.appendChild(fragElement2)
+
+				expect(fragElement1.ownerDocument).toBe(doc1)
+				expect(fragElement2.ownerDocument).toBe(doc1)
+				expect(fragChild.ownerDocument).toBe(doc1)
+
+				doc2.documentElement.appendChild(fragment)
+
+				expect(fragElement1.ownerDocument).toBe(doc2)
+				expect(fragElement2.ownerDocument).toBe(doc2)
+				expect(fragChild.ownerDocument).toBe(doc2)
+			})
+		})
+
+		describe('attributes', () => {
+			it('should update ownerDocument for attributes when element is moved', () => {
+				const attr = doc1.createAttribute('testattr')
+				attr.value = 'testvalue'
+				element.setAttributeNode(attr)
+
+				expect(attr.ownerDocument).toBe(doc1)
+
+				doc2.documentElement.appendChild(element)
+
+				expect(attr.ownerDocument).toBe(doc2)
+			})
+		})
+	})
 })
