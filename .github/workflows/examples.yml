@@ -3,9 +3,9 @@ name: examples
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, release-0.8.x ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, release-0.8.x ]
 
 jobs:
   nodejs:
