@@ -8,7 +8,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Fixed
 
-- update `ownerDocument` when moving nodes between documents
+- update `ownerDocument` when moving nodes between documents [`#933`](https://github.com/xmldom/xmldom/pull/933) / [`#932`](https://github.com/xmldom/xmldom/issues/932)
 
 Thank you, [@shunkica](https://github.com/shunkica), for your contributions
 
