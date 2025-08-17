@@ -1,7 +1,8 @@
 'use strict'
 
 const { DOMParser, DOMImplementation, XMLSerializer } = require('../../lib')
-const { Element } = require('../../lib/dom')
+const { Element, Node } = require('../../lib/dom')
+const { describe, expect, test } = require('@jest/globals')
 
 describe('Document', () => {
 	// See: http://jsfiddle.net/bigeasy/ShcXP/1/
@@ -211,127 +212,138 @@ describe('Document', () => {
 	xit('nested append failed', () => {})
 
 	xit('self append failed', () => {})
+})
 
-	describe('ownerDocument updates', () => {
-		let doc1, doc2, element, childElement
+describe('Moving Nodes between Documents', () => {
+	let doc1, doc2, documentFragment
 
-		beforeEach(() => {
-			const impl = new DOMImplementation()
-			doc1 = impl.createDocument(null, 'root1', null)
-			doc2 = impl.createDocument(null, 'root2', null)
+	beforeEach(() => {
+		const impl = new DOMImplementation()
+		doc1 = impl.createDocument(null, 'Root1', null)
+		doc2 = impl.createDocument(null, 'Root2', null)
 
-			element = doc1.createElement('test')
-			childElement = doc1.createElement('child')
-			element.appendChild(childElement)
-			doc1.documentElement.appendChild(element)
-		})
+		// Element
+		const element = doc1.createElement('ChildOfRoot')
+		const childElement = doc1.createElement('ChildOfChild')
+		element.appendChild(childElement)
+		// Attr
+		const attr = doc1.createAttribute('attr')
+		attr.value = 'value'
+		element.setAttributeNode(attr)
+		// Text
+		const textNode = doc1.createTextNode('text content')
+		childElement.appendChild(textNode)
+		// CDATASection
+		const cdataNode = doc1.createCDATASection('cdata content')
+		element.appendChild(cdataNode)
+		// Comment
+		const commentNode = doc1.createComment('comment content')
+		element.appendChild(commentNode)
+		// DocumentFragment
+		documentFragment = doc1.createDocumentFragment()
+		const fragElement = doc1.createElement('ElementOfFragment')
+		documentFragment.appendChild(fragElement)
+		element.appendChild(documentFragment)
 
-		describe('appendChild', () => {
-			it('should update ownerDocument when moving element between documents', () => {
-				expect(element.ownerDocument).toBe(doc1)
-				expect(childElement.ownerDocument).toBe(doc1)
+		doc1.documentElement.appendChild(element)
+	})
 
-				doc2.documentElement.appendChild(element)
+	const _validateOwnerDoc = (element, expectedOwnerDoc) => {
+		// RootElement
+		expect(element.nodeName).toBe('ChildOfRoot')
+		expect(element.ownerDocument).toBe(expectedOwnerDoc)
 
-				expect(element.ownerDocument).toBe(doc2)
-				expect(childElement.ownerDocument).toBe(doc2)
-			})
+		// Attr
+		const attr = element.getAttributeNode('attr')
+		expect(attr.ownerDocument).toBe(expectedOwnerDoc)
 
-			it('should update ownerDocument for deeply nested children', () => {
-				const grandChild = doc1.createElement('grandchild')
-				const greatGrandChild = doc1.createElement('greatgrandchild')
+		// ChildOfRoot
+		const childElement = element.firstChild
+		expect(childElement.nodeName).toBe('ChildOfChild')
+		expect(childElement.ownerDocument).toBe(expectedOwnerDoc)
 
-				grandChild.appendChild(greatGrandChild)
-				childElement.appendChild(grandChild)
+		// Text
+		const textNode = childElement.firstChild
+		expect(textNode.nodeType).toBe(Node.TEXT_NODE)
+		expect(textNode.ownerDocument).toBe(expectedOwnerDoc)
 
-				expect(grandChild.ownerDocument).toBe(doc1)
-				expect(greatGrandChild.ownerDocument).toBe(doc1)
+		// CDATASection
+		const cdataNode = element.childNodes[1]
+		expect(cdataNode.nodeType).toBe(Node.CDATA_SECTION_NODE)
+		expect(cdataNode.ownerDocument).toBe(expectedOwnerDoc)
 
-				doc2.documentElement.appendChild(element)
+		// Comment
+		const commentNode = element.childNodes[2]
+		expect(commentNode.nodeType).toBe(Node.COMMENT_NODE)
+		expect(commentNode.ownerDocument).toBe(expectedOwnerDoc)
 
-				expect(element.ownerDocument).toBe(doc2)
-				expect(childElement.ownerDocument).toBe(doc2)
-				expect(grandChild.ownerDocument).toBe(doc2)
-				expect(greatGrandChild.ownerDocument).toBe(doc2)
-			})
+		// ElementOfFragment (last child of element after fragment flattening)
+		const fragElement = element.lastChild
+		expect(fragElement.nodeName).toBe('ElementOfFragment')
+		expect(fragElement.ownerDocument).toBe(expectedOwnerDoc)
+	}
 
-			it('should update ownerDocument for text nodes', () => {
-				const textNode = doc1.createTextNode('test text')
-				element.appendChild(textNode)
+	test('setup - documentFragment should contain no children after appendChild', () => {
+		expect(documentFragment.childNodes).toHaveLength(0)
+		expect(documentFragment.firstChild).toBeNull()
+		expect(documentFragment.lastChild).toBeNull()
+	})
 
-				expect(textNode.ownerDocument).toBe(doc1)
+	test('setup - appendChild does not move the DocumentFragment itself', () => {
+		const _validateNoDocumentFragment = (node) => {
+			expect(node.nodeType).not.toBe(Node.DOCUMENT_FRAGMENT_NODE)
 
-				doc2.documentElement.appendChild(element)
+			let child = node.firstChild
+			while (child) {
+				_validateNoDocumentFragment(child)
+				child = child.nextSibling
+			}
+		}
 
-				expect(textNode.ownerDocument).toBe(doc2)
-			})
-		})
+		_validateNoDocumentFragment(doc1)
+	})
 
-		describe('insertBefore', () => {
-			it('should update ownerDocument when moving element between documents', () => {
-				const existingChild = doc2.createElement('existing')
-				doc2.documentElement.appendChild(existingChild)
+	test('setup - appendChild moves the contents of DocumentFragment', () => {
+		const fragElement = doc1.documentElement.firstChild.lastChild
 
-				expect(element.ownerDocument).toBe(doc1)
-				expect(childElement.ownerDocument).toBe(doc1)
+		expect(fragElement.nodeType).toBe(Node.ELEMENT_NODE)
+		expect(fragElement.nodeName).toBe('ElementOfFragment')
+		expect(fragElement.ownerDocument).toBe(doc1)
+	})
 
-				doc2.documentElement.insertBefore(element, existingChild)
+	test('appendChild does not update the ownerDocument of the DocumentFragment', () => {
+		doc2.documentElement.appendChild(doc1.documentElement.firstChild)
+		expect(documentFragment.ownerDocument).toBe(doc1)
+	})
 
-				expect(element.ownerDocument).toBe(doc2)
-				expect(childElement.ownerDocument).toBe(doc2)
-			})
-		})
+	test('appendChild updates ownerDocument of all nodes when moved', () => {
+		doc2.documentElement.appendChild(doc1.documentElement.firstChild)
+		_validateOwnerDoc(doc2.documentElement.firstChild, doc2)
+	})
 
-		describe('replaceChild', () => {
-			it('should update ownerDocument when replacing with element from another document', () => {
-				const existingChild = doc2.createElement('existing')
-				doc2.documentElement.appendChild(existingChild)
+	test('insertBefore updates ownerDocument of all nodes when moved', () => {
+		doc2.documentElement.insertBefore(
+			doc1.documentElement.firstChild,
+			doc2.documentElement.firstChild
+		)
+		_validateOwnerDoc(doc2.documentElement.firstChild, doc2)
+	})
 
-				expect(element.ownerDocument).toBe(doc1)
-				expect(childElement.ownerDocument).toBe(doc1)
+	test('replaceChild updates ownerDocument of all nodes when moved', () => {
+		doc2.documentElement.replaceChild(
+			doc1.documentElement.firstChild,
+			doc2.documentElement.firstChild
+		)
+		_validateOwnerDoc(doc2.documentElement.firstChild, doc2)
+	})
 
-				doc2.documentElement.replaceChild(element, existingChild)
-
-				expect(element.ownerDocument).toBe(doc2)
-				expect(childElement.ownerDocument).toBe(doc2)
-			})
-		})
-
-		describe('DocumentFragment', () => {
-			it('should update ownerDocument when appending fragment with elements from another document', () => {
-				const fragment = doc1.createDocumentFragment()
-				const fragElement1 = doc1.createElement('frag1')
-				const fragElement2 = doc1.createElement('frag2')
-				const fragChild = doc1.createElement('fragchild')
-
-				fragElement1.appendChild(fragChild)
-				fragment.appendChild(fragElement1)
-				fragment.appendChild(fragElement2)
-
-				expect(fragElement1.ownerDocument).toBe(doc1)
-				expect(fragElement2.ownerDocument).toBe(doc1)
-				expect(fragChild.ownerDocument).toBe(doc1)
-
-				doc2.documentElement.appendChild(fragment)
-
-				expect(fragElement1.ownerDocument).toBe(doc2)
-				expect(fragElement2.ownerDocument).toBe(doc2)
-				expect(fragChild.ownerDocument).toBe(doc2)
-			})
-		})
-
-		describe('attributes', () => {
-			it('should update ownerDocument for attributes when element is moved', () => {
-				const attr = doc1.createAttribute('testattr')
-				attr.value = 'testvalue'
-				element.setAttributeNode(attr)
-
-				expect(attr.ownerDocument).toBe(doc1)
-
-				doc2.documentElement.appendChild(element)
-
-				expect(attr.ownerDocument).toBe(doc2)
-			})
-		})
+	test('importNode updates ownerDocument of all nodes when imported', () => {
+		const importedElement = doc2.importNode(
+			doc1.documentElement.firstChild,
+			true
+		)
+		_validateOwnerDoc(importedElement, doc2)
+		doc2.documentElement.appendChild(importedElement)
+		_validateOwnerDoc(doc2.documentElement.firstChild, doc2)
 	})
 })
