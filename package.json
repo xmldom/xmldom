@@ -67,5 +67,6 @@
     "remote": "upstream",
     "tagPrefix": "",
     "template": "./auto-changelog.hbs"
-  }
+  },
+  "packageManager": "npm@11.1.0+sha512.acf301ad9b9ddba948fcb72341e2f0fcae477f56a95cc2a092934d133a7461062633cefbf93d5934a3dc0768674e2edee9f04dcfcc4bb4c327ff0e3a7d552a1b"
 }
