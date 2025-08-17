@@ -1,7 +1,7 @@
 'use strict'
 
 const { DOMParser, XMLSerializer } = require('../../lib')
-const { MIME_TYPE } = require('../../lib/conventions')
+const { NAMESPACE, MIME_TYPE } = require('../../lib/conventions')
 
 describe('XML Serializer', () => {
 	it('supports text node containing "]]>"', () => {
@@ -250,6 +250,96 @@ describe('XML Serializer', () => {
 				new XMLSerializer().serializeToString(doc.documentElement.firstChild)
 			).toBe(
 				'<test xmlns:attr="&quot;&amp;&lt;" attr:test="" xmlns="&lt;&amp;&quot;"/>'
+			)
+		})
+	})
+
+	describe('properly handles the addition of namespaced unprefixed attributes', () => {
+		test('should add applicable local namespace to unprefixed attributes', () => {
+			const str = '<foo xmlns:a="uri:a"/>'
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
+			const root = doc.documentElement
+
+			const attr = doc.createAttributeNS('uri:a', 'a')
+			attr.value = 'value'
+			root.setAttributeNode(attr)
+			expect(new XMLSerializer().serializeToString(root)).toBe(
+				'<foo xmlns:a="uri:a" a:a="value"/>'
+			)
+		})
+
+		test('should invent novel unused prefix as needed for unprefixed namespaced attributes', () => {
+			const str = '<foo/>'
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
+			const root = doc.documentElement
+
+			const attr = doc.createAttributeNS('uri:a', 'a')
+			attr.value = 'value'
+			root.setAttributeNode(attr)
+
+			const serializedResult = new XMLSerializer().serializeToString(root)
+			expect(serializedResult).toBe('<foo xmlns:ns1="uri:a" ns1:a="value"/>')
+
+			// If we want a more generic approach to the test:
+			// const generatedPrefixMatch = /xmlns:(?<prefix>\w+)="uri:a"/.exec(serializedResult);
+			// expect(generatedPrefixMatch).not.toBeNull();
+			// const serializedAttributeMatch = new RegExp(`${generatedPrefixMatch.groups.prefix}:a="value"`).exec(serializedResult);
+			// expect(serializedAttributeMatch).not.toBeNull();
+		})
+
+		test('should generate multiple unique prefixes as needed', () => {
+			const str = '<foo><child/></foo>'
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
+			const root = doc.documentElement
+
+			root.setAttributeNS('uri:a', 'a', 'a')
+			root.setAttributeNS('uri:b', 'b', 'b')
+			root.firstChild.setAttributeNS('uri:a', 'a2', 'a')
+
+			const serializedResult = new XMLSerializer().serializeToString(root)
+			expect(serializedResult).toBe(
+				'<foo xmlns:ns1="uri:a" ns1:a="a" xmlns:ns2="uri:b" ns2:b="b"><child ns1:a2="a"/></foo>'
+			)
+		})
+
+		test('do not assume prefixes for attributes whose namespaceURI matches the xmlns namespace', () => {
+			const str = '<foo/>'
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
+			const root = doc.documentElement
+
+			const attr = doc.createAttribute('xmlns')
+			attr.namespaceURI = NAMESPACE.XMLNS
+			attr.value = 'uri:value'
+			root.setAttributeNode(attr)
+
+			const serializedResult = new XMLSerializer().serializeToString(doc)
+			expect(serializedResult).toBe('<foo xmlns="uri:value"/>')
+		})
+
+		test('do not assume prefixes for empty string namespaceURIs', () => {
+			const str = '<foo/>'
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
+			const root = doc.documentElement
+
+			const attr = doc.createAttribute('example')
+			attr.namespaceURI = ''
+			attr.value = 'value'
+			root.setAttributeNode(attr)
+
+			const serializedResult = new XMLSerializer().serializeToString(doc)
+			expect(serializedResult).toBe('<foo example="value"/>')
+		})
+
+		test('gracefully handle existing prefixes that match the pattern of generated prefixes', () => {
+			const str = '<foo xmlns:ns1="uri:a" xmlns:nsx="uri:x"/>'
+			const doc = new DOMParser().parseFromString(str, MIME_TYPE.XML_TEXT)
+			const root = doc.documentElement
+
+			root.setAttributeNS('uri:b', 'b', 'b')
+
+			const serializedResult = new XMLSerializer().serializeToString(doc)
+			expect(serializedResult).toBe(
+				'<foo xmlns:ns1="uri:a" xmlns:nsx="uri:x" xmlns:ns2="uri:b" ns2:b="b"/>'
 			)
 		})
 	})
