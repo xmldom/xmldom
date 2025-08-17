@@ -415,12 +415,12 @@ describe('Moving Nodes between Documents', () => {
 
 	beforeEach(() => {
 		const impl = new DOMImplementation();
-		doc1 = impl.createDocument(null, 'root1', null);
-		doc2 = impl.createDocument(null, 'root2', null);
+		doc1 = impl.createDocument(null, 'Root1', null);
+		doc2 = impl.createDocument(null, 'Root2', null);
 
 		// Element
-		const element = doc1.createElement('RootElement');
-		const childElement = doc1.createElement('ChildOfRoot');
+		const element = doc1.createElement('ChildOfRoot');
+		const childElement = doc1.createElement('ChildOfChild');
 		element.appendChild(childElement);
 		// Attr
 		const attr = doc1.createAttribute('attr');
@@ -444,29 +444,48 @@ describe('Moving Nodes between Documents', () => {
 		doc1.documentElement.appendChild(element);
 	});
 
-	const _validateOwnerDoc = (node, expectedOwnerDoc) => {
-		expect(node.ownerDocument).toBe(expectedOwnerDoc);
+	const _validateOwnerDoc = (element, expectedOwnerDoc) => {
+		// RootElement
+		expect(element.nodeName).toBe('ChildOfRoot');
+		expect(element.ownerDocument).toBe(expectedOwnerDoc);
 
-		// Also check attributes
-		if (node.attributes) {
-			for (const attr of node.attributes) {
-				expect(attr.ownerDocument).toBe(expectedOwnerDoc);
-			}
-		}
+		// Attr
+		const attr = element.getAttributeNode('attr');
+		expect(attr.ownerDocument).toBe(expectedOwnerDoc);
 
-		// Recursively check child nodes
-		for (const child of node.childNodes) {
-			_validateOwnerDoc(child, expectedOwnerDoc);
-		}
+		// ChildOfRoot
+		const childElement = element.firstChild;
+		expect(childElement.nodeName).toBe('ChildOfChild');
+		expect(childElement.ownerDocument).toBe(expectedOwnerDoc);
+
+		// Text
+		const textNode = childElement.firstChild;
+		expect(textNode.nodeType).toBe(Node.TEXT_NODE);
+		expect(textNode.ownerDocument).toBe(expectedOwnerDoc);
+
+		// CDATASection
+		const cdataNode = element.childNodes[1];
+		expect(cdataNode.nodeType).toBe(Node.CDATA_SECTION_NODE);
+		expect(cdataNode.ownerDocument).toBe(expectedOwnerDoc);
+
+		// Comment
+		const commentNode = element.childNodes[2];
+		expect(commentNode.nodeType).toBe(Node.COMMENT_NODE);
+		expect(commentNode.ownerDocument).toBe(expectedOwnerDoc);
+
+		// ElementOfFragment (last child of element after fragment flattening)
+		const fragElement = element.lastChild;
+		expect(fragElement.nodeName).toBe('ElementOfFragment');
+		expect(fragElement.ownerDocument).toBe(expectedOwnerDoc);
 	};
 
-	test('documentFragment should contain no children after appendChild', () => {
+	test('setup - documentFragment should contain no children after appendChild', () => {
 		expect(documentFragment.childNodes).toHaveLength(0);
 		expect(documentFragment.firstChild).toBeNull();
 		expect(documentFragment.lastChild).toBeNull();
 	});
 
-	test('appendChild does not move the DocumentFragment itself', () => {
+	test('setup - appendChild does not move the DocumentFragment itself', () => {
 		const _validateNoDocumentFragment = (node) => {
 			expect(node.nodeType).not.toBe(Node.DOCUMENT_FRAGMENT_NODE);
 
@@ -479,42 +498,38 @@ describe('Moving Nodes between Documents', () => {
 		_validateNoDocumentFragment(doc1);
 	});
 
-	test('appendChild moves the contents of DocumentFragment', () => {
-		const _findFragmentChild = (node) => {
-			if (node.nodeType === Node.ELEMENT_NODE) {
-				if (node.tagName === 'ElementOfFragment') {
-					return true;
-				}
-			}
-			for (const child of node.childNodes) {
-				if (_findFragmentChild(child)) {
-					return true;
-				}
-			}
-			return false;
-		};
-		expect(_findFragmentChild(doc1)).toBe(true);
+	test('setup - appendChild moves the contents of DocumentFragment', () => {
+		const fragElement = doc1.documentElement.firstChild.lastChild;
+
+		expect(fragElement.nodeType).toBe(Node.ELEMENT_NODE);
+		expect(fragElement.nodeName).toBe('ElementOfFragment');
+		expect(fragElement.ownerDocument).toBe(doc1);
+	});
+
+	test('appendChild does not update the ownerDocument of the DocumentFragment', () => {
+		doc2.documentElement.appendChild(doc1.documentElement.firstChild);
+		expect(documentFragment.ownerDocument).toBe(doc1);
 	});
 
 	test('appendChild updates ownerDocument of all nodes when moved', () => {
-		doc2.documentElement.appendChild(doc1.documentElement);
-		_validateOwnerDoc(doc2.documentElement, doc2);
+		doc2.documentElement.appendChild(doc1.documentElement.firstChild);
+		_validateOwnerDoc(doc2.documentElement.firstChild, doc2);
 	});
 
 	test('insertBefore updates ownerDocument of all nodes when moved', () => {
-		doc2.documentElement.insertBefore(doc1.documentElement, doc2.documentElement.firstChild);
-		_validateOwnerDoc(doc2.documentElement, doc2);
+		doc2.documentElement.insertBefore(doc1.documentElement.firstChild, doc2.documentElement.firstChild);
+		_validateOwnerDoc(doc2.documentElement.firstChild, doc2);
 	});
 
 	test('replaceChild updates ownerDocument of all nodes when moved', () => {
-		doc2.documentElement.replaceChild(doc1.documentElement, doc2.documentElement.firstChild);
-		_validateOwnerDoc(doc2.documentElement, doc2);
+		doc2.documentElement.replaceChild(doc1.documentElement.firstChild, doc2.documentElement.firstChild);
+		_validateOwnerDoc(doc2.documentElement.firstChild, doc2);
 	});
 
 	test('importNode updates ownerDocument of all nodes when imported', () => {
-		const importedElement = doc2.importNode(doc1.documentElement, true);
+		const importedElement = doc2.importNode(doc1.documentElement.firstChild, true);
 		_validateOwnerDoc(importedElement, doc2);
 		doc2.documentElement.appendChild(importedElement);
-		_validateOwnerDoc(doc2.documentElement, doc2);
+		_validateOwnerDoc(doc2.documentElement.firstChild, doc2);
 	});
 });
