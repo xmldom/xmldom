@@ -409,3 +409,112 @@ describe('Element', () => {
 		});
 	});
 });
+
+describe('Moving Nodes between Documents', () => {
+	let doc1, doc2, documentFragment;
+
+	beforeEach(() => {
+		const impl = new DOMImplementation();
+		doc1 = impl.createDocument(null, 'root1', null);
+		doc2 = impl.createDocument(null, 'root2', null);
+
+		// Element
+		const element = doc1.createElement('RootElement');
+		const childElement = doc1.createElement('ChildOfRoot');
+		element.appendChild(childElement);
+		// Attr
+		const attr = doc1.createAttribute('attr');
+		attr.value = 'value';
+		element.setAttributeNode(attr);
+		// Text
+		const textNode = doc1.createTextNode('text content');
+		childElement.appendChild(textNode);
+		// CDATASection
+		const cdataNode = doc1.createCDATASection('cdata content');
+		element.appendChild(cdataNode);
+		// Comment
+		const commentNode = doc1.createComment('comment content');
+		element.appendChild(commentNode);
+		// DocumentFragment
+		documentFragment = doc1.createDocumentFragment();
+		const fragElement = doc1.createElement('ElementOfFragment');
+		documentFragment.appendChild(fragElement);
+		element.appendChild(documentFragment);
+
+		doc1.documentElement.appendChild(element);
+	});
+
+	const _validateOwnerDoc = (node, expectedOwnerDoc) => {
+		expect(node.ownerDocument).toBe(expectedOwnerDoc);
+
+		// Also check attributes
+		if (node.attributes) {
+			for (const attr of node.attributes) {
+				expect(attr.ownerDocument).toBe(expectedOwnerDoc);
+			}
+		}
+
+		// Recursively check child nodes
+		for (const child of node.childNodes) {
+			_validateOwnerDoc(child, expectedOwnerDoc);
+		}
+	};
+
+	test('documentFragment should contain no children after appendChild', () => {
+		expect(documentFragment.childNodes).toHaveLength(0);
+		expect(documentFragment.firstChild).toBeNull();
+		expect(documentFragment.lastChild).toBeNull();
+	});
+
+	test('appendChild does not move the DocumentFragment itself', () => {
+		const _validateNoDocumentFragment = (node) => {
+			expect(node.nodeType).not.toBe(Node.DOCUMENT_FRAGMENT_NODE);
+
+			// Recursively check child nodes
+			for (const child of node.childNodes) {
+				_validateNoDocumentFragment(child);
+			}
+		};
+
+		_validateNoDocumentFragment(doc1);
+	});
+
+	test('appendChild moves the contents of DocumentFragment', () => {
+		const _findFragmentChild = (node) => {
+			if (node.nodeType === Node.ELEMENT_NODE) {
+				if (node.tagName === 'ElementOfFragment') {
+					return true;
+				}
+			}
+			for (const child of node.childNodes) {
+				if (_findFragmentChild(child)) {
+					return true;
+				}
+			}
+			return false;
+		};
+		expect(_findFragmentChild(doc1)).toBe(true);
+	});
+
+	test('appendChild updates ownerDocument of all nodes when moved', () => {
+		doc2.documentElement.appendChild(doc1.documentElement);
+		_validateOwnerDoc(doc2.documentElement, doc2);
+	});
+
+	test('insertBefore updates ownerDocument of all nodes when moved', () => {
+		doc2.documentElement.insertBefore(doc1.documentElement, doc2.documentElement.firstChild);
+		_validateOwnerDoc(doc2.documentElement, doc2);
+	});
+
+	test('replaceChild updates ownerDocument of all nodes when moved', () => {
+		doc2.documentElement.replaceChild(doc1.documentElement, doc2.documentElement.firstChild);
+		_validateOwnerDoc(doc2.documentElement, doc2);
+	});
+
+	test('importNode updates ownerDocument of all nodes when imported', () => {
+		const importedElement = doc2.importNode(doc1.documentElement, true);
+		_validateOwnerDoc(importedElement, doc2);
+		doc2.documentElement.appendChild(importedElement);
+		_validateOwnerDoc(doc2.documentElement, doc2);
+	});
+});
