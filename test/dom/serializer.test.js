@@ -1,6 +1,6 @@
 'use strict';
 
-const { DOMParser, XMLSerializer } = require('../../lib');
+const { DOMParser, XMLSerializer, DOMImplementation } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
 
 describe('XML Serializer', () => {
@@ -224,6 +224,177 @@ describe('XML Serializer', () => {
 			expect(new XMLSerializer().serializeToString(doc.documentElement.firstChild)).toBe(
 				'<test xmlns:attr="&quot;&amp;&lt;" attr:test="" xmlns="&lt;&amp;&quot;"/>'
 			);
+		});
+	});
+
+	describe('prefix generation', () => {
+		test('should generate prefix for attribute in namespace without prefix', () => {
+			const doc = new DOMParser().parseFromString('<doc/>', MIME_TYPE.XML_TEXT);
+			const element = doc.documentElement;
+			element.setAttributeNS('uri:ns', 'name', 'value');
+			const result = new XMLSerializer().serializeToString(doc);
+
+			expect(result).toMatch(/^<doc /);
+			expect(result).toContain('xmlns:ns1="uri:ns"');
+			expect(result).toContain('ns1:name="value"');
+		});
+
+		test('should generate sequential prefixes for multiple namespaces', () => {
+			const doc = new DOMParser().parseFromString('<doc/>', MIME_TYPE.XML_TEXT);
+			const element = doc.documentElement;
+
+			element.setAttributeNS('uri:first', 'attr1', 'value1');
+			element.setAttributeNS('uri:second', 'attr2', 'value2');
+			element.setAttributeNS('uri:third', 'attr3', 'value3');
+
+			const serialized = new XMLSerializer().serializeToString(doc);
+			expect(serialized).toMatch(/^<doc /);
+			expect(serialized).toContain('xmlns:ns1="uri:first"');
+			expect(serialized).toContain('xmlns:ns2="uri:second"');
+			expect(serialized).toContain('xmlns:ns3="uri:third"');
+			expect(serialized).toContain('ns1:attr1="value1"');
+			expect(serialized).toContain('ns2:attr2="value2"');
+			expect(serialized).toContain('ns3:attr3="value3"');
+		});
+
+		test('should jump over existing prefixes when generating new ones', () => {
+			const doc = new DOMParser().parseFromString('<doc xmlns:ns1="uri:existing"/>', MIME_TYPE.XML_TEXT);
+			const element = doc.documentElement;
+
+			// Add an attribute that would normally use ns1 prefix
+			element.setAttributeNS('uri:new', 'name', 'value');
+			element.setAttributeNS('uri:other', 'ns1:other', 'value');
+
+			const serialized = new XMLSerializer().serializeToString(doc);
+			expect(serialized).toContain('xmlns:ns1="uri:existing"');
+			expect(serialized).toContain('xmlns:ns2="uri:new"');
+			expect(serialized).toContain('ns2:name="value"');
+			expect(serialized).toContain('xmlns:ns3="uri:other"');
+			expect(serialized).toContain('ns3:other="value"');
+		});
+
+		test('should use default namespace for elements instead of generating prefix', () => {
+			const doc = new DOMParser().parseFromString('<doc/>', MIME_TYPE.XML_TEXT);
+			const child = doc.createElementNS('uri:ns', 'child');
+			doc.documentElement.appendChild(child);
+
+			const serialized = new XMLSerializer().serializeToString(doc);
+			// Elements without prefix should use default namespace when possible
+			expect(serialized).toContain('<child xmlns="uri:ns"/>');
+		});
+
+		test('should not generate prefix for attributes in null namespace', () => {
+			const doc = new DOMParser().parseFromString('<doc/>', MIME_TYPE.XML_TEXT);
+			const element = doc.documentElement;
+
+			element.setAttributeNS('', 'name', 'value');
+
+			expect(new XMLSerializer().serializeToString(doc)).toBe('<doc name="value"/>');
+		});
+
+		test('should not generate prefix for xmlns attribute in xmlns namespace', () => {
+			const doc = new DOMParser().parseFromString('<doc/>', MIME_TYPE.XML_TEXT);
+			const element = doc.documentElement;
+
+			element.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns', 'uri:custom');
+
+			expect(new XMLSerializer().serializeToString(doc)).toBe('<doc xmlns="uri:custom"/>');
+		});
+
+		test('should handle mixed default and prefixed namespace declarations', () => {
+			const doc = new DOMImplementation().createDocument(null, 'root');
+			const el = doc.documentElement;
+			el.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns', 'http://default.ns');
+			el.setAttributeNS('http://ns1.example.com', 'attr', 'value1');
+			el.setAttributeNS('http://ns2.example.com', 'attr', 'value2');
+
+			const serialized = new XMLSerializer().serializeToString(doc);
+			expect(serialized).toContain('xmlns="http://default.ns"');
+			expect(serialized).toContain('xmlns:ns1="http://ns1.example.com"');
+			expect(serialized).toContain('xmlns:ns2="http://ns2.example.com"');
+			expect(serialized).toContain('ns1:attr="value1"');
+			expect(serialized).toContain('ns2:attr="value2"');
+		});
+
+		test('should reuse the generated prefix for subsequent elements', () => {
+			const doc = new DOMImplementation().createDocument(null, 'root');
+			const el = doc.documentElement;
+			el.setAttributeNS('http://ns1.example.com', 'attr1', 'value1');
+			el.setAttributeNS('http://ns1.example.com', 'attr2', 'value2');
+
+			// Create a new element in the same namespace
+			const child = doc.createElementNS('http://ns1.example.com', 'child');
+			el.appendChild(child);
+
+			const serialized = new XMLSerializer().serializeToString(doc);
+			expect(serialized).toContain('xmlns:ns1="http://ns1.example.com"');
+			expect(serialized).toContain('ns1:attr1="value1"');
+			expect(serialized).toContain('ns1:attr2="value2"');
+			expect(serialized).toContain('<ns1:child/>');
+		});
+
+		test('should handle XML with processing instructions and namespaces', () => {
+			const doc = new DOMImplementation().createDocument(null, 'root');
+			doc.insertBefore(
+				doc.createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="style.xsl"'),
+				doc.documentElement
+			);
+			const el = doc.documentElement;
+			el.setAttributeNS('http://ns1.example.com', 'style', 'value1');
+			el.setAttributeNS('http://ns2.example.com', 'style', 'value2');
+
+			const serialized = new XMLSerializer().serializeToString(doc);
+			expect(serialized).toContain('<?xml-stylesheet type="text/xsl" href="style.xsl"?>');
+			expect(serialized).toContain('xmlns:ns1="http://ns1.example.com"');
+			expect(serialized).toContain('xmlns:ns2="http://ns2.example.com"');
+			expect(serialized).toContain('ns1:style="value1"');
+			expect(serialized).toContain('ns2:style="value2"');
+		});
+
+		test('should handle cloning elements across different namespace contexts', () => {
+			const doc1 = new DOMImplementation().createDocument('http://ns1.com', 'elem1');
+			const doc2 = new DOMImplementation().createDocument('http://ns2.com', 'elem2');
+			const el1 = doc1.documentElement;
+			el1.setAttributeNS('http://attr.ns', 'test', 'value');
+			const el2 = doc2.importNode(el1, true);
+			doc2.documentElement.appendChild(el2);
+
+			const serialized = new XMLSerializer().serializeToString(doc2);
+			expect(serialized).toMatch(/^<elem2 xmlns="http:\/\/ns2.com">/);
+			expect(serialized).toContain('<elem1 ');
+			expect(serialized).toContain('xmlns="http://ns1.com"');
+			expect(serialized).toContain('ns1:test="value"');
+			expect(serialized).toContain('xmlns:ns1="http://attr.ns"');
+		});
+
+		test('should not generate prefix if namespace is default', () => {
+			const doc = new DOMParser().parseFromString('<parent xmlns="uri:parent"/>', MIME_TYPE.XML_TEXT);
+			const child = doc.createElementNS('uri:parent', 'child');
+			doc.documentElement.appendChild(child);
+
+			const serialized = new XMLSerializer().serializeToString(doc);
+			expect(serialized).toEqual('<parent xmlns="uri:parent"><child/></parent>');
+		});
+
+		test('should consider inherited namespace context for prefix decisions', () => {
+			const doc = new DOMParser().parseFromString('<root xmlns="uri:default" xmlns:p="uri:prefixed"/>', MIME_TYPE.XML_TEXT);
+			const child = doc.createElement('child'); // Inherits default namespace
+
+			// Adding attribute in inherited default namespace
+			child.setAttributeNS('uri:default', 'attr1', 'value1');
+			// Adding attribute in inherited prefixed namespace
+			child.setAttributeNS('uri:prefixed', 'attr2', 'value2');
+			// Adding attribute in new namespace
+			child.setAttributeNS('uri:new', 'attr3', 'value3');
+
+			doc.documentElement.appendChild(child);
+
+			const serialized = new XMLSerializer().serializeToString(doc);
+			// Should reuse inherited prefixes, only generate for new namespace
+			expect(serialized).toContain('attr1="value1"'); // No prefix needed
+			expect(serialized).toContain('p:attr2="value2"'); // Reuse existing
+			expect(serialized).toContain('xmlns:ns1="uri:new"'); // Generate new
+			expect(serialized).toContain('ns1:attr3="value3"');
 		});
 	});
 });
