@@ -33,16 +33,16 @@ describe('XML Namespace Parse', () => {
 			const n1_test = doc.createElementNS(n1, 'test');
 			n1_test.setAttribute('xmlns', n1);
 			n1_test.setAttributeNS(n1, 'bar', 'valx');
-			expect(n1_test.toString()).toBe('<test xmlns="' + n1 + '" bar="valx"/>');
+			expect(n1_test.toString()).toBe('<test xmlns="' + n1 + '" xmlns:ns1="' + n1 + '" ns1:bar="valx"/>');
 			el.appendChild(n1_test);
 			const n2_test = doc.createElementNS(n2, 'test');
 			n2_test.setAttribute('xmlns', n2);
 			n2_test.setAttributeNS(n2, 'bar', 'valx');
-			expect(n2_test.toString()).toBe('<test xmlns="' + n2 + '" bar="valx"/>');
+			expect(n2_test.toString()).toBe('<test xmlns="' + n2 + '" xmlns:ns1="' + n2 + '" ns1:bar="valx"/>');
 			el.appendChild(n2_test);
 		}
 		expect(doc.toString()).toBe(
-			'<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" bar="valx"/><test xmlns="http://rmf.vc/n2" bar="valx"/></rmf:foo></html>'
+			'<html test="a" xmlns="http://www.w3.org/1999/xhtml" xmlns:rmf="http://www.frankston.com/public"><rmf:foo hello="asdfa"><test xmlns="http://www.frankston.com/public" rmf:bar="valx"/><test xmlns="http://rmf.vc/n2" xmlns:ns1="http://rmf.vc/n2" ns1:bar="valx"/></rmf:foo></html>'
 		);
 	});
 });
