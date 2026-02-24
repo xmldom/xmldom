@@ -828,6 +828,15 @@ declare module '@xmldom/xmldom' {
 		readonly tagName: string;
 
 		/**
+		 * Returns a live collection of the direct child elements of this element.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/children)
+		 *
+		 * @see https://dom.spec.whatwg.org/#dom-parentnode-children
+		 */
+		readonly children: LiveNodeList<Element>;
+
+		/**
 		 * Returns element's first attribute whose qualified name is qualifiedName, and null if there
 		 * is no such attribute otherwise.
 		 *
@@ -1085,6 +1094,16 @@ declare module '@xmldom/xmldom' {
 	 */
 	interface DocumentFragment extends Node {
 		readonly ownerDocument: Document;
+
+		/**
+		 * Returns a live collection of the direct child elements of this document fragment.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentFragment/children)
+		 *
+		 * @see https://dom.spec.whatwg.org/#dom-parentnode-children
+		 */
+		readonly children: LiveNodeList<Element>;
+
 		getElementById(elementId: string): Element | null;
 	}
 	var DocumentFragment: InstanceOf<DocumentFragment>;
@@ -1151,6 +1170,15 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/documentElement)
 		 */
 		readonly documentElement: Element | null;
+
+		/**
+		 * Returns a live collection of the direct child elements of this document.
+		 *
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/children)
+		 *
+		 * @see https://dom.spec.whatwg.org/#dom-parentnode-children
+		 */
+		readonly children: LiveNodeList<Element>;
 
 		/**
 		 * Creates an attribute object with a specified name.
