@@ -491,6 +491,14 @@ describe('Document.prototype', () => {
 			);
 		});
 	});
+	describe('children', () => {
+		test('should return only direct element children of the document', () => {
+			const doc = new DOMParser().parseFromString('<?xml version="1.0"?><!-- comment --><root/>', MIME_TYPE.XML_TEXT);
+			const children = doc.children;
+			expect(children).toHaveLength(1);
+			expect(children.item(0).tagName).toBe('root');
+		});
+	});
 	describe('removeChild', () => {
 		test('should remove all connections to node', () => {
 			const doc = new DOMImplementation().createDocument('', 'xml');

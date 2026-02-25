@@ -12,6 +12,20 @@ describe('DOM DocumentFragment', () => {
 			expect(() => new DocumentFragment()).toThrow(TypeError);
 		});
 	});
+	describe('children', () => {
+		test('should return only direct element children of the fragment', () => {
+			const doc = new DOMParser().parseFromString('<root/>', MIME_TYPE.XML_TEXT);
+			const fragment = doc.createDocumentFragment();
+			fragment.appendChild(doc.createTextNode('text'));
+			fragment.appendChild(doc.createElement('a'));
+			fragment.appendChild(doc.createComment('comment'));
+			fragment.appendChild(doc.createElement('b'));
+			const children = fragment.children;
+			expect(children).toHaveLength(2);
+			expect(children.item(0).tagName).toBe('a');
+			expect(children.item(1).tagName).toBe('b');
+		});
+	});
 	// see: http://jsfiddle.net/9Wmh2/1/
 	test('append empty fragment', () => {
 		const document = new DOMParser().parseFromString('<p id="p"/>', MIME_TYPE.XML_TEXT);

@@ -408,4 +408,50 @@ describe('Element', () => {
 			expect(doc.documentElement.childNodes[1].childNodes[0].hasAttributes()).toBe(true);
 		});
 	});
+	describe('children', () => {
+		test('should return only element children, filtering text, comments, and processing instructions', () => {
+			const doc = new DOMParser().parseFromString('<root>text<a/><!-- comment --><b/><?pi data?><c/></root>', MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+			const children = root.children;
+			expect(children).toHaveLength(3);
+			expect(children.item(0).tagName).toBe('a');
+			expect(children.item(1).tagName).toBe('b');
+			expect(children.item(2).tagName).toBe('c');
+		});
+
+		test('should return empty list for element with only text content', () => {
+			const doc = new DOMParser().parseFromString('<root>just text</root>', MIME_TYPE.XML_TEXT);
+			expect(doc.documentElement.children).toHaveLength(0);
+		});
+
+		test('should return empty list for element with no children', () => {
+			const doc = new DOMParser().parseFromString('<root/>', MIME_TYPE.XML_TEXT);
+			expect(doc.documentElement.children).toHaveLength(0);
+		});
+
+		test('should return correct length', () => {
+			const doc = new DOMParser().parseFromString('<root><a/><b/><c/><d/></root>', MIME_TYPE.XML_TEXT);
+			expect(doc.documentElement.children.length).toBe(4);
+		});
+
+		test('should be live — reflects appendChild', () => {
+			const doc = new DOMParser().parseFromString('<root><a/></root>', MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+			const children = root.children;
+			expect(children).toHaveLength(1);
+			root.appendChild(doc.createElement('b'));
+			expect(children).toHaveLength(2);
+			expect(children.item(1).tagName).toBe('b');
+		});
+
+		test('should be live — reflects removeChild', () => {
+			const doc = new DOMParser().parseFromString('<root><a/><b/></root>', MIME_TYPE.XML_TEXT);
+			const root = doc.documentElement;
+			const children = root.children;
+			expect(children).toHaveLength(2);
+			root.removeChild(root.firstChild);
+			expect(children).toHaveLength(1);
+			expect(children.item(0).tagName).toBe('b');
+		});
+	});
 });

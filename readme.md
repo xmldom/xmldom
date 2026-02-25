@@ -289,6 +289,13 @@ import { DOMParser } from '@xmldom/xmldom'
   - `isDefaultNamespace(namespaceURI)`
   - `lookupNamespaceURI(prefix)`
 
+### DOM Living Standard support:
+
+* [ParentNode](https://dom.spec.whatwg.org/#interface-parentnode) mixin (on `Document`, `DocumentFragment`, `Element`)
+
+  readonly attribute:
+  - `children`
+
 ### DOM extension by xmldom
 
 * [Node] Source position extension; 
