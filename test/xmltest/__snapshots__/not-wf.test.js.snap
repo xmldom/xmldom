@@ -755,14 +755,14 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 096.xml with snapshot 1`] = `
 Object {
-  "actual": "<?xml version=\\"1.0\\"encoding=\\"UTF-8\\"?>
+  "actual": "<?xml version=\\"1.0\\"encoding=\\"UTF-8\\" ?>
 <doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 097.xml with snapshot 1`] = `
 Object {
-  "actual": "<?xml version=\\"1.0' encoding=\\"UTF-8\\"?>
+  "actual": "<?xml version=\\"1.0' encoding=\\"UTF-8\\" ?>
 <doc/>",
 }
 `;
@@ -776,14 +776,14 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 099.xml with snapshot 1`] = `
 Object {
-  "actual": "<?xml version=\\"1.0\\" valid=\\"no\\"?>
+  "actual": "<?xml version=\\"1.0\\" valid=\\"no\\" ?>
 <doc/>",
 }
 `;
 
 exports[`xmltest/not-wellformed standalone should match 100.xml with snapshot 1`] = `
 Object {
-  "actual": "<?xml version=\\"1.0\\" standalone=\\"YES\\"?>
+  "actual": "<?xml version=\\"1.0\\" standalone=\\"YES\\" ?>
 <doc/>",
 }
 `;
@@ -797,7 +797,7 @@ Object {
 
 exports[`xmltest/not-wellformed standalone should match 102.xml with snapshot 1`] = `
 Object {
-  "actual": "<?xml version=\\"1.0 \\"?>
+  "actual": "<?xml version=\\"1.0 \\" ?>
 <doc/>",
 }
 `;
