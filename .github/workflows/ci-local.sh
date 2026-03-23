@@ -9,6 +9,9 @@ if [[ "$ACTUAL" != "v${EXPECTED}"* ]]; then
   exit 1
 fi
 
+# Remove generated test artefacts that differ between branches to avoid cross-branch contamination
+rm -f test/error/reported.json test/errors/reported.json
+
 npm ci
 npm run test
 npm run lint
