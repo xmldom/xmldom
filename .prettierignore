@@ -1,1 +1,3 @@
 test/grammar/regexp.js
+test/error/reported.json
+examples/typescript-node-es6/dist
