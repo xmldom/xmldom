@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.9](https://github.com/xmldom/xmldom/compare/0.9.8...0.9.9)
+
+### Fixed
+
+- Security: `createCDATASection` now throws `InvalidCharacterError` when `data` contains `"]]>"`, as required by the [WHATWG DOM spec](https://dom.spec.whatwg.org/#dom-document-createcdatasection). [`GHSA-wh4c-j3r5-mjhp`](https://github.com/xmldom/xmldom/security/advisories/GHSA-wh4c-j3r5-mjhp)
+- Security: `XMLSerializer` now splits CDATASection nodes whose data contains `"]]>"` into adjacent CDATA sections at serialization time, preventing XML injection via mutation methods (`appendData`, `replaceData`, `.data =`, `.textContent =`). [`GHSA-wh4c-j3r5-mjhp`](https://github.com/xmldom/xmldom/security/advisories/GHSA-wh4c-j3r5-mjhp)
+
+Code that passes a string containing `"]]>"` to `createCDATASection` and relied on the previously unsafe behavior will now receive `InvalidCharacterError`. Use a mutation method such as `appendData` if you intentionally need `"]]>"` in a CDATASection node's data.
+
+Thank you, [@thesmartshadow](https://github.com/thesmartshadow), for your contributions
+
+
+## [0.8.12](https://github.com/xmldom/xmldom/compare/0.8.11...0.8.12)
+
+### Fixed
+
+- Security: `createCDATASection` now throws `InvalidCharacterError` when `data` contains `"]]>"`, as required by the [WHATWG DOM spec](https://dom.spec.whatwg.org/#dom-document-createcdatasection). [`GHSA-wh4c-j3r5-mjhp`](https://github.com/xmldom/xmldom/security/advisories/GHSA-wh4c-j3r5-mjhp)
+- Security: `XMLSerializer` now splits CDATASection nodes whose data contains `"]]>"` into adjacent CDATA sections at serialization time, preventing XML injection via mutation methods (`appendData`, `replaceData`, `.data =`, `.textContent =`). [`GHSA-wh4c-j3r5-mjhp`](https://github.com/xmldom/xmldom/security/advisories/GHSA-wh4c-j3r5-mjhp)
+
+Code that passes a string containing `"]]>"` to `createCDATASection` and relied on the previously unsafe behavior will now receive `InvalidCharacterError`. Use a mutation method such as `appendData` if you intentionally need `"]]>"` in a CDATASection node's data.
+
+Thank you, [@thesmartshadow](https://github.com/thesmartshadow), for your contributions
+
+
+## [0.8.11](https://github.com/xmldom/xmldom/compare/0.8.10...0.8.11)
+
+### Fixed
+
+- update `ownerDocument` when moving nodes between documents [`#933`](https://github.com/xmldom/xmldom/pull/933) / [`#932`](https://github.com/xmldom/xmldom/issues/932)
+
+Thank you, [@shunkica](https://github.com/shunkica), for your contributions
+
 ## [0.9.8](https://github.com/xmldom/xmldom/compare/0.9.8...0.9.7)
 
 ### Fixed
