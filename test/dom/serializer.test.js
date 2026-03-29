@@ -2,6 +2,7 @@
 
 const { DOMParser, XMLSerializer } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMImplementation } = require('../../lib/dom');
 
 describe('XML Serializer', () => {
 	test('supports text node containing "]]>"', () => {
@@ -225,5 +226,42 @@ describe('XML Serializer', () => {
 				'<test xmlns:attr="&quot;&amp;&lt;" attr:test="" xmlns="&lt;&amp;&quot;"/>'
 			);
 		});
+	});
+});
+
+describe('XMLSerializer CDATASection serialization', () => {
+	let doc;
+	beforeEach(() => {
+		doc = new DOMImplementation().createDocument(null, 'root', null);
+	});
+
+	test('serializes a safe CDATASection unchanged', () => {
+		doc.documentElement.appendChild(doc.createCDATASection('safe data'));
+		expect(new XMLSerializer().serializeToString(doc.documentElement)).toBe('<root><![CDATA[safe data]]></root>');
+	});
+
+	test('splits a CDATASection whose data contains "]]>"', () => {
+		const cdata = doc.createCDATASection('safe');
+		cdata.data = 'foo]]>bar';
+		doc.documentElement.appendChild(cdata);
+		expect(new XMLSerializer().serializeToString(doc.documentElement)).toBe('<root><![CDATA[foo]]]]><![CDATA[>bar]]></root>');
+	});
+
+	test('splits multiple "]]>" occurrences', () => {
+		const cdata = doc.createCDATASection('safe');
+		cdata.data = 'a]]>b]]>c';
+		doc.documentElement.appendChild(cdata);
+		expect(new XMLSerializer().serializeToString(doc.documentElement)).toBe(
+			'<root><![CDATA[a]]]]><![CDATA[>b]]]]><![CDATA[>c]]></root>'
+		);
+	});
+
+	test('split output round-trips through DOMParser to equivalent content', () => {
+		const cdata = doc.createCDATASection('safe');
+		cdata.data = 'foo]]>bar';
+		doc.documentElement.appendChild(cdata);
+		const serialized = new XMLSerializer().serializeToString(doc.documentElement);
+		const reparsed = new DOMParser().parseFromString(serialized, MIME_TYPE.XML_TEXT);
+		expect(reparsed.documentElement.textContent).toBe('foo]]>bar');
 	});
 });
