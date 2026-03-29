@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.14](https://github.com/xmldom/xmldom/compare/0.7.13...0.7.14)
+
+### Fixed
+
+- Security: `createCDATASection` now throws `InvalidCharacterError` when `data` contains `"]]>"`, as required by the [WHATWG DOM spec](https://dom.spec.whatwg.org/#dom-document-createcdatasection). [`GHSA-wh4c-j3r5-mjhp`](https://github.com/xmldom/xmldom/security/advisories/GHSA-wh4c-j3r5-mjhp)
+- Security: `XMLSerializer` now splits CDATASection nodes whose data contains `"]]>"` into adjacent CDATA sections at serialization time, preventing XML injection via mutation methods (`appendData`, `replaceData`, `.data =`, `.textContent =`). [`GHSA-wh4c-j3r5-mjhp`](https://github.com/xmldom/xmldom/security/advisories/GHSA-wh4c-j3r5-mjhp)
+
+Code that passes a string containing `"]]>"` to `createCDATASection` and relied on the previously unsafe behavior will now receive `InvalidCharacterError`. Use a mutation method such as `appendData` if you intentionally need `"]]>"` in a CDATASection node's data.
+
+Thank you, [@thesmartshadow](https://github.com/thesmartshadow), for your contributions
+
+
 ## [0.7.13](https://github.com/xmldom/xmldom/compare/0.7.12...0.7.13)
 
 ### Fixed
