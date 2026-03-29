@@ -23,6 +23,16 @@ declare module "@xmldom/xmldom" {
   }
 
   interface XMLSerializer {
+      /**
+       * Returns the result of serializing `node` to XML.
+       *
+       * __This implementation differs from the specification:__
+       * - CDATASection nodes whose data contains `]]>` are serialized by splitting the section
+       *   at each `]]>` occurrence (following W3C DOM Level 3 Core `split-cdata-sections`
+       *   default behaviour). A configurable option is not yet implemented.
+       *
+       * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
+       */
       serializeToString(node: Node): string;
   }
 
