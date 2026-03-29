@@ -1191,9 +1191,15 @@ declare module '@xmldom/xmldom' {
 		createAttributeNS(namespace: string | null, qualifiedName: string): Attr;
 
 		/**
-		 * Returns a CDATASection node whose data is data.
+		 * Returns a new CDATASection node whose data is `data`.
 		 *
-		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createCDATASection)
+		 * __This implementation differs from the specification:__ - calling this method on an HTML
+		 * document does not throw `NotSupportedError`.
+		 *
+		 * @throws {DOMException}
+		 * With code `INVALID_CHARACTER_ERR` if `data` contains `"]]>"`.
+		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/createCDATASection
+		 * @see https://dom.spec.whatwg.org/#dom-document-createcdatasection
 		 */
 		createCDATASection(data: string): CDATASection;
 
