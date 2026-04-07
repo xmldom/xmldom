@@ -15,18 +15,27 @@ describe('CharacterData.prototype', () => {
 
 describe('CharacterData nodeValue/data sync', () => {
 	describe.each([
-		['Text', () => {
-			const doc = new DOMParser().parseFromString('<root>Hello</root>', MIME_TYPE.XML_TEXT);
-			return doc.documentElement.firstChild;
-		}],
-		['Comment', () => {
-			const doc = new DOMParser().parseFromString('<root><!-- hello --></root>', MIME_TYPE.XML_TEXT);
-			return doc.documentElement.firstChild;
-		}],
-		['CDATASection', () => {
-			const doc = new DOMParser().parseFromString('<root><![CDATA[hello]]></root>', MIME_TYPE.XML_TEXT);
-			return doc.documentElement.firstChild;
-		}],
+		[
+			'Text',
+			() => {
+				const doc = new DOMParser().parseFromString('<root>Hello</root>', MIME_TYPE.XML_TEXT);
+				return doc.documentElement.firstChild;
+			},
+		],
+		[
+			'Comment',
+			() => {
+				const doc = new DOMParser().parseFromString('<root><!-- hello --></root>', MIME_TYPE.XML_TEXT);
+				return doc.documentElement.firstChild;
+			},
+		],
+		[
+			'CDATASection',
+			() => {
+				const doc = new DOMParser().parseFromString('<root><![CDATA[hello]]></root>', MIME_TYPE.XML_TEXT);
+				return doc.documentElement.firstChild;
+			},
+		],
 	])('%s', (_name, createNode) => {
 		test('direct nodeValue assignment updates data', () => {
 			const node = createNode();
