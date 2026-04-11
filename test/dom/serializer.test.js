@@ -2,7 +2,7 @@
 
 const { DOMParser, XMLSerializer } = require('../../lib')
 const { MIME_TYPE } = require('../../lib/conventions')
-const { DOMImplementation } = require('../../lib/dom')
+const { DOMException, DOMImplementation } = require('../../lib/dom')
 
 describe('XML Serializer', () => {
 	it('supports text node containing "]]>"', () => {
@@ -336,5 +336,30 @@ describe('XMLSerializer CDATASection serialization', () => {
 			cdata.textContent = 'evil]]><injected/>'
 			expect(isInjected(doc.documentElement)).toBe(false)
 		})
+	})
+})
+
+describe('XMLSerializer serializeToString requireWellFormed option', () => {
+	let doc
+	beforeEach(() => {
+		doc = new DOMImplementation().createDocument(null, 'root', null)
+	})
+
+	it('CDATA with "]]>" still splits when no options are passed (regression)', () => {
+		const cdata = doc.createCDATASection('safe')
+		cdata.data = 'foo]]>bar'
+		doc.documentElement.appendChild(cdata)
+		expect(new XMLSerializer().serializeToString(doc.documentElement)).toBe(
+			'<root><![CDATA[foo]]]]><![CDATA[>bar]]></root>'
+		)
+	})
+
+	it('CDATA with "]]>" still splits when options is null (regression)', () => {
+		const cdata = doc.createCDATASection('safe')
+		cdata.data = 'foo]]>bar'
+		doc.documentElement.appendChild(cdata)
+		expect(new XMLSerializer().serializeToString(doc.documentElement, false, null, null)).toBe(
+			'<root><![CDATA[foo]]]]><![CDATA[>bar]]></root>'
+		)
 	})
 })
