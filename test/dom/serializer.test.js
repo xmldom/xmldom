@@ -3,6 +3,7 @@
 const { DOMParser, XMLSerializer } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMImplementation } = require('../../lib/dom');
+const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('XML Serializer', () => {
 	test('supports text node containing "]]>"', () => {
@@ -263,5 +264,78 @@ describe('XMLSerializer CDATASection serialization', () => {
 		const serialized = new XMLSerializer().serializeToString(doc.documentElement);
 		const reparsed = new DOMParser().parseFromString(serialized, MIME_TYPE.XML_TEXT);
 		expect(reparsed.documentElement.textContent).toBe('foo]]>bar');
+	});
+});
+
+describe('XMLSerializer serializeToString options', () => {
+	let doc;
+	beforeEach(() => {
+		doc = new DOMImplementation().createDocument(null, 'root', null);
+	});
+
+	describe('backward compatibility', () => {
+		test('no options: CDATA "]]>" still splits (regression guard for 0.9.9 behavior)', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expect(new XMLSerializer().serializeToString(doc)).toBe('<root><![CDATA[foo]]]]><![CDATA[>bar]]></root>');
+		});
+
+		test('function as second arg is used as nodeFilter (compat shim)', () => {
+			doc.documentElement.appendChild(doc.createTextNode('hello'));
+			// nodeFilter returns null for text nodes (skips them), otherwise returns the node.
+			// The element has a child in the DOM so it renders as open+close (not self-closing),
+			// but the text content is filtered out.
+			const nodeFilter = (node) => (node.nodeType === 3 ? null : node);
+			const result = new XMLSerializer().serializeToString(doc, nodeFilter);
+			expect(result).toBe('<root></root>');
+		});
+	});
+
+	describe('splitCDATASections option', () => {
+		test('splitCDATASections: false emits CDATA verbatim (no split, no throw)', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expect(new XMLSerializer().serializeToString(doc, { splitCDATASections: false })).toBe(
+				'<root><![CDATA[foo]]>bar]]></root>'
+			);
+		});
+
+		test('splitCDATASections: true produces the same split output as 0.9.9 (regression guard)', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expect(new XMLSerializer().serializeToString(doc, { splitCDATASections: true })).toBe(
+				'<root><![CDATA[foo]]]]><![CDATA[>bar]]></root>'
+			);
+		});
+	});
+
+	describe('requireWellFormed option — CDATA', () => {
+		test('requireWellFormed: true on CDATA without "]]>" does not throw', () => {
+			doc.documentElement.appendChild(doc.createCDATASection('safe data'));
+			expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+		});
+	});
+
+	describe('requireWellFormed option — Document', () => {
+		test('requireWellFormed: true on Document with no documentElement throws InvalidStateError', () => {
+			const emptyDoc = new DOMImplementation().createDocument(null, null, null);
+			expectDOMException(() => new XMLSerializer().serializeToString(emptyDoc, { requireWellFormed: true }), 'InvalidStateError');
+		});
+	});
+
+	describe('requireWellFormed option — Text', () => {
+		test('requireWellFormed: true on Text with characters outside XML Char production throws InvalidStateError', () => {
+			const text = doc.createTextNode('\x01invalid');
+			doc.documentElement.appendChild(text);
+			expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+		});
+
+		test('requireWellFormed: true on Text with valid characters does not throw', () => {
+			doc.documentElement.appendChild(doc.createTextNode('valid text'));
+			expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+		});
 	});
 });
