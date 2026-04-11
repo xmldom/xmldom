@@ -309,6 +309,50 @@ describe('XMLSerializer.serializeToString', () => {
 				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
 			});
 		});
+
+		describe('Comment', () => {
+			test('default: comment with "-->" in data emits verbatim — no throw', () => {
+				doc.documentElement.appendChild(doc.createComment('hello-->world'));
+				expect(new XMLSerializer().serializeToString(doc)).toBe('<root><!--hello-->world--></root>');
+			});
+
+			test('default: comment with "--" in data emits verbatim — no throw', () => {
+				doc.documentElement.appendChild(doc.createComment('hello--world'));
+				expect(new XMLSerializer().serializeToString(doc)).toBe('<root><!--hello--world--></root>');
+			});
+
+			test('requireWellFormed: true on comment with invalid XML Char (\\x00) throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createComment('hello\x00world'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on comment with "-->" throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createComment('hello-->world'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on comment with "--" (no "-->") throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createComment('hello--world'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on comment whose data ends with "-" throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createComment('hello-'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on comment with clean data does not throw', () => {
+				doc.documentElement.appendChild(doc.createComment('clean comment'));
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+
+			test('mutation vector: appendData("-->") then requireWellFormed: true throws InvalidStateError', () => {
+				const comment = doc.createComment('clean');
+				doc.documentElement.appendChild(comment);
+				comment.appendData('-->');
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+		});
 	});
 });
 
