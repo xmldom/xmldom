@@ -1209,6 +1209,11 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Creates a comment object with the specified data.
 		 *
+		 * No validation is performed at creation time. When the resulting document is serialized
+		 * with `requireWellFormed: true`, the serializer throws `InvalidStateError` if the comment
+		 * data contains `--` anywhere, ends with `-`, or contains characters outside the XML Char
+		 * production (W3C DOM Parsing §3.2.1.3). Without that option the data is emitted verbatim.
+		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createComment)
 		 */
 		createComment(data: string): Comment;
@@ -1470,8 +1475,9 @@ declare module '@xmldom/xmldom' {
 	interface XMLSerializerOptions {
 		/**
 		 * When `true`, the serializer throws `InvalidStateError` for content that would produce
-		 * ill-formed XML (CDATASection data containing `"]]>"`, Text data with characters outside
-		 * the XML Char production, or a Document with no `documentElement`).
+		 * ill-formed XML: CDATASection data containing `"]]>"`; Text data with characters outside
+		 * the XML Char production; a Comment node whose data contains `--` anywhere or ends with
+		 * `-`; or a Document with no `documentElement`.
 		 *
 		 * @default false
 		 */
