@@ -771,8 +771,11 @@ declare module '@xmldom/xmldom' {
 		item(index: number): T | null;
 		/**
 		 * Returns a string representation of the NodeList.
+		 * Accepts the same options as `XMLSerializer.prototype.serializeToString`.
 		 */
-		toString(nodeFilter: (node: T) => T | undefined): string;
+		toString(
+			options?: XMLSerializerOptions | ((node: T) => T | undefined)
+		): string;
 		/**
 		 * Filters the NodeList based on a predicate.
 		 *
@@ -1463,18 +1466,59 @@ declare module '@xmldom/xmldom' {
 		hasFeature(feature: string, version?: string): true;
 	}
 
+	/** Options accepted by `XMLSerializer.prototype.serializeToString` and `node.toString`. */
+	interface XMLSerializerOptions {
+		/**
+		 * When `true`, the serializer throws `InvalidStateError` for content that would produce
+		 * ill-formed XML (Text data with characters outside the XML Char production, or a Document
+		 * with no `documentElement`).
+		 *
+		 * @default false
+		 */
+		requireWellFormed?: boolean;
+		/**
+		 * When `true` (the default), `"]]>"` sequences in CDATASection data are split across
+		 * concatenated CDATA sections. **Deprecated** — this option and the underlying split
+		 * mechanics will be removed in the next breaking release. Callers should migrate to `{
+		 * requireWellFormed: true }`.
+		 *
+		 * @default true
+		 */
+		splitCDATASections?: boolean;
+		/** A filter function applied to each node before serialization. */
+		nodeFilter?: (node: Node) => Node | null | undefined;
+	}
+
 	class XMLSerializer {
 		/**
 		 * Returns the result of serializing `node` to XML.
 		 *
-		 * __This implementation differs from the specification:__ - CDATASection nodes whose data
-		 * contains `]]>` are serialized by splitting the section at each `]]>` occurrence (following
-		 * W3C DOM Level 3 Core `split-cdata-sections`
-		 * default behaviour). A configurable option is not yet implemented.
+		 * When `options.requireWellFormed` is `true`, throws `InvalidStateError` for content that
+		 * would produce ill-formed XML. When `options.splitCDATASections` is `false`,
+		 * CDATASection data is emitted verbatim. Passing a function as `options` is treated as a
+		 * legacy `nodeFilter` for backward compatibility.
 		 *
+		 * __This implementation differs from the specification:__ - CDATASection serialization is
+		 * not specified by W3C DOM Parsing or WHATWG DOM Parsing (see
+		 * {@link https://github.com/w3c/DOM-Parsing/issues/38 w3c/DOM-Parsing#38}).
+		 * When `splitCDATASections` is `true` (the default), `"]]>"` sequences are split across
+		 * concatenated CDATA sections — **deprecated**, will be removed in the next breaking
+		 * release.
+		 * - W3C DOM Parsing §3.2.1.1 requires well-formedness checks on Element `localName`s,
+		 * prefixes, and attribute serialization when `requireWellFormed` is `true`. These checks are
+		 * **not implemented** in this release — see the tracking issue filed against the next
+		 * breaking milestone.
+		 *
+		 * @throws {DOMException}
+		 * `InvalidStateError` when `requireWellFormed` is `true` and Text data contains characters
+		 * outside the XML Char production, or the Document has no `documentElement`.
 		 * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
+		 * @see https://github.com/w3c/DOM-Parsing/issues/84
 		 */
-		serializeToString(node: Node, nodeFilter?: (node: Node) => boolean): string;
+		serializeToString(
+			node: Node,
+			options?: XMLSerializerOptions | ((node: Node) => Node | null | undefined)
+		): string;
 	}
 	// END ./lib/dom.js
 
