@@ -25,8 +25,11 @@ declare module "@xmldom/xmldom" {
   /** Options accepted by `XMLSerializer.prototype.serializeToString`. */
   interface XMLSerializerOptions {
       /**
-       * When `true`, the serializer throws a DOMException with code `INVALID_STATE_ERR` if the
-       * CDATASection data contains `"]]>"`.
+       * When `true`, the serializer throws a DOMException with code `INVALID_STATE_ERR` if:
+       * - A CDATASection node's data contains `"]]>"`.
+       * - A Comment node's data contains `"-->"` (the injection sequence that terminates a
+       *   comment). Comments whose data contains `"--"` but not `"-->"` are accepted on this
+       *   branch — the 0.8.x parser does not validate bare `"--"` in comment content.
        *
        * @default false
        */
@@ -50,7 +53,9 @@ declare module "@xmldom/xmldom" {
        *
        * @throws {DOMException}
        * With code `INVALID_STATE_ERR` when `requireWellFormed` is `true` and the CDATASection
-       * data contains `"]]>"`.
+       * data contains `"]]>"`, or a Comment node's data contains `"-->"`.
+       * (On this 0.8.x branch, bare `"--"` in comment data does not throw — see
+       * `XMLSerializerOptions.requireWellFormed` for details.)
        * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
        * @see https://github.com/w3c/DOM-Parsing/issues/84
        */

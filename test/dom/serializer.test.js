@@ -387,4 +387,44 @@ describe('XMLSerializer serializeToString requireWellFormed option', () => {
 			doc.toString(false, null, { requireWellFormed: true })
 		).toThrow(DOMException)
 	})
+
+	describe('Comment', () => {
+		it('default: comment with "-->" in data emits verbatim — no throw', () => {
+			const comment = doc.createComment('safe-->evil')
+			doc.documentElement.appendChild(comment)
+			expect(new XMLSerializer().serializeToString(doc.documentElement)).toBe(
+				'<root><!--safe-->evil--></root>'
+			)
+		})
+
+		it('requireWellFormed: true on comment with "-->" throws InvalidStateError', () => {
+			const comment = doc.createComment('safe-->evil')
+			doc.documentElement.appendChild(comment)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on comment with "--" (no "-->") does not throw — intentional on 0.8.x', () => {
+			const comment = doc.createComment('hello--world')
+			doc.documentElement.appendChild(comment)
+			expect(
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toBe('<root><!--hello--world--></root>')
+		})
+
+		it('requireWellFormed: true on comment with clean data serializes correctly', () => {
+			const comment = doc.createComment('safe comment')
+			doc.documentElement.appendChild(comment)
+			expect(
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toBe('<root><!--safe comment--></root>')
+		})
+	})
 })
