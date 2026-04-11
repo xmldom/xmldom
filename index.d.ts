@@ -25,7 +25,8 @@ declare module "@xmldom/xmldom" {
   /** Options accepted by `XMLSerializer.prototype.serializeToString`. */
   interface XMLSerializerOptions {
       /**
-       * When `true`, the serializer throws for content that would produce ill-formed XML.
+       * When `true`, the serializer throws a DOMException with code `INVALID_STATE_ERR` if the
+       * CDATASection data contains `"]]>"`.
        *
        * @default false
        */
@@ -47,6 +48,9 @@ declare module "@xmldom/xmldom" {
        *   prefixes, and attribute serialization when `requireWellFormed` is `true`. These checks
        *   are not implemented in this release.
        *
+       * @throws {DOMException}
+       * With code `INVALID_STATE_ERR` when `requireWellFormed` is `true` and the CDATASection
+       * data contains `"]]>"`.
        * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
        * @see https://github.com/w3c/DOM-Parsing/issues/84
        */
