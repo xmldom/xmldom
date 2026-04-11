@@ -358,8 +358,33 @@ describe('XMLSerializer serializeToString requireWellFormed option', () => {
 		const cdata = doc.createCDATASection('safe')
 		cdata.data = 'foo]]>bar'
 		doc.documentElement.appendChild(cdata)
-		expect(new XMLSerializer().serializeToString(doc.documentElement, false, null, null)).toBe(
-			'<root><![CDATA[foo]]]]><![CDATA[>bar]]></root>'
-		)
+		expect(
+			new XMLSerializer().serializeToString(
+				doc.documentElement,
+				false,
+				null,
+				null
+			)
+		).toBe('<root><![CDATA[foo]]]]><![CDATA[>bar]]></root>')
+	})
+
+	it('requireWellFormed: true on CDATA with "]]>" throws', () => {
+		const cdata = doc.createCDATASection('safe')
+		cdata.data = 'foo]]>bar'
+		doc.documentElement.appendChild(cdata)
+		expect(() =>
+			new XMLSerializer().serializeToString(doc, false, null, {
+				requireWellFormed: true,
+			})
+		).toThrow(DOMException)
+	})
+
+	it('node.toString with requireWellFormed: true on CDATA with "]]>" throws', () => {
+		const cdata = doc.createCDATASection('safe')
+		cdata.data = 'foo]]>bar'
+		doc.documentElement.appendChild(cdata)
+		expect(() =>
+			doc.toString(false, null, { requireWellFormed: true })
+		).toThrow(DOMException)
 	})
 })
