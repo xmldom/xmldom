@@ -22,18 +22,35 @@ declare module "@xmldom/xmldom" {
       parseFromString(xmlsource: string, mimeType?: string): Document;
   }
 
+  /** Options accepted by `XMLSerializer.prototype.serializeToString`. */
+  interface XMLSerializerOptions {
+      /**
+       * When `true`, the serializer throws for content that would produce ill-formed XML.
+       *
+       * @default false
+       */
+      requireWellFormed?: boolean;
+  }
+
   interface XMLSerializer {
       /**
        * Returns the result of serializing `node` to XML.
        *
+       * When `options.requireWellFormed` is `true`, the serializer throws for content that would
+       * produce ill-formed XML.
+       *
        * __This implementation differs from the specification:__
        * - CDATASection nodes whose data contains `]]>` are serialized by splitting the section
        *   at each `]]>` occurrence (following W3C DOM Level 3 Core `split-cdata-sections`
-       *   default behaviour). A configurable option is not yet implemented.
+       *   default behaviour) unless `requireWellFormed` is `true`.
+       * - W3C DOM Parsing §3.2.1.1 requires well-formedness checks on Element `localName`s,
+       *   prefixes, and attribute serialization when `requireWellFormed` is `true`. These checks
+       *   are not implemented in this release.
        *
        * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
+       * @see https://github.com/w3c/DOM-Parsing/issues/84
        */
-      serializeToString(node: Node): string;
+      serializeToString(node: Node, isHtml?: boolean, nodeFilter?: (node: Node) => Node | null | undefined, options?: XMLSerializerOptions): string;
   }
 
   interface Options {
