@@ -1470,8 +1470,8 @@ declare module '@xmldom/xmldom' {
 	interface XMLSerializerOptions {
 		/**
 		 * When `true`, the serializer throws `InvalidStateError` for content that would produce
-		 * ill-formed XML (Text data with characters outside the XML Char production, or a Document
-		 * with no `documentElement`).
+		 * ill-formed XML (CDATASection data containing `"]]>"`, Text data with characters outside
+		 * the XML Char production, or a Document with no `documentElement`).
 		 *
 		 * @default false
 		 */
@@ -1480,7 +1480,7 @@ declare module '@xmldom/xmldom' {
 		 * When `true` (the default), `"]]>"` sequences in CDATASection data are split across
 		 * concatenated CDATA sections. **Deprecated** — this option and the underlying split
 		 * mechanics will be removed in the next breaking release. Callers should migrate to `{
-		 * requireWellFormed: true }`.
+		 * requireWellFormed: true }`, which throws `InvalidStateError` instead of transforming.
 		 *
 		 * @default true
 		 */
@@ -1510,8 +1510,9 @@ declare module '@xmldom/xmldom' {
 		 * breaking milestone.
 		 *
 		 * @throws {DOMException}
-		 * `InvalidStateError` when `requireWellFormed` is `true` and Text data contains characters
-		 * outside the XML Char production, or the Document has no `documentElement`.
+		 * `InvalidStateError` when `requireWellFormed` is `true` and CDATASection data contains
+		 * `"]]>"`, Text data contains characters outside the XML Char production, or the Document
+		 * has no `documentElement`.
 		 * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
 		 * @see https://github.com/w3c/DOM-Parsing/issues/84
 		 */

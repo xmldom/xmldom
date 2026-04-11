@@ -317,6 +317,31 @@ describe('XMLSerializer serializeToString options', () => {
 			doc.documentElement.appendChild(doc.createCDATASection('safe data'));
 			expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
 		});
+
+		test('requireWellFormed: true on CDATA with "]]>" throws InvalidStateError', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+		});
+	});
+
+	describe('node.toString with options', () => {
+		test('node.toString({requireWellFormed: true}) on node with "]]>" in CDATA child throws InvalidStateError', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expectDOMException(() => doc.toString({ requireWellFormed: true }), 'InvalidStateError');
+		});
+	});
+
+	describe('nodeList.toString with options', () => {
+		test('nodeList.toString({requireWellFormed: true}) on list containing CDATA with "]]>" throws InvalidStateError', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expectDOMException(() => doc.documentElement.childNodes.toString({ requireWellFormed: true }), 'InvalidStateError');
+		});
 	});
 
 	describe('requireWellFormed option — Document', () => {
