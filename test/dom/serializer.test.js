@@ -472,6 +472,37 @@ describe('XMLSerializer.serializeToString', () => {
 			});
 		});
 	});
+
+	describe('EntityReference', () => {
+		test('serializes EntityReference node as &name;', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, '');
+			const entityRef = xmlDoc.createEntityReference('amp');
+			expect(new XMLSerializer().serializeToString(entityRef)).toBe('&amp;');
+		});
+	});
+
+	describe('unknown node type (default case)', () => {
+		test('serializes unrecognized node type with "??" prefix', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, '');
+			// Construct a duck-typed node with a non-standard nodeType to exercise the default branch.
+			const fakeNode = { nodeType: 99, nodeName: 'fake', ownerDocument: xmlDoc, firstChild: null };
+			expect(new XMLSerializer().serializeToString(fakeNode)).toBe('??fake');
+		});
+	});
+
+	describe('HTML raw text element with non-data child', () => {
+		test('falls back to full serialization for a child with empty data inside <script>', () => {
+			const doc = new DOMParser().parseFromString('<html/>', MIME_TYPE.HTML);
+			const script = doc.createElement('script');
+			// A ProcessingInstruction with empty data has child.data === '' (falsy),
+			// which triggers the serializeToString fallback path inside raw text elements.
+			const pi = doc.createProcessingInstruction('target', '');
+			script.appendChild(pi);
+			expect(new XMLSerializer().serializeToString(script)).toBe(
+				'<script xmlns="http://www.w3.org/1999/xhtml"><?target ?></script>'
+			);
+		});
+	});
 });
 
 describe('Node.toString', () => {
