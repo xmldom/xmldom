@@ -428,6 +428,49 @@ describe('XMLSerializer.serializeToString', () => {
 				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
 			});
 		});
+
+		describe('DocumentType', () => {
+			test('default: DocumentType with invalid publicId serializes verbatim — no throw', () => {
+				const doctype = new DOMImplementation().createDocumentType('name', '"invalid<char"', '');
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				expect(() => new XMLSerializer().serializeToString(dtDoc)).not.toThrow();
+			});
+
+			test('requireWellFormed: true on DocumentType with invalid publicId throws InvalidStateError', () => {
+				const doctype = new DOMImplementation().createDocumentType('name', '"invalid<char"', '');
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on DocumentType with invalid systemId throws InvalidStateError', () => {
+				const doctype = new DOMImplementation().createDocumentType('name', '', 'no-quotes-around-this');
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on DocumentType with "]>" in internalSubset throws InvalidStateError', () => {
+				const doctype = new DOMImplementation().createDocumentType('name', '', '', ']><injected/>');
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on DocumentType with valid fields does not throw', () => {
+				const doctype = new DOMImplementation().createDocumentType(
+					'html',
+					'"-//W3C//DTD HTML 4.01//EN"',
+					'"http://www.w3.org/TR/html4/strict.dtd"'
+				);
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				expect(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true })).not.toThrow();
+			});
+
+			test('direct property write: setting invalid publicId then requireWellFormed: true throws InvalidStateError', () => {
+				const doctype = new DOMImplementation().createDocumentType('name', '"-//W3C//DTD//EN"', '');
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				doctype.publicId = '"invalid<char"';
+				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+		});
 	});
 });
 
