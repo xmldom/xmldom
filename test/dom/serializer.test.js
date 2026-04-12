@@ -353,6 +353,81 @@ describe('XMLSerializer.serializeToString', () => {
 				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
 			});
 		});
+
+		describe('ProcessingInstruction', () => {
+			test('default: PI with ":" in target emits verbatim — no throw', () => {
+				const pi = doc.createProcessingInstruction('ns:target', 'data');
+				doc.documentElement.appendChild(pi);
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('default: PI with target "xml" emits verbatim — no throw', () => {
+				const pi = doc.createProcessingInstruction('xml', 'version="1.0"');
+				doc.documentElement.appendChild(pi);
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('default: PI with invalid XML Char in data emits verbatim — no throw', () => {
+				const pi = doc.createProcessingInstruction('foo', 'data\x00here');
+				doc.documentElement.appendChild(pi);
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('default: PI with "?>" in data emits verbatim — no throw', () => {
+				const pi = doc.createProcessingInstruction('foo', 'inject?>evil');
+				doc.documentElement.appendChild(pi);
+				expect(new XMLSerializer().serializeToString(doc)).toBe('<root><?foo inject?>evil?></root>');
+			});
+
+			test('requireWellFormed: true on PI with ":" in target throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('ns:target', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with target "xml" throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('xml', 'version="1.0"');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with target "XML" (uppercase) throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('XML', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with target "Xml" (mixed case) throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('Xml', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with invalid XML Char (\\x00) in data throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('foo', 'data\x00here');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with "?>" in data throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('foo', 'inject?>evil');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with clean target and data does not throw', () => {
+				const pi = doc.createProcessingInstruction('xml-stylesheet', 'href="style.css"');
+				doc.documentElement.appendChild(pi);
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+
+			test('mutation vector: set PI data to "?>" then requireWellFormed: true throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('foo', 'clean');
+				doc.documentElement.appendChild(pi);
+				pi.data = 'inject?>evil';
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+		});
 	});
 });
 

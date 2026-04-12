@@ -2,7 +2,8 @@
 
 const { DOMParser, XMLSerializer } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
-const { Node, ProcessingInstruction } = require('../../lib/dom');
+const { DOMImplementation, Node, ProcessingInstruction } = require('../../lib/dom');
+const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('ProcessingInstruction', () => {
 	describe('constructor', () => {
@@ -50,5 +51,12 @@ describe('ProcessingInstruction', () => {
 
 		pi.data = 'href="newcss.css" type="text/css"';
 		expect(pi.data).toBe('href="newcss.css" type="text/css"');
+	});
+
+	test('createProcessingInstruction accepts any target or data without throwing', () => {
+		const doc = new DOMParser().parseFromString('<xml></xml>', MIME_TYPE.XML_TEXT);
+		expect(() => doc.createProcessingInstruction('ns:bad', 'data')).not.toThrow();
+		expect(() => doc.createProcessingInstruction('xml', '?>')).not.toThrow();
+		expect(() => doc.createProcessingInstruction('foo', 'inject?>evil')).not.toThrow();
 	});
 });

@@ -1267,12 +1267,21 @@ declare module '@xmldom/xmldom' {
 		createEntityReference(name: string): EntityReference;
 
 		/**
-		 * Returns a ProcessingInstruction node whose target is target and data is data. If target does
-		 * not match the Name production an "InvalidCharacterError" DOMException will be thrown. If
-		 * data contains "?>" an "InvalidCharacterError" DOMException will be thrown.
+		 * Returns a ProcessingInstruction node whose target is target and data is data.
 		 *
-		 * [MDN
-		 * Reference](https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction)
+		 * __This behavior is slightly different from the in the specs__:
+		 * - it does not do any input validation on the arguments and doesn't throw
+		 * "InvalidCharacterError".
+		 *
+		 * Note: When the resulting document is serialized with `requireWellFormed: true`, the
+		 * serializer throws `InvalidStateError` if `.target` contains `:` or is an ASCII
+		 * case-insensitive match for `"xml"`, or if `.data` contains `?>` or characters outside the
+		 * XML Char production (W3C DOM Parsing §3.2.1.7). Without that option the data is emitted
+		 * verbatim.
+		 *
+		 * @see https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction
+		 * @see https://dom.spec.whatwg.org/#dom-document-createprocessinginstruction
+		 * @see https://www.w3.org/TR/DOM-Parsing/#dfn-concept-serialize-xml §3.2.1.7
 		 */
 		createProcessingInstruction(
 			target: string,
@@ -1516,9 +1525,15 @@ declare module '@xmldom/xmldom' {
 		 * breaking milestone.
 		 *
 		 * @throws {DOMException}
-		 * `InvalidStateError` when `requireWellFormed` is `true` and CDATASection data contains
-		 * `"]]>"`, Text data contains characters outside the XML Char production, or the Document
-		 * has no `documentElement`.
+		 * `InvalidStateError` when `requireWellFormed` is `true` and any of the following conditions
+		 * hold:
+		 * - CDATASection data contains `"]]>"`
+		 * - Text data contains characters outside the XML Char production - a Comment node's data
+		 * contains `--` anywhere or ends with `-`
+		 * - a ProcessingInstruction's target contains `:` or is an ASCII case-insensitive match for
+		 * `"xml"`, or its data contains `?>` or characters outside the XML Char production - the
+		 * Document has no `documentElement`
+		 * @see https://developer.mozilla.org/docs/Web/API/XMLSerializer/serializeToString
 		 * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
 		 * @see https://github.com/w3c/DOM-Parsing/issues/84
 		 */
