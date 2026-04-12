@@ -30,6 +30,7 @@ declare module "@xmldom/xmldom" {
        * - A Comment node's data contains `"-->"` (the injection sequence that terminates a
        *   comment). Comments whose data contains `"--"` but not `"-->"` are accepted on this
        *   branch — the 0.8.x parser does not validate bare `"--"` in comment content.
+       * - A ProcessingInstruction's data contains `"?>"` (W3C DOM Parsing §3.2.1.7).
        *
        * @default false
        */
@@ -47,16 +48,16 @@ declare module "@xmldom/xmldom" {
        * - CDATASection nodes whose data contains `]]>` are serialized by splitting the section
        *   at each `]]>` occurrence (following W3C DOM Level 3 Core `split-cdata-sections`
        *   default behaviour) unless `requireWellFormed` is `true`.
-       * - W3C DOM Parsing §3.2.1.1 requires well-formedness checks on Element `localName`s,
-       *   prefixes, and attribute serialization when `requireWellFormed` is `true`. These checks
-       *   are not implemented in this release.
+       * - when `requireWellFormed` is `true`, `DOMException` with code `INVALID_STATE_ERR`
+       *   is only thrown to prevent injection vectors, not for all the spec mandated checks.
        *
        * @throws {DOMException}
        * With code `INVALID_STATE_ERR` when `requireWellFormed` is `true` and the CDATASection
-       * data contains `"]]>"`, or a Comment node's data contains `"-->"`.
-       * (On this 0.8.x branch, bare `"--"` in comment data does not throw — see
-       * `XMLSerializerOptions.requireWellFormed` for details.)
+       * data contains `"]]>"`, a Comment node's data contains `"-->"`, or a
+       * ProcessingInstruction's data contains `"?>"`.
+       * (On this 0.8.x branch, bare `"--"` in comment data does not throw!)
        * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
+       * @see https://w3c.github.io/DOM-Parsing/#xml-serialization
        * @see https://github.com/w3c/DOM-Parsing/issues/84
        */
       serializeToString(node: Node, isHtml?: boolean, nodeFilter?: (node: Node) => Node | null | undefined, options?: XMLSerializerOptions): string;

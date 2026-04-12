@@ -427,4 +427,48 @@ describe('XMLSerializer serializeToString requireWellFormed option', () => {
 			).toBe('<root><!--safe comment--></root>')
 		})
 	})
+
+	describe('ProcessingInstruction', () => {
+		it('default: PI with "?>" in data emits verbatim — no throw', () => {
+			const pi = doc.createProcessingInstruction('foo', 'inject?>evil')
+			doc.documentElement.appendChild(pi)
+			expect(new XMLSerializer().serializeToString(doc.documentElement)).toBe(
+				'<root><?foo inject?>evil?></root>'
+			)
+		})
+
+		it('requireWellFormed: true on PI with "?>" in data throws', () => {
+			const pi = doc.createProcessingInstruction('foo', 'inject?>evil')
+			doc.documentElement.appendChild(pi)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on PI with clean data does not throw', () => {
+			const pi = doc.createProcessingInstruction(
+				'xml-stylesheet',
+				'href="style.css"'
+			)
+			doc.documentElement.appendChild(pi)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).not.toThrow()
+		})
+
+		it('mutation vector: set PI data to "?>" then requireWellFormed: true throws', () => {
+			const pi = doc.createProcessingInstruction('foo', 'clean')
+			doc.documentElement.appendChild(pi)
+			pi.data = 'inject?>evil'
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+	})
 })
