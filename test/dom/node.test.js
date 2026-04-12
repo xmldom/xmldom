@@ -477,4 +477,91 @@ describe('Node.prototype', () => {
 			});
 		});
 	});
+	describe('importNode', () => {
+		const impl2 = new DOMImplementation();
+		const srcDoc = impl2.createDocument(null, '');
+		const dstDoc = impl2.createDocument(null, '');
+
+		test('shallow import does not copy children', () => {
+			const el = srcDoc.createElement('root');
+			el.appendChild(srcDoc.createElement('child'));
+			const imported = dstDoc.importNode(el, false);
+			expect(imported.childNodes.length).toBe(0);
+		});
+		test('deep import copies all descendants', () => {
+			const el = srcDoc.createElement('root');
+			el.appendChild(srcDoc.createElement('child'));
+			const imported = dstDoc.importNode(el, true);
+			expect(imported.childNodes.length).toBe(1);
+			expect(imported.firstChild.nodeName).toBe('child');
+		});
+		test('ownerDocument of imported node is the target document', () => {
+			const el = srcDoc.createElement('el');
+			const imported = dstDoc.importNode(el, false);
+			expect(imported.ownerDocument).toBe(dstDoc);
+		});
+		test('ownerDocument of imported descendants is the target document', () => {
+			const el = srcDoc.createElement('root');
+			el.appendChild(srcDoc.createElement('child'));
+			const imported = dstDoc.importNode(el, true);
+			expect(imported.firstChild.ownerDocument).toBe(dstDoc);
+		});
+		test('parentNode of imported node is null', () => {
+			const el = srcDoc.createElement('el');
+			const imported = dstDoc.importNode(el, false);
+			expect(imported.parentNode).toBeNull();
+		});
+		test('imported node is a different object from the source', () => {
+			const el = srcDoc.createElement('el');
+			const imported = dstDoc.importNode(el, false);
+			expect(imported).not.toBe(el);
+		});
+		test('source document is not modified after deep import', () => {
+			const el = srcDoc.createElement('root');
+			el.appendChild(srcDoc.createElement('child'));
+			dstDoc.importNode(el, true);
+			expect(el.ownerDocument).toBe(srcDoc);
+			expect(el.childNodes.length).toBe(1);
+		});
+		test('imports a Text node', () => {
+			const text = srcDoc.createTextNode('hello');
+			const imported = dstDoc.importNode(text, false);
+			expect(imported.nodeValue).toBe('hello');
+			expect(imported.ownerDocument).toBe(dstDoc);
+		});
+		test('imports a CDATASection node', () => {
+			const cdata = srcDoc.createCDATASection('<raw>');
+			const imported = dstDoc.importNode(cdata, false);
+			expect(imported.nodeValue).toBe('<raw>');
+			expect(imported.ownerDocument).toBe(dstDoc);
+		});
+		test('imports a Comment node', () => {
+			const comment = srcDoc.createComment('note');
+			const imported = dstDoc.importNode(comment, false);
+			expect(imported.nodeValue).toBe('note');
+			expect(imported.ownerDocument).toBe(dstDoc);
+		});
+		test('imports a ProcessingInstruction node', () => {
+			const pi = srcDoc.createProcessingInstruction('target', 'data');
+			const imported = dstDoc.importNode(pi, false);
+			expect(imported.target).toBe('target');
+			expect(imported.data).toBe('data');
+			expect(imported.ownerDocument).toBe(dstDoc);
+		});
+		test('imports a DocumentFragment with children (deep)', () => {
+			const frag = srcDoc.createDocumentFragment();
+			frag.appendChild(srcDoc.createTextNode('a'));
+			frag.appendChild(srcDoc.createElement('el'));
+			const imported = dstDoc.importNode(frag, true);
+			expect(imported.childNodes.length).toBe(2);
+			expect(imported.firstChild.nodeValue).toBe('a');
+		});
+		test('importing an Attribute forces deep and copies its child text node', () => {
+			const attr = srcDoc.createAttribute('key');
+			attr.value = 'val';
+			const imported = dstDoc.importNode(attr, false);
+			expect(imported.value).toBe('val');
+			expect(imported.ownerDocument).toBe(dstDoc);
+		});
+	});
 });
