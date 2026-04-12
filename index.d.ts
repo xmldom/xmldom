@@ -1371,11 +1371,12 @@ declare module '@xmldom/xmldom' {
 			localName: string
 		): LiveNodeList<Element>;
 		/**
-		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
-		 *
-		 * If node is a document or a shadow root, throws a "NotSupportedError" DOMException.
+		 * Imports a node from another document into this document, creating a new copy owned by this
+		 * document. If `deep` is true, the copy also includes the node's descendants.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/importNode)
+		 *
+		 * @see {@link https://dom.spec.whatwg.org/#dom-document-importnode}
 		 */
 		importNode<T extends Node>(node: T, deep?: boolean): T;
 	}
