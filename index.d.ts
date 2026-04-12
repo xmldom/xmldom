@@ -448,7 +448,19 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/previousSibling)
 		 */
 		readonly previousSibling: Node | null;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/textContent) */
+		/**
+		 * The text content of this node and its descendants.
+		 *
+		 * For {@link Element} and {@link DocumentFragment} nodes, returns the concatenation of the
+		 * `nodeValue` of every descendant text node, excluding processing instruction and comment
+		 * nodes. For all other node types, returns `nodeValue`.
+		 *
+		 * Setting `textContent` on an element or document fragment replaces all child nodes with a
+		 * single text node; on other nodes it sets `data`, `value`, and `nodeValue` directly.
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/textContent)
+		 *
+		 * @see {@link https://dom.spec.whatwg.org/#dom-node-textcontent}
+		 */
 		textContent: string | null;
 
 		/**
