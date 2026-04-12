@@ -52,10 +52,17 @@ declare module "@xmldom/xmldom" {
        *   is only thrown to prevent injection vectors, not for all the spec mandated checks.
        *
        * @throws {DOMException}
-       * With code `INVALID_STATE_ERR` when `requireWellFormed` is `true` and the CDATASection
-       * data contains `"]]>"`, a Comment node's data contains `"-->"`, or a
-       * ProcessingInstruction's data contains `"?>"`.
-       * (On this 0.8.x branch, bare `"--"` in comment data does not throw!)
+       * With code `INVALID_STATE_ERR` when `requireWellFormed` is `true` and:
+       * - a CDATASection node's data contains `"]]>"`,
+       * - a Comment node's data contains `"-->"` (bare `"--"` does not throw on this branch),
+       * - a ProcessingInstruction's data contains `"?>"`,
+       * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
+       *   production,
+       * - a DocumentType's `systemId` is non-empty and does not match the XML `SystemLiteral`
+       *   production, or
+       * - a DocumentType's `internalSubset` contains `"]>"`.
+       * Note: xmldom does not enforce `readonly` on DocumentType fields — direct property
+       * writes succeed and are covered by the serializer-level checks above.
        * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
        * @see https://w3c.github.io/DOM-Parsing/#xml-serialization
        * @see https://github.com/w3c/DOM-Parsing/issues/84
