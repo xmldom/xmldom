@@ -12,7 +12,7 @@ fi
 # Remove generated test artefacts that differ between branches to avoid cross-branch contamination
 rm -f test/error/reported.json test/errors/reported.json
 
-npm ci
+npm ci --loglevel error --no-audit --no-update-notifier --no-fund
 npm run test
 npm run fuzz
 npm run lint
