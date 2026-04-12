@@ -1378,10 +1378,32 @@ declare module '@xmldom/xmldom' {
 	interface DocumentType extends Node {
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/name) */
 		readonly name: string;
+		/**
+		 * The internal subset string (the raw content between `[` and `]`), or an empty string.
+		 * Declared `readonly` by the WHATWG DOM spec; xmldom does not enforce this — direct
+		 * property writes succeed and the written value is serialized verbatim.
+		 * When serialized with `requireWellFormed: true`, throws `InvalidStateError` if the value
+		 * contains `"]>"`.
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/internalSubset)
+		 */
 		readonly internalSubset: string;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/publicId) */
+		/**
+		 * The external subset public identifier, stored verbatim including surrounding quotes.
+		 * Declared `readonly` by the WHATWG DOM spec; xmldom does not enforce this — direct
+		 * property writes succeed and the written value is serialized verbatim.
+		 * When serialized with `requireWellFormed: true`, throws `InvalidStateError` if the value
+		 * is non-empty and does not match the XML `PubidLiteral` production (XML 1.0 [12]).
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/publicId)
+		 */
 		readonly publicId: string;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/systemId) */
+		/**
+		 * The external subset system identifier, stored verbatim including surrounding quotes.
+		 * Declared `readonly` by the WHATWG DOM spec; xmldom does not enforce this — direct
+		 * property writes succeed and the written value is serialized verbatim.
+		 * When serialized with `requireWellFormed: true`, throws `InvalidStateError` if the value
+		 * is non-empty and does not match the XML `SystemLiteral` production (XML 1.0 [11]).
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/systemId)
+		 */
 		readonly systemId: string;
 	}
 
@@ -1446,8 +1468,21 @@ declare module '@xmldom/xmldom' {
 		 */
 		createDocumentType(
 			qualifiedName: string,
+			/**
+			 * External subset public identifier. Stored verbatim including surrounding quotes.
+			 * No creation-time validation — deferred to a future breaking release.
+			 */
 			publicId?: string,
-			systemId?: string
+			/**
+			 * External subset system identifier. Stored verbatim including surrounding quotes.
+			 * No creation-time validation — deferred to a future breaking release.
+			 */
+			systemId?: string,
+			/**
+			 * Internal subset string (content between `[` and `]`). Stored verbatim.
+			 * No creation-time validation — deferred to a future breaking release.
+			 */
+			internalSubset?: string
 		): DocumentType;
 
 		/**
@@ -1528,14 +1563,20 @@ declare module '@xmldom/xmldom' {
 		 * `InvalidStateError` when `requireWellFormed` is `true` and any of the following conditions
 		 * hold:
 		 * - CDATASection data contains `"]]>"`
-		 * - Text data contains characters outside the XML Char production - a Comment node's data
-		 * contains `--` anywhere or ends with `-`
+		 * - Text data contains characters outside the XML Char production
+		 * - a Comment node's data contains `--` anywhere or ends with `-`
 		 * - a ProcessingInstruction's target contains `:` or is an ASCII case-insensitive match for
-		 * `"xml"`, or its data contains `?>` or characters outside the XML Char production - the
-		 * Document has no `documentElement`
+		 * `"xml"`, or its data contains `?>` or characters outside the XML Char production
+		 * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
+		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [12])
+		 * - a DocumentType's `systemId` is non-empty and does not match the XML `SystemLiteral`
+		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [11])
+		 * - a DocumentType's `internalSubset` contains `"]>"`
+		 * - the Document has no `documentElement`
 		 * @see https://developer.mozilla.org/docs/Web/API/XMLSerializer/serializeToString
 		 * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
 		 * @see https://github.com/w3c/DOM-Parsing/issues/84
+		 * @prettierignore
 		 */
 		serializeToString(
 			node: Node,

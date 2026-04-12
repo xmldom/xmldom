@@ -1,10 +1,21 @@
 'use strict';
 
 const { describe, expect, test } = require('@jest/globals');
-const { ExternalID, PubidLiteral, S, SystemLiteral, reg, NotationDecl, Name, ExternalID_match } = require('../../lib/grammar');
+const {
+	ExternalID,
+	PubidLiteral,
+	PubidLiteral_match,
+	S,
+	SystemLiteral,
+	SystemLiteral_match,
+	reg,
+	NotationDecl,
+	Name,
+	ExternalID_match,
+} = require('../../lib/grammar');
 const { range } = require('./utils');
 
-describe('SystemLiteral', () => {
+describe('SystemLiteral and SystemLiteral_match', () => {
 	[
 		'""',
 		"''",
@@ -15,25 +26,29 @@ describe('SystemLiteral', () => {
 	].forEach((valid) =>
 		test(`should match ${valid}`, () => {
 			expect(SystemLiteral.exec(valid)[0]).toBe(valid);
+			expect(SystemLiteral_match.test(valid)).toBe(true);
 		})
 	);
-	['', '"""', "'''"].forEach((invalid) =>
+	['', '"""', "'''", '"url" SYSTEM "injected"', "'url' SYSTEM 'injected'"].forEach((invalid) =>
 		test(`should not match ${invalid}`, () => {
 			expect(reg('^', SystemLiteral, '$').test(invalid)).toBe(false);
+			expect(SystemLiteral_match.test(invalid)).toBe(false);
 		})
 	);
 });
 
-describe('PubidLiteral', () => {
+describe('PubidLiteral and PubidLiteral_match', () => {
 	['""', "''", '"\'"', `"\x20\x0D\x0Aa-zA-Z0-9-'()+,./:=?;!*#@$_%"`, `'\x20\x0D\x0Aa-zA-Z0-9-()+,./:=?;!*#@$_%'`].forEach(
 		(valid) =>
 			test(`should match ${valid}`, () => {
 				expect(PubidLiteral.exec(valid)[0]).toBe(valid);
+				expect(PubidLiteral_match.test(valid)).toBe(true);
 			})
 	);
-	['', '"""', "'\"'", "'''"].forEach((invalid) =>
+	['', '"""', "'\"'", "'''", '"invalid<char"', "'invalid<char'"].forEach((invalid) =>
 		test(`should not match ${invalid}`, () => {
 			expect(reg('^', PubidLiteral, '$').test(invalid)).toBe(false);
+			expect(PubidLiteral_match.test(invalid)).toBe(false);
 		})
 	);
 });
