@@ -292,6 +292,77 @@ describe('Node.prototype', () => {
 			});
 		});
 	});
+	describe('cloneNode', () => {
+		const impl = new DOMImplementation();
+		const doc = impl.createDocument(null, '');
+
+		test('returns a new object, not the same reference', () => {
+			const el = doc.createElement('el');
+			expect(el.cloneNode(false)).not.toBe(el);
+		});
+		test('shallow clone (false) does not include children', () => {
+			const el = doc.createElement('parent');
+			el.appendChild(doc.createElement('child'));
+			expect(el.cloneNode(false).firstChild).toBeNull();
+		});
+		test('deep clone (true) includes all descendants', () => {
+			const el = doc.createElement('parent');
+			const child = doc.createElement('child');
+			child.appendChild(doc.createTextNode('text'));
+			el.appendChild(child);
+			const clone = el.cloneNode(true);
+			expect(clone.firstChild.nodeName).toBe('child');
+			expect(clone.firstChild.firstChild.nodeValue).toBe('text');
+		});
+		test('attributes are cloned for Element', () => {
+			const el = doc.createElement('el');
+			el.setAttribute('foo', 'bar');
+			expect(el.cloneNode(false).getAttribute('foo')).toBe('bar');
+		});
+		test('modifying clone attributes does not affect original', () => {
+			const el = doc.createElement('el');
+			el.setAttribute('foo', 'original');
+			el.cloneNode(false).setAttribute('foo', 'modified');
+			expect(el.getAttribute('foo')).toBe('original');
+		});
+		test('modifying clone children does not affect original', () => {
+			const el = doc.createElement('parent');
+			el.appendChild(doc.createElement('child'));
+			const clone = el.cloneNode(true);
+			clone.removeChild(clone.firstChild);
+			expect(el.firstChild).not.toBeNull();
+		});
+		test('ownerDocument is preserved', () => {
+			const el = doc.createElement('el');
+			expect(el.cloneNode(false).ownerDocument).toBe(doc);
+		});
+		test('Text node: clones nodeValue', () => {
+			const node = doc.createTextNode('hello');
+			const clone = node.cloneNode();
+			expect(clone.nodeValue).toBe('hello');
+			expect(clone).not.toBe(node);
+		});
+		test('CDATASection node: clones data', () => {
+			const node = doc.createCDATASection('raw<data>');
+			const clone = node.cloneNode();
+			expect(clone.nodeValue).toBe('raw<data>');
+			expect(clone.nodeType).toBe(node.nodeType);
+		});
+		test('Comment node: clones data', () => {
+			const node = doc.createComment('a comment');
+			const clone = node.cloneNode();
+			expect(clone.nodeValue).toBe('a comment');
+			expect(clone.nodeType).toBe(node.nodeType);
+		});
+		test('DocumentFragment: deep clone includes children', () => {
+			const frag = doc.createDocumentFragment();
+			frag.appendChild(doc.createTextNode('a'));
+			frag.appendChild(doc.createElement('el'));
+			const clone = frag.cloneNode(true);
+			expect(clone.childNodes.length).toBe(2);
+			expect(clone.firstChild.nodeValue).toBe('a');
+		});
+	});
 	describe('isSameNode', () => {
 		const impl = new DOMImplementation();
 		const doc = impl.createDocument(null, '');
