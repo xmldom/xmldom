@@ -65,6 +65,17 @@ describe('XMLSerializer.serializeToString', () => {
 					'<a:foo xmlns:a="AAA"><child xmlns="BBB"><nested/></child></a:foo>'
 				);
 			});
+			test('namespace declarations are isolated between siblings (no cross-sibling leakage)', () => {
+				// child re-declares xmlns="ns2"; sibling must declare xmlns="ns3" independently.
+				// If the per-level namespace snapshot were shared between siblings, sibling might
+				// incorrectly see ns2 in scope and omit its own xmlns declaration.
+				const xml =
+					'<root xmlns="ns1">' + '<child xmlns="ns2"><grandchild xmlns="ns1"/></child>' + '<sibling xmlns="ns3"/>' + '</root>';
+				const nsDoc = new DOMParser().parseFromString(xml, MIME_TYPE.XML_TEXT);
+				expect(new XMLSerializer().serializeToString(nsDoc)).toBe(
+					'<root xmlns="ns1">' + '<child xmlns="ns2"><grandchild xmlns="ns1"/></child>' + '<sibling xmlns="ns3"/>' + '</root>'
+				);
+			});
 		});
 
 		describe('is insensitive to namespace order', () => {
