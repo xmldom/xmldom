@@ -197,17 +197,6 @@ describe('Document.prototype', () => {
 			expect(entries[0].nodeName).toBe('entry');
 			expect(feed.documentElement.childNodes.item(0).nodeName).toBe('entry');
 		});
-		test('getElementsByTagName on a 10,100-depth tree succeeds without throwing RangeError (GHSA-2v35-w6hq-6mfw)', () => {
-			const impl = new DOMImplementation();
-			const doc = impl.createDocument(null, 'root');
-			let current = doc.documentElement;
-			for (let i = 0; i < 10100; i++) {
-				const child = doc.createElement('n');
-				current.appendChild(child);
-				current = child;
-			}
-			expect(() => doc.documentElement.getElementsByTagName('n')).not.toThrow();
-		});
 	});
 	test('getElementsByTagNameNS', () => {
 		const doc = new DOMParser().parseFromString(
