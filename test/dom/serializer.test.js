@@ -514,6 +514,19 @@ describe('XMLSerializer.serializeToString', () => {
 			);
 		});
 	});
+
+	describe('deep tree (stack overflow guard)', () => {
+		test('serializeToString on a 5,100-depth tree succeeds without throwing RangeError (GHSA-2v35-w6hq-6mfw)', () => {
+			const deepDoc = new DOMImplementation().createDocument(null, 'root');
+			let current = deepDoc.documentElement;
+			for (let i = 0; i < 5100; i++) {
+				const child = deepDoc.createElement('n');
+				current.appendChild(child);
+				current = child;
+			}
+			expect(() => new XMLSerializer().serializeToString(deepDoc.documentElement)).not.toThrow();
+		});
+	});
 });
 
 describe('Node.toString', () => {

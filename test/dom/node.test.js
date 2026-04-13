@@ -362,6 +362,16 @@ describe('Node.prototype', () => {
 			expect(clone.childNodes.length).toBe(2);
 			expect(clone.firstChild.nodeValue).toBe('a');
 		});
+		test('cloneNode(true) on a 10,100-depth tree succeeds without throwing RangeError (GHSA-2v35-w6hq-6mfw)', () => {
+			const root = doc.createElement('root');
+			let current = root;
+			for (let i = 0; i < 10100; i++) {
+				const child = doc.createElement('n');
+				current.appendChild(child);
+				current = child;
+			}
+			expect(() => root.cloneNode(true)).not.toThrow();
+		});
 	});
 	describe('isSameNode', () => {
 		const impl = new DOMImplementation();
@@ -444,6 +454,19 @@ describe('Node.prototype', () => {
 			});
 		});
 
+		describe('on deep tree (stack overflow guard)', () => {
+			test('textContent on a 10,100-depth element tree succeeds without throwing RangeError (GHSA-2v35-w6hq-6mfw)', () => {
+				const impl2 = new DOMImplementation();
+				const doc2 = impl2.createDocument(null, 'root');
+				let current = doc2.documentElement;
+				for (let i = 0; i < 10100; i++) {
+					const child = doc2.createElement('n');
+					current.appendChild(child);
+					current = child;
+				}
+				expect(() => void doc2.documentElement.textContent).not.toThrow();
+			});
+		});
 		describe('on other node types (returns nodeValue)', () => {
 			test('Text node returns its data', () => {
 				const node = doc.createTextNode('hello');
@@ -562,6 +585,18 @@ describe('Node.prototype', () => {
 			const imported = dstDoc.importNode(attr, false);
 			expect(imported.value).toBe('val');
 			expect(imported.ownerDocument).toBe(dstDoc);
+		});
+		test('importNode(node, true) on a 10,100-depth tree succeeds without throwing RangeError (GHSA-2v35-w6hq-6mfw)', () => {
+			const impl2 = new DOMImplementation();
+			const doc2 = impl2.createDocument(null, 'root');
+			let current = doc2.documentElement;
+			for (let i = 0; i < 10100; i++) {
+				const child = doc2.createElement('n');
+				current.appendChild(child);
+				current = child;
+			}
+			const destDoc = impl2.createDocument(null, 'dest');
+			expect(() => destDoc.importNode(doc2.documentElement, true)).not.toThrow();
 		});
 	});
 });

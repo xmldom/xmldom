@@ -192,6 +192,26 @@ describe('walkDOM', () => {
 		});
 	});
 
+	describe('deep tree (stack overflow guard)', () => {
+		test('walkDOM on a tree of 10,000 depth succeeds without throwing RangeError', () => {
+			const impl = new DOMImplementation();
+			const doc = impl.createDocument(null, 'root');
+			let current = doc.documentElement;
+			for (let i = 0; i < 10000; i++) {
+				const child = doc.createElement('n');
+				current.appendChild(child);
+				current = child;
+			}
+			expect(() => {
+				walkDOM(doc.documentElement, null, {
+					enter() {
+						return 'ctx';
+					},
+				});
+			}).not.toThrow();
+		});
+	});
+
 	describe('enter modifies firstChild before descent', () => {
 		test('walker visits the modified child list when enter adds a child before returning', () => {
 			const impl = new DOMImplementation();
