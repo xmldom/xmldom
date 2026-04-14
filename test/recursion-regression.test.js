@@ -66,4 +66,7 @@ describe('deep tree stack overflow guard (GHSA-2v35-w6hq-6mfw)', () => {
 		const destDoc = new DOMImplementation().createDocument(null, 'dest');
 		expect(() => destDoc.importNode(deepRoot, true)).not.toThrow();
 	});
+	test('normalize', () => {
+		expect(() => deepRoot.normalize()).not.toThrow();
+	});
 });

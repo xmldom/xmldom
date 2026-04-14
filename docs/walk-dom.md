@@ -104,6 +104,8 @@ supported. Because `lastChild` and `previousSibling` are read after `enter` retu
 children added or removed there are correctly reflected when the walker
 schedules the next level of frames.
 
+An example of that is the `Node.prototype.normalize` method.
+
 Mutating anything else — siblings of the current node, ancestors, or unrelated
 subtrees — produces unpredictable results. Nodes already queued on the stack
 are visited regardless of subsequent DOM changes; nodes inserted outside the
