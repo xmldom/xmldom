@@ -1,6 +1,6 @@
 'use strict';
 
-const { describe, test, expect } = require('@jest/globals');
+const { describe, test, expect, beforeEach } = require('@jest/globals');
 const { DOMImplementation, Node } = require('../../lib/dom');
 const { DOMParser } = require('../../lib/dom-parser');
 const { DOMExceptionName } = require('../../lib/errors');
@@ -562,6 +562,68 @@ describe('Node.prototype', () => {
 			const imported = dstDoc.importNode(attr, false);
 			expect(imported.value).toBe('val');
 			expect(imported.ownerDocument).toBe(dstDoc);
+		});
+	});
+	describe('normalize', () => {
+		let doc;
+		beforeEach(() => {
+			doc = new DOMImplementation().createDocument(null, 'root');
+		});
+
+		test('merges two adjacent text nodes into one', () => {
+			const el = doc.createElement('el');
+			el.appendChild(doc.createTextNode('foo'));
+			el.appendChild(doc.createTextNode('bar'));
+			el.normalize();
+			expect(el.childNodes.length).toBe(1);
+			expect(el.firstChild.nodeValue).toBe('foobar');
+		});
+
+		test('merges a run of three or more adjacent text nodes', () => {
+			const el = doc.createElement('el');
+			el.appendChild(doc.createTextNode('a'));
+			el.appendChild(doc.createTextNode('b'));
+			el.appendChild(doc.createTextNode('c'));
+			el.normalize();
+			expect(el.childNodes.length).toBe(1);
+			expect(el.firstChild.nodeValue).toBe('abc');
+		});
+
+		test('does not merge text nodes separated by an element', () => {
+			const el = doc.createElement('el');
+			el.appendChild(doc.createTextNode('before'));
+			el.appendChild(doc.createElement('mid'));
+			el.appendChild(doc.createTextNode('after'));
+			el.normalize();
+			expect(el.childNodes.length).toBe(3);
+			expect(el.firstChild.nodeValue).toBe('before');
+			expect(el.lastChild.nodeValue).toBe('after');
+		});
+
+		test('normalizes text nodes at multiple levels of nesting', () => {
+			const parent = doc.createElement('parent');
+			const child = doc.createElement('child');
+			child.appendChild(doc.createTextNode('x'));
+			child.appendChild(doc.createTextNode('y'));
+			parent.appendChild(child);
+			parent.normalize();
+			expect(child.childNodes.length).toBe(1);
+			expect(child.firstChild.nodeValue).toBe('xy');
+		});
+
+		test('is a no-op on an already-normalized tree', () => {
+			const el = doc.createElement('el');
+			el.appendChild(doc.createTextNode('single'));
+			el.normalize();
+			expect(el.childNodes.length).toBe(1);
+			expect(el.firstChild.nodeValue).toBe('single');
+		});
+
+		test('is a no-op on a tree with no text nodes', () => {
+			const el = doc.createElement('el');
+			el.appendChild(doc.createElement('child'));
+			el.normalize();
+			expect(el.childNodes.length).toBe(1);
 		});
 	});
 });
