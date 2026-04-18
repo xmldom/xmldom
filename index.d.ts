@@ -500,7 +500,12 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Checks whether the given node is equal to this node.
 		 *
-		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode)
+		 * Two nodes are equal when they have the same type, defining characteristics (for the type),
+		 * and the same `childNodes`. The comparison is iterative to avoid stack overflows on deeply
+		 * nested trees. `Attribute` nodes of each `Element` pair are also compared iteratively.
+		 *
+		 * @see {@link https://dom.spec.whatwg.org/#concept-node-equals}
+		 * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode}
 		 */
 		isEqualNode(other: Node): boolean;
 

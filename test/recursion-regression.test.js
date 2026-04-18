@@ -69,4 +69,9 @@ describe('deep tree stack overflow guard (GHSA-2v35-w6hq-6mfw)', () => {
 	test('normalize', () => {
 		expect(() => deepRoot.normalize()).not.toThrow();
 	});
+	test('isEqualNode', () => {
+		// cloneNode is already iterative — use it to build the matching second tree
+		const deepClone = deepRoot.cloneNode(true);
+		expect(() => deepRoot.isEqualNode(deepClone)).not.toThrow();
+	});
 });
