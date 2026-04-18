@@ -220,6 +220,15 @@ describe('Node.prototype', () => {
 				expect(doc.createComment('This is a comment').isEqualNode(doc.createComment('This is a different comment'))).toBe(false);
 			});
 		});
+		describe('CDATASection', () => {
+			test('should return true for CDATA sections with the same data', () => {
+				expect(doc.createCDATASection('some data').isEqualNode(doc.createCDATASection('some data'))).toBe(true);
+			});
+
+			test('should return false for CDATA sections with different data', () => {
+				expect(doc.createCDATASection('some data').isEqualNode(doc.createCDATASection('different data'))).toBe(false);
+			});
+		});
 		describe('DocumentType', () => {
 			test('should return true for document type nodes with identical names and IDs', () => {
 				expect(impl.createDocumentType('html').isEqualNode(impl.createDocumentType('html'))).toBe(true);
