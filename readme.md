@@ -92,7 +92,7 @@ import { DOMParser } from '@xmldom/xmldom'
 	```javascript
 	serializeToString(node)
 	```
-### DOM level2 method and attribute:
+### DOM level 2 method and attribute:
 
 * [Node](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247)
 
@@ -293,8 +293,17 @@ import { DOMParser } from '@xmldom/xmldom'
 
 * [ParentNode](https://dom.spec.whatwg.org/#interface-parentnode) mixin (on `Document`, `DocumentFragment`, `Element`)
 
-  readonly attribute:
+  readonly attributes:
   - `children`
+  - `firstElementChild`
+  - `lastElementChild`
+  - `childElementCount`
+
+* Element (from [NonDocumentTypeChildNode](https://dom.spec.whatwg.org/#nondocumenttypechildnode) mixin)
+
+  readonly attributes:
+  - `previousElementSibling`
+  - `nextElementSibling`
 
 ### DOM extension by xmldom
 
