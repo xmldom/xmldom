@@ -160,6 +160,16 @@ describe('Node.prototype', () => {
 				expect(el3.isEqualNode(el4)).toBe(false);
 			});
 
+			test('should return false for elements with same attribute count and localName but different namespace', () => {
+				// Both elements have one attribute named "attr", but in different namespaces.
+				// getAttributeNodeNS lookup by ns-a + "attr" finds nothing on el2, so must return false.
+				const el1 = doc.createElement('test');
+				el1.setAttributeNS('ns-a', 'ns:attr', 'val');
+				const el2 = doc.createElement('test');
+				el2.setAttributeNS('ns-b', 'ns:attr', 'val');
+				expect(el1.isEqualNode(el2)).toBe(false);
+			});
+
 			test('should return true for elements with identical attributes in a different order', () => {
 				const el3 = doc.createElement('test3');
 				el3.setAttribute('style', '');
@@ -273,11 +283,24 @@ describe('Node.prototype', () => {
 				expect(pi1.isEqualNode(pi2)).toBe(true);
 			});
 
-			test('should return false for processing instruction nodes with different target or data', () => {
+			test('should return false for processing instruction nodes with different data', () => {
 				const pi1 = doc.createProcessingInstruction('xml-stylesheet', 'href="mystyle.css"');
 				const pi2 = doc.createProcessingInstruction('xml-stylesheet', 'href="yourstyle.css"');
 				expect(pi1.isEqualNode(pi2)).toBe(false);
 			});
+
+			test('should return false for processing instruction nodes with different target', () => {
+				const pi1 = doc.createProcessingInstruction('xml-stylesheet', 'href="mystyle.css"');
+				const pi2 = doc.createProcessingInstruction('other-target', 'href="mystyle.css"');
+				expect(pi1.isEqualNode(pi2)).toBe(false);
+			});
+		});
+
+		test('should return true when comparing a node to itself', () => {
+			const el = doc.createElement('self');
+			el.setAttribute('attr', 'value');
+			el.appendChild(doc.createElement('child'));
+			expect(el.isEqualNode(el)).toBe(true);
 		});
 
 		describe('childNodes', () => {
@@ -298,6 +321,49 @@ describe('Node.prototype', () => {
 				const el10 = doc.createElement('parent');
 				el10.appendChild(doc.createElement('child'));
 				expect(el9.isEqualNode(el10)).toBe(true);
+			});
+
+			test('should return true for equal multi-level trees', () => {
+				const root1 = doc.createElement('root');
+				const mid1 = doc.createElement('mid');
+				mid1.appendChild(doc.createTextNode('leaf'));
+				root1.appendChild(mid1);
+
+				const root2 = doc.createElement('root');
+				const mid2 = doc.createElement('mid');
+				mid2.appendChild(doc.createTextNode('leaf'));
+				root2.appendChild(mid2);
+
+				expect(root1.isEqualNode(root2)).toBe(true);
+			});
+
+			test('should return false when deepest node differs in a multi-level tree', () => {
+				const root1 = doc.createElement('root');
+				const mid1 = doc.createElement('mid');
+				mid1.appendChild(doc.createTextNode('leaf-a'));
+				root1.appendChild(mid1);
+
+				const root2 = doc.createElement('root');
+				const mid2 = doc.createElement('mid');
+				mid2.appendChild(doc.createTextNode('leaf-b'));
+				root2.appendChild(mid2);
+
+				expect(root1.isEqualNode(root2)).toBe(false);
+			});
+		});
+
+		describe('Document', () => {
+			test('should return true for two empty documents', () => {
+				const doc1 = impl.createDocument(null, '');
+				const doc2 = impl.createDocument(null, '');
+				// Both have an empty documentElement with the same tag name
+				expect(doc1.isEqualNode(doc2)).toBe(true);
+			});
+
+			test('should return false for documents with different root element names', () => {
+				const doc1 = impl.createDocument(null, 'root');
+				const doc2 = impl.createDocument(null, 'other');
+				expect(doc1.isEqualNode(doc2)).toBe(false);
 			});
 		});
 	});
