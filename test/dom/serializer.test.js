@@ -261,6 +261,24 @@ describe('XMLSerializer.serializeToString', () => {
 			const result = new XMLSerializer().serializeToString(doc, nodeFilter);
 			expect(result).toBe('<root></root>');
 		});
+
+		test('nodeFilter returning a string replaces the node serialization verbatim', () => {
+			doc.documentElement.appendChild(doc.createElement('child'));
+			// nodeFilter returns a raw string for element nodes; that string is pushed verbatim.
+			const result = new XMLSerializer().serializeToString(doc, {
+				nodeFilter: (node) => (node.nodeType === 1 && node.nodeName === 'child' ? '<replaced/>' : node),
+			});
+			expect(result).toBe('<root><replaced/></root>');
+		});
+
+		test('nodeFilter returning a string for an attribute replaces that attribute verbatim', () => {
+			doc.documentElement.setAttribute('id', 'x');
+			// nodeFilter returns a raw string when given an attribute; that string is pushed verbatim.
+			const result = new XMLSerializer().serializeToString(doc, {
+				nodeFilter: (node) => (node.nodeType === 2 ? ' data-replaced="1"' : node),
+			});
+			expect(result).toBe('<root data-replaced="1"/>');
+		});
 	});
 
 	describe('{ splitCDATASections }', () => {
@@ -484,6 +502,15 @@ describe('XMLSerializer.serializeToString', () => {
 		});
 	});
 
+	describe('Attribute', () => {
+		test('serializes an attribute node directly as name="value"', () => {
+			const el = doc.createElement('el');
+			el.setAttribute('class', 'hello');
+			const attr = el.attributes.item(0);
+			expect(new XMLSerializer().serializeToString(attr)).toBe(' class="hello"');
+		});
+	});
+
 	describe('EntityReference', () => {
 		test('serializes EntityReference node as &name;', () => {
 			const xmlDoc = new DOMImplementation().createDocument(null, '');
@@ -573,6 +600,15 @@ describe('NodeList.toString', () => {
 	let doc;
 	beforeEach(() => {
 		doc = new DOMImplementation().createDocument(null, 'root', null);
+	});
+
+	describe('backward compatibility', () => {
+		test('function as options arg is used as nodeFilter (compat shim)', () => {
+			doc.documentElement.appendChild(doc.createElement('child'));
+			// nodeFilter as function: skip element nodes (nodeType 1) → empty string
+			const fn = (node) => (node.nodeType === 1 ? null : node);
+			expect(doc.documentElement.childNodes.toString(fn)).toBe('');
+		});
 	});
 
 	describe('{ requireWellFormed }', () => {
