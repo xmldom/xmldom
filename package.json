@@ -1,6 +1,6 @@
 {
 	"name": "@xmldom/xmldom",
-	"version": "0.9.9",
+	"version": "0.9.10",
 	"description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
 	"keywords": [
 		"w3c",
@@ -27,13 +27,16 @@
 		"index.d.ts",
 		"lib"
 	],
+	"config": {
+		"test_stack_size": 256
+	},
 	"scripts": {
 		"lint": "eslint examples lib test",
 		"format": "prettier --write examples lib test index.d.ts",
 		"format:check": "prettier --check examples lib test index.d.ts",
 		"changelog": "auto-changelog --unreleased-only",
 		"start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
-		"test": "jest",
+		"test": "node --stack-size=$npm_package_config_test_stack_size ./node_modules/.bin/jest",
 		"fuzz": "jest --config=./jest.fuzz.config.js",
 		"test:types": "cd examples/typescript-node-es6 && ./pretest.sh 3 && ./pretest.sh 4 && ./pretest.sh 5 && node dist/index.js",
 		"testrelease": "npm test && eslint lib",

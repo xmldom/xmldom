@@ -448,7 +448,19 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/previousSibling)
 		 */
 		readonly previousSibling: Node | null;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/textContent) */
+		/**
+		 * The text content of this node and its descendants.
+		 *
+		 * For {@link Element} and {@link DocumentFragment} nodes, returns the concatenation of the
+		 * `nodeValue` of every descendant text node, excluding processing instruction and comment
+		 * nodes. For all other node types, returns `nodeValue`.
+		 *
+		 * Setting `textContent` on an element or document fragment replaces all child nodes with a
+		 * single text node; on other nodes it sets `data`, `value`, and `nodeValue` directly.
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/textContent)
+		 *
+		 * @see {@link https://dom.spec.whatwg.org/#dom-node-textcontent}
+		 */
 		textContent: string | null;
 
 		/**
@@ -488,7 +500,12 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Checks whether the given node is equal to this node.
 		 *
-		 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode)
+		 * Two nodes are equal when they have the same type, defining characteristics (for the type),
+		 * and the same `childNodes`. The comparison is iterative to avoid stack overflows on deeply
+		 * nested trees. `Attribute` nodes of each `Element` pair are also compared iteratively.
+		 *
+		 * @see {@link https://dom.spec.whatwg.org/#concept-node-equals}
+		 * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode}
 		 */
 		isEqualNode(other: Node): boolean;
 
@@ -771,8 +788,11 @@ declare module '@xmldom/xmldom' {
 		item(index: number): T | null;
 		/**
 		 * Returns a string representation of the NodeList.
+		 * Accepts the same options as `XMLSerializer.prototype.serializeToString`.
 		 */
-		toString(nodeFilter: (node: T) => T | undefined): string;
+		toString(
+			options?: XMLSerializerOptions | ((node: T) => T | undefined)
+		): string;
 		/**
 		 * Filters the NodeList based on a predicate.
 		 *
@@ -1206,6 +1226,11 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Creates a comment object with the specified data.
 		 *
+		 * No validation is performed at creation time. When the resulting document is serialized
+		 * with `requireWellFormed: true`, the serializer throws `InvalidStateError` if the comment
+		 * data contains `--` anywhere, ends with `-`, or contains characters outside the XML Char
+		 * production (W3C DOM Parsing §3.2.1.3). Without that option the data is emitted verbatim.
+		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/createComment)
 		 */
 		createComment(data: string): Comment;
@@ -1259,12 +1284,21 @@ declare module '@xmldom/xmldom' {
 		createEntityReference(name: string): EntityReference;
 
 		/**
-		 * Returns a ProcessingInstruction node whose target is target and data is data. If target does
-		 * not match the Name production an "InvalidCharacterError" DOMException will be thrown. If
-		 * data contains "?>" an "InvalidCharacterError" DOMException will be thrown.
+		 * Returns a ProcessingInstruction node whose target is target and data is data.
 		 *
-		 * [MDN
-		 * Reference](https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction)
+		 * __This behavior is slightly different from the in the specs__:
+		 * - it does not do any input validation on the arguments and doesn't throw
+		 * "InvalidCharacterError".
+		 *
+		 * Note: When the resulting document is serialized with `requireWellFormed: true`, the
+		 * serializer throws `InvalidStateError` if `.target` contains `:` or is an ASCII
+		 * case-insensitive match for `"xml"`, or if `.data` contains `?>` or characters outside the
+		 * XML Char production (W3C DOM Parsing §3.2.1.7). Without that option the data is emitted
+		 * verbatim.
+		 *
+		 * @see https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction
+		 * @see https://dom.spec.whatwg.org/#dom-document-createprocessinginstruction
+		 * @see https://www.w3.org/TR/DOM-Parsing/#dfn-concept-serialize-xml §3.2.1.7
 		 */
 		createProcessingInstruction(
 			target: string,
@@ -1342,11 +1376,12 @@ declare module '@xmldom/xmldom' {
 			localName: string
 		): LiveNodeList<Element>;
 		/**
-		 * Returns a copy of node. If deep is true, the copy also includes the node's descendants.
-		 *
-		 * If node is a document or a shadow root, throws a "NotSupportedError" DOMException.
+		 * Imports a node from another document into this document, creating a new copy owned by this
+		 * document. If `deep` is true, the copy also includes the node's descendants.
 		 *
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/importNode)
+		 *
+		 * @see {@link https://dom.spec.whatwg.org/#dom-document-importnode}
 		 */
 		importNode<T extends Node>(node: T, deep?: boolean): T;
 	}
@@ -1361,10 +1396,32 @@ declare module '@xmldom/xmldom' {
 	interface DocumentType extends Node {
 		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/name) */
 		readonly name: string;
+		/**
+		 * The internal subset string (the raw content between `[` and `]`), or an empty string.
+		 * Declared `readonly` by the WHATWG DOM spec; xmldom does not enforce this — direct
+		 * property writes succeed and the written value is serialized verbatim.
+		 * When serialized with `requireWellFormed: true`, throws `InvalidStateError` if the value
+		 * contains `"]>"`.
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/internalSubset)
+		 */
 		readonly internalSubset: string;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/publicId) */
+		/**
+		 * The external subset public identifier, stored verbatim including surrounding quotes.
+		 * Declared `readonly` by the WHATWG DOM spec; xmldom does not enforce this — direct
+		 * property writes succeed and the written value is serialized verbatim.
+		 * When serialized with `requireWellFormed: true`, throws `InvalidStateError` if the value
+		 * is non-empty and does not match the XML `PubidLiteral` production (XML 1.0 [12]).
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/publicId)
+		 */
 		readonly publicId: string;
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/systemId) */
+		/**
+		 * The external subset system identifier, stored verbatim including surrounding quotes.
+		 * Declared `readonly` by the WHATWG DOM spec; xmldom does not enforce this — direct
+		 * property writes succeed and the written value is serialized verbatim.
+		 * When serialized with `requireWellFormed: true`, throws `InvalidStateError` if the value
+		 * is non-empty and does not match the XML `SystemLiteral` production (XML 1.0 [11]).
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/systemId)
+		 */
 		readonly systemId: string;
 	}
 
@@ -1429,8 +1486,21 @@ declare module '@xmldom/xmldom' {
 		 */
 		createDocumentType(
 			qualifiedName: string,
+			/**
+			 * External subset public identifier. Stored verbatim including surrounding quotes.
+			 * No creation-time validation — deferred to a future breaking release.
+			 */
 			publicId?: string,
-			systemId?: string
+			/**
+			 * External subset system identifier. Stored verbatim including surrounding quotes.
+			 * No creation-time validation — deferred to a future breaking release.
+			 */
+			systemId?: string,
+			/**
+			 * Internal subset string (content between `[` and `]`). Stored verbatim.
+			 * No creation-time validation — deferred to a future breaking release.
+			 */
+			internalSubset?: string
 		): DocumentType;
 
 		/**
@@ -1463,18 +1533,73 @@ declare module '@xmldom/xmldom' {
 		hasFeature(feature: string, version?: string): true;
 	}
 
+	/** Options accepted by `XMLSerializer.prototype.serializeToString` and `node.toString`. */
+	interface XMLSerializerOptions {
+		/**
+		 * When `true`, the serializer throws `InvalidStateError` for content that would produce
+		 * ill-formed XML: CDATASection data containing `"]]>"`; Text data with characters outside
+		 * the XML Char production; a Comment node whose data contains `--` anywhere or ends with
+		 * `-`; or a Document with no `documentElement`.
+		 *
+		 * @default false
+		 */
+		requireWellFormed?: boolean;
+		/**
+		 * When `true` (the default), `"]]>"` sequences in CDATASection data are split across
+		 * concatenated CDATA sections. **Deprecated** — this option and the underlying split
+		 * mechanics will be removed in the next breaking release. Callers should migrate to `{
+		 * requireWellFormed: true }`, which throws `InvalidStateError` instead of transforming.
+		 *
+		 * @default true
+		 */
+		splitCDATASections?: boolean;
+		/** A filter function applied to each node before serialization. */
+		nodeFilter?: (node: Node) => Node | null | undefined;
+	}
+
 	class XMLSerializer {
 		/**
 		 * Returns the result of serializing `node` to XML.
 		 *
-		 * __This implementation differs from the specification:__ - CDATASection nodes whose data
-		 * contains `]]>` are serialized by splitting the section at each `]]>` occurrence (following
-		 * W3C DOM Level 3 Core `split-cdata-sections`
-		 * default behaviour). A configurable option is not yet implemented.
+		 * When `options.requireWellFormed` is `true`, throws `InvalidStateError` for content that
+		 * would produce ill-formed XML. When `options.splitCDATASections` is `false`,
+		 * CDATASection data is emitted verbatim. Passing a function as `options` is treated as a
+		 * legacy `nodeFilter` for backward compatibility.
 		 *
+		 * __This implementation differs from the specification:__ - CDATASection serialization is
+		 * not specified by W3C DOM Parsing or WHATWG DOM Parsing (see
+		 * {@link https://github.com/w3c/DOM-Parsing/issues/38 w3c/DOM-Parsing#38}).
+		 * When `splitCDATASections` is `true` (the default), `"]]>"` sequences are split across
+		 * concatenated CDATA sections — **deprecated**, will be removed in the next breaking
+		 * release.
+		 * - W3C DOM Parsing §3.2.1.1 requires well-formedness checks on Element `localName`s,
+		 * prefixes, and attribute serialization when `requireWellFormed` is `true`. These checks are
+		 * **not implemented** in this release — see the tracking issue filed against the next
+		 * breaking milestone.
+		 *
+		 * @throws {DOMException}
+		 * `InvalidStateError` when `requireWellFormed` is `true` and any of the following conditions
+		 * hold:
+		 * - CDATASection data contains `"]]>"`
+		 * - Text data contains characters outside the XML Char production
+		 * - a Comment node's data contains `--` anywhere or ends with `-`
+		 * - a ProcessingInstruction's target contains `:` or is an ASCII case-insensitive match for
+		 * `"xml"`, or its data contains `?>` or characters outside the XML Char production
+		 * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
+		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [12])
+		 * - a DocumentType's `systemId` is non-empty and does not match the XML `SystemLiteral`
+		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [11])
+		 * - a DocumentType's `internalSubset` contains `"]>"`
+		 * - the Document has no `documentElement`
+		 * @see https://developer.mozilla.org/docs/Web/API/XMLSerializer/serializeToString
 		 * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
+		 * @see https://github.com/w3c/DOM-Parsing/issues/84
+		 * @prettierignore
 		 */
-		serializeToString(node: Node, nodeFilter?: (node: Node) => boolean): string;
+		serializeToString(
+			node: Node,
+			options?: XMLSerializerOptions | ((node: Node) => Node | null | undefined)
+		): string;
 	}
 	// END ./lib/dom.js
 

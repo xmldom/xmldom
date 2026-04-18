@@ -4,6 +4,55 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.10](https://github.com/xmldom/xmldom/compare/0.9.9...0.9.10)
+
+### Fixed
+
+- Security: `XMLSerializer.serializeToString()` (and `Node.toString()`, `NodeList.toString()`) now accept a `requireWellFormed` option. When `{ requireWellFormed: true }` is passed, the serializer throws `InvalidStateError` for injection-prone node content, preventing XML injection via attacker-controlled node data. [`GHSA-j759-j44w-7fr8`](https://github.com/xmldom/xmldom/security/advisories/GHSA-j759-j44w-7fr8) [`GHSA-x6wf-f3px-wcqx`](https://github.com/xmldom/xmldom/security/advisories/GHSA-x6wf-f3px-wcqx) [`GHSA-f6ww-3ggp-fr8h`](https://github.com/xmldom/xmldom/security/advisories/GHSA-f6ww-3ggp-fr8h)
+  - Comment: throws when `data` contains `--` anywhere, ends with `-`, or contains characters outside the XML `Char` production
+  - ProcessingInstruction: throws when target contains `:` or matches `xml` (case-insensitive), or `data` contains characters outside the XML `Char` production or contains `?>`
+  - DocumentType: throws when `publicId` fails `PubidLiteral`, `systemId` fails `SystemLiteral`, or `internalSubset` contains `]>`
+- Security: DOM traversal operations (`XMLSerializer.serializeToString()`, `Node.prototype.normalize()`, `Node.prototype.cloneNode(true)`, `Document.prototype.importNode(node, true)`, `node.textContent` getter, `getElementsByTagName()` / `getElementsByTagNameNS()` / `getElementsByClassName()` / `getElementById()`, `Node.prototype.isEqualNode()`) are now iterative. Previously, deeply nested DOM trees would exhaust the JavaScript call stack and throw an unrecoverable `RangeError`. [`GHSA-2v35-w6hq-6mfw`](https://github.com/xmldom/xmldom/security/advisories/GHSA-2v35-w6hq-6mfw)
+- `isEqualNode` now correctly returns `false` for CDATASection nodes with different `data`
+
+### Deprecated
+
+- The `splitCDATASections` serializer option is deprecated and will be removed in the next breaking release. The automatic splitting of `"]]>"` in `CDATASection` data was introduced as a workaround; use `requireWellFormed: true` or ensure `CDATASection` data does not contain `"]]>"` before serialization.
+
+### Chore
+
+- updated dependencies
+
+Thank you,
+[@Jvr2022](https://github.com/Jvr2022),
+[@praveen-kv](https://github.com/praveen-kv),
+[@TharVid](https://github.com/TharVid),
+[@decsecre583](https://github.com/decsecre583),
+[@tlsbollei](https://github.com/tlsbollei),
+[@KarimTantawey](https://github.com/KarimTantawey),
+for your contributions
+
+
+## [0.8.13](https://github.com/xmldom/xmldom/compare/0.8.12...0.8.13)
+
+### Fixed
+
+- Security: `XMLSerializer.serializeToString()` (and `Node.toString()`, `NodeList.toString()`) now accept a `requireWellFormed` option (fourth argument, after `isHtml` and `nodeFilter`). When `{ requireWellFormed: true }` is passed, the serializer throws `InvalidStateError` for injection-prone node content, preventing XML injection via attacker-controlled node data. [`GHSA-j759-j44w-7fr8`](https://github.com/xmldom/xmldom/security/advisories/GHSA-j759-j44w-7fr8) [`GHSA-x6wf-f3px-wcqx`](https://github.com/xmldom/xmldom/security/advisories/GHSA-x6wf-f3px-wcqx) [`GHSA-f6ww-3ggp-fr8h`](https://github.com/xmldom/xmldom/security/advisories/GHSA-f6ww-3ggp-fr8h)
+  - Comment: throws when `data` contains `-->`
+  - ProcessingInstruction: throws when `data` contains `?>`
+  - DocumentType: throws when `publicId` fails `PubidLiteral`, `systemId` fails `SystemLiteral`, or `internalSubset` contains `]>`
+- Security: DOM traversal operations (`XMLSerializer.serializeToString()`, `Node.prototype.normalize()`, `Node.prototype.cloneNode(true)`, `Document.prototype.importNode(node, true)`, `node.textContent` getter, `getElementsByTagName()` / `getElementsByTagNameNS()` / `getElementsByClassName()` / `getElementById()`) are now iterative. Previously, deeply nested DOM trees would exhaust the JavaScript call stack and throw an unrecoverable `RangeError`. [`GHSA-2v35-w6hq-6mfw`](https://github.com/xmldom/xmldom/security/advisories/GHSA-2v35-w6hq-6mfw)
+
+Thank you,
+[@Jvr2022](https://github.com/Jvr2022),
+[@praveen-kv](https://github.com/praveen-kv),
+[@TharVid](https://github.com/TharVid),
+[@decsecre583](https://github.com/decsecre583),
+[@tlsbollei](https://github.com/tlsbollei),
+[@KarimTantawey](https://github.com/KarimTantawey),
+for your contributions
+
+
 ## [0.9.9](https://github.com/xmldom/xmldom/compare/0.9.8...0.9.9)
 
 ### Added
@@ -164,11 +213,6 @@ Thank you,
 [@benkroeger](https://github.com/benkroeger),
 for your contributions.
 
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.9.2](https://github.com/xmldom/xmldom/compare/0.9.1...0.9.2)
 
@@ -615,27 +659,21 @@ Thank you [@niklasl](https://github.com/niklasl), [@cburatto](https://github.com
 
 Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://github.com/victorandree), [@mdierolf](https://github.com/mdierolf), [@tsabbay](https://github.com/tsabbay), [@fatihpense](https://github.com/fatihpense) for your contributions
 
-## 0.7.5
-
-[Commits](https://github.com/xmldom/xmldom/compare/0.7.4...0.7.5)
+## [0.7.5](https://github.com/xmldom/xmldom/compare/0.7.4...0.7.5)
 
 ### Fixes:
 
 - Preserve default namespace when serializing [`#319`](https://github.com/xmldom/xmldom/issues/319) / [`#321`](https://github.com/xmldom/xmldom/pull/321)
   Thank you, [@lupestro](https://github.com/lupestro)
 
-## 0.7.4
-
-[Commits](https://github.com/xmldom/xmldom/compare/0.7.3...0.7.4)
+## [0.7.4](https://github.com/xmldom/xmldom/compare/0.7.3...0.7.4)
 
 ### Fixes:
 
 - Restore ability to parse `__prototype__` attributes [`#315`](https://github.com/xmldom/xmldom/pull/315)
   Thank you, [@dsimpsonOMF](https://github.com/dsimpsonOMF)
 
-## 0.7.3
-
-[Commits](https://github.com/xmldom/xmldom/compare/0.7.2...0.7.3)
+## [0.7.3](https://github.com/xmldom/xmldom/compare/0.7.2...0.7.3)
 
 ### Fixes:
 
@@ -659,18 +697,14 @@ Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://gi
 - Split test and lint scripts [`#297`](https://github.com/xmldom/xmldom/pull/297)
 - Switch to stryker dashboard owned by org [`#292`](https://github.com/xmldom/xmldom/pull/292)
 
-## 0.7.2
-
-[Commits](https://github.com/xmldom/xmldom/compare/0.7.1...0.7.2)
+## [0.7.2](https://github.com/xmldom/xmldom/compare/0.7.1...0.7.2)
 
 ### Fixes:
 
 - Types: Add index.d.ts to packaged files [`#288`](https://github.com/xmldom/xmldom/pull/288)
   Thank you, [@forty](https://github.com/forty)
 
-## 0.7.1
-
-[Commits](https://github.com/xmldom/xmldom/compare/0.7.0...0.7.1)
+## [0.7.1](https://github.com/xmldom/xmldom/compare/0.7.0...0.7.1)
 
 ### Fixes:
 
@@ -680,12 +714,10 @@ Thank you [@marrus-sh](https://github.com/marrus-sh), [@victorandree](https://gi
 ### Chore:
 - package.json: remove author, maintainers, etc. [`#279`](https://github.com/xmldom/xmldom/pull/279)
 
-## 0.7.0 
-
-[Commits](https://github.com/xmldom/xmldom/compare/0.6.0...0.7.0)
+## [0.7.0](https://github.com/xmldom/xmldom/compare/0.6.0...0.7.0)
 
 Due to [`#271`](https://github.com/xmldom/xmldom/issue/271) this version was published as
-- unscoped `xmldom` package to github (git tags [`0.7.0`](https://github.com/xmldom/xmldom/tree/0.7.0) and [`0.7.0+unscoped`](https://github.com/xmldom/xmldom/tree/0.7.0%2Bunscoped))
+- unscoped `xmldom` package to **github** (git tags [`0.7.0`](https://github.com/xmldom/xmldom/tree/0.7.0) and [`0.7.0+unscoped`](https://github.com/xmldom/xmldom/tree/0.7.0%2Bunscoped))
 - scoped `@xmldom/xmldom` package to npm (git tag `0.7.0+scoped`)
 For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issuecomment-902172483)
 
@@ -711,9 +743,9 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 
 - Describe relations with and between specs: [`#211`](https://github.com/xmldom/xmldom/pull/211), [`#247`](https://github.com/xmldom/xmldom/pull/247)
 
-## 0.6.0
+## [0.6.0](https://github.com/xmldom/xmldom/compare/0.5.0...0.6.0)
 
-[Commits](https://github.com/xmldom/xmldom/compare/0.5.0...0.6.0)
+Published to npm: 2021-04-17 16:41 UTC by @karfau as `xmldom`
 
 ### Fixes
 
@@ -722,9 +754,9 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
   Thank you, [@pdecat](https://github.com/pdecat) and [@FranckDepoortere](https://github.com/FranckDepoortere)
 - Escape `<` to `&lt;` when serializing attribute values [`#198`](https://github.com/xmldom/xmldom/issues/198) / [`#199`](https://github.com/xmldom/xmldom/pull/199)
 
-## 0.5.0
+## [0.5.0](https://github.com/xmldom/xmldom/compare/0.4.0...0.5.0)
 
-[Commits](https://github.com/xmldom/xmldom/compare/0.4.0...0.5.0)
+Published to npm: 2021-03-09 03:59 UTC by @brodybits as `xmldom`
 
 ### Fixes
 - Avoid misinterpretation of malicious XML input - [`GHSA-h6q6-9hqw-rwfv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-h6q6-9hqw-rwfv) (CVE-2021-21366)
@@ -752,9 +784,9 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 ### Docs
 - Update MDN links in `readme.md` [`#188`](https://github.com/xmldom/xmldom/pull/188)
 
-## 0.4.0
+## [0.4.0](https://github.com/xmldom/xmldom/compare/0.3.0...0.4.0)
 
-[Commits](https://github.com/xmldom/xmldom/compare/0.3.0...0.4.0)
+Published to npm: 2020-10-27 00:44 UTC by @brodybits as `xmldom`
 
 ### Fixes
 - **BREAKING** Restore `&nbsp;` behavior from v0.1.27 [`#67`](https://github.com/xmldom/xmldom/pull/67)
@@ -788,9 +820,9 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 ### Other
 - Remove files that are not of any use [`#131`](https://github.com/xmldom/xmldom/pull/131), [`#65`](https://github.com/xmldom/xmldom/pull/65), [`#33`](https://github.com/xmldom/xmldom/pull/33)
 
-## 0.3.0
+## [0.3.0](https://github.com/xmldom/xmldom/compare/0.2.1...0.3.0)
 
-[Commits](https://github.com/xmldom/xmldom/compare/0.2.1...0.3.0)
+Published to npm: 2020-03-04 16:32 UTC by @kethinov as `xmldom`
 
 - **BREAKING** Node >=10.x is now required.
 - **BREAKING** Remove `component.json` (deprecated package manager https://github.com/componentjs/guide)
@@ -802,26 +834,34 @@ For more details look at [`#278`](https://github.com/xmldom/xmldom/pull/278#issu
 - Move CHANGELOG to markdown file.
 - Move LICENSE to markdown file.
 
-## 0.2.1
+## [0.2.1](https://github.com/xmldom/xmldom/compare/0.2.0...0.2.1)
 
-[Commits](https://github.com/xmldom/xmldom/compare/0.2.0...0.2.1)
+Published to npm: 2019-12-20 00:40 UTC by @brodybits as `xmldom`
 
 - Correct `homepage`, `repository` and `bugs` URLs in `package.json`.
 
-## 0.2.0
+## [0.2.0](https://github.com/xmldom/xmldom/compare/v0.1.27...0.2.0)
 
-[Commits](https://github.com/xmldom/xmldom/compare/v0.1.27...0.2.0)
+Published to npm: 2019-12-20 00:19 UTC by @brodybits as `xmldom`
 
 - Includes all **BREAKING** changes introduced in [`xmldom-alpha@v0.1.28`](#0128) by the original authors.
 - **POSSIBLY BREAKING** [remove the `Object.create` check from the `_extends` method of `dom.js` that added a `__proto__` property](https://github.com/xmldom/xmldom/commit/0be2ae910a8a22c9ec2cac042e04de4c04317d2a#diff-7d1c5d97786fdf9af5446a241d0b6d56L19-L22) ().
 - **POSSIBLY BREAKING** [remove code that added a `__proto__` property](https://github.com/xmldom/xmldom/commit/366159a76a181ce9a0d83f5dc48205686cfaf9cc)
 - formatting/corrections in `package.json`
 
-## 0.1.31
+## [0.1.31](https://github.com/xmldom/xmldom/compare/0.1.30...0.1.31)
 
-[Commits](https://github.com/xmldom/xmldom/compare/v0.1.27...v0.1.31)
+Published to npm: 2019-12-19 22:34 UTC by @brodybits as `xmldom`
 
-The patch versions (`v0.1.29` - `v0.1.31`) that have been released on the [v0.1.x branch](https://github.com/xmldom/xmldom/tree/0.1.x), to reflect the changed maintainers, **are branched off from [`v0.1.27`](#0127) so they don't include the breaking changes introduced in [`xmldom-alpha@v0.1.28`](#0128)**:
+## [0.1.30](https://github.com/xmldom/xmldom/compare/0.1.29...0.1.30)
+
+Published to npm: 2019-12-19 22:30 UTC by @brodybits as `xmldom`
+
+## [0.1.29](https://github.com/xmldom/xmldom/compare/0.1.27...0.1.29)
+
+Published to npm: 2019-12-19 22:26 UTC by @brodybits as `xmldom`
+
+The patch versions (`0.1.29` - `0.1.31`) that have been released on the [v0.1.x branch](https://github.com/xmldom/xmldom/tree/0.1.x), to reflect the changed maintainers, **are branched off from [`0.1.27`](#0127) so they don't include the breaking changes introduced in [`xmldom-alpha@v0.1.28`](#0128)**:
 
 ## Maintainer changes
 
@@ -836,12 +876,9 @@ It is currently not planned to continue publishing the `xmldom-alpha` package.
 The new maintainers did not invest time to understand changes that led to the last `xmldom` version [`0.1.27`](#0127) published by the original maintainer, but consider it the basis for their work.
 A timeline of all the changes that happened from that version until `0.3.0` is available in <https://github.com/xmldom/xmldom/issues/62>. Any related questions should be asked there.
 
-## 0.1.28
+## [0.1.28](https://github.com/xmldom/xmldom/compare/v0.1.27...xmldom-alpha@v0.1.28)
 
-[Commits](https://github.com/xmldom/xmldom/compare/v0.1.27...xmldom-alpha@v0.1.28)
-
-Published by @jindw on the 9th of May 2017 as
-- `xmldom-alpha@0.1.28`
+Published to npm: 2017-05-08 02:51 UTC by @jindw as `xmldom-alpha`
 
 - **BREAKING** includes [regression regarding `&nbsp;` (issue #57)](https://github.com/xmldom/xmldom/issues/57) 
 - [Fix `license` field in `package.json`](https://github.com/jindw/xmldom/pull/178)
@@ -849,45 +886,48 @@ Published by @jindw on the 9th of May 2017 as
 - Fix `dom.js` serialization issue for missing document element ([example that failed on `toString()` before this change](https://github.com/xmldom/xmldom/blob/a58dcf7a265522e80ce520fe3be0cddb1b976f6f/test/parse/unclosedcomment.js#L10-L11))
 - Add new module `entities.js`
 
-## 0.1.27
+## [0.1.27](https://github.com/xmldom/xmldom/compare/0.1.26...0.1.27)
 
-Published by @jindw on the 28th of Nov 2016 as 
-- `xmldom@0.1.27`
-- `xmldom-alpha@0.1.27` 
+Published to npm: 2016-11-28 03:56 UTC by @jindw as `xmldom` and `xmldom-alpha`
+
+Tags `0.1.24`, `0.1.25`, `0.1.26`, and `0.1.27` all point to the same git commit (`b53aa82`). These four versions were published within 24 hours in November 2016 with version bumps applied only to the working directory, not committed to git.
 
 - Various bug fixes.
 
-## 0.1.26
+## [0.1.26](https://github.com/xmldom/xmldom/compare/0.1.25...0.1.26)
 
-Published on the 18th of Nov 2016
-as `xmldom@0.1.26`
+Published to npm: 2016-11-28 03:47 UTC by @jindw as `xmldom`
 
-- Details unknown
-
-## 0.1.25
-
-Published on the 18th of Nov 2016 as 
-- `xmldom@0.1.25`
+Tags `0.1.24`, `0.1.25`, `0.1.26`, and `0.1.27` all point to the same git commit (`b53aa82`). These four versions were published within 24 hours in November 2016 with version bumps applied only to the working directory, not committed to git.
 
 - Details unknown
 
-## 0.1.24
+## [0.1.25](https://github.com/xmldom/xmldom/compare/0.1.24...0.1.25)
 
-Published on the 27th of November 2016 as
-- `xmldom@0.1.24`
-- `xmldom-alpha@0.1.24`
+Published to npm: 2016-11-28 03:35 UTC by @jindw as `xmldom`
+
+Tags `0.1.24`, `0.1.25`, `0.1.26`, and `0.1.27` all point to the same git commit (`b53aa82`). These four versions were published within 24 hours in November 2016 with version bumps applied only to the working directory, not committed to git.
+
+- Details unknown
+
+## [0.1.24](https://github.com/xmldom/xmldom/compare/0.1.22...0.1.24)
+
+Published to npm: 2016-11-27 14:00 UTC by @jindw as `xmldom` and `xmldom-alpha`
+
+Tags `0.1.24`, `0.1.25`, `0.1.26`, and `0.1.27` all point to the same git commit (`b53aa82`). These four versions were published within 24 hours in November 2016 with version bumps applied only to the working directory, not committed to git.
 
 - Added node filter.
 
-## 0.1.23
+## [0.1.23](https://github.com/xmldom/xmldom/compare/0.1.22...0.1.23)
 
-Published on the 5th of May 2016 as
-- `xmldom-alpha@0.1.23`
+Published to npm: 2016-05-20 04:24 UTC by @jindw as `xmldom-alpha`
 
 - Add namespace support for nest node serialize.
 - Various other bug fixes.
 
-## 0.1.22
+## [0.1.22](https://github.com/xmldom/xmldom/compare/0.1.21...0.1.22)
+
+Published to npm: 2016-01-30 11:50 UTC by @jindw as `xmldom`
 
 - Merge XMLNS serialization.
 - Remove \r from source string.
@@ -895,11 +935,15 @@ Published on the 5th of May 2016 as
 - Switch references to nodeType to use named constants.
 - Add nodelist toString support.
 
-## 0.1.21
+## [0.1.21](https://github.com/xmldom/xmldom/compare/0.1.20...0.1.21)
+
+Published to npm: 2016-01-13 11:41 UTC by @jindw as `xmldom`
 
 - Fix serialize bug.
 
-## 0.1.20
+## [0.1.20](https://github.com/xmldom/xmldom/compare/0.1.19...0.1.20)
+
+Published to npm: 2016-01-10 08:23 UTC by @jindw as `xmldom`
 
 - Optimize invalid XML support.
 - Add toString sorter for attributes output.
@@ -909,31 +953,103 @@ Published on the 5th of May 2016 as
 - Add support for HTML entities for HTML docs only.
 - Fix TypeError when Document is created with DocumentType.
 
-## 0.1.19
+## [0.1.19](https://github.com/xmldom/xmldom/compare/0.1.18...0.1.19)
+
+Published to npm: 2014-01-28 15:15 UTC by @jindw as `xmldom`
 
 - Fix [infinite loop on unclosed comment (jindw/xmldom#68)](https://github.com/jindw/xmldom/issues/68)
 - Add error report for unclosed tag.
 - Various other fixes.
 
-## 0.1.18
+## [0.1.18](https://github.com/xmldom/xmldom/compare/0.1.17...0.1.18)
+
+Published to npm: 2014-01-17 06:59 UTC by @bigeasy as `xmldom`
 
 - Add default `ns` support.
 - parseFromString now renders entirely plain text documents as textNode.
 - Enable option to ignore white space on parsing.
 
-## 0.1.17
+## [0.1.17](https://github.com/xmldom/xmldom/compare/0.1.16...0.1.17)
 
-**Details missing for this and potential earlier version**
+Published to npm: 2013-12-16 03:07 UTC by @jindw as `xmldom`
 
-## 0.1.16
+No version bump commit for 0.1.17 was found in git history. The tag `0.1.17` points to the commit immediately preceding the 0.1.18 version bump (`87f63e6`, parent of `9ddac14`), which is the last committed state before the next version.
+
+## [0.1.16](https://github.com/xmldom/xmldom/compare/0.1.15...0.1.16)
+
+Published to npm: 2013-05-04 15:00 UTC by @bigeasy as `xmldom`
 
 - Correctly handle multibyte Unicode greater than two byts. #57. #56.
 - Initial unit testing and test coverage. #53. #46. #19.
 - Create Bower `component.json` #52.
 
-## 0.1.8
+## [0.1.15](https://github.com/xmldom/xmldom/compare/0.1.14...0.1.15)
+
+Published to npm: 2013-04-03 02:41 UTC by @bigeasy as `xmldom`
+
+## [0.1.14](https://github.com/xmldom/xmldom/compare/0.1.13...0.1.14)
+
+Published to npm: 2013-03-31 15:31 UTC by @bigeasy as `xmldom`
+
+## [0.1.13](https://github.com/xmldom/xmldom/compare/0.1.12...0.1.13)
+
+Published to npm: 2012-10-02 11:35 UTC by @jindw as `xmldom`
+
+## [0.1.12](https://github.com/xmldom/xmldom/compare/0.1.11...0.1.12)
+
+Published to npm: 2012-09-03 15:02 UTC as `xmldom`
+
+No version bump commit for 0.1.12 was found in git history. The tag `0.1.12` points to the commit immediately preceding the 0.1.13 version bump (`47fa9b8`, parent of `eb17b3a`), which is the last committed state before the next version.
+
+## [0.1.11](https://github.com/xmldom/xmldom/compare/0.1.10...0.1.11)
+
+Published to npm: 2012-06-18 10:45 UTC by @jindw as `xmldom`
+
+## [0.1.10](https://github.com/xmldom/xmldom/compare/0.1.9...0.1.10)
+
+Published to npm: 2012-06-14 02:54 UTC by @jindw as `xmldom`
+
+## [0.1.9](https://github.com/xmldom/xmldom/compare/0.1.8...0.1.9)
+
+Published to npm: 2012-06-08 06:18 UTC by @jindw as `xmldom`
+
+## [0.1.8](https://github.com/xmldom/xmldom/compare/0.1.7...0.1.8)
+
+Published to npm: 2012-05-29 13:30 UTC by @jindw as `xmldom`
 
 - Add: some test case from node-o3-xml(excludes xpath support)
 - Fix: remove existed attribute before setting  (bug introduced in v0.1.5)
 - Fix: index direct access for childNodes and any NodeList collection(not w3c standard)
 - Fix: remove last child bug
+
+## [0.1.7](https://github.com/xmldom/xmldom/compare/0.1.6...0.1.7)
+
+Published to npm: 2012-05-29 03:05 UTC by @jindw as `xmldom`
+
+## [0.1.6](https://github.com/xmldom/xmldom/compare/0.1.5...0.1.6)
+
+Published to npm: 2012-05-28 12:49 UTC by @jindw as `xmldom`
+
+## [0.1.5](https://github.com/xmldom/xmldom/compare/0.1.4...0.1.5)
+
+Published to npm: 2012-05-25 17:43 UTC by @jindw as `xmldom`
+
+## [0.1.4](https://github.com/xmldom/xmldom/compare/0.1.3...0.1.4)
+
+Published to npm: 2012-05-22 16:41 UTC by @jindw as `xmldom`
+
+## [0.1.3](https://github.com/xmldom/xmldom/compare/0.1.2...0.1.3)
+
+Published to npm: 2012-05-22 16:39 UTC by @jindw as `xmldom`
+
+## [0.1.2](https://github.com/xmldom/xmldom/compare/0.1.1...0.1.2)
+
+Published to npm: 2012-02-03 10:49 UTC by @jindw as `xmldom`
+
+## [0.1.1](https://github.com/xmldom/xmldom/compare/0.1.0...0.1.1)
+
+Published to npm: 2012-01-10 07:18 UTC by @jindw as `xmldom`
+
+## [0.1.0](https://github.com/xmldom/xmldom/commit/5d770d4)
+
+Published to npm: 2012-01-06 09:49 UTC by @jindw as `xmldom`
