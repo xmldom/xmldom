@@ -2,8 +2,7 @@
 
 const { DOMParser, XMLSerializer } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
-const { DOMImplementation, Node, ProcessingInstruction } = require('../../lib/dom');
-const { expectDOMException } = require('../errors/expectDOMException');
+const { Node, ProcessingInstruction } = require('../../lib/dom');
 
 describe('ProcessingInstruction', () => {
 	describe('constructor', () => {
