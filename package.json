@@ -1,6 +1,6 @@
 {
 	"name": "@xmldom/xmldom",
-	"version": "0.9.9",
+	"version": "0.9.10",
 	"description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
 	"keywords": [
 		"w3c",
@@ -27,9 +27,9 @@
 		"index.d.ts",
 		"lib"
 	],
-    "config": {
-      "test_stack_size": 256
-    },
+	"config": {
+		"test_stack_size": 256
+	},
 	"scripts": {
 		"lint": "eslint examples lib test",
 		"format": "prettier --write examples lib test index.d.ts",
