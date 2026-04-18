@@ -117,3 +117,26 @@ current child list are never queued and therefore never visited. Neither
 Returning `walkDOM.STOP` from `enter` causes the function to return `STOP`
 immediately, discarding the rest of the stack. No further `enter` or `exit`
 calls are made — including any pending `EXIT` frames for ancestors.
+
+## When not to use `walkDOM`
+
+`walkDOM` visits a **single** tree and threads a single `context` value from
+parent to children. This model breaks down when an algorithm must walk **two
+trees in lockstep**, pairing corresponding nodes at each level.
+
+`Node.prototype.isEqualNode` is the canonical example. Equality requires
+comparing `childNodes[0]` from tree A with `childNodes[0]` from tree B,
+`childNodes[1]` with `childNodes[1]`, and so on — all the way down. There is
+no way to encode "which node in the other tree corresponds to this one" as a
+`context` value that `walkDOM` can thread, because `walkDOM` only knows about
+one tree.
+
+Instead, `isEqualNode` maintains its own explicit stack of `{ node, other }`
+pairs. The initial pair is `{ node: this, other: otherNode }`. For each pair
+popped, the type-specific equality checks are applied and — if the child
+counts match — each `{ node: childNodes[i], other: other.childNodes[i] }` pair
+is pushed. Attribute nodes of each Element pair are pushed the same way:
+`getAttributeNodeNS` looks up the matching attribute by namespace and local
+name, and if none is found the comparison fails immediately. This produces
+the same DFS order as the old recursive implementation without using the call
+stack.
