@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.10](https://github.com/xmldom/xmldom/compare/0.9.9...0.9.10)
+
+### Fixed
+
+- Security: `XMLSerializer.serializeToString()` (and `Node.toString()`, `NodeList.toString()`) now accept a `requireWellFormed` option. When `{ requireWellFormed: true }` is passed, the serializer throws `InvalidStateError` for injection-prone node content, preventing XML injection via attacker-controlled node data. [`GHSA-j759-j44w-7fr8`](https://github.com/xmldom/xmldom/security/advisories/GHSA-j759-j44w-7fr8) [`GHSA-x6wf-f3px-wcqx`](https://github.com/xmldom/xmldom/security/advisories/GHSA-x6wf-f3px-wcqx) [`GHSA-f6ww-3ggp-fr8h`](https://github.com/xmldom/xmldom/security/advisories/GHSA-f6ww-3ggp-fr8h)
+  - Comment: throws when `data` contains `--` anywhere, ends with `-`, or contains characters outside the XML `Char` production
+  - ProcessingInstruction: throws when target contains `:` or matches `xml` (case-insensitive), or `data` contains characters outside the XML `Char` production or contains `?>`
+  - DocumentType: throws when `publicId` fails `PubidLiteral`, `systemId` fails `SystemLiteral`, or `internalSubset` contains `]>`
+- Security: DOM traversal operations (`XMLSerializer.serializeToString()`, `Node.prototype.normalize()`, `Node.prototype.cloneNode(true)`, `Document.prototype.importNode(node, true)`, `node.textContent` getter, `getElementsByTagName()` / `getElementsByTagNameNS()` / `getElementsByClassName()` / `getElementById()`, `Node.prototype.isEqualNode()`) are now iterative. Previously, deeply nested DOM trees would exhaust the JavaScript call stack and throw an unrecoverable `RangeError`. [`GHSA-2v35-w6hq-6mfw`](https://github.com/xmldom/xmldom/security/advisories/GHSA-2v35-w6hq-6mfw)
+- `isEqualNode` now correctly returns `false` for CDATASection nodes with different `data`
+
+### Deprecated
+
+- The `splitCDATASections` serializer option is deprecated and will be removed in the next breaking release. The automatic splitting of `"]]>"` in `CDATASection` data was introduced as a workaround; use `requireWellFormed: true` or ensure `CDATASection` data does not contain `"]]>"` before serialization.
+
+### Chore
+
+- updated dependencies
+
+Thank you,
+[@Jvr2022](https://github.com/Jvr2022),
+[@praveen-kv](https://github.com/praveen-kv),
+[@TharVid](https://github.com/TharVid),
+[@decsecre583](https://github.com/decsecre583),
+[@tlsbollei](https://github.com/tlsbollei),
+[@KarimTantawey](https://github.com/KarimTantawey),
+for your contributions
+
+
 ## [0.8.13](https://github.com/xmldom/xmldom/compare/0.8.12...0.8.13)
 
 ### Fixed
