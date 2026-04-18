@@ -6,14 +6,19 @@
     ":respectLatest",
     ":semanticCommits",
     ":pinAllExceptPeerDependencies",
-    "npm:unpublishSafe"
+    "npm:unpublishSafe",
+    "helpers:pinGitHubActionDigests",
+    "security:minimumReleaseAgeNpm",
   ],
+  "separateMultipleMajor": true,
   "dependencyDashboard": true,
   "prHourlyLimit": 0,
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchPackageNames": ["node"],
+      "matchPackageNames": [
+        "node"
+      ],
       "enabled": false
     }
   ]
