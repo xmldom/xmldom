@@ -6,7 +6,8 @@ const { XMLSerializer } = require('../lib');
 const pkgJson = require('../package.json');
 
 // Must exceed the recursive-overflow threshold at the configured stack size
-// (~3.000 frames at 320 KB) so that re-introducing any recursive tree walk
+// (<3000 frames at 256 KB across tested node versions)
+// so that re-introducing any recursive tree walk
 // causes these tests to fail.
 const DEEP_TREE_DEPTH = 3000;
 

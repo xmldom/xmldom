@@ -28,7 +28,7 @@
 		"lib"
 	],
     "config": {
-      "test_stack_size": 320
+      "test_stack_size": 256
     },
 	"scripts": {
 		"lint": "eslint examples lib test",
