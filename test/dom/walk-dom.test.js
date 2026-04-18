@@ -1,6 +1,6 @@
 'use strict';
 
-const { describe, test, expect, beforeEach } = require('@jest/globals');
+const { describe, test, expect } = require('@jest/globals');
 const { DOMImplementation, walkDOM } = require('../../lib/dom');
 
 /**
