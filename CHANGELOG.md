@@ -101,7 +101,7 @@ for your contributions
 
 Thank you, [@shunkica](https://github.com/shunkica), for your contributions
 
-## [0.9.8](https://github.com/xmldom/xmldom/compare/0.9.8...0.9.7)
+## [0.9.8](https://github.com/xmldom/xmldom/compare/0.9.7...0.9.8)
 
 ### Fixed
 
