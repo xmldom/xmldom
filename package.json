@@ -61,7 +61,7 @@
 		"np": "8.0.4",
 		"prettier": "3.8.3",
 		"xmltest": "2.0.3",
-		"yauzl": "3.3.0"
+		"yauzl": "3.3.1"
 	},
 	"bugs": {
 		"url": "https://github.com/xmldom/xmldom/issues"
