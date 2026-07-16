@@ -62,6 +62,9 @@ describe('DOMImplementation', () => {
 			expect(root.prefix).toBe(null);
 			expect(root.localName).toBe(NAME);
 			expect(doc.documentElement).toBe(root);
+			expect(doc.childElementCount).toBe(1);
+			expect(doc.firstElementChild).toBe(root);
+			expect(doc.lastElementChild).toBe(root);
 			expect(doc.contentType).toBe(MIME_TYPE.XML_APPLICATION);
 			expect(doc.type).toBe('xml');
 		});
@@ -80,6 +83,9 @@ describe('DOMImplementation', () => {
 			expect(root.tagName).toBe(NAME);
 
 			expect(doc.documentElement).toBe(root);
+			expect(doc.childElementCount).toBe(1);
+			expect(doc.firstElementChild).toBe(root);
+			expect(doc.lastElementChild).toBe(root);
 			expect(doc.contentType).toBe(MIME_TYPE.XML_APPLICATION);
 			expect(doc.type).toBe('xml');
 		});
@@ -99,25 +105,9 @@ describe('DOMImplementation', () => {
 			expect(root.tagName).toBe(qualifiedName);
 
 			expect(doc.documentElement).toBe(root);
-			expect(doc.contentType).toBe(MIME_TYPE.XML_APPLICATION);
-			expect(doc.type).toBe('xml');
-		});
-
-		test('should create a Document with root element in a named namespace', () => {
-			const impl = new DOMImplementation();
-			const qualifiedName = `${PREFIX}:${NAME}`;
-			const doc = impl.createDocument(NS, qualifiedName);
-
-			const root = doc.childNodes.item(0);
-			expect(root).toBeInstanceOf(Element);
-			expect(root.ownerDocument).toBe(doc);
-			expect(root.namespaceURI).toBe(NS);
-			expect(root.prefix).toBe(PREFIX);
-			expect(root.localName).toBe(NAME);
-			expect(root.nodeName).toBe(qualifiedName);
-			expect(root.tagName).toBe(qualifiedName);
-
-			expect(doc.documentElement).toBe(root);
+			expect(doc.childElementCount).toBe(1);
+			expect(doc.firstElementChild).toBe(root);
+			expect(doc.lastElementChild).toBe(root);
 			expect(doc.contentType).toBe(MIME_TYPE.XML_APPLICATION);
 			expect(doc.type).toBe('xml');
 		});
@@ -142,6 +132,9 @@ describe('DOMImplementation', () => {
 			expect(root.tagName).toBe(qualifiedName);
 
 			expect(doc.documentElement).toBe(root);
+			expect(doc.childElementCount).toBe(1);
+			expect(doc.firstElementChild).toBe(root);
+			expect(doc.lastElementChild).toBe(root);
 			expect(doc.contentType).toBe(MIME_TYPE.XML_APPLICATION);
 			expect(doc.type).toBe('xml');
 		});
@@ -210,6 +203,9 @@ describe('DOMImplementation', () => {
 			expect(doc.doctype.ownerDocument).toBe(doc);
 			expect(doc.childNodes.item(0)).toBe(doc.doctype);
 			expect(doc.firstChild).toBe(doc.doctype);
+			expect(doc.childElementCount).toBe(1);
+			expect(doc.firstElementChild).toBe(doc.documentElement);
+			expect(doc.lastElementChild).toBe(doc.documentElement);
 
 			expect(doc.documentElement).not.toBeNull();
 			expect(doc.documentElement.localName).toBe('html');
@@ -219,10 +215,14 @@ describe('DOMImplementation', () => {
 			expect(htmlNode.firstChild).not.toBeNull();
 			expect(htmlNode.firstChild.nodeName).toBe('head');
 			expect(htmlNode.firstChild.childNodes).toHaveLength(0);
+			expect(htmlNode.firstElementChild).toBe(htmlNode.firstChild);
+			expect(htmlNode.firstElementChild.nextElementSibling).toBe(htmlNode.lastChild);
 
 			expect(htmlNode.lastChild).not.toBeNull();
 			expect(htmlNode.lastChild.nodeName).toBe('body');
 			expect(htmlNode.lastChild.childNodes).toHaveLength(0);
+			expect(htmlNode.lastElementChild).toBe(htmlNode.lastChild);
+			expect(htmlNode.lastElementChild.previousElementSibling).toBe(htmlNode.firstChild);
 		});
 		test('should create an HTML document with specified elements including an empty title', () => {
 			const impl = new DOMImplementation();

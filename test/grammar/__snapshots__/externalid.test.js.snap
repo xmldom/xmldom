@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`ExternalID PUBLIC should match ""PUBLIC " a-zA-Z0-9-()+,./:=?;!*#@$_%" '"'"" 1`] = `
 {

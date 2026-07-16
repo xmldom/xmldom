@@ -187,15 +187,15 @@ describe('DOMParser', () => {
 
 				// warning
 				expect(() => parser.parseFromString('<xml attr />', MIME_TYPE.XML_TEXT)).not.toThrow(ParseError);
-				expect(onError).toBeCalledTimes(1);
+				expect(onError).toHaveBeenCalledTimes(1);
 				expect(onError).toHaveBeenCalledWith('warning', expect.anything(), expect.anything());
 				// error
 				expect(() => parser.parseFromString('<xml>&e;</xml>', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
-				expect(onError).toBeCalledTimes(2);
+				expect(onError).toHaveBeenCalledTimes(2);
 				expect(onError).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
 				// fatalError
 				expect(() => parser.parseFromString('', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
-				expect(onError).toBeCalledTimes(3);
+				expect(onError).toHaveBeenCalledTimes(3);
 				expect(onError).toHaveBeenCalledWith('fatalError', expect.anything(), expect.anything());
 			});
 			test('should throw for level error when using onWarningStopParsing', () => {
@@ -204,15 +204,15 @@ describe('DOMParser', () => {
 
 				// warning
 				expect(() => parser.parseFromString('<xml attr />', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
-				expect(onError).toBeCalledTimes(1);
+				expect(onError).toHaveBeenCalledTimes(1);
 				expect(onError).toHaveBeenCalledWith('warning', expect.anything(), expect.anything());
 				// error
 				expect(() => parser.parseFromString('<xml>&e;</xml>', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
-				expect(onError).toBeCalledTimes(2);
+				expect(onError).toHaveBeenCalledTimes(2);
 				expect(onError).toHaveBeenCalledWith('error', expect.anything(), expect.anything());
 				// fatalError
 				expect(() => parser.parseFromString('', MIME_TYPE.XML_TEXT)).toThrow(ParseError);
-				expect(onError).toBeCalledTimes(3);
+				expect(onError).toHaveBeenCalledTimes(3);
 				expect(onError).toHaveBeenCalledWith('fatalError', expect.anything(), expect.anything());
 			});
 			test('should throw when errorHandler is not a function', () => {
@@ -222,7 +222,7 @@ describe('DOMParser', () => {
 				var errorHandler = jest.fn();
 				new DOMParser({ errorHandler });
 
-				expect(errorHandler).toBeCalledWith('warning', expect.stringContaining('onError'), expect.anything());
+				expect(errorHandler).toHaveBeenCalledWith('warning', expect.stringContaining('onError'), expect.anything());
 			});
 		});
 	});
