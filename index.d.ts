@@ -327,6 +327,9 @@ declare module '@xmldom/xmldom' {
 
 	// START ./lib/dom.js
 
+	/**
+	 * Exported for `instanceof` checks only — these types cannot be constructed directly.
+	 */
 	type InstanceOf<T> = {
 		// instanceof pre ts 5.3
 		(val: unknown): val is T;
@@ -1060,6 +1063,9 @@ declare module '@xmldom/xmldom' {
 	 * a single child implementing Text that contains the element's text. However, if the element
 	 * contains markup, it is parsed into information items and Text nodes that form its children.
 	 *
+	 * __This implementation differs from the specification:__ not constructable,
+	 * use `document.createTextNode(data)` instead.
+	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Text)
 	 */
 	var Text: InstanceOf<Text>;
@@ -1081,6 +1087,9 @@ declare module '@xmldom/xmldom' {
 	 * visually shown, such comments are available to be read in the source view. Comments are
 	 * represented in HTML and XML as content between '<!--' and '-->'. In XML, like inside SVG or
 	 * MathML markup, the character sequence '--' cannot be used within a comment.
+	 *
+	 * __This implementation differs from the specification:__ not constructable,
+	 * use `document.createComment(data)` instead.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Comment)
 	 */
@@ -1126,6 +1135,10 @@ declare module '@xmldom/xmldom' {
 
 		getElementById(elementId: string): Element | null;
 	}
+	/**
+	 * __This implementation differs from the specification:__ not constructable,
+	 * use `document.createDocumentFragment()` instead.
+	 */
 	var DocumentFragment: InstanceOf<DocumentFragment>;
 
 	interface Entity extends Node {
