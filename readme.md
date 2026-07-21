@@ -93,6 +93,9 @@ import { DOMParser } from '@xmldom/xmldom'
 	```
 ### DOM level2 method and attribute:
 
+All DOM node types listed below are exported for use with `instanceof` (e.g. `node instanceof Text`).
+They cannot be constructed directly — use the `Document` factory methods (`createTextNode`, `createComment`, `createDocumentFragment`, …) instead.
+
 * [Node](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247)
 
   readonly class properties (aka `NodeType`),  
