@@ -500,6 +500,29 @@ describe('XMLSerializer.serializeToString', () => {
 				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
 			});
 		});
+
+		describe('Attribute', () => {
+			test('default: attribute value with invalid XML Char (\\x00) emits verbatim — no throw', () => {
+				doc.documentElement.setAttribute('attr', 'a\x00b');
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('requireWellFormed: true on attribute value with invalid XML Char (\\x00) throws InvalidStateError', () => {
+				doc.documentElement.setAttribute('attr', 'a\x00b');
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on attribute value with valid characters does not throw', () => {
+				doc.documentElement.setAttribute('attr', 'clean value');
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+
+			test('requireWellFormed: true serializing an Attr node directly with invalid XML Char throws InvalidStateError', () => {
+				const attr = doc.createAttribute('attr');
+				attr.value = 'a\x01b';
+				expectDOMException(() => new XMLSerializer().serializeToString(attr, { requireWellFormed: true }), 'InvalidStateError');
+			});
+		});
 	});
 
 	describe('Attribute', () => {
