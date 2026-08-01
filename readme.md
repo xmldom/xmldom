@@ -91,7 +91,7 @@ import { DOMParser } from '@xmldom/xmldom'
 	```javascript
 	serializeToString(node)
 	```
-### DOM level2 method and attribute:
+### DOM level 2 method and attribute:
 
 All DOM node types listed below are exported for use with `instanceof` (e.g. `node instanceof Text`).
 They cannot be constructed directly — use the `Document` factory methods (`createTextNode`, `createComment`, `createDocumentFragment`, …) instead.
@@ -295,8 +295,17 @@ They cannot be constructed directly — use the `Document` factory methods (`cre
 
 * [ParentNode](https://dom.spec.whatwg.org/#interface-parentnode) mixin (on `Document`, `DocumentFragment`, `Element`)
 
-  readonly attribute:
+  readonly attributes:
   - `children`
+  - `firstElementChild`
+  - `lastElementChild`
+  - `childElementCount`
+
+* Element (from [NonDocumentTypeChildNode](https://dom.spec.whatwg.org/#nondocumenttypechildnode) mixin)
+
+  readonly attributes:
+  - `previousElementSibling`
+  - `nextElementSibling`
 
 ### DOM extension by xmldom
 

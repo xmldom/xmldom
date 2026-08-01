@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`QName should match a single NCNameStartChar NCNameChar(s) ':' NCNameStartChar NCNameChar(s) "_-:_-" (\\u005F\\u002D\\u003A\\u005F\\u002D) 1`] = `
 [
