@@ -53,6 +53,9 @@ declare module "@xmldom/xmldom" {
        *
        * @throws {DOMException}
        * With code `INVALID_STATE_ERR` when `requireWellFormed` is `true` and:
+       * - an Element's qualified name (including any namespace prefix) is not a valid XML QName,
+       * - an attribute's qualified name (including a synthesized `xmlns:` namespace declaration)
+       *   is not a valid XML QName,
        * - a CDATASection node's data contains `"]]>"`,
        * - a Comment node's data contains `"-->"` (bare `"--"` does not throw on this branch),
        * - a ProcessingInstruction's data contains `"?>"`,
