@@ -1586,13 +1586,19 @@ declare module '@xmldom/xmldom' {
 		 * concatenated CDATA sections — **deprecated**, will be removed in the next breaking
 		 * release.
 		 * - W3C DOM Parsing §3.2.1.1 requires well-formedness checks on Element `localName`s,
-		 * prefixes, and attribute serialization when `requireWellFormed` is `true`. These checks are
-		 * **not implemented** in this release — see the tracking issue filed against the next
-		 * breaking milestone.
+		 * prefixes, and attribute serialization when `requireWellFormed` is `true`. Element and
+		 * attribute qualified names (which cover the namespace prefix) are validated against the XML
+		 * `QName` production; the remaining §3.2.1.1 checks (duplicate attributes,
+		 * namespace-declaration consistency) and creation-time name validation are **not
+		 * implemented** in this release — see the tracking issue filed against the next breaking
+		 * milestone.
 		 *
 		 * @throws {DOMException}
 		 * `InvalidStateError` when `requireWellFormed` is `true` and any of the following conditions
 		 * hold:
+		 * - an Element's qualified name (including any namespace prefix) is not a valid XML QName
+		 * - an attribute's qualified name (including a synthesized `xmlns:` namespace declaration) is
+		 * not a valid XML QName
 		 * - CDATASection data contains `"]]>"`
 		 * - Text data contains characters outside the XML Char production
 		 * - a Comment node's data contains `--` anywhere or ends with `-`

@@ -529,6 +529,33 @@ describe('XMLSerializer.serializeToString', () => {
 				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
 			});
 		});
+
+		describe('Namespace prefix', () => {
+			test('default: invalid prefix in synthesized xmlns declaration emits verbatim — no throw', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				el.prefix = 'evil>';
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('requireWellFormed: true on invalid prefix in synthesized xmlns declaration throws InvalidStateError', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				el.prefix = 'evil>';
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on invalid prefix in element qualified name throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createElement('evil>:child'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on element with valid prefix does not throw', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
 	});
 
 	describe('Attribute', () => {
