@@ -594,6 +594,95 @@ describe('XMLSerializer serializeToString requireWellFormed option', () => {
 		})
 	})
 
+	describe('Element', () => {
+		it('default: element with invalid name emits verbatim — no throw', () => {
+			doc.documentElement.appendChild(doc.createElement('x><inject'))
+			expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow()
+		})
+
+		it('requireWellFormed: true on element with invalid name throws InvalidStateError', () => {
+			doc.documentElement.appendChild(doc.createElement('x><inject'))
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on element with valid name does not throw', () => {
+			doc.documentElement.appendChild(doc.createElement('child'))
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).not.toThrow()
+		})
+	})
+
+	describe('Attribute', () => {
+		it('default: attribute with invalid name emits verbatim — no throw', () => {
+			doc.documentElement.setAttribute('a><inject ', 'v')
+			expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow()
+		})
+
+		it('requireWellFormed: true on attribute with invalid name throws InvalidStateError', () => {
+			doc.documentElement.setAttribute('a><inject ', 'v')
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on attribute with valid name does not throw', () => {
+			doc.documentElement.setAttribute('class', 'hello')
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).not.toThrow()
+		})
+	})
+
+	describe('Namespace prefix', () => {
+		it('default: invalid prefix in synthesized xmlns declaration emits verbatim — no throw', () => {
+			const el = doc.createElementNS('http://example.com/ns', 'p:child')
+			doc.documentElement.appendChild(el)
+			el.prefix = 'evil>'
+			expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow()
+		})
+
+		it('requireWellFormed: true on invalid prefix in synthesized xmlns declaration throws InvalidStateError', () => {
+			const el = doc.createElementNS('http://example.com/ns', 'p:child')
+			doc.documentElement.appendChild(el)
+			el.prefix = 'evil>'
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on invalid prefix in element qualified name throws InvalidStateError', () => {
+			doc.documentElement.appendChild(doc.createElement('evil>:child'))
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on element with valid prefix does not throw', () => {
+			const el = doc.createElementNS('http://example.com/ns', 'p:child')
+			doc.documentElement.appendChild(el)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).not.toThrow()
+		})
+	})
+
 	describe('EntityReference', () => {
 		test('serializes EntityReference node as &name;', () => {
 			const xmlDoc = new DOMImplementation().createDocument(null, '')
