@@ -4,14 +4,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<!-- Fill the PI-ReDoS GHSA id below once its advisory is filed (Phase 3 item 2); it publishes with this release. -->
-
 ## [0.9.11](https://github.com/xmldom/xmldom/compare/0.9.10...0.9.11)
 
 ### Fixed
 
 - Security: `XMLSerializer.serializeToString()` now also rejects invalid element and attribute names when `{ requireWellFormed: true }` is passed, throwing `InvalidStateError` for a name that is not a valid XML [`QName`](https://www.w3.org/TR/xml-names/#NT-QName) (this covers the namespace prefix, which surfaces in the element qualified name or in a synthesized `xmlns:` declaration). This prevents XML injection via `createElement()` / `setAttribute()`, extending the existing `requireWellFormed` checks to the serialized name set. [`GHSA-w2rr-34g9-rvrj`](https://github.com/xmldom/xmldom/security/advisories/GHSA-w2rr-34g9-rvrj) [`GHSA-4w3w-2rp5-g8jm`](https://github.com/xmldom/xmldom/security/advisories/GHSA-4w3w-2rp5-g8jm)
-- Security: the processing-instruction grammar regex no longer backtracks quadratically on an unterminated processing instruction (`<?…` with no closing `?>`), preventing a denial-of-service (ReDoS) reachable from `DOMParser.parseFromString` with default options. [`GHSA-<pi-redos>`](https://github.com/xmldom/xmldom/security/advisories/GHSA-<pi-redos>)
+- Security: the processing-instruction grammar regex no longer backtracks quadratically on an unterminated processing instruction (`<?…` with no closing `?>`), preventing a denial-of-service (ReDoS) reachable from `DOMParser.parseFromString` with default options. [`GHSA-g53g-w8rj-fmg7`](https://github.com/xmldom/xmldom/security/advisories/GHSA-g53g-w8rj-fmg7)
 - `CharacterData` `nodeValue` and `data` are now kept in sync [`#990`](https://github.com/xmldom/xmldom/pull/990)
 
 ### Chore
