@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.14](https://github.com/xmldom/xmldom/compare/0.8.13...0.8.14)
+
+### Fixed
+
+- Security: `XMLSerializer.serializeToString()` now also rejects invalid element and attribute names when `{ requireWellFormed: true }` is passed, throwing `InvalidStateError` for a name that is not a valid XML [`QName`](https://www.w3.org/TR/xml-names/#NT-QName) (this covers the namespace prefix, which surfaces in the element qualified name or in a synthesized `xmlns:` declaration). This prevents XML injection via `createElement()` / `setAttribute()`, extending the existing `requireWellFormed` checks to the serialized name set. [`GHSA-w2rr-34g9-rvrj`](https://github.com/xmldom/xmldom/security/advisories/GHSA-w2rr-34g9-rvrj) [`GHSA-4w3w-2rp5-g8jm`](https://github.com/xmldom/xmldom/security/advisories/GHSA-4w3w-2rp5-g8jm)
+
+Thank you,
+[@bhaswanthc](https://github.com/bhaswanthc),
+[@jmestwa-coder](https://github.com/jmestwa-coder),
+for your contributions
+
 ## [0.8.13](https://github.com/xmldom/xmldom/compare/0.8.12...0.8.13)
 
 ### Fixed
