@@ -500,6 +500,62 @@ describe('XMLSerializer.serializeToString', () => {
 				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
 			});
 		});
+
+		describe('Element', () => {
+			test('default: element with invalid name emits verbatim — no throw', () => {
+				doc.documentElement.appendChild(doc.createElement('x><inject'));
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('requireWellFormed: true on element with invalid name throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createElement('x><inject'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on element with valid QName does not throw', () => {
+				doc.documentElement.appendChild(doc.createElement('child'));
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
+
+		describe('Attribute', () => {
+			test('requireWellFormed: true on attribute with invalid name throws InvalidStateError', () => {
+				doc.documentElement.setAttribute('a><inject ', 'v');
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on attribute with valid name does not throw', () => {
+				doc.documentElement.setAttribute('class', 'hello');
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
+
+		describe('Namespace prefix', () => {
+			test('default: invalid prefix in synthesized xmlns declaration emits verbatim — no throw', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				el.prefix = 'evil>';
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('requireWellFormed: true on invalid prefix in synthesized xmlns declaration throws InvalidStateError', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				el.prefix = 'evil>';
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on invalid prefix in element qualified name throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createElement('evil>:child'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on element with valid prefix does not throw', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
 	});
 
 	describe('Attribute', () => {
