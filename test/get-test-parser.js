@@ -1,4 +1,11 @@
 'use strict';
+
+/**
+ * General test tooling: configures a `DOMParser` for tests and, by default,
+ * collects reported errors/warnings into an array for later assertions.
+ * Behavior is documented on the exported `getTestParser` below.
+ */
+
 const { DOMParser } = require('../lib/dom-parser');
 
 /**

@@ -1,5 +1,19 @@
 'use strict';
 
+/**
+ * Regression guard for the CWE-674 weakness class, on the control-flow branch
+ * (CWE-674 -> CWE-834 Excessive Iteration -> CWE-691), separate from the
+ * resource-consumption DoS family (CWE-400 subtree).
+ *
+ *   {@link https://cwe.mitre.org/data/definitions/674.html CWE-674 Uncontrolled Recursion}
+ *
+ * Published as GHSA-2v35-w6hq-6mfw. DOM traversals must stay iterative: a
+ * re-introduced recursive tree walk overflows the (deliberately small)
+ * configured V8 stack and fails these tests.
+ *
+ * See test/README.md "Security / DoS regression guards" for the convention.
+ */
+
 const { describe, test, expect, beforeAll } = require('@jest/globals');
 const { DOMImplementation, walkDOM } = require('../lib/dom');
 const { XMLSerializer } = require('../lib');
