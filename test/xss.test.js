@@ -1,5 +1,19 @@
 'use strict';
 
+/**
+ * Scope: a consumer XSS-sanitizer scenario built on xmldom's serialization
+ * callback — usage guidance, NOT a weakness in this library.
+ *
+ *   {@link https://cwe.mitre.org/data/definitions/79.html CWE-79 Cross-site Scripting}
+ *
+ * CWE-79 is a downstream *impact* and is not normally attributed to an XML
+ * library itself; mapping the library's own weaknesses to it is discouraged.
+ * This suite shows how a consumer strips dangerous tags/attributes/URL schemes
+ * while serializing.
+ *
+ * See test/README.md for the weakness-scope comment convention.
+ */
+
 const { DOMParser } = require('../lib');
 
 const excludeTags = new RegExp(

@@ -2,11 +2,11 @@
 
 const { performance } = require('node:perf_hooks');
 const { describe, expect, test } = require('@jest/globals');
-const { DOMParser, XMLSerializer } = require('../lib');
-const { assign, MIME_TYPE, NAMESPACE } = require('../lib/conventions');
-const { __DOMHandler, onErrorStopParsing, onWarningStopParsing } = require('../lib/dom-parser');
-const { ParseError } = require('../lib/errors');
-const { getTestParser } = require('./get-test-parser');
+const { DOMParser, XMLSerializer } = require('../../lib');
+const { assign, MIME_TYPE, NAMESPACE } = require('../../lib/conventions');
+const { __DOMHandler, onErrorStopParsing, onWarningStopParsing } = require('../../lib/dom-parser');
+const { ParseError } = require('../../lib/errors');
+const { getTestParser } = require('../get-test-parser');
 
 const NS_CUSTOM = 'custom-default-ns';
 
