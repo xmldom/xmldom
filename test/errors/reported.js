@@ -1,8 +1,8 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { MIME_TYPE } = require('../../lib/conventions');
 
-const skippedInHtml = true;
 /**
  * @typedef ErrorReport
  * @property {string} source
@@ -11,8 +11,9 @@ const skippedInHtml = true;
  * The name of the method triggered.
  * @property {function(msg:string):boolean} [match]
  * To pick the relevant report when there are multiple.
- * @property {boolean} [skippedInHtml]
- * Is the error reported when parsing HTML?
+ * @property {string[]} [mimeTypes]
+ * The mimeTypes for which this level and message is expected to be triggered.
+ * Defaults to both `MIME_TYPE.XML_TEXT` and `MIME_TYPE.HTML`.
  */
 /**
  * A collection of XML samples and related information that cause the XMLReader
@@ -68,7 +69,7 @@ const REPORTED = {
 	WF_ElementTypeMatch_Mismatch_Root: {
 		source: '<xml></Xml>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Opening and ending tag mismatch/.test(msg),
 	},
 	WF_ElementTypeMatch_Mismatch_Root_UnclosedMultiple: {
@@ -84,7 +85,7 @@ const REPORTED = {
 	WF_ElementTypeMatch_UnclosedXmlTag: {
 		source: '<xml>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
 	},
 	WF_ElementTypeMatch_EndTagMissingName: {
@@ -99,7 +100,7 @@ const REPORTED = {
 	WF_ElementTypeMatch_UnclosedXmlTag_IncompleteStartTag: {
 		source: '<xml',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
 	},
 	/**
@@ -122,25 +123,25 @@ const REPORTED = {
 	WF_EntityDeclared_Script: {
 		source: '<script>&e;</script>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /entity not found/.test(msg),
 	},
 	WF_EntityRef: {
 		source: '<xml>&amp</xml>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /EntityRef: expecting ;/.test(msg),
 	},
 	WF_EntityRef_Attr: {
 		source: '<xml attr="&amp"></xml>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /EntityRef: expecting ;/.test(msg),
 	},
 	WF_EntityRef_Script: {
 		source: '<script>&amp</script>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /EntityRef: expecting ;/.test(msg),
 	},
 	WF_Entity_ReferenceProduction: {
@@ -156,7 +157,7 @@ const REPORTED = {
 	WF_Entity_ReferenceProduction_Script: {
 		source: '<script>&1;</script>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /entity not matching Reference production/.test(msg),
 	},
 	/**
@@ -193,7 +194,7 @@ const REPORTED = {
 	WF_AttValue_CleanAttrVals: {
 		source: '<xml attr="1<2">',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
 	},
 	WF_AttValue_CleanAttrVals_MissingClosingQuote: {
@@ -203,7 +204,7 @@ const REPORTED = {
 		// (search for the key in the snapshots to see it)
 		// our test just makes sure that this specific error is not reported
 		// browsers ignore the faulty tag, but this is not easy to implement
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
 	},
 	/**
@@ -330,7 +331,7 @@ const REPORTED = {
 	SYNTAX_AttributeEqualMissingValue: {
 		source: '<doc><child a1=></child></doc>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /AttValue: \\' or " expected/.test(msg),
 	},
 	/**
@@ -344,7 +345,7 @@ const REPORTED = {
 		source: '<xml attr ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead!!/.test(msg),
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 	},
 	/**
 	 * Triggered by lib/sax.js:376 This seems to only be reached when there are two subsequent
@@ -359,7 +360,7 @@ const REPORTED = {
 		source: '<xml attr attr2 ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead2!!/.test(msg),
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 	},
 	/**
 	 * Non-whitespace content after the root element; the top level allows only Comment, PI or
@@ -371,7 +372,7 @@ const REPORTED = {
 	SYNTAX_SingleRootElement_ContentAfter: {
 		source: '<xml/>text after',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Extra content at the end of the document/.test(msg),
 	},
 	/**
@@ -384,7 +385,7 @@ const REPORTED = {
 	SYNTAX_SingleRootElement_ContentBefore: {
 		source: 'text before<xml/>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Unexpected content outside root element/.test(msg),
 	},
 	/**
@@ -406,7 +407,7 @@ const REPORTED = {
 	SYNTAX_SingleRootElement_CDataOutside: {
 		source: '<!CDATA[]]><xml/>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /CDATA outside of element/.test(msg),
 	},
 	/**
@@ -528,7 +529,7 @@ const REPORTED = {
 	SYNTAX_Doctype_InternalSubset_PINotWellFormed: {
 		source: '<!DOCTYPE x [<? ]>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /processing instruction is not well-formed at position/.test(msg),
 	},
 	/**
@@ -540,7 +541,7 @@ const REPORTED = {
 	SYNTAX_Doctype_InternalSubset_MarkupDeclaration: {
 		source: '<!DOCTYPE x [z]>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Error detected in Markup declaration/.test(msg),
 	},
 	/**
@@ -551,7 +552,7 @@ const REPORTED = {
 	SYNTAX_Doctype_InternalSubset_Error: {
 		source: '<!DOCTYPE x [<!Z>]>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Error in internal subset at position/.test(msg),
 	},
 	/**
@@ -563,7 +564,7 @@ const REPORTED = {
 	SYNTAX_Doctype_InternalSubset_MissingClosingBracket: {
 		source: '<!DOCTYPE x [',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /doctype internal subset is not well-formed, missing \]/.test(msg),
 	},
 	/**
