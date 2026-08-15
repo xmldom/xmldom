@@ -210,7 +210,7 @@ const REPORTED = {
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser it is reported as `error on line 1 at column 6: Comment not terminated`.
 	 */
-	WF_UnclosedComment: {
+	SYNTAX_UnclosedComment: {
 		source: '<xml></xml><!--',
 		level: 'fatalError',
 		match: (msg) => /comment is not well-formed/.test(msg),
@@ -261,7 +261,7 @@ const REPORTED = {
 	 * - for HTML is uses the attribute as one with no value and adds `"value"` to the attribute name
 	 *   and is not reporting any issue.
 	 */
-	WF_AttributeValueMustAfterEqual: {
+	SYNTAX_AttributeValueMustAfterEqual: {
 		source: '<xml attr"value" />',
 		level: 'warning',
 		match: (msg) => /attribute value must after "="/.test(msg),
@@ -271,7 +271,7 @@ const REPORTED = {
 	 * - for XML it is reported as `error on line 1 at column 11: AttValue: " or ' expected`
 	 * - for HTML is wraps `value"` with quotes and is not reporting any issue.
 	 */
-	WF_AttributeMissingStartingQuote: {
+	SYNTAX_AttributeMissingStartingQuote: {
 		source: '<xml attr=value" />',
 		level: 'warning',
 		match: (msg) => /missed start quot/.test(msg),
@@ -295,7 +295,7 @@ const REPORTED = {
 	 * - for XML it is reported as `error on line 1 at column 11: AttValue: " or ' expected`
 	 * - for HTML is wraps `value/` with quotes and is not reporting any issue.
 	 */
-	WF_AttributeMissingQuote: {
+	SYNTAX_AttributeMissingQuote: {
 		source: '<xml attr=value/>',
 		level: 'warning',
 		match: (msg) => / missed quot/.test(msg) && /!!/.test(msg) === false,
@@ -311,7 +311,7 @@ const REPORTED = {
 	 * - for XML it is reported as `error on line 1 at column 8: AttValue: " or ' expected`
 	 * - for HTML is yields `<xml a="&amp;" b="&amp;"></xml>` and is not reporting any issue.
 	 */
-	WF_AttributeMissingQuote2: {
+	SYNTAX_AttributeMissingQuote2: {
 		source: `<xml a=& b="&"/>`,
 		level: 'warning',
 		match: (msg) => / missed quot/.test(msg) && /!!/.test(msg),
@@ -327,7 +327,7 @@ const REPORTED = {
 	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
-	WF_AttributeEqualMissingValue: {
+	SYNTAX_AttributeEqualMissingValue: {
 		source: '<doc><child a1=></child></doc>',
 		level: 'fatalError',
 		skippedInHtml,
@@ -340,7 +340,7 @@ const REPORTED = {
 	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
-	WF_AttributeMissingValue: {
+	SYNTAX_AttributeMissingValue: {
 		source: '<xml attr ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead!!/.test(msg),
@@ -355,30 +355,55 @@ const REPORTED = {
 	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
-	WF_AttributeMissingValue2: {
+	SYNTAX_AttributeMissingValue2: {
 		source: '<xml attr attr2 ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead2!!/.test(msg),
 		skippedInHtml,
 	},
-	WF_SingleRootElement_ContentAfter: {
+	/**
+	 * Non-whitespace content after the root element; the top level allows only Comment, PI or
+	 * whitespace after it.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-document
+	 * @see https://www.w3.org/TR/xml/#NT-Misc
+	 */
+	SYNTAX_SingleRootElement_ContentAfter: {
 		source: '<xml/>text after',
 		level: 'error',
 		skippedInHtml,
 		match: (msg) => /Extra content at the end of the document/.test(msg),
 	},
-	WF_SingleRootElement_ContentBefore: {
+	/**
+	 * Non-whitespace content before the root element; only Comment, PI or whitespace may precede
+	 * it.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-document
+	 * @see https://www.w3.org/TR/xml/#NT-Misc
+	 */
+	SYNTAX_SingleRootElement_ContentBefore: {
 		source: 'text before<xml/>',
 		level: 'error',
 		skippedInHtml,
 		match: (msg) => /Unexpected content outside root element/.test(msg),
 	},
-	WF_SingleRootElement_InvalidCData: {
+	/**
+	 * A malformed CDATA section.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-CDSect
+	 */
+	SYNTAX_SingleRootElement_InvalidCData: {
 		source: '<!CDATA[ ] ] ><xml/>',
 		level: 'fatalError',
 		match: (msg) => /Invalid CDATA starting at/.test(msg),
 	},
-	WF_SingleRootElement_CDataOutside: {
+	/**
+	 * A CDATA section at the top level; CDATA is only allowed inside element content.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-content
+	 * @see https://www.w3.org/TR/xml/#NT-CDSect
+	 */
+	SYNTAX_SingleRootElement_CDataOutside: {
 		source: '<!CDATA[]]><xml/>',
 		level: 'fatalError',
 		skippedInHtml,
