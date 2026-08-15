@@ -20,9 +20,9 @@ describe('reported.json', () => {
 					([sourceLine, { level, match }]) => classifyLevel(errorType) === level && match(message)
 				);
 				switch (relatedReported.length) {
+					// 0 must fail, not be a todo: a newly added lib/sax.js error message
+					// has to be registered in REPORTED (see test/README.md).
 					case 0:
-						test.todo(`should have an entry in REPORTED matching ${errorType}: ${message}`);
-						break;
 					case 1:
 						test(`should have an entry in REPORTED matching ${errorType}: ${message}`, () => {
 							expect(relatedReported.length).toBeGreaterThanOrEqual(1);

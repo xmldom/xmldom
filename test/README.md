@@ -48,8 +48,9 @@ library weakness.
 
 `test/errors/` checks every reporting line in `lib/sax.js` against a `REPORTED`
 registry. When you add an `errorHandler`/thrown-`Error` message, register it in
-`reported.js` (`source`/`level`/`match`); an unregistered one surfaces as a
-`test.todo`. See `reported.js` for the entry shape.
+`reported.js` (`source`/`level`/`match`); an unregistered one **fails**
+`reported-levels.test.js` until you add its entry. See `reported.js` for the
+entry shape.
 
 ## Helpers
 
