@@ -409,6 +409,187 @@ const REPORTED = {
 		skippedInHtml,
 		match: (msg) => /CDATA outside of element/.test(msg),
 	},
+	/**
+	 * The generic catch-all in the `lib/sax.js` parse loop: an Error that is neither a
+	 * ParseError nor a DOMException is downgraded to `errorHandler.error`. This sample
+	 * reaches it via the swallowed `attribute value must after "="` throw.
+	 */
+	SYNTAX_ElementParseError: {
+		source: '<xml><a "></xml>',
+		level: 'error',
+		match: (msg) => /element parse error:/.test(msg),
+	},
+	/**
+	 * Reaches the `attribute equal must after attrName` throw (an `=` in a state that
+	 * does not expect one), surfaced through the generic `element parse error:` wrapper.
+	 */
+	SYNTAX_AttributeEqualMustAfterAttrName: {
+		source: '<xml><a b==></xml>',
+		level: 'error',
+		match: (msg) => /attribute equal must after attrName/.test(msg),
+	},
+	/**
+	 * Reaches the `attribute invalid close char('/')` throw (a `/` right after `=`,
+	 * i.e. state S_EQ), surfaced through the generic `element parse error:` wrapper.
+	 */
+	SYNTAX_AttributeInvalidCloseChar: {
+		source: '<xml><a b=/></xml>',
+		level: 'error',
+		match: (msg) => /attribute invalid close char/.test(msg),
+	},
+	/**
+	 * Two attributes not separated by whitespace: the second attribute name directly
+	 * follows the first attribute's closing quote.
+	 */
+	SYNTAX_AttributeSpaceRequired: {
+		source: '<xml a="1"b="2"/>',
+		level: 'warning',
+		match: (msg) => /attribute space is required/.test(msg),
+	},
+	/**
+	 * A DOCTYPE appearing after the document element already exists.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-document
+	 * @see https://www.w3.org/TR/xml/#NT-prolog
+	 */
+	SYNTAX_Doctype_NotAllowedAfterDocumentElement: {
+		source: '<xml/><!DOCTYPE x>',
+		level: 'fatalError',
+		match: (msg) => /Doctype not allowed inside or after documentElement/.test(msg),
+	},
+	/**
+	 * `<!D…` that is not the full `<!DOCTYPE` keyword.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 */
+	SYNTAX_Doctype_ExpectedKeyword: {
+		source: '<!D>',
+		level: 'fatalError',
+		match: (msg) => /Expected ' \+ g\.DOCTYPE_DECL_START/.test(msg),
+	},
+	/**
+	 * `<!DOCTYPE` not followed by whitespace.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 */
+	SYNTAX_Doctype_ExpectedWhitespaceAfterKeyword: {
+		source: '<!DOCTYPE>',
+		level: 'fatalError',
+		match: (msg) => /Expected whitespace after ' \+ g\.DOCTYPE_DECL_START/.test(msg),
+	},
+	/**
+	 * `<!DOCTYPE ` without a valid doctype name.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 */
+	SYNTAX_Doctype_NameMissing: {
+		source: '<!DOCTYPE >',
+		level: 'fatalError',
+		match: (msg) => /doctype name missing or contains unexpected characters/.test(msg),
+	},
+	/**
+	 * A PUBLIC/SYSTEM external id that does not follow the ExternalID grammar.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-ExternalID
+	 */
+	SYNTAX_Doctype_ExternalIdNotWellFormed: {
+		source: '<!DOCTYPE x PUBLIC>',
+		level: 'fatalError',
+		match: (msg) => /doctype external id is not well-formed/.test(msg),
+	},
+	/**
+	 * HTML-only legacy `SYSTEM` (lowercase, so not the XML ExternalID form) with no following
+	 * whitespace. In XML the same sample throws a different fatalError, so the fatalError
+	 * assertion still holds in both mimeTypes.
+	 *
+	 * @see https://html.spec.whatwg.org/multipage/parsing.html#parse-error-missing-whitespace-after-doctype-system-keyword
+	 * @see https://html.spec.whatwg.org/multipage/syntax.html#the-doctype
+	 */
+	HTML_Doctype_ExpectedWhitespaceAfterSystem: {
+		source: '<!DOCTYPE html system"about:legacy-compat">',
+		level: 'fatalError',
+		match: (msg) => /Expected whitespace after ' \+ g\.SYSTEM/.test(msg),
+	},
+	/**
+	 * A DOCTYPE that never reaches its closing `>`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 */
+	SYNTAX_Doctype_NotTerminated: {
+		source: '<!DOCTYPE x y>',
+		level: 'fatalError',
+		match: (msg) => /doctype not terminated with > at position/.test(msg),
+	},
+	/**
+	 * A PI inside the (XML-only) doctype internal subset that does not follow the PI grammar.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-PI
+	 */
+	SYNTAX_Doctype_InternalSubset_PINotWellFormed: {
+		source: '<!DOCTYPE x [<? ]>',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /processing instruction is not well-formed at position/.test(msg),
+	},
+	/**
+	 * A markup declaration inside the internal subset that starts with none of `<!`, `<?`, `%`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-intSubset
+	 * @see https://www.w3.org/TR/xml/#NT-markupdecl
+	 */
+	SYNTAX_Doctype_InternalSubset_MarkupDeclaration: {
+		source: '<!DOCTYPE x [z]>',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /Error detected in Markup declaration/.test(msg),
+	},
+	/**
+	 * A `<!…` markup declaration inside the internal subset that matches no known decl.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-markupdecl
+	 */
+	SYNTAX_Doctype_InternalSubset_Error: {
+		source: '<!DOCTYPE x [<!Z>]>',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /Error in internal subset at position/.test(msg),
+	},
+	/**
+	 * An internal subset opened with `[` that never reaches its closing `]`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 * @see https://www.w3.org/TR/xml/#NT-intSubset
+	 */
+	SYNTAX_Doctype_InternalSubset_MissingClosingBracket: {
+		source: '<!DOCTYPE x [',
+		level: 'fatalError',
+		skippedInHtml,
+		match: (msg) => /doctype internal subset is not well-formed, missing \]/.test(msg),
+	},
+	/**
+	 * `<!…` (not a comment, CDATA or DOCTYPE) — the default of the `<!` dispatch.
+	 */
+	SYNTAX_NotWellFormedExclamation: {
+		source: '<!X>',
+		level: 'fatalError',
+		match: (msg) => /Not well-formed XML starting with/.test(msg),
+	},
+	/**
+	 * `<?…` that does not follow the PI grammar.
+	 */
+	SYNTAX_InvalidProcessingInstruction: {
+		source: '<??>',
+		level: 'fatalError',
+		match: (msg) => /Invalid processing instruction starting at position/.test(msg),
+	},
+	/**
+	 * `<?xml …?>` at the start of the document that does not follow the XMLDecl grammar.
+	 */
+	SYNTAX_XmlDeclarationNotWellFormed: {
+		source: '<?xml version?>',
+		level: 'fatalError',
+		match: (msg) => /xml declaration is not well-formed/.test(msg),
+	},
 };
 
 const LINE_TO_ERROR_INDEX = {

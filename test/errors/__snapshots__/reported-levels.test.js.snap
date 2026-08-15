@@ -42,6 +42,86 @@ exports[`Encoding_ReplacementCharacter with mimeType text/xml should escalate Er
 
 exports[`SYNTAX_AttributeEqualMissingValue with mimeType text/html should not be reported: reported 1`] = `[]`;
 
+exports[`SYNTAX_AttributeEqualMustAfterAttrName with mimeType text/html should be reported 1`] = `
+[
+  [
+    "error",
+    "element parse error: Error: attribute equal must after attrName",
+    {
+      "columnNumber": 7,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_AttributeEqualMustAfterAttrName with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "error: element parse error: Error: attribute equal must after attrName
+    at error (lib/sax.js:#11)",
+]
+`;
+
+exports[`SYNTAX_AttributeEqualMustAfterAttrName with mimeType text/xml should be reported 1`] = `
+[
+  [
+    "error",
+    "element parse error: Error: attribute equal must after attrName",
+    {
+      "columnNumber": 7,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_AttributeEqualMustAfterAttrName with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "error: element parse error: Error: attribute equal must after attrName
+    at error (lib/sax.js:#11)",
+]
+`;
+
+exports[`SYNTAX_AttributeInvalidCloseChar with mimeType text/html should be reported 1`] = `
+[
+  [
+    "error",
+    "element parse error: Error: attribute invalid close char('/')",
+    {
+      "columnNumber": 7,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_AttributeInvalidCloseChar with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "error: element parse error: Error: attribute invalid close char('/')
+    at error (lib/sax.js:#11)",
+]
+`;
+
+exports[`SYNTAX_AttributeInvalidCloseChar with mimeType text/xml should be reported 1`] = `
+[
+  [
+    "error",
+    "element parse error: Error: attribute invalid close char('/')",
+    {
+      "columnNumber": 7,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_AttributeInvalidCloseChar with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "error: element parse error: Error: attribute invalid close char('/')
+    at error (lib/sax.js:#11)",
+]
+`;
+
 exports[`SYNTAX_AttributeMissingEndingQuote with mimeType text/html should be reported 1`] = `
 [
   [
@@ -254,6 +334,46 @@ exports[`SYNTAX_AttributeMissingValue2 with mimeType text/xml should escalate Er
 ]
 `;
 
+exports[`SYNTAX_AttributeSpaceRequired with mimeType text/html should be reported 1`] = `
+[
+  [
+    "warning",
+    "attribute space is required"a"!!",
+    {
+      "columnNumber": 13,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_AttributeSpaceRequired with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "warning: attribute space is required"a"!!
+    at warning (lib/sax.js:#26)",
+]
+`;
+
+exports[`SYNTAX_AttributeSpaceRequired with mimeType text/xml should be reported 1`] = `
+[
+  [
+    "warning",
+    "attribute space is required"a"!!",
+    {
+      "columnNumber": 13,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_AttributeSpaceRequired with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "warning: attribute space is required"a"!!
+    at warning (lib/sax.js:#26)",
+]
+`;
+
 exports[`SYNTAX_AttributeValueMustAfterEqual with mimeType text/html should be reported 1`] = `
 [
   [
@@ -294,6 +414,98 @@ exports[`SYNTAX_AttributeValueMustAfterEqual with mimeType text/xml should escal
 ]
 `;
 
+exports[`SYNTAX_Doctype_InternalSubset_Error with mimeType text/html should not be reported: caught 1`] = `[ParseError: doctype not terminated with > at position 12]`;
+
+exports[`SYNTAX_Doctype_InternalSubset_Error with mimeType text/html should not be reported: reported 1`] = `
+[
+  [
+    "warning",
+    "Unexpected DOCTYPE in HTML document at position 11",
+    {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+  [
+    "fatalError",
+    "doctype not terminated with > at position 12",
+    {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_Doctype_InternalSubset_MarkupDeclaration with mimeType text/html should not be reported: caught 1`] = `[ParseError: doctype not terminated with > at position 12]`;
+
+exports[`SYNTAX_Doctype_InternalSubset_MarkupDeclaration with mimeType text/html should not be reported: reported 1`] = `
+[
+  [
+    "warning",
+    "Unexpected DOCTYPE in HTML document at position 11",
+    {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+  [
+    "fatalError",
+    "doctype not terminated with > at position 12",
+    {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_Doctype_InternalSubset_MissingClosingBracket with mimeType text/html should not be reported: caught 1`] = `[ParseError: doctype not terminated with > at position 12]`;
+
+exports[`SYNTAX_Doctype_InternalSubset_MissingClosingBracket with mimeType text/html should not be reported: reported 1`] = `
+[
+  [
+    "warning",
+    "Unexpected DOCTYPE in HTML document at position 11",
+    {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+  [
+    "fatalError",
+    "doctype not terminated with > at position 12",
+    {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_Doctype_InternalSubset_PINotWellFormed with mimeType text/html should not be reported: caught 1`] = `[ParseError: doctype not terminated with > at position 12]`;
+
+exports[`SYNTAX_Doctype_InternalSubset_PINotWellFormed with mimeType text/html should not be reported: reported 1`] = `
+[
+  [
+    "warning",
+    "Unexpected DOCTYPE in HTML document at position 11",
+    {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+  [
+    "fatalError",
+    "doctype not terminated with > at position 12",
+    {
+      "columnNumber": 1,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
 exports[`SYNTAX_ElementClosingNotConnected with mimeType text/html should be reported 1`] = `
 [
   [
@@ -330,6 +542,46 @@ exports[`SYNTAX_ElementClosingNotConnected with mimeType text/xml should be repo
 exports[`SYNTAX_ElementClosingNotConnected with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
 [
   "error: element parse error: Error: elements closed character '/' and '>' must be connected to
+    at error (lib/sax.js:#11)",
+]
+`;
+
+exports[`SYNTAX_ElementParseError with mimeType text/html should be reported 1`] = `
+[
+  [
+    "error",
+    "element parse error: Error: attribute value must after "="",
+    {
+      "columnNumber": 7,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_ElementParseError with mimeType text/html should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "error: element parse error: Error: attribute value must after "="
+    at error (lib/sax.js:#11)",
+]
+`;
+
+exports[`SYNTAX_ElementParseError with mimeType text/xml should be reported 1`] = `
+[
+  [
+    "error",
+    "element parse error: Error: attribute value must after "="",
+    {
+      "columnNumber": 7,
+      "lineNumber": 1,
+    },
+  ],
+]
+`;
+
+exports[`SYNTAX_ElementParseError with mimeType text/xml should escalate Error thrown in onError to ParseError 1`] = `
+[
+  "error: element parse error: Error: attribute value must after "="
     at error (lib/sax.js:#11)",
 ]
 `;
