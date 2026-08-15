@@ -439,6 +439,26 @@ const REPORTED = {
 		match: (msg) => /attribute invalid close char/.test(msg),
 	},
 	/**
+	 * A quote where no attribute value is expected (here right after the tag name). Reaches
+	 * the `attribute value must after "="` throw, surfaced through the `element parse error:`
+	 * wrapper — distinct from the same-message warning, which the level classifier keeps apart.
+	 */
+	SYNTAX_AttributeValueMustAfterEqual_Thrown: {
+		source: '<xml><a "></xml>',
+		level: 'error',
+		match: (msg) => /attribute value must after "="/.test(msg),
+	},
+	/**
+	 * Input ending inside a start tag. Only asserted for HTML: in XML the same sample also
+	 * throws an `unclosed xml tag` fatalError, which the error-level assertion cannot accept.
+	 */
+	SYNTAX_UnexpectedEndOfInput: {
+		source: '<xml ',
+		level: 'error',
+		mimeTypes: [MIME_TYPE.HTML],
+		match: (msg) => /unexpected end of input/.test(msg),
+	},
+	/**
 	 * Two attributes not separated by whitespace: the second attribute name directly
 	 * follows the first attribute's closing quote.
 	 */
@@ -520,6 +540,33 @@ const REPORTED = {
 		source: '<!DOCTYPE x y>',
 		level: 'fatalError',
 		match: (msg) => /doctype not terminated with > at position/.test(msg),
+	},
+	/**
+	 * An HTML document whose DOCTYPE name is not `html`. A warning only in HTML; in XML a DOCTYPE
+	 * named `foo` is well-formed and reported nothing, so a root element is added to keep the XML
+	 * sample from failing on a missing document element.
+	 *
+	 * @see https://html.spec.whatwg.org/multipage/parsing.html#the-initial-insertion-mode
+	 * @see https://html.spec.whatwg.org/multipage/syntax.html#the-doctype
+	 */
+	HTML_Doctype_UnexpectedName: {
+		source: '<!DOCTYPE foo><foo/>',
+		level: 'warning',
+		mimeTypes: [MIME_TYPE.HTML],
+		match: (msg) => /Unexpected DOCTYPE in HTML document/.test(msg),
+	},
+	/**
+	 * An HTML document with a systemId that is not the legacy `about:legacy-compat`. A warning
+	 * only in HTML; the XML sample carries a root element for the same reason as above.
+	 *
+	 * @see https://html.spec.whatwg.org/multipage/parsing.html#the-initial-insertion-mode
+	 * @see https://html.spec.whatwg.org/multipage/syntax.html#the-doctype
+	 */
+	HTML_Doctype_UnexpectedSystemId: {
+		source: '<!DOCTYPE html SYSTEM "http://x"><html/>',
+		level: 'warning',
+		mimeTypes: [MIME_TYPE.HTML],
+		match: (msg) => /Unexpected doctype.systemId in HTML document/.test(msg),
 	},
 	/**
 	 * A PI inside the (XML-only) doctype internal subset that does not follow the PI grammar.
