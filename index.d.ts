@@ -321,6 +321,7 @@ declare module '@xmldom/xmldom' {
 
 		readonly message: string;
 		readonly locator?: any;
+		readonly cause?: Error;
 	}
 
 	// END ./lib/errors.js

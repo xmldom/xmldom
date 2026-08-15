@@ -25,6 +25,12 @@ describe('ParseError', () => {
 		expect(error.locator).toBe(locator);
 	});
 
+	test('should store third argument as cause', () => {
+		const cause = new Error('cause');
+		const error = new ParseError('', {}, cause);
+		expect(error.cause).toBe(cause);
+	});
+
 	test('should have correct StackTrace', () => {
 		const error = new ParseError('MESSAGE');
 		const stack = error.stack && error.stack.split(/[\n\r]+/);
