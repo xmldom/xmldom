@@ -78,9 +78,11 @@ const REPORTED = {
 		match: (msg) => /Opening and ending tag mismatch/.test(msg),
 	},
 	/**
-	 * In the Browser (for XML) this is reported as
-	 * `error on line 1 at column 6: Extra content at the end of the document`
+	 * In the Browser (for XML) this is reported as `error on line 1 at column 6: Extra content at
+	 * the end of the document`
 	 * for HTML it's added to the DOM without anything being reported.
+	 *
+	 * @see https://www.w3.org/TR/xml/#GIMatch
 	 */
 	WF_ElementTypeMatch_UnclosedXmlTag: {
 		source: '<xml>',
@@ -88,6 +90,11 @@ const REPORTED = {
 		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
 	},
+	/**
+	 * An end-tag with no name (`</>`).
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-ETag
+	 */
 	WF_ElementTypeMatch_EndTagMissingName: {
 		source: '<xml></>',
 		level: 'fatalError',
@@ -95,7 +102,10 @@ const REPORTED = {
 	},
 	/**
 	 * This sample doesn't follow the specified grammar.
-	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start Tag xml`.
+	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start
+	 * Tag xml`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-STag
 	 */
 	WF_ElementTypeMatch_UnclosedXmlTag_IncompleteStartTag: {
 		source: '<xml',
@@ -126,6 +136,11 @@ const REPORTED = {
 		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /entity not found/.test(msg),
 	},
+	/**
+	 * An entity reference that is not terminated by `;`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-EntityRef
+	 */
 	WF_EntityRef: {
 		source: '<xml>&amp</xml>',
 		level: 'error',
@@ -144,6 +159,11 @@ const REPORTED = {
 		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /EntityRef: expecting ;/.test(msg),
 	},
+	/**
+	 * A reference that does not match the Reference production.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Reference
+	 */
 	WF_Entity_ReferenceProduction: {
 		source: '<xml>&1;</xml>',
 		level: 'error',
@@ -210,6 +230,8 @@ const REPORTED = {
 	/**
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser it is reported as `error on line 1 at column 6: Comment not terminated`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Comment
 	 */
 	SYNTAX_UnclosedComment: {
 		source: '<xml></xml><!--',
@@ -217,13 +239,13 @@ const REPORTED = {
 		match: (msg) => /comment is not well-formed/.test(msg),
 	},
 	/**
-	 * Triggered by lib/sax.js:596, caught in 208
-	 * This sample doesn't follow the specified grammar.
+	 * Triggered by lib/sax.js:596, caught in 208 This sample doesn't follow the specified
+	 * grammar.
 	 * In the browser:
-	 * - as XML it is reported as
-	 * `error on line 1 at column 2: StartTag: invalid element name`
-	 * - as HTML it is accepted as characters
+	 * - as XML it is reported as `error on line 1 at column 2: StartTag: invalid element name`
+	 * - as HTML it is accepted as characters.
 	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Name
 	 */
 	SYNTAX_InvalidTagName: {
 		source: '<xml><123 /></xml>',
@@ -231,12 +253,13 @@ const REPORTED = {
 		match: (msg) => /invalid tagName/.test(msg),
 	},
 	/**
-	 * Triggered by lib/sax.js:602, caught in 208
-	 * This sample doesn't follow the specified grammar.
+	 * Triggered by lib/sax.js:602, caught in 208 This sample doesn't follow the specified
+	 * grammar.
 	 * In the browser:
-	 * - as XML it is reported as
-	 * `error on line 1 at column 6: error parsing attribute name`
-	 * - as HTML it is accepted as attribute name
+	 * - as XML it is reported as `error on line 1 at column 6: error parsing attribute name`
+	 * - as HTML it is accepted as attribute name.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 */
 	SYNTAX_InvalidAttributeName: {
 		source: '<xml><child 123=""/></xml>',
@@ -244,11 +267,13 @@ const REPORTED = {
 		match: (msg) => /invalid attribute/.test(msg),
 	},
 	/**
-	 * Triggered by lib/sax.js:392, caught in 208
-	 * This sample doesn't follow the specified grammar.
+	 * Triggered by lib/sax.js:392, caught in 208 This sample doesn't follow the specified
+	 * grammar.
 	 * In the browser:
 	 * - in XML it is reported as `error on line 1 at column 8: error parsing attribute name`
 	 * - in HTML it produces `<xml><a <="" xml=""></a></xml>` (invalid XML?)
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-EmptyElemTag
 	 */
 	SYNTAX_ElementClosingNotConnected: {
 		source: '<xml><a/ </xml>',
@@ -257,10 +282,12 @@ const REPORTED = {
 	},
 	/**
 	 * In the browser:
-	 * - for XML it is reported as
-	 * `error on line 1 at column 10: Specification mandates value for attribute attr`
-	 * - for HTML is uses the attribute as one with no value and adds `"value"` to the attribute name
-	 *   and is not reporting any issue.
+	 * - for XML it is reported as `error on line 1 at column 10: Specification mandates value for
+	 * attribute attr`
+	 * - for HTML is uses the attribute as one with no value and adds `"value"` to the attribute
+	 * name and is not reporting any issue.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 */
 	SYNTAX_AttributeValueMustAfterEqual: {
 		source: '<xml attr"value" />',
@@ -271,6 +298,8 @@ const REPORTED = {
 	 * In the browser:
 	 * - for XML it is reported as `error on line 1 at column 11: AttValue: " or ' expected`
 	 * - for HTML is wraps `value"` with quotes and is not reporting any issue.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-AttValue
 	 */
 	SYNTAX_AttributeMissingStartingQuote: {
 		source: '<xml attr=value" />',
@@ -284,6 +313,8 @@ const REPORTED = {
 	 * In the browser:
 	 * - for XML it is reported as `error on line 1 at column 20: AttValue: ' expected`
 	 * - for HTML nothing is added to the DOM.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-AttValue
 	 */
 	SYNTAX_AttributeMissingEndingQuote: {
 		source: '<xml><child attr="value /></xml>',
@@ -291,10 +322,11 @@ const REPORTED = {
 		match: (msg) => /attribute value no end .* match/.test(msg),
 	},
 	/**
-	 * Triggered by lib/sax.js:324
-	 * In the browser:
+	 * Triggered by lib/sax.js:324 In the browser:
 	 * - for XML it is reported as `error on line 1 at column 11: AttValue: " or ' expected`
 	 * - for HTML is wraps `value/` with quotes and is not reporting any issue.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-AttValue
 	 */
 	SYNTAX_AttributeMissingQuote: {
 		source: '<xml attr=value/>',
@@ -302,15 +334,15 @@ const REPORTED = {
 		match: (msg) => / missed quot/.test(msg) && /!!/.test(msg) === false,
 	},
 	/**
-	 * Triggered by lib/sax.js:354
-	 * This is the only warning reported in this sample.
-	 * For some reason the "attribute" that is reported as missing quotes
-	 * has the name `&`.
+	 * Triggered by lib/sax.js:354 This is the only warning reported in this sample.
+	 * For some reason the "attribute" that is reported as missing quotes has the name `&`.
 	 * This case is also present in 2 tests in test/html/normalize.test.js
 	 *
 	 * In the browser:
 	 * - for XML it is reported as `error on line 1 at column 8: AttValue: " or ' expected`
 	 * - for HTML is yields `<xml a="&amp;" b="&amp;"></xml>` and is not reporting any issue.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-AttValue
 	 */
 	SYNTAX_AttributeMissingQuote2: {
 		source: `<xml a=& b="&"/>`,
@@ -421,8 +453,10 @@ const REPORTED = {
 		match: (msg) => /element parse error:/.test(msg),
 	},
 	/**
-	 * Reaches the `attribute equal must after attrName` throw (an `=` in a state that
-	 * does not expect one), surfaced through the generic `element parse error:` wrapper.
+	 * Reaches the `attribute equal must after attrName` throw (an `=` in a state that does not
+	 * expect one), surfaced through the generic `element parse error:` wrapper.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 */
 	SYNTAX_AttributeEqualMustAfterAttrName: {
 		source: '<xml><a b==></xml>',
@@ -432,6 +466,8 @@ const REPORTED = {
 	/**
 	 * Reaches the `attribute invalid close char('/')` throw (a `/` right after `=`,
 	 * i.e. state S_EQ), surfaced through the generic `element parse error:` wrapper.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-EmptyElemTag
 	 */
 	SYNTAX_AttributeInvalidCloseChar: {
 		source: '<xml><a b=/></xml>',
@@ -439,9 +475,11 @@ const REPORTED = {
 		match: (msg) => /attribute invalid close char/.test(msg),
 	},
 	/**
-	 * A quote where no attribute value is expected (here right after the tag name). Reaches
-	 * the `attribute value must after "="` throw, surfaced through the `element parse error:`
+	 * A quote where no attribute value is expected (here right after the tag name). Reaches the
+	 * `attribute value must after "="` throw, surfaced through the `element parse error:`
 	 * wrapper — distinct from the same-message warning, which the level classifier keeps apart.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 */
 	SYNTAX_AttributeValueMustAfterEqual_Thrown: {
 		source: '<xml><a "></xml>',
@@ -449,8 +487,10 @@ const REPORTED = {
 		match: (msg) => /attribute value must after "="/.test(msg),
 	},
 	/**
-	 * Input ending inside a start tag. Only asserted for HTML: in XML the same sample also
-	 * throws an `unclosed xml tag` fatalError, which the error-level assertion cannot accept.
+	 * Input ending inside a start tag. Only asserted for HTML: in XML the same sample also throws
+	 * an `unclosed xml tag` fatalError, which the error-level assertion cannot accept.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-STag
 	 */
 	SYNTAX_UnexpectedEndOfInput: {
 		source: '<xml ',
@@ -459,8 +499,10 @@ const REPORTED = {
 		match: (msg) => /unexpected end of input/.test(msg),
 	},
 	/**
-	 * Two attributes not separated by whitespace: the second attribute name directly
-	 * follows the first attribute's closing quote.
+	 * Two attributes not separated by whitespace: the second attribute name directly follows the
+	 * first attribute's closing quote.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-STag
 	 */
 	SYNTAX_AttributeSpaceRequired: {
 		source: '<xml a="1"b="2"/>',
@@ -616,6 +658,8 @@ const REPORTED = {
 	},
 	/**
 	 * `<!…` (not a comment, CDATA or DOCTYPE) — the default of the `<!` dispatch.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Comment
 	 */
 	SYNTAX_NotWellFormedExclamation: {
 		source: '<!X>',
@@ -624,6 +668,8 @@ const REPORTED = {
 	},
 	/**
 	 * `<?…` that does not follow the PI grammar.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-PI
 	 */
 	SYNTAX_InvalidProcessingInstruction: {
 		source: '<??>',
@@ -632,6 +678,8 @@ const REPORTED = {
 	},
 	/**
 	 * `<?xml …?>` at the start of the document that does not follow the XMLDecl grammar.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-XMLDecl
 	 */
 	SYNTAX_XmlDeclarationNotWellFormed: {
 		source: '<?xml version?>',
