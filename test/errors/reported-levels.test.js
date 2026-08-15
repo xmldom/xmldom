@@ -8,6 +8,9 @@ const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib/dom-parser');
 const { ParseError } = require('../../lib/errors');
 const { getTestParser } = require('../get-test-parser');
+
+const DEFAULT_MIME_TYPES = [MIME_TYPE.XML_TEXT, MIME_TYPE.HTML];
+
 describe('reported.json', () => {
 	Object.entries(LINE_TO_ERROR_INDEX)
 		.filter(([key]) => !!key)
@@ -40,10 +43,10 @@ describe('reported.json', () => {
 		});
 });
 
-describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, skippedInHtml }) => {
-	describe.each([MIME_TYPE.XML_TEXT, MIME_TYPE.HTML])('with mimeType %s', (mimeType) => {
-		const isHtml = mimeType === 'text/html';
-		if (isHtml && skippedInHtml) {
+describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, mimeTypes }) => {
+	describe.each(DEFAULT_MIME_TYPES)('with mimeType %s', (mimeType) => {
+		const expected = (mimeTypes || DEFAULT_MIME_TYPES).includes(mimeType);
+		if (!expected) {
 			test(`should not be reported`, () => {
 				const { errors, parser } = getTestParser();
 
