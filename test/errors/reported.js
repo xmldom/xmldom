@@ -597,6 +597,26 @@ const LINE_TO_ERROR_INDEX = {
 };
 
 /**
+ * Classify a `lib/sax.js` reporting line (or an extracted errorType token) into the single
+ * level it triggers, by its mechanism. A plain substring test for the level would misfire,
+ * because the word "error" is contained in both `errorHandler.warning` and
+ * `errorHandler.fatalError`.
+ *
+ * - `errorHandler.fatalError(…)` and `throw new ParseError(…)` abort parsing → 'fatalError'
+ * - `errorHandler.warning(…)` → 'warning'
+ * - `errorHandler.error(…)` and `throw new Error(…)` (caught and downgraded to
+ * `errorHandler.error`) → 'error'
+ *
+ * @param {string} lineOrErrorType
+ * @returns {'error' | 'warning' | 'fatalError'}
+ */
+function classifyLevel(lineOrErrorType) {
+	if (/fatalError|ParseError/.test(lineOrErrorType)) return 'fatalError';
+	if (/warning/i.test(lineOrErrorType)) return 'warning';
+	return 'error';
+}
+
+/**
  * To avoid to have exact lines in snapshots, but still being able to verify,
  * that a certain error was reported in the expected order,
  * this method indexes all cases of - thrown errors - calls to one of the errorHandler methods
@@ -642,7 +662,7 @@ function parseErrorLines(fileNameInKey) {
 	});
 	Object.entries(REPORTED).forEach(([key, value]) => {
 		const matches = source.reduce((lines, currentLine, i) => {
-			if (new RegExp(value.level, 'i').test(currentLine) && value.match(currentLine)) {
+			if (classifyLevel(currentLine) === value.level && value.match(currentLine)) {
 				// the first line is line 1, not line 0!
 				lines.push(i + 1);
 			}
@@ -668,6 +688,7 @@ function parseErrorLines(fileNameInKey) {
 parseErrorLines(path.join('lib', 'sax.js'));
 
 module.exports = {
+	classifyLevel,
 	LINE_TO_ERROR_INDEX,
 	REPORTED,
 };
