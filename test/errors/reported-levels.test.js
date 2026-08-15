@@ -3,7 +3,7 @@
 const { describe, expect, test } = require('@jest/globals');
 
 const path = require('path');
-const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
+const { classifyLevel, LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
 const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib/dom-parser');
 const { ParseError } = require('../../lib/errors');
@@ -14,7 +14,7 @@ describe('reported.json', () => {
 		.forEach(([key, { errorType, index, line, message }]) => {
 			describe(`entry #${index} (${key})`, () => {
 				const relatedReported = Object.entries(REPORTED).filter(
-					([sourceLine, { level, match }]) => new RegExp(level, 'i').test(errorType) && match(message)
+					([sourceLine, { level, match }]) => classifyLevel(errorType) === level && match(message)
 				);
 				switch (relatedReported.length) {
 					case 0:
