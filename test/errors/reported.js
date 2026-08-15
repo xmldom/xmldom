@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMException } = require('../../lib/errors');
 
 /**
  * @typedef ErrorReport
@@ -14,6 +15,9 @@ const { MIME_TYPE } = require('../../lib/conventions');
  * @property {string[]} [mimeTypes]
  * The mimeTypes for which this level and message is expected to be triggered.
  * Defaults to both `MIME_TYPE.XML_TEXT` and `MIME_TYPE.HTML`.
+ * @property {Function} [cause]
+ * For a rethrown wrapped error, the expected constructor of its `cause`; verified via
+ * instanceof.
  */
 /**
  * A collection of XML samples and related information that cause the XMLReader
@@ -695,6 +699,7 @@ const REPORTED = {
 	WF_DOMException: {
 		source: '<a:b>',
 		level: 'fatalError',
+		cause: DOMException,
 		match: (msg) => /Error constructing the DOM:/.test(msg),
 	},
 };

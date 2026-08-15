@@ -43,7 +43,7 @@ describe('reported.json', () => {
 		});
 });
 
-describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, mimeTypes }) => {
+describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, mimeTypes, cause }) => {
 	describe.each(DEFAULT_MIME_TYPES)('with mimeType %s', (mimeType) => {
 		const expected = (mimeTypes || DEFAULT_MIME_TYPES).includes(mimeType);
 		if (!expected) {
@@ -69,6 +69,13 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, mim
 
 					expect(onError).toHaveBeenCalled();
 				});
+				if (cause) {
+					test(`should preserve the ${cause.name} as the ParseError cause`, () => {
+						expect(() => new DOMParser().parseFromString(source, mimeType)).toThrow(
+							expect.objectContaining({ cause: expect.any(cause) })
+						);
+					});
+				}
 			} else {
 				test(`should be reported`, () => {
 					const { errors, parser } = getTestParser();
