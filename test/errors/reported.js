@@ -638,6 +638,17 @@ const REPORTED = {
 		level: 'fatalError',
 		match: (msg) => /xml declaration is not well-formed/.test(msg),
 	},
+	/**
+	 * A DOMException raised while building the DOM during parsing, here from an unbound
+	 * namespace prefix. The parser reports it as a fatalError and rethrows it as a ParseError
+	 * with the DOMException as its cause. The common `Error constructing the DOM:` prefix
+	 * identifies the whole class.
+	 */
+	WF_DOMException: {
+		source: '<a:b>',
+		level: 'fatalError',
+		match: (msg) => /Error constructing the DOM:/.test(msg),
+	},
 };
 
 const LINE_TO_ERROR_INDEX = {
