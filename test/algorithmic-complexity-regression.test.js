@@ -27,6 +27,7 @@ const { describe, test, expect } = require('@jest/globals');
 const { spawnSync } = require('child_process');
 const path = require('path');
 const { DOMParser } = require('../lib/dom-parser');
+const { XMLSerializer } = require('../lib');
 
 const LIB = path.resolve(__dirname, '..', 'lib');
 
@@ -135,6 +136,35 @@ describe('CWE-407 Inefficient Algorithmic Complexity', () => {
 			const t1 = fastestMs(() => new DOMParser().parseFromString(xml1, 'text/xml'), 5);
 			const t2 = fastestMs(() => new DOMParser().parseFromString(xml2, 'text/xml'), 5);
 			expect(t2 / t1).toBeLessThan(RATIO_MAX);
+		});
+	});
+
+	describe('quadratic HTML raw-text amplification on case-mismatched close tags (GHSA-6mj3-qw4j-hgrw)', () => {
+		// Unfixed: `parseHtmlSpecialContent` searches for the raw-text close tag with a
+		// case-sensitive `indexOf`; a mixed-case close tag yields -1, and
+		// `substring(N, -1)` back-captures the whole source from position 0, so each
+		// raw-text element re-emits all prior markup -> O(n^2) serialized output. Fixed:
+		// the close tag is matched case-insensitively, so each element closes normally
+		// and output stays O(n). Output size is a deterministic signal (no timing).
+		//
+		// Growth ratio over a 2x increase in the number of elements: quadratic ~4x,
+		// linear ~2x; the threshold of 3 separates them.
+		const N = 1000;
+		const RATIO_MAX = 3;
+
+		function rawTextBomb(n) {
+			return '<html><body>' + '<script>x</ScRiPt>'.repeat(n) + '</body></html>';
+		}
+
+		function serializedLength(html) {
+			const doc = new DOMParser().parseFromString(html, 'text/html');
+			return new XMLSerializer().serializeToString(doc).length;
+		}
+
+		test('a run of case-mismatched raw-text close tags does not amplify serialized output', () => {
+			const out1 = serializedLength(rawTextBomb(N));
+			const out2 = serializedLength(rawTextBomb(2 * N));
+			expect(out2 / out1).toBeLessThan(RATIO_MAX);
 		});
 	});
 });
