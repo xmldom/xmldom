@@ -26,8 +26,29 @@
 const { describe, test, expect } = require('@jest/globals');
 const { spawnSync } = require('child_process');
 const path = require('path');
+const { DOMParser } = require('../lib/dom-parser');
 
 const LIB = path.resolve(__dirname, '..', 'lib');
+
+/**
+ * Returns the fastest wall-clock (ms) of `runs` executions of `fn` — the minimum is the least
+ * noise-inflated sample, so a growth ratio built from two such measurements is stable across
+ * fast and slow hosts.
+ *
+ * @param {() => void} fn
+ * @param {number} runs
+ * @returns {number}
+ */
+function fastestMs(fn, runs) {
+	var best = Infinity;
+	for (var k = 0; k < runs; k++) {
+		var t = process.hrtime.bigint();
+		fn();
+		var d = Number(process.hrtime.bigint() - t) / 1e6;
+		if (d < best) best = d;
+	}
+	return best;
+}
 
 /**
  * Runs `script` in a child node process whose V8 old-space is capped at `heapMb` megabytes,
@@ -85,6 +106,35 @@ describe('CWE-407 Inefficient Algorithmic Complexity', () => {
 		test('a deeply namespaced document parses within a constrained heap', () => {
 			const res = runUnderHeapCap(nsMapBombScript(DEPTH), HEAP_MB);
 			expect(res.ok).toBe(true);
+		});
+	});
+
+	describe('quadratic attribute de-duplication during parse (GHSA-8344-3jmq-59r6)', () => {
+		// Unfixed: `DOMHandler.startElement` inserts each of M attributes via
+		// `setAttributeNode`, and every insert runs a linear membership scan of the
+		// already-inserted attributes (`setNamedItem` -> `getNamedItemNS`), so a single
+		// well-formed element carrying M distinct attributes costs 1+2+...+M = O(M^2).
+		// Fixed: a null-prototype membership index makes each insert O(1) -> O(M) total.
+		//
+		// Growth ratio over a 4x increase in M: quadratic ~16x, linear ~4x. Calibrated
+		// on node 18, the unfixed scan measures ~14.5x; the threshold of 8 (the log-space
+		// midpoint) separates the two with ~2x headroom on each side and holds on slow CI.
+		const M1 = 4000;
+		const M2 = 16000; // 4x M1
+		const RATIO_MAX = 8;
+
+		function attrBomb(m) {
+			var parts = new Array(m);
+			for (var i = 0; i < m; i++) parts[i] = 'a' + i + '="x"';
+			return '<r ' + parts.join(' ') + '/>';
+		}
+
+		test('an element with many distinct attributes de-duplicates in sub-quadratic time', () => {
+			const xml1 = attrBomb(M1);
+			const xml2 = attrBomb(M2);
+			const t1 = fastestMs(() => new DOMParser().parseFromString(xml1, 'text/xml'), 5);
+			const t2 = fastestMs(() => new DOMParser().parseFromString(xml2, 'text/xml'), 5);
+			expect(t2 / t1).toBeLessThan(RATIO_MAX);
 		});
 	});
 });
