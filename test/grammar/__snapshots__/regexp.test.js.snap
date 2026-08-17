@@ -16,6 +16,7 @@ exports[`all grammar regular expressions should have the expected keys 1`] = `
   "ExternalID",
   "ExternalID_match",
   "Name",
+  "Name_exact",
   "PEReference",
   "XMLDecl",
   "Reference",
