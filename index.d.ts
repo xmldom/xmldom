@@ -30,7 +30,9 @@ declare module "@xmldom/xmldom" {
        * - A Comment node's data contains `"-->"` (the injection sequence that terminates a
        *   comment). Comments whose data contains `"--"` but not `"-->"` are accepted on this
        *   branch — the 0.8.x parser does not validate bare `"--"` in comment content.
-       * - A ProcessingInstruction's data contains `"?>"` (W3C DOM Parsing §3.2.1.7).
+       * - A ProcessingInstruction's target is not a valid XML `NCName` (a `Name` with no colon)
+       *   or is an ASCII case-insensitive match for `"xml"`, or its data contains `"?>"`
+       *   (W3C DOM Parsing §3.2.1.7).
        *
        * @default false
        */
@@ -58,7 +60,8 @@ declare module "@xmldom/xmldom" {
        *   is not a valid XML QName,
        * - a CDATASection node's data contains `"]]>"`,
        * - a Comment node's data contains `"-->"` (bare `"--"` does not throw on this branch),
-       * - a ProcessingInstruction's data contains `"?>"`,
+       * - a ProcessingInstruction's target is not a valid XML `NCName` (a `Name` with no colon) or
+       *   is an ASCII case-insensitive match for `"xml"`, or its data contains `"?>"`,
        * - a DocumentType's `name` is not a valid XML `Name` (XML 1.0 production [5]),
        * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
        *   production,

@@ -488,6 +488,74 @@ describe('XMLSerializer serializeToString requireWellFormed option', () => {
 				})
 			).toThrow(DOMException)
 		})
+
+		it('default: PI with ">" in target emits verbatim — no throw', () => {
+			const pi = doc.createProcessingInstruction('a>', 'data')
+			doc.documentElement.appendChild(pi)
+			expect(new XMLSerializer().serializeToString(doc.documentElement)).toBe(
+				'<root><?a> data?></root>'
+			)
+		})
+
+		it('requireWellFormed: true on PI with ">" in target throws', () => {
+			const pi = doc.createProcessingInstruction('a>', 'data')
+			doc.documentElement.appendChild(pi)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on PI with "?" in target throws', () => {
+			const pi = doc.createProcessingInstruction('a?b', 'data')
+			doc.documentElement.appendChild(pi)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on PI with whitespace in target throws', () => {
+			const pi = doc.createProcessingInstruction('a b', 'data')
+			doc.documentElement.appendChild(pi)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on PI with ":" in target throws', () => {
+			const pi = doc.createProcessingInstruction('ns:target', 'data')
+			doc.documentElement.appendChild(pi)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on PI with target "xml" throws', () => {
+			const pi = doc.createProcessingInstruction('xml', 'version="1.0"')
+			doc.documentElement.appendChild(pi)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on PI with target "XML" (uppercase) throws', () => {
+			const pi = doc.createProcessingInstruction('XML', 'data')
+			doc.documentElement.appendChild(pi)
+			expect(() =>
+				new XMLSerializer().serializeToString(doc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
 	})
 
 	describe('DocumentType', () => {
