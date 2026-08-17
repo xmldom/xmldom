@@ -1147,6 +1147,17 @@ declare module '@xmldom/xmldom' {
 	}
 	var Entity: InstanceOf<Entity>;
 
+	/**
+	 * Represents an EntityReference node, serialized as `&nodeName;`.
+	 *
+	 * `nodeName` is the referenced entity's name, stored verbatim. When serialized with
+	 * `requireWellFormed: true`, the serializer validates `nodeName` against the XML `Name`
+	 * production and throws `InvalidStateError` if it does not match; without that option the name
+	 * is emitted verbatim between `&` and `;`.
+	 *
+	 * xmldom does not expand entities — the parser resolves entity references inline and never
+	 * constructs `EntityReference` nodes, so the only producer is `Document.createEntityReference`.
+	 */
 	interface EntityReference extends Node {
 		nodeType: typeof Node.ENTITY_REFERENCE_NODE;
 	}
@@ -1286,11 +1297,21 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * The name of the entity to reference. No namespace well-formedness checks are performed.
 		 *
+		 * The `name` is validated against the XML `Name` production at creation time; an invalid
+		 * name throws `InvalidCharacterError`. When the resulting node is serialized with
+		 * `requireWellFormed: true`, the serializer re-validates `nodeName` against the XML `Name`
+		 * production and throws `InvalidStateError` if a later `nodeName` mutation made it invalid;
+		 * without that option the name is emitted verbatim.
+		 *
+		 * __This implementation differs from the specification:__ xmldom does not expand entities —
+		 * the parser resolves entity references inline and never constructs `EntityReference` nodes,
+		 * so this method is the only producer.
+		 *
 		 * @deprecated
 		 * In DOM Level 4.
 		 * @returns {EntityReference}
 		 * @throws {DOMException}
-		 * With code `INVALID_CHARACTER_ERR` when `name` is not valid.
+		 * With code `INVALID_CHARACTER_ERR` when `name` is not a valid XML `Name`.
 		 * @throws {DOMException}
 		 * with code `NOT_SUPPORTED_ERR` when the document is of type `html`
 		 * @see https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-392B75AE
@@ -1619,6 +1640,7 @@ declare module '@xmldom/xmldom' {
 		 * - a DocumentType's `systemId` is non-empty and does not match the XML `SystemLiteral`
 		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [11])
 		 * - a DocumentType's `internalSubset` contains `"]>"`
+		 * - an EntityReference's `nodeName` is not a valid XML `Name` (XML 1.0 production [5])
 		 * - the Document has no `documentElement`
 		 * @see https://developer.mozilla.org/docs/Web/API/XMLSerializer/serializeToString
 		 * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
