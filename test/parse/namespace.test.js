@@ -1,6 +1,6 @@
 'use strict'
 
-const { DOMParser } = require('../../lib')
+const { DOMParser, XMLSerializer } = require('../../lib')
 
 /**
  * Returns an array containing only one occurrence of every sting in `values` (like in a Set).
@@ -67,5 +67,36 @@ describe('XML Namespace Parse', () => {
 		expect(
 			documentElement.firstChild.nextSibling.lookupNamespaceURI('p')
 		).toStrictEqual('http://test.com')
+	})
+
+	it('prefix declared once at the root resolves and serializes unchanged when used deeply nested', () => {
+		const source =
+			'<r xmlns:p="http://root.com">' +
+			'<a><b><c><p:leaf p:attr="v"/></c></b></a>' +
+			'<a2 xmlns:q="http://shadow.com"><q:mid><p:leaf2/></q:mid></a2>' +
+			'</r>'
+		const { documentElement } = new DOMParser().parseFromString(
+			source,
+			'text/xml'
+		)
+
+		// `p`, declared only at the root, resolves for elements and attributes many
+		// levels down (inherited through the scope chain, not re-declared).
+		const leaf = documentElement.getElementsByTagName('p:leaf')[0]
+		expect(leaf.namespaceURI).toStrictEqual('http://root.com')
+		expect(leaf.getAttributeNode('p:attr').namespaceURI).toStrictEqual(
+			'http://root.com'
+		)
+		// A prefix declared at an inner scope resolves there while `p` still inherits.
+		const mid = documentElement.getElementsByTagName('q:mid')[0]
+		expect(mid.namespaceURI).toStrictEqual('http://shadow.com')
+		expect(
+			documentElement.getElementsByTagName('p:leaf2')[0].namespaceURI
+		).toStrictEqual('http://root.com')
+
+		// Behaviour-preserving: serialized output is byte-identical to the input.
+		expect(
+			new XMLSerializer().serializeToString(documentElement)
+		).toStrictEqual(source)
 	})
 })
