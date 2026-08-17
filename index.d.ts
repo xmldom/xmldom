@@ -1408,7 +1408,14 @@ declare module '@xmldom/xmldom' {
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType)
 	 */
 	interface DocumentType extends Node {
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/name) */
+		/**
+		 * The doctype name, stored verbatim.
+		 * Declared `readonly` by the WHATWG DOM spec; xmldom does not enforce this — direct
+		 * property writes succeed and the written value is serialized verbatim.
+		 * When serialized with `requireWellFormed: true`, throws `InvalidStateError` if the value
+		 * is not a valid XML `Name` production (XML 1.0 [5]).
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/name)
+		 */
 		readonly name: string;
 		/**
 		 * The internal subset string (the raw content between `[` and `]`), or an empty string.
@@ -1605,6 +1612,7 @@ declare module '@xmldom/xmldom' {
 		 * - a Comment node's data contains `--` anywhere or ends with `-`
 		 * - a ProcessingInstruction's target contains `:` or is an ASCII case-insensitive match for
 		 * `"xml"`, or its data contains `?>` or characters outside the XML Char production
+		 * - a DocumentType's `name` is not a valid XML `Name` (XML 1.0 production [5])
 		 * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
 		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [12])
 		 * - a DocumentType's `systemId` is non-empty and does not match the XML `SystemLiteral`
