@@ -33,6 +33,7 @@ declare module "@xmldom/xmldom" {
        * - A ProcessingInstruction's target is not a valid XML `NCName` (a `Name` with no colon)
        *   or is an ASCII case-insensitive match for `"xml"`, or its data contains `"?>"`
        *   (W3C DOM Parsing §3.2.1.7).
+       * - An EntityReference's `nodeName` is not a valid XML `Name`.
        *
        * @default false
        */
@@ -66,8 +67,9 @@ declare module "@xmldom/xmldom" {
        * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
        *   production,
        * - a DocumentType's `systemId` is non-empty and does not match the XML `SystemLiteral`
-       *   production, or
-       * - a DocumentType's `internalSubset` contains `"]>"`.
+       *   production,
+       * - a DocumentType's `internalSubset` contains `"]>"`, or
+       * - an EntityReference's `nodeName` is not a valid XML `Name` (XML 1.0 production [5]).
        * Note: xmldom does not enforce `readonly` on DocumentType fields — direct property
        * writes succeed and are covered by the serializer-level checks above.
        * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
