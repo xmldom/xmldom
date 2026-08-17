@@ -432,6 +432,30 @@ describe('XMLSerializer.serializeToString', () => {
 				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
 			});
 
+			test('default: PI with ">" in target emits verbatim — no throw', () => {
+				const pi = doc.createProcessingInstruction('a>', 'data');
+				doc.documentElement.appendChild(pi);
+				expect(new XMLSerializer().serializeToString(doc)).toBe('<root><?a> data?></root>');
+			});
+
+			test('requireWellFormed: true on PI with ">" in target throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('a>', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with "?" in target throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('a?b', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with whitespace in target throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('a b', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
 			test('requireWellFormed: true on PI with invalid XML Char (\\x00) in data throws InvalidStateError', () => {
 				const pi = doc.createProcessingInstruction('foo', 'data\x00here');
 				doc.documentElement.appendChild(pi);

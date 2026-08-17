@@ -1305,10 +1305,10 @@ declare module '@xmldom/xmldom' {
 		 * "InvalidCharacterError".
 		 *
 		 * Note: When the resulting document is serialized with `requireWellFormed: true`, the
-		 * serializer throws `InvalidStateError` if `.target` contains `:` or is an ASCII
-		 * case-insensitive match for `"xml"`, or if `.data` contains `?>` or characters outside the
-		 * XML Char production (W3C DOM Parsing §3.2.1.7). Without that option the data is emitted
-		 * verbatim.
+		 * serializer throws `InvalidStateError` if `.target` is not a valid XML `NCName` (a `Name`
+		 * with no colon) or is an ASCII case-insensitive match for `"xml"`, or if `.data` contains
+		 * `?>` or characters outside the XML Char production (W3C DOM Parsing §3.2.1.7). Without
+		 * that option the target and data are emitted verbatim.
 		 *
 		 * @see https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction
 		 * @see https://dom.spec.whatwg.org/#dom-document-createprocessinginstruction
@@ -1610,8 +1610,9 @@ declare module '@xmldom/xmldom' {
 		 * - CDATASection data contains `"]]>"`
 		 * - Text data contains characters outside the XML Char production
 		 * - a Comment node's data contains `--` anywhere or ends with `-`
-		 * - a ProcessingInstruction's target contains `:` or is an ASCII case-insensitive match for
-		 * `"xml"`, or its data contains `?>` or characters outside the XML Char production
+		 * - a ProcessingInstruction's target is not a valid XML `NCName` (a `Name` with no colon) or
+		 * is an ASCII case-insensitive match for `"xml"`, or its data contains `?>` or characters
+		 * outside the XML Char production
 		 * - a DocumentType's `name` is not a valid XML `Name` (XML 1.0 production [5])
 		 * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
 		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [12])
