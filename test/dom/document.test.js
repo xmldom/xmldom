@@ -99,6 +99,24 @@ describe('Document.prototype', () => {
 			expect(doc.firstChild === doctype).toBe(true)
 		})
 	})
+	describe('createEntityReference', () => {
+		it('should create EntityReference with a valid name', () => {
+			const doc = new DOMImplementation().createDocument(null, '')
+			const eref = doc.createEntityReference('amp')
+			expect(eref.nodeType).toBe(doc.ENTITY_REFERENCE_NODE)
+			expect(eref.nodeName).toBe('amp')
+		})
+		it('should throw DOMException for a name that is not a valid XML Name', () => {
+			const doc = new DOMImplementation().createDocument(null, '')
+			expect(() => doc.createEntityReference('123')).toThrow(DOMException)
+		})
+		it('should throw DOMException for a name with a valid prefix but ill-formed remainder', () => {
+			const doc = new DOMImplementation().createDocument(null, '')
+			expect(() => doc.createEntityReference('safe; <injected/> &x')).toThrow(
+				DOMException
+			)
+		})
+	})
 	describe('insertBefore', () => {
 		it('should insert the first element and set `documentElement`', () => {
 			const doc = new DOMImplementation().createDocument(null, '')
