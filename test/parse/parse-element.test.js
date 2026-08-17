@@ -15,6 +15,21 @@ describe('XML Node Parse', () => {
 				expect(actual).toBe('<xml/>')
 			}
 		)
+		// The end-tag trailing-whitespace trim must produce identical results whether
+		// the whitespace run is empty, short, long, or mixed — the anchored trim that
+		// replaced the backtracking `/[ \t\n\r]+$/g` keeps this byte-identical
+		// (GHSA-x4fp-j954-r2f4).
+		it.each([
+			'<xml></xml>',
+			'<xml></xml >',
+			'<xml></xml\t\r\n >',
+			'<xml></xml' + ' '.repeat(500) + '>',
+		])('trailing-whitespace end tag %#', (input) => {
+			const actual = new DOMParser()
+				.parseFromString(input, 'text/xml')
+				.toString()
+			expect(actual).toBe('<xml/>')
+		})
 	})
 	it('nested closing tag with whitespace', () => {
 		const actual = new DOMParser()

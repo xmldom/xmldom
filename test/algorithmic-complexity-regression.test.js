@@ -139,4 +139,36 @@ describe('CWE-407 Inefficient Algorithmic Complexity', () => {
 			expect(t2 / t1).toBeLessThan(RATIO_MAX)
 		})
 	})
+
+	describe('CWE-1333 end-tag trailing-whitespace trim ReDoS (GHSA-x4fp-j954-r2f4)', () => {
+		// Unfixed: the end-tag name trim used an unanchored global regex `/[ \t\n\r]+$/g`.
+		// On a name shaped `whitespace-run + one non-whitespace char` (an end tag
+		// `</   …   x>`), the engine extends `[ws]+` to the end from every start position
+		// and then fails the `$` anchor — O(n^2) backtracking in the whitespace-run
+		// length. Fixed: an anchored trim runs in linear time.
+		//
+		// The attack input is compared against a benign same-size input (whitespace as
+		// text content, which never triggers the trim's backtracking). Unfixed the ratio
+		// is ~1300x+ and grows with size; fixed both are linear, so the ratio collapses.
+		// The threshold of 100 leaves an order of magnitude of headroom on each side and
+		// scales with host speed (both measurements do).
+		const N = 64 * 1024
+		const RATIO_MAX = 100
+
+		function tryParse(xml) {
+			try {
+				new DOMParser().parseFromString(xml, 'text/xml')
+			} catch (e) {
+				// malformed end tags may report/throw; timing is what matters here
+			}
+		}
+
+		test('an end tag with a long trailing-whitespace run trims in near-linear time', () => {
+			const attack = '<r></' + ' '.repeat(N) + 'x>'
+			const benign = '<r>' + ' '.repeat(N) + '</r>'
+			const attackMs = fastestMs(() => tryParse(attack), 3)
+			const benignMs = fastestMs(() => tryParse(benign), 3)
+			expect(attackMs / Math.max(benignMs, 1)).toBeLessThan(RATIO_MAX)
+		})
+	})
 })
