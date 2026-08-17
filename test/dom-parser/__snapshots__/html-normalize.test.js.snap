@@ -84,7 +84,7 @@ exports[`html normalizer <div>&amp;&lt;123&456<789;&&</div> 1`] = `
     ],
     [
       "error",
-      "element parse error: Error: invalid tagName:789;&&<",
+      "element parse error: Error: unexpected < in tag name: 789;&&",
       {
         "columnNumber": 23,
         "lineNumber": 1,
@@ -114,7 +114,7 @@ exports[`html normalizer <div><123e>&<a<br/></div> 1`] = `
     ],
     [
       "error",
-      "element parse error: Error: invalid tagName:a<br",
+      "element parse error: Error: unexpected < in tag name: a",
       {
         "columnNumber": 15,
         "lineNumber": 1,
