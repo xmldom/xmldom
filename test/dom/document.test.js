@@ -340,6 +340,15 @@ describe('Document.prototype', () => {
 
 			expectDOMException(() => doc.createEntityReference('123'), DOMExceptionName.InvalidCharacterError, 'name "123"');
 		});
+		test('should throw InvalidCharacter DOMException for a name with a valid prefix but ill-formed remainder', () => {
+			const doc = new DOMImplementation().createDocument(null, '');
+
+			expectDOMException(
+				() => doc.createEntityReference('safe; <injected/> &x'),
+				DOMExceptionName.InvalidCharacterError,
+				'name "safe; <injected/> &x"'
+			);
+		});
 	});
 	describe('insertBefore', () => {
 		test('should insert the first element and set `documentElement`', () => {

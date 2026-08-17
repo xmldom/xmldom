@@ -626,6 +626,39 @@ describe('XMLSerializer.serializeToString', () => {
 			const entityRef = xmlDoc.createEntityReference('amp');
 			expect(new XMLSerializer().serializeToString(entityRef)).toBe('&amp;');
 		});
+
+		test('requireWellFormed: true on valid EntityReference serializes as &name;', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, '');
+			const entityRef = xmlDoc.createEntityReference('amp');
+			expect(new XMLSerializer().serializeToString(entityRef, { requireWellFormed: true })).toBe('&amp;');
+		});
+
+		test('default: EntityReference with ill-formed nodeName emits verbatim — no throw', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, '');
+			const entityRef = xmlDoc.createEntityReference('safe');
+			// Bypass the creation-time anchor via a direct nodeName write.
+			entityRef.nodeName = 'safe; <injected/> &x';
+			expect(new XMLSerializer().serializeToString(entityRef)).toBe('&safe; <injected/> &x;');
+		});
+
+		test('requireWellFormed: true on EntityReference with ill-formed nodeName throws InvalidStateError', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, '');
+			const entityRef = xmlDoc.createEntityReference('safe');
+			entityRef.nodeName = 'safe; <injected/> &x';
+			expectDOMException(
+				() => new XMLSerializer().serializeToString(entityRef, { requireWellFormed: true }),
+				'InvalidStateError'
+			);
+		});
+
+		test('round-trip: valid EntityReference serializes to &name; and re-parses', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, 'root');
+			const entityRef = xmlDoc.createEntityReference('amp');
+			const serialized = new XMLSerializer().serializeToString(entityRef, { requireWellFormed: true });
+			expect(serialized).toBe('&amp;');
+			const reparsed = new DOMParser().parseFromString('<root>' + serialized + '</root>', MIME_TYPE.XML_TEXT);
+			expect(reparsed.documentElement.textContent).toBe('&');
+		});
 	});
 
 	describe('unknown node type (default case)', () => {
