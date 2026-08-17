@@ -592,6 +592,53 @@ describe('XMLSerializer serializeToString requireWellFormed option', () => {
 				})
 			).toThrow(DOMException)
 		})
+
+		it('default: DocumentType with invalid name serializes verbatim — no throw', () => {
+			const doctype = new DOMImplementation().createDocumentType('html', '', '')
+			doctype.name =
+				'html><script xmlns="http://www.w3.org/1999/xhtml">alert(1)</script'
+			const dtDoc = new DOMImplementation().createDocument(
+				null,
+				'root',
+				doctype
+			)
+			let out
+			expect(
+				() => (out = new XMLSerializer().serializeToString(dtDoc))
+			).not.toThrow()
+			expect(out).toContain('<!DOCTYPE html><script')
+		})
+
+		it('requireWellFormed: true on DocumentType with ">" in name throws', () => {
+			const doctype = new DOMImplementation().createDocumentType('html', '', '')
+			doctype.name =
+				'html><script xmlns="http://www.w3.org/1999/xhtml">alert(1)</script'
+			const dtDoc = new DOMImplementation().createDocument(
+				null,
+				'root',
+				doctype
+			)
+			expect(() =>
+				new XMLSerializer().serializeToString(dtDoc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
+
+		it('requireWellFormed: true on DocumentType with whitespace in name throws', () => {
+			const doctype = new DOMImplementation().createDocumentType('html', '', '')
+			doctype.name = 'ht ml'
+			const dtDoc = new DOMImplementation().createDocument(
+				null,
+				'root',
+				doctype
+			)
+			expect(() =>
+				new XMLSerializer().serializeToString(dtDoc, false, null, {
+					requireWellFormed: true,
+				})
+			).toThrow(DOMException)
+		})
 	})
 
 	describe('Element', () => {

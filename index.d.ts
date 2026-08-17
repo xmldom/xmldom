@@ -59,6 +59,7 @@ declare module "@xmldom/xmldom" {
        * - a CDATASection node's data contains `"]]>"`,
        * - a Comment node's data contains `"-->"` (bare `"--"` does not throw on this branch),
        * - a ProcessingInstruction's data contains `"?>"`,
+       * - a DocumentType's `name` is not a valid XML `Name` (XML 1.0 production [5]),
        * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
        *   production,
        * - a DocumentType's `systemId` is non-empty and does not match the XML `SystemLiteral`
