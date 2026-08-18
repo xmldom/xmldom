@@ -10,7 +10,7 @@ Object {
   "error": Array [
     "[xmldom error]	element parse error: Error: invalid attribute:?
 @#[line:2,col:1]",
-    "[xmldom error]	element parse error: Error: invalid tagName:a<
+    "[xmldom error]	element parse error: Error: unexpected < in tag name: a
 @#[line:4,col:1]",
   ],
   "warning": Array [

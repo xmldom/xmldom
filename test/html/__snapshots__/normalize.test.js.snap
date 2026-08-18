@@ -58,7 +58,7 @@ exports[`html normalizer <div>&amp;&lt;123&456<789;&&</div> 1`] = `
 Object {
   "actual": "<div xmlns=\\"http://www.w3.org/1999/xhtml\\">&amp;&lt;123&amp;456&lt;789;&amp;&amp;</div>",
   "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:789;&&<
+    "[xmldom error]	element parse error: Error: unexpected < in tag name: 789;&&
 @#[line:1,col:22]",
   ],
 }
@@ -76,7 +76,7 @@ Object {
   "error": Array [
     "[xmldom error]	element parse error: Error: invalid tagName:123e
 @#[line:1,col:6]",
-    "[xmldom error]	element parse error: Error: invalid tagName:a<br
+    "[xmldom error]	element parse error: Error: unexpected < in tag name: a
 @#[line:1,col:13]",
   ],
 }
