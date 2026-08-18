@@ -106,6 +106,20 @@ const REPORTED = {
 		match: (msg) => /invalid tagName/.test(msg),
 	},
 	/**
+	 * Triggered by `parseElementStartPart` in lib/sax.js when a `<` appears where a
+	 * tag name is expected, caught in the main loop and reported via the
+	 * `element parse error:` wrapper. A `<` cannot occur inside a tag name, so the
+	 * scan stops there instead of running on to the next `>` (which would make
+	 * malformed input re-scan quadratically).
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Name
+	 */
+	SYNTAX_UnexpectedLessThanInTagName: {
+		source: '<a<b/>',
+		level: 'error',
+		match: (msg) => /unexpected < in tag name/.test(msg),
+	},
+	/**
 	 * Triggered by lib/sax.js:602, caught in 208
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser:

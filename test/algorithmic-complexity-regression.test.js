@@ -24,7 +24,7 @@
 const { describe, test, expect } = require('@jest/globals')
 const { spawnSync } = require('child_process')
 const path = require('path')
-const { DOMParser } = require('../lib')
+const { DOMParser, DOMImplementation } = require('../lib')
 
 const LIB = path.resolve(__dirname, '..', 'lib')
 
@@ -169,6 +169,59 @@ describe('CWE-407 Inefficient Algorithmic Complexity', () => {
 			const attackMs = fastestMs(() => tryParse(attack), 3)
 			const benignMs = fastestMs(() => tryParse(benign), 3)
 			expect(attackMs / Math.max(benignMs, 1)).toBeLessThan(RATIO_MAX)
+		})
+	})
+
+	describe('quadratic malformed-tag recovery re-scan and normalize (GHSA-93r5-fhx6-vmg9)', () => {
+		// Growth ratio over a 4x increase in size: quadratic ~16x, linear ~4x. The wide
+		// 4x spread keeps the two well apart despite timing noise; the threshold of 8
+		// separates them.
+		const RATIO_MAX = 8
+		// A silent errorHandler avoids flooding the console with the reported candidate
+		// on the (unfixed) quadratic path; parsing behaviour is unchanged.
+		const silent = function () {}
+
+		function parse(xml, mime) {
+			try {
+				new DOMParser({ errorHandler: silent }).parseFromString(xml, mime)
+			} catch (e) {
+				// default recovery reports (does not throw); timing is what matters
+			}
+		}
+
+		// Finding A: each interior `<` starting a malformed tag used to re-scan forward
+		// to the distant `>`, and one-character recovery repeated that O(n) times -> O(n^2).
+		// The `<`-in-tag-name guard bounds each re-scan, so parse time is linear.
+		test('Finding A: a malformed tag full of `<` parses in near-linear time', () => {
+			const build = (n) => '<r>' + 'a<'.repeat(n) + '</r>'
+			const t1 = fastestMs(() => parse(build(4000), 'text/xml'), 3)
+			const t2 = fastestMs(() => parse(build(16000), 'text/xml'), 3)
+			expect(t2 / t1).toBeLessThan(RATIO_MAX)
+		})
+
+		// Finding B (parse-triggered): recovery emits one single-character text node per
+		// recovered character, so a parent gathers K adjacent text siblings that
+		// `endDocument`'s `normalize()` used to merge in O(K^2). The O(K) merge keeps it
+		// linear. `a<>` keeps each re-scan short so the cost isolates to `normalize()`.
+		test('Finding B: parse-triggered adjacent-text normalize is near-linear', () => {
+			const build = (n) => '<r>' + 'a<>'.repeat(n) + '</r>'
+			const t1 = fastestMs(() => parse(build(4000), 'text/html'), 3)
+			const t2 = fastestMs(() => parse(build(16000), 'text/html'), 3)
+			expect(t2 / t1).toBeLessThan(RATIO_MAX)
+		})
+
+		// Finding B (programmatic): the same O(K) normalize applies to a DOM built with
+		// createTextNode + appendChild, which no parser-side change would cover.
+		test('Finding B: programmatic adjacent-text normalize is near-linear', () => {
+			function normalizeK(k) {
+				const doc = new DOMImplementation().createDocument(null, 'r')
+				const root = doc.documentElement
+				for (var i = 0; i < k; i++) root.appendChild(doc.createTextNode('x'))
+				root.normalize()
+			}
+			const t1 = fastestMs(() => normalizeK(2000), 3)
+			const t2 = fastestMs(() => normalizeK(8000), 3)
+			expect(t2 / t1).toBeLessThan(RATIO_MAX)
 		})
 	})
 })

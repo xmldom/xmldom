@@ -31,6 +31,22 @@ describe('XML Node Parse', () => {
 			expect(actual).toBe('<xml/>')
 		})
 	})
+	describe('a `<` where a tag name is expected (GHSA-93r5-fhx6-vmg9)', () => {
+		it('reports the distinct message with the raw candidate and recovers to the same DOM', () => {
+			const { parser, errors } = getTestParser()
+			const actual = parser
+				.parseFromString('<r>a<b</r>', MIME_TYPE.XML_TEXT)
+				.toString()
+
+			// DOM output is byte-identical to today's recovery (only the error text changed)
+			expect(actual).toBe('<r>a&lt;b</r>')
+			const messages = errors.error || []
+			expect(messages.some((m) => /unexpected < in tag name: b/.test(m))).toBe(
+				true
+			)
+			expect(messages.some((m) => /invalid tagName/.test(m))).toBe(false)
+		})
+	})
 	it('nested closing tag with whitespace', () => {
 		const actual = new DOMParser()
 			.parseFromString(

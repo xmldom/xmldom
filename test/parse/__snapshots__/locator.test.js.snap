@@ -9,7 +9,7 @@ Object {
 exports[`DOMLocator logs error positions 1`] = `
 Object {
   "error": Array [
-    "[xmldom error]	element parse error: Error: invalid tagName:err<
+    "[xmldom error]	element parse error: Error: unexpected < in tag name: err
 @#[line:2,col:2]",
   ],
 }
