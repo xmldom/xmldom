@@ -22,6 +22,26 @@ Thank you,
 [@stevenobiajulu](https://github.com/stevenobiajulu),
 for your contributions
 
+## [0.8.15](https://github.com/xmldom/xmldom/compare/0.8.14...0.8.15)
+
+### Fixed
+
+- Security: parsing a deeply or repeatedly namespaced document no longer consumes quadratic memory; the in-scope namespace map is inherited through the prototype chain instead of being copied for every prefix-declaring element (O(N) instead of O(N²)), preventing a denial-of-service reachable from `DOMParser.parseFromString` with default options. Serialized output is byte-identical. [`GHSA-965w-775f-mr7g`](https://github.com/xmldom/xmldom/security/advisories/GHSA-965w-775f-mr7g)
+- Security: attribute de-duplication during parsing is now O(M) instead of O(M²); the `NamedNodeMap` parse-time dedup path uses a null-prototype membership index, so a well-formed document with a hostile number of duplicate attributes can no longer wedge the parse. Attribute order and duplicate resolution (last value wins, first position kept) are byte-identical, preserving the XML [no-duplicate-attributes well-formedness constraint](https://www.w3.org/TR/xml/#uniqattspec). [`GHSA-8344-3jmq-59r6`](https://github.com/xmldom/xmldom/security/advisories/GHSA-8344-3jmq-59r6)
+- Security: trimming trailing whitespace from an XML end tag ([`ETag`](https://www.w3.org/TR/xml/#NT-ETag)) is now anchored so it runs in linear time instead of backtracking quadratically on a long whitespace run, preventing a ReDoS reachable from `DOMParser.parseFromString`. Trimmed output is byte-identical. [`GHSA-x4fp-j954-r2f4`](https://github.com/xmldom/xmldom/security/advisories/GHSA-x4fp-j954-r2f4)
+- Security: malformed-input recovery is now linear instead of quadratic — the malformed tag-name scan terminates at an embedded `<`, and `Node.prototype.normalize()` merges adjacent text nodes in O(K) instead of O(K²) (also reachable programmatically), per [`normalize()`](https://dom.spec.whatwg.org/#dom-node-normalize) in the WHATWG DOM spec. DOM output is unchanged; only the reported error text differs. [`GHSA-93r5-fhx6-vmg9`](https://github.com/xmldom/xmldom/security/advisories/GHSA-93r5-fhx6-vmg9)
+- Security: `XMLSerializer.serializeToString()` under `{ requireWellFormed: true }` now rejects a DocType `name` that is not a valid XML [`Name`](https://www.w3.org/TR/xml/#NT-Name), throwing `InvalidStateError` — matching the sibling `publicId`/`systemId`/`internalSubset` checks and preventing XML injection via `DocumentType.name`. [`GHSA-27p8-2357-5qqv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-27p8-2357-5qqv)
+- Security: `XMLSerializer.serializeToString()` under `{ requireWellFormed: true }` now validates a processing-instruction target as an XML [`NCName`](https://www.w3.org/TR/xml-names/#NT-NCName) and rejects a case-insensitive `xml`, throwing `InvalidStateError` — a check `0.8.x` did not previously perform, preventing PI-target injection via `>`, `?`, or whitespace. [`GHSA-c7q8-3ch8-vqpv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-c7q8-3ch8-vqpv)
+- Security: `Document.createEntityReference()` now rejects an invalid XML [`Name`](https://www.w3.org/TR/xml/#NT-Name) at creation, and `XMLSerializer.serializeToString()` under `{ requireWellFormed: true }` validates an `EntityReference` `nodeName` as an XML `Name`, throwing `InvalidStateError` — preventing XML injection via an entity-reference name. [`GHSA-6gmq-8vp8-gcm6`](https://github.com/xmldom/xmldom/security/advisories/GHSA-6gmq-8vp8-gcm6)
+- Security: the parser now reports a not-well-formed end tag whose valid name is followed by trailing content as a recoverable `error` instead of accepting it silently, per the XML [`ETag`](https://www.w3.org/TR/xml/#NT-ETag) production; parsing recovers to the byte-identical DOM. Consumers that want strict rejection can escalate the reported `error` to fatal via the parser's `errorHandler`. [`GHSA-6h8r-xr42-gp59`](https://github.com/xmldom/xmldom/security/advisories/GHSA-6h8r-xr42-gp59)
+
+Thank you,
+[@ericchiang](https://github.com/ericchiang),
+[@bhaswanthc](https://github.com/bhaswanthc),
+[@arpitjain099](https://github.com/arpitjain099),
+[@Paranoidgrinch](https://github.com/Paranoidgrinch),
+for your contributions
+
 ## [0.8.14](https://github.com/xmldom/xmldom/compare/0.8.13...0.8.14)
 
 ### Fixed
