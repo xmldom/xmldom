@@ -283,3 +283,58 @@ describe('XML Node Parse', () => {
 		})
 	})
 })
+
+/**
+ * The XML `ETag` production is `'</' Name S? '>'`: only optional whitespace may follow the `Name`.
+ * A valid `Name` followed by whitespace and non-whitespace residue (e.g. `</a\nbogus>` or
+ * `</a bogus>`) is not well-formed, but historically it was silently accepted. It is now reported
+ * as a recoverable `error` (in both XML and HTML) while parsing recovers to byte-identical DOM.
+ */
+describe('end tag with trailing residue after the name', () => {
+	it.each([
+		['a space', ' '],
+		['a tab', '\t'],
+		['a line feed', '\n'],
+		['a carriage return', '\r'],
+	])(
+		'reports a recoverable error for %s residue and recovers to byte-identical DOM',
+		(_label, ws) => {
+			const source = '<a></a' + ws + 'junk>'
+
+			const cleanXml = new DOMParser()
+				.parseFromString('<a></a>', MIME_TYPE.XML_TEXT)
+				.toString()
+			const xml = getTestParser()
+			expect(
+				xml.parser.parseFromString(source, MIME_TYPE.XML_TEXT).toString()
+			).toBe(cleanXml)
+			expect(
+				(xml.errors.error || []).some((msg) =>
+					/followed by whitespace and trailing content/.test(msg)
+				)
+			).toBe(true)
+			expect(xml.errors.fatalError).toBeUndefined()
+
+			const cleanHtml = new DOMParser()
+				.parseFromString('<a></a>', MIME_TYPE.HTML)
+				.toString()
+			const html = getTestParser()
+			expect(
+				html.parser.parseFromString(source, MIME_TYPE.HTML).toString()
+			).toBe(cleanHtml)
+			expect(
+				(html.errors.error || []).some((msg) =>
+					/followed by whitespace and trailing content/.test(msg)
+				)
+			).toBe(true)
+		}
+	)
+
+	it('does not report a clean end tag with only trailing whitespace', () => {
+		const { errors, parser } = getTestParser()
+		expect(
+			parser.parseFromString('<a></a\r\n>', MIME_TYPE.XML_TEXT).toString()
+		).toBe('<a/>')
+		expect(errors.error).toBeUndefined()
+	})
+})
