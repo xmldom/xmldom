@@ -4,22 +4,33 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.11](https://github.com/xmldom/xmldom/compare/0.9.10...0.9.11)
+## [0.9.12](https://github.com/xmldom/xmldom/compare/0.9.11...0.9.12)
 
 ### Fixed
 
-- Security: `XMLSerializer.serializeToString()` now also rejects invalid element and attribute names when `{ requireWellFormed: true }` is passed, throwing `InvalidStateError` for a name that is not a valid XML [`QName`](https://www.w3.org/TR/xml-names/#NT-QName) (this covers the namespace prefix, which surfaces in the element qualified name or in a synthesized `xmlns:` declaration). This prevents XML injection via `createElement()` / `setAttribute()`, extending the existing `requireWellFormed` checks to the serialized name set. [`GHSA-w2rr-34g9-rvrj`](https://github.com/xmldom/xmldom/security/advisories/GHSA-w2rr-34g9-rvrj) [`GHSA-4w3w-2rp5-g8jm`](https://github.com/xmldom/xmldom/security/advisories/GHSA-4w3w-2rp5-g8jm)
-- Security: the processing-instruction grammar regex no longer backtracks quadratically on an unterminated processing instruction (`<?…` with no closing `?>`), preventing a denial-of-service (ReDoS) reachable from `DOMParser.parseFromString` with default options. [`GHSA-g53g-w8rj-fmg7`](https://github.com/xmldom/xmldom/security/advisories/GHSA-g53g-w8rj-fmg7)
-- `CharacterData` `nodeValue` and `data` are now kept in sync [`#990`](https://github.com/xmldom/xmldom/pull/990)
+- Security: parsing a deeply or repeatedly namespaced document no longer consumes quadratic memory; the in-scope namespace map is inherited through the prototype chain instead of being copied for every prefix-declaring element (O(N) instead of O(N²)), preventing a denial-of-service reachable from `DOMParser.parseFromString` with default options. Serialized output is byte-identical. [`GHSA-965w-775f-mr7g`](https://github.com/xmldom/xmldom/security/advisories/GHSA-965w-775f-mr7g)
+- Security: attribute de-duplication during parsing is now O(M) instead of O(M²); the `NamedNodeMap` parse-time dedup path uses a null-prototype membership index, so a well-formed document with a hostile number of duplicate attributes can no longer wedge the parse. Attribute order and duplicate resolution (last value wins, first position kept) are byte-identical, preserving the XML [no-duplicate-attributes well-formedness constraint](https://www.w3.org/TR/xml/#uniqattspec). [`GHSA-8344-3jmq-59r6`](https://github.com/xmldom/xmldom/security/advisories/GHSA-8344-3jmq-59r6)
+- Security: HTML raw-text parsing no longer amplifies output on a missing or case-mismatched closing tag; the closing tag is matched case-insensitively per the WHATWG HTML [RAWTEXT end-tag rule](https://html.spec.whatwg.org/multipage/parsing.html#rawtext-end-tag-name-state) and a missing closing tag is handled explicitly, preventing a denial-of-service. Output for well-formed input is unchanged. [`GHSA-6mj3-qw4j-hgrw`](https://github.com/xmldom/xmldom/security/advisories/GHSA-6mj3-qw4j-hgrw)
+- Security: malformed-input recovery is now linear instead of quadratic — the malformed tag-name scan terminates at an embedded `<`, and `Node.prototype.normalize()` merges adjacent text nodes in O(K) instead of O(K²) (also reachable programmatically), per [`normalize()`](https://dom.spec.whatwg.org/#dom-node-normalize) in the WHATWG DOM spec. DOM output is unchanged; only the reported error text differs. [`GHSA-93r5-fhx6-vmg9`](https://github.com/xmldom/xmldom/security/advisories/GHSA-93r5-fhx6-vmg9)
+- Security: `XMLSerializer.serializeToString()` under `{ requireWellFormed: true }` now rejects a DocType `name` that is not a valid XML [`Name`](https://www.w3.org/TR/xml/#NT-Name), throwing `InvalidStateError` — matching the sibling `publicId`/`systemId`/`internalSubset` checks and preventing XML injection via `DocumentType.name`. [`GHSA-27p8-2357-5qqv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-27p8-2357-5qqv)
+- Security: `XMLSerializer.serializeToString()` under `{ requireWellFormed: true }` now validates a processing-instruction target as an XML [`NCName`](https://www.w3.org/TR/xml-names/#NT-NCName) and rejects a case-insensitive `xml`, throwing `InvalidStateError` — preventing PI-target injection via `>`, `?`, or whitespace. [`GHSA-c7q8-3ch8-vqpv`](https://github.com/xmldom/xmldom/security/advisories/GHSA-c7q8-3ch8-vqpv)
+- Security: `Document.createEntityReference()` now rejects an invalid XML [`Name`](https://www.w3.org/TR/xml/#NT-Name) at creation, and `XMLSerializer.serializeToString()` under `{ requireWellFormed: true }` validates an `EntityReference` `nodeName` as an XML `Name`, throwing `InvalidStateError` — preventing XML injection via an entity-reference name. [`GHSA-6gmq-8vp8-gcm6`](https://github.com/xmldom/xmldom/security/advisories/GHSA-6gmq-8vp8-gcm6)
+- Security: the `requireWellFormed` serializer's element- and attribute-name validators no longer treat an interior line terminator as satisfying the name anchors, so a name containing a line terminator is rejected with `InvalidStateError` — closing a bypass of the XML [`QName`](https://www.w3.org/TR/xml-names/#NT-QName) check. [`GHSA-jxjr-3g7g-3944`](https://github.com/xmldom/xmldom/security/advisories/GHSA-jxjr-3g7g-3944)
+- Security: the `requireWellFormed` serializer's DocType `publicId`/`systemId` validators no longer treat an interior line terminator as satisfying the anchor, so an identifier containing an ECMAScript line terminator is rejected with `InvalidStateError` — closing a bypass of the XML [`PubidLiteral`](https://www.w3.org/TR/xml/#NT-PubidLiteral)/`SystemLiteral` check. [`GHSA-vr34-hp96-76pp`](https://github.com/xmldom/xmldom/security/advisories/GHSA-vr34-hp96-76pp)
+- Security: `createElementNS()`, `createAttributeNS()`, `createDocumentType()`, and `createAttribute()` now reject a name containing a line terminator with `InvalidCharacterError`, because name validation applies to the whole string — closing a creation-time bypass of the XML [`Name`/`QName`](https://www.w3.org/TR/xml-names/#NT-QName) production on the default serialization path. [`GHSA-3px3-54cx-rmw9`](https://github.com/xmldom/xmldom/security/advisories/GHSA-3px3-54cx-rmw9)
+- Security: the parser now reports a not-well-formed end tag whose valid name is followed by trailing content (a recoverable `error` in XML, a `warning` in HTML) instead of accepting it silently, per the XML [`ETag`](https://www.w3.org/TR/xml/#NT-ETag) production; parsing recovers to the byte-identical DOM. Consumers that want strict rejection can escalate the reported `error` to fatal via the parser's `onError` handler. [`GHSA-6h8r-xr42-gp59`](https://github.com/xmldom/xmldom/security/advisories/GHSA-6h8r-xr42-gp59)
+- `DOMException`s raised during parsing are now reported as a `fatalError`, and the originating error is preserved as the `cause` on the resulting `ParseError`.
 
 ### Chore
 
 - updated dependencies
 
 Thank you,
+[@ericchiang](https://github.com/ericchiang),
+[@KarimTantawey](https://github.com/KarimTantawey),
 [@bhaswanthc](https://github.com/bhaswanthc),
-[@jmestwa-coder](https://github.com/jmestwa-coder),
-[@stevenobiajulu](https://github.com/stevenobiajulu),
+[@arpitjain099](https://github.com/arpitjain099),
+[@Paranoidgrinch](https://github.com/Paranoidgrinch),
 for your contributions
 
 ## [0.8.15](https://github.com/xmldom/xmldom/compare/0.8.14...0.8.15)
@@ -40,6 +51,24 @@ Thank you,
 [@bhaswanthc](https://github.com/bhaswanthc),
 [@arpitjain099](https://github.com/arpitjain099),
 [@Paranoidgrinch](https://github.com/Paranoidgrinch),
+for your contributions
+
+## [0.9.11](https://github.com/xmldom/xmldom/compare/0.9.10...0.9.11)
+
+### Fixed
+
+- Security: `XMLSerializer.serializeToString()` now also rejects invalid element and attribute names when `{ requireWellFormed: true }` is passed, throwing `InvalidStateError` for a name that is not a valid XML [`QName`](https://www.w3.org/TR/xml-names/#NT-QName) (this covers the namespace prefix, which surfaces in the element qualified name or in a synthesized `xmlns:` declaration). This prevents XML injection via `createElement()` / `setAttribute()`, extending the existing `requireWellFormed` checks to the serialized name set. [`GHSA-w2rr-34g9-rvrj`](https://github.com/xmldom/xmldom/security/advisories/GHSA-w2rr-34g9-rvrj) [`GHSA-4w3w-2rp5-g8jm`](https://github.com/xmldom/xmldom/security/advisories/GHSA-4w3w-2rp5-g8jm)
+- Security: the processing-instruction grammar regex no longer backtracks quadratically on an unterminated processing instruction (`<?…` with no closing `?>`), preventing a denial-of-service (ReDoS) reachable from `DOMParser.parseFromString` with default options. [`GHSA-g53g-w8rj-fmg7`](https://github.com/xmldom/xmldom/security/advisories/GHSA-g53g-w8rj-fmg7)
+- `CharacterData` `nodeValue` and `data` are now kept in sync [`#990`](https://github.com/xmldom/xmldom/pull/990)
+
+### Chore
+
+- updated dependencies
+
+Thank you,
+[@bhaswanthc](https://github.com/bhaswanthc),
+[@jmestwa-coder](https://github.com/jmestwa-coder),
+[@stevenobiajulu](https://github.com/stevenobiajulu),
 for your contributions
 
 ## [0.8.14](https://github.com/xmldom/xmldom/compare/0.8.13...0.8.14)
