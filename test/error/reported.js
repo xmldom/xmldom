@@ -70,6 +70,19 @@ const REPORTED = {
 		match: (msg) => /end tag name/.test(msg) && /maybe not complete/.test(msg),
 	},
 	/**
+	 * The XML `ETag` production is `'</' Name S? '>'`: a valid `Name` followed by whitespace and
+	 * non-whitespace residue (e.g. `</a\nbogus>`) is not well-formed. It was historically accepted
+	 * silently; it is now reported as a recoverable `error` while parsing recovers unchanged.
+	 *
+	 * @see https://www.w3.org/TR/2008/REC-xml-20081126/#NT-ETag
+	 */
+	WF_EndTagTrailingContent: {
+		source: '<a></a\nbogus>',
+		level: 'error',
+		match: (msg) =>
+			/end tag name is followed by whitespace and trailing content/.test(msg),
+	},
+	/**
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser it is reported as `error on line 1 at column 6: Comment not terminated`.
 	 */
