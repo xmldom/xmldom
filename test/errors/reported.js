@@ -52,6 +52,30 @@ const REPORTED = {
 		level: 'fatalError',
 		match: (msg) => /end tag name contains invalid characters/.test(msg),
 	},
+	/**
+	 * A valid end-tag name followed by a line break and trailing content
+	 * (e.g. `</a\nbogus>`). The baseline accepted this silently because the shared regexp
+	 * builder used the multiline (`m`) flag, so `$` matched at the line break. With `m`
+	 * dropped it is now reported, but it stays recoverable in XML: parsing continues with
+	 * the captured name and the resulting document is unchanged from the baseline.
+	 */
+	WF_ElementTypeMatch_QName_XmlLineBreakRecover: {
+		source: '<a></a\nbogus>',
+		level: 'error',
+		mimeTypes: [MIME_TYPE.XML_TEXT],
+		match: (msg) => /end tag name is followed by a line break and trailing content/.test(msg),
+	},
+	/**
+	 * In HTML a valid end-tag name followed by any trailing content (a space then junk as
+	 * in `</a bogus>`, or a line break then content) is recovered from with a warning,
+	 * continuing with the extracted name and dropping the trailing content.
+	 */
+	WF_ElementTypeMatch_QName_HtmlTrailingRecover: {
+		source: '<a></a bogus>',
+		level: 'warning',
+		mimeTypes: [MIME_TYPE.HTML],
+		match: (msg) => /end tag name contains invalid trailing characters/.test(msg),
+	},
 	WF_ElementTypeMatch_QName_complex: {
 		source: '<r><Page><Label /></Page  <Page></Page></r>',
 		level: 'fatalError',

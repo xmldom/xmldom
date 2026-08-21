@@ -83,7 +83,7 @@ describe('chars_without', () => {
 
 describe('regg', () => {
 	test('should wrap all arguments between (?: and )', () => {
-		expect(regg(/abc/, '|', 'def')).toEqual(/(?:abc|def)/mu);
+		expect(regg(/abc/, '|', 'def')).toEqual(/(?:abc|def)/u);
 	});
 	test('should throw no arguments are provided', () => {
 		expect(() => regg()).toThrow(Error);
