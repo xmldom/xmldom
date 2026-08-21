@@ -245,3 +245,42 @@ describe('XML Node Parse', () => {
 		});
 	});
 });
+
+/**
+ * A valid end-tag name followed by a line break and trailing content (`</a\njunk>`) used to be
+ * accepted silently, because the shared regexp builder anchored the end-tag matcher with the `m`
+ * flag and the trailing residue after the line break was ignored. It is now reported — a
+ * recoverable `error` in XML, a `warning` in HTML — while parsing recovers to byte-identical DOM.
+ */
+describe('end tag with a line break and trailing content', () => {
+	const LINE_TERMINATORS = [
+		['LF', '\n'],
+		['CR', '\r'],
+		['LS', '\u2028'],
+		['PS', '\u2029'],
+	];
+
+	describe.each(LINE_TERMINATORS)('with a %s line terminator', (_label, lt) => {
+		test('XML reports a recoverable error and recovers to byte-identical DOM', () => {
+			const { errors, parser } = getTestParser();
+			const actual = parser.parseFromString('<a></a' + lt + 'junk>', MIME_TYPE.XML_TEXT).toString();
+			expect(actual).toBe('<a/>');
+			expect(errors.some(([level, msg]) => level === 'error' && /line break and trailing content/.test(msg))).toBe(true);
+		});
+
+		test('HTML reports a recoverable warning and recovers to byte-identical DOM', () => {
+			const { errors, parser } = getTestParser();
+			const clean = new DOMParser().parseFromString('<a></a>', MIME_TYPE.HTML).toString();
+			const actual = parser.parseFromString('<a></a' + lt + 'junk>', MIME_TYPE.HTML).toString();
+			expect(actual).toBe(clean);
+			expect(errors.some(([level, msg]) => level === 'warning' && /invalid trailing characters/.test(msg))).toBe(true);
+		});
+	});
+
+	test('a valid end tag with trailing whitespace is still accepted without any report', () => {
+		const { errors, parser } = getTestParser();
+		const actual = parser.parseFromString('<a></a\r\n>', MIME_TYPE.XML_TEXT).toString();
+		expect(actual).toBe('<a/>');
+		expect(errors).toHaveLength(0);
+	});
+});

@@ -609,6 +609,60 @@ describe('XMLSerializer.serializeToString', () => {
 				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
 			});
 		});
+
+		/**
+		 * A name or id that carries an ECMAScript LineTerminator (U+000A, U+000D, U+2028,
+		 * U+2029) used to slip past the anchored `requireWellFormed` validators: the shared
+		 * regexp builder compiled `^…$` with the `m` flag, so the anchors matched a single line
+		 * instead of the whole string and a valid first line let arbitrary trailing markup
+		 * through. Every LineTerminator must now be rejected.
+		 */
+		describe('multiline-anchor line-terminator bypass', () => {
+			const LINE_TERMINATORS = [
+				['LF', '\n'],
+				['CR', '\r'],
+				['LS', '\u2028'],
+				['PS', '\u2029'],
+			];
+
+			describe.each(LINE_TERMINATORS)('with a %s line terminator', (_label, lt) => {
+				test('requireWellFormed: true on element name throws InvalidStateError', () => {
+					doc.documentElement.appendChild(doc.createElement('valid' + lt + '/><injected'));
+					expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+				});
+
+				test('requireWellFormed: true on attribute name throws InvalidStateError', () => {
+					doc.documentElement.setAttribute('valid' + lt + 'injected', 'v');
+					expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+				});
+
+				test('requireWellFormed: true on DocumentType publicId throws InvalidStateError', () => {
+					const doctype = new DOMImplementation().createDocumentType('name', '"valid pubid"' + lt + '"><injected/>', '');
+					const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+					expectDOMException(
+						() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }),
+						'InvalidStateError'
+					);
+				});
+
+				test('requireWellFormed: true on DocumentType systemId throws InvalidStateError', () => {
+					const doctype = new DOMImplementation().createDocumentType('name', '', '"valid.dtd"' + lt + '><injected/>');
+					const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+					expectDOMException(
+						() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }),
+						'InvalidStateError'
+					);
+				});
+			});
+
+			test('requireWellFormed: true on a valid element name, attribute name and DocumentType ids does not throw', () => {
+				const doctype = new DOMImplementation().createDocumentType('name', '"-//W3C//DTD//EN"', '"valid.dtd"');
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				dtDoc.documentElement.appendChild(dtDoc.createElement('child'));
+				dtDoc.documentElement.setAttribute('attr', 'v');
+				expect(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
 	});
 
 	describe('Attribute', () => {
