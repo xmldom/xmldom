@@ -795,7 +795,7 @@ declare module '@xmldom/xmldom' {
 		 * Accepts the same options as `XMLSerializer.prototype.serializeToString`.
 		 */
 		toString(
-			options?: XMLSerializerOptions | ((node: T) => T | undefined)
+			options?: XMLSerializerOptions | ((node: T) => T | undefined) | true
 		): string;
 		/**
 		 * Filters the NodeList based on a predicate.
@@ -1605,8 +1605,9 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * When `options.requireWellFormed` is `true`, throws `InvalidStateError` for content that
 		 * would produce ill-formed XML. When `options.splitCDATASections` is `false`,
-		 * CDATASection data is emitted verbatim. Passing a function as `options` is treated as a
-		 * legacy `nodeFilter` for backward compatibility.
+		 * CDATASection data is emitted verbatim. Passing `true` as `options` is shorthand for `{
+		 * requireWellFormed: true }`. Passing a function as `options` is treated as a legacy
+		 * `nodeFilter` for backward compatibility.
 		 *
 		 * __This implementation differs from the specification:__ - CDATASection serialization is
 		 * not specified by W3C DOM Parsing or WHATWG DOM Parsing (see
@@ -1649,7 +1650,10 @@ declare module '@xmldom/xmldom' {
 		 */
 		serializeToString(
 			node: Node,
-			options?: XMLSerializerOptions | ((node: Node) => Node | null | undefined)
+			options?:
+				| XMLSerializerOptions
+				| ((node: Node) => Node | null | undefined)
+				| true
 		): string;
 	}
 	// END ./lib/dom.js
