@@ -3,23 +3,26 @@
 const { describe, expect, test } = require('@jest/globals');
 
 const path = require('path');
-const { LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
+const { classifyLevel, LINE_TO_ERROR_INDEX, REPORTED } = require('./reported');
 const { MIME_TYPE } = require('../../lib/conventions');
 const { DOMParser } = require('../../lib/dom-parser');
 const { ParseError } = require('../../lib/errors');
 const { getTestParser } = require('../get-test-parser');
+
+const DEFAULT_MIME_TYPES = [MIME_TYPE.XML_TEXT, MIME_TYPE.HTML];
+
 describe('reported.json', () => {
 	Object.entries(LINE_TO_ERROR_INDEX)
 		.filter(([key]) => !!key)
 		.forEach(([key, { errorType, index, line, message }]) => {
 			describe(`entry #${index} (${key})`, () => {
 				const relatedReported = Object.entries(REPORTED).filter(
-					([sourceLine, { level, match }]) => new RegExp(level, 'i').test(errorType) && match(message)
+					([sourceLine, { level, match }]) => classifyLevel(errorType) === level && match(message)
 				);
 				switch (relatedReported.length) {
+					// 0 must fail, not be a todo: a newly added lib/sax.js error message
+					// has to be registered in REPORTED (see test/README.md).
 					case 0:
-						test.todo(`should have an entry in REPORTED matching ${errorType}: ${message}`);
-						break;
 					case 1:
 						test(`should have an entry in REPORTED matching ${errorType}: ${message}`, () => {
 							expect(relatedReported.length).toBeGreaterThanOrEqual(1);
@@ -40,10 +43,10 @@ describe('reported.json', () => {
 		});
 });
 
-describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, skippedInHtml }) => {
-	describe.each([MIME_TYPE.XML_TEXT, MIME_TYPE.HTML])('with mimeType %s', (mimeType) => {
-		const isHtml = mimeType === 'text/html';
-		if (isHtml && skippedInHtml) {
+describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, mimeTypes, cause }) => {
+	describe.each(DEFAULT_MIME_TYPES)('with mimeType %s', (mimeType) => {
+		const expected = (mimeTypes || DEFAULT_MIME_TYPES).includes(mimeType);
+		if (!expected) {
 			test(`should not be reported`, () => {
 				const { errors, parser } = getTestParser();
 
@@ -66,6 +69,13 @@ describe.each(Object.entries(REPORTED))('%s', (name, { source, level, match, ski
 
 					expect(onError).toHaveBeenCalled();
 				});
+				if (cause) {
+					test(`should preserve the ${cause.name} as the ParseError cause`, () => {
+						expect(() => new DOMParser().parseFromString(source, mimeType)).toThrow(
+							expect.objectContaining({ cause: expect.any(cause) })
+						);
+					});
+				}
 			} else {
 				test(`should be reported`, () => {
 					const { errors, parser } = getTestParser();

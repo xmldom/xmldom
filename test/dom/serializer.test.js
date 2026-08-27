@@ -464,6 +464,30 @@ describe('XMLSerializer.serializeToString', () => {
 				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
 			});
 
+			test('default: PI with ">" in target emits verbatim — no throw', () => {
+				const pi = doc.createProcessingInstruction('a>', 'data');
+				doc.documentElement.appendChild(pi);
+				expect(new XMLSerializer().serializeToString(doc)).toBe('<root><?a> data?></root>');
+			});
+
+			test('requireWellFormed: true on PI with ">" in target throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('a>', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with "?" in target throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('a?b', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on PI with whitespace in target throws InvalidStateError', () => {
+				const pi = doc.createProcessingInstruction('a b', 'data');
+				doc.documentElement.appendChild(pi);
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
 			test('requireWellFormed: true on PI with invalid XML Char (\\x00) in data throws InvalidStateError', () => {
 				const pi = doc.createProcessingInstruction('foo', 'data\x00here');
 				doc.documentElement.appendChild(pi);
@@ -531,6 +555,169 @@ describe('XMLSerializer.serializeToString', () => {
 				doctype.publicId = '"invalid<char"';
 				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
 			});
+
+			test('default: DocumentType with invalid name (via property write) serializes verbatim — no throw', () => {
+				const doctype = new DOMImplementation().createDocumentType('html', '', '');
+				doctype.name = 'html><script xmlns="http://www.w3.org/1999/xhtml">alert(1)</script';
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				let out;
+				expect(() => (out = new XMLSerializer().serializeToString(dtDoc))).not.toThrow();
+				expect(out).toContain('<!DOCTYPE html><script');
+			});
+
+			test('requireWellFormed: true on DocumentType with ">" in name throws InvalidStateError', () => {
+				const doctype = new DOMImplementation().createDocumentType('html', '', '');
+				doctype.name = 'html><script xmlns="http://www.w3.org/1999/xhtml">alert(1)</script';
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on DocumentType with whitespace in name throws InvalidStateError', () => {
+				const doctype = new DOMImplementation().createDocumentType('html', '', '');
+				doctype.name = 'ht ml';
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				expectDOMException(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on DocumentType with valid name does not throw', () => {
+				const doctype = new DOMImplementation().createDocumentType('html', '', '');
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				expect(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
+
+		describe('Element', () => {
+			test('default: element with invalid name emits verbatim — no throw', () => {
+				doc.documentElement.appendChild(doc.createElement('x><inject'));
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('requireWellFormed: true on element with invalid name throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createElement('x><inject'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on element with valid QName does not throw', () => {
+				doc.documentElement.appendChild(doc.createElement('child'));
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
+
+		describe('Attribute', () => {
+			test('requireWellFormed: true on attribute with invalid name throws InvalidStateError', () => {
+				doc.documentElement.setAttribute('a><inject ', 'v');
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on attribute with valid name does not throw', () => {
+				doc.documentElement.setAttribute('class', 'hello');
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
+
+		describe('Namespace prefix', () => {
+			test('default: invalid prefix in synthesized xmlns declaration emits verbatim — no throw', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				el.prefix = 'evil>';
+				expect(() => new XMLSerializer().serializeToString(doc)).not.toThrow();
+			});
+
+			test('requireWellFormed: true on invalid prefix in synthesized xmlns declaration throws InvalidStateError', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				el.prefix = 'evil>';
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on invalid prefix in element qualified name throws InvalidStateError', () => {
+				doc.documentElement.appendChild(doc.createElement('evil>:child'));
+				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+			});
+
+			test('requireWellFormed: true on element with valid prefix does not throw', () => {
+				const el = doc.createElementNS('http://example.com/ns', 'p:child');
+				doc.documentElement.appendChild(el);
+				expect(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
+
+		/**
+		 * A name or id that carries an ECMAScript LineTerminator (U+000A, U+000D, U+2028,
+		 * U+2029) used to slip past the anchored `requireWellFormed` validators: the shared
+		 * regexp builder compiled `^…$` with the `m` flag, so the anchors matched a single line
+		 * instead of the whole string and a valid first line let arbitrary trailing markup
+		 * through. Every LineTerminator must now be rejected.
+		 */
+		describe('multiline-anchor line-terminator bypass', () => {
+			const LINE_TERMINATORS = [
+				['LF', '\n'],
+				['CR', '\r'],
+				['LS', '\u2028'],
+				['PS', '\u2029'],
+			];
+
+			describe.each(LINE_TERMINATORS)('with a %s line terminator', (_label, lt) => {
+				test('requireWellFormed: true on element name throws InvalidStateError', () => {
+					doc.documentElement.appendChild(doc.createElement('valid' + lt + '/><injected'));
+					expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+				});
+
+				test('requireWellFormed: true on attribute name throws InvalidStateError', () => {
+					doc.documentElement.setAttribute('valid' + lt + 'injected', 'v');
+					expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
+				});
+
+				test('requireWellFormed: true on DocumentType publicId throws InvalidStateError', () => {
+					const doctype = new DOMImplementation().createDocumentType('name', '"valid pubid"' + lt + '"><injected/>', '');
+					const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+					expectDOMException(
+						() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }),
+						'InvalidStateError'
+					);
+				});
+
+				test('requireWellFormed: true on DocumentType systemId throws InvalidStateError', () => {
+					const doctype = new DOMImplementation().createDocumentType('name', '', '"valid.dtd"' + lt + '><injected/>');
+					const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+					expectDOMException(
+						() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true }),
+						'InvalidStateError'
+					);
+				});
+			});
+
+			test('requireWellFormed: true on a valid element name, attribute name and DocumentType ids does not throw', () => {
+				const doctype = new DOMImplementation().createDocumentType('name', '"-//W3C//DTD//EN"', '"valid.dtd"');
+				const dtDoc = new DOMImplementation().createDocument(null, 'root', doctype);
+				dtDoc.documentElement.appendChild(dtDoc.createElement('child'));
+				dtDoc.documentElement.setAttribute('attr', 'v');
+				expect(() => new XMLSerializer().serializeToString(dtDoc, { requireWellFormed: true })).not.toThrow();
+			});
+		});
+	});
+
+	describe('true (shorthand for { requireWellFormed: true })', () => {
+		test('true on CDATA with "]]>" throws InvalidStateError', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expectDOMException(() => new XMLSerializer().serializeToString(doc, true), 'InvalidStateError');
+		});
+
+		test('true produces the same output as { requireWellFormed: true } for well-formed content', () => {
+			doc.documentElement.appendChild(doc.createTextNode('valid text'));
+			expect(new XMLSerializer().serializeToString(doc, true)).toBe(
+				new XMLSerializer().serializeToString(doc, { requireWellFormed: true })
+			);
+		});
+
+		test('true differs from omitting options: omitted splits "]]>" while true throws', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expect(new XMLSerializer().serializeToString(doc)).toBe('<root><![CDATA[foo]]]]><![CDATA[>bar]]></root>');
+			expectDOMException(() => new XMLSerializer().serializeToString(doc, true), 'InvalidStateError');
 		});
 	});
 
@@ -548,6 +735,39 @@ describe('XMLSerializer.serializeToString', () => {
 			const xmlDoc = new DOMImplementation().createDocument(null, '');
 			const entityRef = xmlDoc.createEntityReference('amp');
 			expect(new XMLSerializer().serializeToString(entityRef)).toBe('&amp;');
+		});
+
+		test('requireWellFormed: true on valid EntityReference serializes as &name;', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, '');
+			const entityRef = xmlDoc.createEntityReference('amp');
+			expect(new XMLSerializer().serializeToString(entityRef, { requireWellFormed: true })).toBe('&amp;');
+		});
+
+		test('default: EntityReference with ill-formed nodeName emits verbatim — no throw', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, '');
+			const entityRef = xmlDoc.createEntityReference('safe');
+			// Bypass the creation-time anchor via a direct nodeName write.
+			entityRef.nodeName = 'safe; <injected/> &x';
+			expect(new XMLSerializer().serializeToString(entityRef)).toBe('&safe; <injected/> &x;');
+		});
+
+		test('requireWellFormed: true on EntityReference with ill-formed nodeName throws InvalidStateError', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, '');
+			const entityRef = xmlDoc.createEntityReference('safe');
+			entityRef.nodeName = 'safe; <injected/> &x';
+			expectDOMException(
+				() => new XMLSerializer().serializeToString(entityRef, { requireWellFormed: true }),
+				'InvalidStateError'
+			);
+		});
+
+		test('round-trip: valid EntityReference serializes to &name; and re-parses', () => {
+			const xmlDoc = new DOMImplementation().createDocument(null, 'root');
+			const entityRef = xmlDoc.createEntityReference('amp');
+			const serialized = new XMLSerializer().serializeToString(entityRef, { requireWellFormed: true });
+			expect(serialized).toBe('&amp;');
+			const reparsed = new DOMParser().parseFromString('<root>' + serialized + '</root>', MIME_TYPE.XML_TEXT);
+			expect(reparsed.documentElement.textContent).toBe('&');
 		});
 	});
 
@@ -625,6 +845,13 @@ describe('Node.toString', () => {
 			doc.documentElement.appendChild(cdata);
 			expectDOMException(() => doc.toString({ requireWellFormed: true }), 'InvalidStateError');
 		});
+
+		test('node.toString(true) on node with "]]>" in CDATA child throws InvalidStateError', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expectDOMException(() => doc.toString(true), 'InvalidStateError');
+		});
 	});
 });
 
@@ -649,6 +876,13 @@ describe('NodeList.toString', () => {
 			cdata.data = 'foo]]>bar';
 			doc.documentElement.appendChild(cdata);
 			expectDOMException(() => doc.documentElement.childNodes.toString({ requireWellFormed: true }), 'InvalidStateError');
+		});
+
+		test('nodeList.toString(true) on list containing CDATA with "]]>" throws InvalidStateError', () => {
+			const cdata = doc.createCDATASection('safe');
+			cdata.data = 'foo]]>bar';
+			doc.documentElement.appendChild(cdata);
+			expectDOMException(() => doc.documentElement.childNodes.toString(true), 'InvalidStateError');
 		});
 	});
 });

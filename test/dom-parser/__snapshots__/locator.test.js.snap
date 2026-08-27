@@ -10,7 +10,7 @@ exports[`DOMLocator logs error positions 1`] = `
 [
   [
     "error",
-    "element parse error: Error: invalid tagName:err<",
+    "element parse error: Error: unexpected < in tag name: err",
     {
       "columnNumber": 3,
       "lineNumber": 2,

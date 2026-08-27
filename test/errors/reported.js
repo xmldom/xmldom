@@ -1,8 +1,9 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { MIME_TYPE } = require('../../lib/conventions');
+const { DOMException } = require('../../lib/errors');
 
-const skippedInHtml = true;
 /**
  * @typedef ErrorReport
  * @property {string} source
@@ -11,8 +12,12 @@ const skippedInHtml = true;
  * The name of the method triggered.
  * @property {function(msg:string):boolean} [match]
  * To pick the relevant report when there are multiple.
- * @property {boolean} [skippedInHtml]
- * Is the error reported when parsing HTML?
+ * @property {string[]} [mimeTypes]
+ * The mimeTypes for which this level and message is expected to be triggered.
+ * Defaults to both `MIME_TYPE.XML_TEXT` and `MIME_TYPE.HTML`.
+ * @property {Function} [cause]
+ * For a rethrown wrapped error, the expected constructor of its `cause`; verified via
+ * instanceof.
  */
 /**
  * A collection of XML samples and related information that cause the XMLReader
@@ -47,6 +52,30 @@ const REPORTED = {
 		level: 'fatalError',
 		match: (msg) => /end tag name contains invalid characters/.test(msg),
 	},
+	/**
+	 * A valid end-tag name followed by a line break and trailing content
+	 * (e.g. `</a\nbogus>`). The baseline accepted this silently because the shared regexp
+	 * builder used the multiline (`m`) flag, so `$` matched at the line break. With `m`
+	 * dropped it is now reported, but it stays recoverable in XML: parsing continues with
+	 * the captured name and the resulting document is unchanged from the baseline.
+	 */
+	WF_ElementTypeMatch_QName_XmlLineBreakRecover: {
+		source: '<a></a\nbogus>',
+		level: 'error',
+		mimeTypes: [MIME_TYPE.XML_TEXT],
+		match: (msg) => /end tag name is followed by a line break and trailing content/.test(msg),
+	},
+	/**
+	 * In HTML a valid end-tag name followed by any trailing content (a space then junk as
+	 * in `</a bogus>`, or a line break then content) is recovered from with a warning,
+	 * continuing with the extracted name and dropping the trailing content.
+	 */
+	WF_ElementTypeMatch_QName_HtmlTrailingRecover: {
+		source: '<a></a bogus>',
+		level: 'warning',
+		mimeTypes: [MIME_TYPE.HTML],
+		match: (msg) => /end tag name contains invalid trailing characters/.test(msg),
+	},
 	WF_ElementTypeMatch_QName_complex: {
 		source: '<r><Page><Label /></Page  <Page></Page></r>',
 		level: 'fatalError',
@@ -68,7 +97,7 @@ const REPORTED = {
 	WF_ElementTypeMatch_Mismatch_Root: {
 		source: '<xml></Xml>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Opening and ending tag mismatch/.test(msg),
 	},
 	WF_ElementTypeMatch_Mismatch_Root_UnclosedMultiple: {
@@ -77,16 +106,23 @@ const REPORTED = {
 		match: (msg) => /Opening and ending tag mismatch/.test(msg),
 	},
 	/**
-	 * In the Browser (for XML) this is reported as
-	 * `error on line 1 at column 6: Extra content at the end of the document`
+	 * In the Browser (for XML) this is reported as `error on line 1 at column 6: Extra content at
+	 * the end of the document`
 	 * for HTML it's added to the DOM without anything being reported.
+	 *
+	 * @see https://www.w3.org/TR/xml/#GIMatch
 	 */
 	WF_ElementTypeMatch_UnclosedXmlTag: {
 		source: '<xml>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
 	},
+	/**
+	 * An end-tag with no name (`</>`).
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-ETag
+	 */
 	WF_ElementTypeMatch_EndTagMissingName: {
 		source: '<xml></>',
 		level: 'fatalError',
@@ -94,12 +130,15 @@ const REPORTED = {
 	},
 	/**
 	 * This sample doesn't follow the specified grammar.
-	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start Tag xml`.
+	 * In the browser it is reported as `error on line 1 at column 5: Couldn't find end of Start
+	 * Tag xml`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-STag
 	 */
 	WF_ElementTypeMatch_UnclosedXmlTag_IncompleteStartTag: {
 		source: '<xml',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /unclosed xml tag\(s\)/.test(msg),
 	},
 	/**
@@ -122,27 +161,37 @@ const REPORTED = {
 	WF_EntityDeclared_Script: {
 		source: '<script>&e;</script>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /entity not found/.test(msg),
 	},
+	/**
+	 * An entity reference that is not terminated by `;`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-EntityRef
+	 */
 	WF_EntityRef: {
 		source: '<xml>&amp</xml>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /EntityRef: expecting ;/.test(msg),
 	},
 	WF_EntityRef_Attr: {
 		source: '<xml attr="&amp"></xml>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /EntityRef: expecting ;/.test(msg),
 	},
 	WF_EntityRef_Script: {
 		source: '<script>&amp</script>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /EntityRef: expecting ;/.test(msg),
 	},
+	/**
+	 * A reference that does not match the Reference production.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Reference
+	 */
 	WF_Entity_ReferenceProduction: {
 		source: '<xml>&1;</xml>',
 		level: 'error',
@@ -156,7 +205,7 @@ const REPORTED = {
 	WF_Entity_ReferenceProduction_Script: {
 		source: '<script>&1;</script>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /entity not matching Reference production/.test(msg),
 	},
 	/**
@@ -193,7 +242,7 @@ const REPORTED = {
 	WF_AttValue_CleanAttrVals: {
 		source: '<xml attr="1<2">',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
 	},
 	WF_AttValue_CleanAttrVals_MissingClosingQuote: {
@@ -203,26 +252,28 @@ const REPORTED = {
 		// (search for the key in the snapshots to see it)
 		// our test just makes sure that this specific error is not reported
 		// browsers ignore the faulty tag, but this is not easy to implement
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Unescaped '<' not allowed in attributes values/.test(msg),
 	},
 	/**
 	 * This sample doesn't follow the specified grammar.
 	 * In the browser it is reported as `error on line 1 at column 6: Comment not terminated`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Comment
 	 */
-	WF_UnclosedComment: {
+	SYNTAX_UnclosedComment: {
 		source: '<xml></xml><!--',
 		level: 'fatalError',
 		match: (msg) => /comment is not well-formed/.test(msg),
 	},
 	/**
-	 * Triggered by lib/sax.js:596, caught in 208
-	 * This sample doesn't follow the specified grammar.
+	 * Triggered by lib/sax.js:596, caught in 208 This sample doesn't follow the specified
+	 * grammar.
 	 * In the browser:
-	 * - as XML it is reported as
-	 * `error on line 1 at column 2: StartTag: invalid element name`
-	 * - as HTML it is accepted as characters
+	 * - as XML it is reported as `error on line 1 at column 2: StartTag: invalid element name`
+	 * - as HTML it is accepted as characters.
 	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Name
 	 */
 	SYNTAX_InvalidTagName: {
 		source: '<xml><123 /></xml>',
@@ -230,12 +281,30 @@ const REPORTED = {
 		match: (msg) => /invalid tagName/.test(msg),
 	},
 	/**
-	 * Triggered by lib/sax.js:602, caught in 208
-	 * This sample doesn't follow the specified grammar.
+	 * Triggered by `parseElementStartPart` in lib/sax.js when a `<` appears where a tag name is
+	 * expected, caught in the main loop and downgraded to `errorHandler.error` via the `element
+	 * parse error:` wrapper. A `<` cannot occur inside a tag name, so the scan stops there
+	 * instead of running on to the next `>` (which would make malformed input re-scan
+	 * quadratically).
 	 * In the browser:
-	 * - as XML it is reported as
-	 * `error on line 1 at column 6: error parsing attribute name`
-	 * - as HTML it is accepted as attribute name
+	 * - as XML `<a<b/>` reports `error on line 1 at column 3: StartTag: invalid element name`.
+	 * - as HTML it is accepted as characters.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Name
+	 */
+	SYNTAX_UnexpectedLessThanInTagName: {
+		source: '<xml><a<b/></xml>',
+		level: 'error',
+		match: (msg) => /unexpected < in tag name/.test(msg),
+	},
+	/**
+	 * Triggered by lib/sax.js:602, caught in 208 This sample doesn't follow the specified
+	 * grammar.
+	 * In the browser:
+	 * - as XML it is reported as `error on line 1 at column 6: error parsing attribute name`
+	 * - as HTML it is accepted as attribute name.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 */
 	SYNTAX_InvalidAttributeName: {
 		source: '<xml><child 123=""/></xml>',
@@ -243,11 +312,13 @@ const REPORTED = {
 		match: (msg) => /invalid attribute/.test(msg),
 	},
 	/**
-	 * Triggered by lib/sax.js:392, caught in 208
-	 * This sample doesn't follow the specified grammar.
+	 * Triggered by lib/sax.js:392, caught in 208 This sample doesn't follow the specified
+	 * grammar.
 	 * In the browser:
 	 * - in XML it is reported as `error on line 1 at column 8: error parsing attribute name`
 	 * - in HTML it produces `<xml><a <="" xml=""></a></xml>` (invalid XML?)
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-EmptyElemTag
 	 */
 	SYNTAX_ElementClosingNotConnected: {
 		source: '<xml><a/ </xml>',
@@ -256,12 +327,14 @@ const REPORTED = {
 	},
 	/**
 	 * In the browser:
-	 * - for XML it is reported as
-	 * `error on line 1 at column 10: Specification mandates value for attribute attr`
-	 * - for HTML is uses the attribute as one with no value and adds `"value"` to the attribute name
-	 *   and is not reporting any issue.
+	 * - for XML it is reported as `error on line 1 at column 10: Specification mandates value for
+	 * attribute attr`
+	 * - for HTML is uses the attribute as one with no value and adds `"value"` to the attribute
+	 * name and is not reporting any issue.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 */
-	WF_AttributeValueMustAfterEqual: {
+	SYNTAX_AttributeValueMustAfterEqual: {
 		source: '<xml attr"value" />',
 		level: 'warning',
 		match: (msg) => /attribute value must after "="/.test(msg),
@@ -270,8 +343,10 @@ const REPORTED = {
 	 * In the browser:
 	 * - for XML it is reported as `error on line 1 at column 11: AttValue: " or ' expected`
 	 * - for HTML is wraps `value"` with quotes and is not reporting any issue.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-AttValue
 	 */
-	WF_AttributeMissingStartingQuote: {
+	SYNTAX_AttributeMissingStartingQuote: {
 		source: '<xml attr=value" />',
 		level: 'warning',
 		match: (msg) => /missed start quot/.test(msg),
@@ -283,6 +358,8 @@ const REPORTED = {
 	 * In the browser:
 	 * - for XML it is reported as `error on line 1 at column 20: AttValue: ' expected`
 	 * - for HTML nothing is added to the DOM.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-AttValue
 	 */
 	SYNTAX_AttributeMissingEndingQuote: {
 		source: '<xml><child attr="value /></xml>',
@@ -290,28 +367,29 @@ const REPORTED = {
 		match: (msg) => /attribute value no end .* match/.test(msg),
 	},
 	/**
-	 * Triggered by lib/sax.js:324
-	 * In the browser:
+	 * Triggered by lib/sax.js:324 In the browser:
 	 * - for XML it is reported as `error on line 1 at column 11: AttValue: " or ' expected`
 	 * - for HTML is wraps `value/` with quotes and is not reporting any issue.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-AttValue
 	 */
-	WF_AttributeMissingQuote: {
+	SYNTAX_AttributeMissingQuote: {
 		source: '<xml attr=value/>',
 		level: 'warning',
 		match: (msg) => / missed quot/.test(msg) && /!!/.test(msg) === false,
 	},
 	/**
-	 * Triggered by lib/sax.js:354
-	 * This is the only warning reported in this sample.
-	 * For some reason the "attribute" that is reported as missing quotes
-	 * has the name `&`.
+	 * Triggered by lib/sax.js:354 This is the only warning reported in this sample.
+	 * For some reason the "attribute" that is reported as missing quotes has the name `&`.
 	 * This case is also present in 2 tests in test/html/normalize.test.js
 	 *
 	 * In the browser:
 	 * - for XML it is reported as `error on line 1 at column 8: AttValue: " or ' expected`
 	 * - for HTML is yields `<xml a="&amp;" b="&amp;"></xml>` and is not reporting any issue.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-AttValue
 	 */
-	WF_AttributeMissingQuote2: {
+	SYNTAX_AttributeMissingQuote2: {
 		source: `<xml a=& b="&"/>`,
 		level: 'warning',
 		match: (msg) => / missed quot/.test(msg) && /!!/.test(msg),
@@ -327,10 +405,10 @@ const REPORTED = {
 	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
-	WF_AttributeEqualMissingValue: {
+	SYNTAX_AttributeEqualMissingValue: {
 		source: '<doc><child a1=></child></doc>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /AttValue: \\' or " expected/.test(msg),
 	},
 	/**
@@ -340,11 +418,11 @@ const REPORTED = {
 	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
-	WF_AttributeMissingValue: {
+	SYNTAX_AttributeMissingValue: {
 		source: '<xml attr ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead!!/.test(msg),
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 	},
 	/**
 	 * Triggered by lib/sax.js:376 This seems to only be reached when there are two subsequent
@@ -355,40 +433,341 @@ const REPORTED = {
 	 * @see https://www.w3.org/TR/xml/#NT-Attribute
 	 * @see https://www.w3.org/TR/xml11/#NT-Attribute
 	 */
-	WF_AttributeMissingValue2: {
+	SYNTAX_AttributeMissingValue2: {
 		source: '<xml attr attr2 ></xml>',
 		level: 'warning',
 		match: (msg) => /missed value/.test(msg) && /instead2!!/.test(msg),
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 	},
-	WF_SingleRootElement_ContentAfter: {
+	/**
+	 * Non-whitespace content after the root element; the top level allows only Comment, PI or
+	 * whitespace after it.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-document
+	 * @see https://www.w3.org/TR/xml/#NT-Misc
+	 */
+	SYNTAX_SingleRootElement_ContentAfter: {
 		source: '<xml/>text after',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Extra content at the end of the document/.test(msg),
 	},
-	WF_SingleRootElement_ContentBefore: {
+	/**
+	 * Non-whitespace content before the root element; only Comment, PI or whitespace may precede
+	 * it.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-document
+	 * @see https://www.w3.org/TR/xml/#NT-Misc
+	 */
+	SYNTAX_SingleRootElement_ContentBefore: {
 		source: 'text before<xml/>',
 		level: 'error',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /Unexpected content outside root element/.test(msg),
 	},
-	WF_SingleRootElement_InvalidCData: {
+	/**
+	 * A malformed CDATA section.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-CDSect
+	 */
+	SYNTAX_SingleRootElement_InvalidCData: {
 		source: '<!CDATA[ ] ] ><xml/>',
 		level: 'fatalError',
 		match: (msg) => /Invalid CDATA starting at/.test(msg),
 	},
-	WF_SingleRootElement_CDataOutside: {
+	/**
+	 * A CDATA section at the top level; CDATA is only allowed inside element content.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-content
+	 * @see https://www.w3.org/TR/xml/#NT-CDSect
+	 */
+	SYNTAX_SingleRootElement_CDataOutside: {
 		source: '<!CDATA[]]><xml/>',
 		level: 'fatalError',
-		skippedInHtml,
+		mimeTypes: [MIME_TYPE.XML_TEXT],
 		match: (msg) => /CDATA outside of element/.test(msg),
+	},
+	/**
+	 * The generic catch-all in the `lib/sax.js` parse loop: an Error that is neither a
+	 * ParseError nor a DOMException is downgraded to `errorHandler.error`. This sample
+	 * reaches it via the swallowed `attribute value must after "="` throw.
+	 */
+	SYNTAX_ElementParseError: {
+		source: '<xml><a "></xml>',
+		level: 'error',
+		match: (msg) => /element parse error:/.test(msg),
+	},
+	/**
+	 * Reaches the `attribute equal must after attrName` throw (an `=` in a state that does not
+	 * expect one), surfaced through the generic `element parse error:` wrapper.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
+	 */
+	SYNTAX_AttributeEqualMustAfterAttrName: {
+		source: '<xml><a b==></xml>',
+		level: 'error',
+		match: (msg) => /attribute equal must after attrName/.test(msg),
+	},
+	/**
+	 * Reaches the `attribute invalid close char('/')` throw (a `/` right after `=`,
+	 * i.e. state S_EQ), surfaced through the generic `element parse error:` wrapper.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-EmptyElemTag
+	 */
+	SYNTAX_AttributeInvalidCloseChar: {
+		source: '<xml><a b=/></xml>',
+		level: 'error',
+		match: (msg) => /attribute invalid close char/.test(msg),
+	},
+	/**
+	 * A quote where no attribute value is expected (here right after the tag name). Reaches the
+	 * `attribute value must after "="` throw, surfaced through the `element parse error:`
+	 * wrapper — distinct from the same-message warning, which the level classifier keeps apart.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Attribute
+	 */
+	SYNTAX_AttributeValueMustAfterEqual_Thrown: {
+		source: '<xml><a "></xml>',
+		level: 'error',
+		match: (msg) => /attribute value must after "="/.test(msg),
+	},
+	/**
+	 * Input ending inside a start tag. Only asserted for HTML: in XML the same sample also throws
+	 * an `unclosed xml tag` fatalError, which the error-level assertion cannot accept.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-STag
+	 */
+	SYNTAX_UnexpectedEndOfInput: {
+		source: '<xml ',
+		level: 'error',
+		mimeTypes: [MIME_TYPE.HTML],
+		match: (msg) => /unexpected end of input/.test(msg),
+	},
+	/**
+	 * Two attributes not separated by whitespace: the second attribute name directly follows the
+	 * first attribute's closing quote.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-STag
+	 */
+	SYNTAX_AttributeSpaceRequired: {
+		source: '<xml a="1"b="2"/>',
+		level: 'warning',
+		match: (msg) => /attribute space is required/.test(msg),
+	},
+	/**
+	 * A DOCTYPE appearing after the document element already exists.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-document
+	 * @see https://www.w3.org/TR/xml/#NT-prolog
+	 */
+	SYNTAX_Doctype_NotAllowedAfterDocumentElement: {
+		source: '<xml/><!DOCTYPE x>',
+		level: 'fatalError',
+		match: (msg) => /Doctype not allowed inside or after documentElement/.test(msg),
+	},
+	/**
+	 * `<!D…` that is not the full `<!DOCTYPE` keyword.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 */
+	SYNTAX_Doctype_ExpectedKeyword: {
+		source: '<!D>',
+		level: 'fatalError',
+		match: (msg) => /Expected ' \+ g\.DOCTYPE_DECL_START/.test(msg),
+	},
+	/**
+	 * `<!DOCTYPE` not followed by whitespace.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 */
+	SYNTAX_Doctype_ExpectedWhitespaceAfterKeyword: {
+		source: '<!DOCTYPE>',
+		level: 'fatalError',
+		match: (msg) => /Expected whitespace after ' \+ g\.DOCTYPE_DECL_START/.test(msg),
+	},
+	/**
+	 * `<!DOCTYPE ` without a valid doctype name.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 */
+	SYNTAX_Doctype_NameMissing: {
+		source: '<!DOCTYPE >',
+		level: 'fatalError',
+		match: (msg) => /doctype name missing or contains unexpected characters/.test(msg),
+	},
+	/**
+	 * A PUBLIC/SYSTEM external id that does not follow the ExternalID grammar.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-ExternalID
+	 */
+	SYNTAX_Doctype_ExternalIdNotWellFormed: {
+		source: '<!DOCTYPE x PUBLIC>',
+		level: 'fatalError',
+		match: (msg) => /doctype external id is not well-formed/.test(msg),
+	},
+	/**
+	 * HTML-only legacy `SYSTEM` (lowercase, so not the XML ExternalID form) with no following
+	 * whitespace. In XML the same sample throws a different fatalError, so the fatalError
+	 * assertion still holds in both mimeTypes.
+	 *
+	 * @see https://html.spec.whatwg.org/multipage/parsing.html#parse-error-missing-whitespace-after-doctype-system-keyword
+	 * @see https://html.spec.whatwg.org/multipage/syntax.html#the-doctype
+	 */
+	HTML_Doctype_ExpectedWhitespaceAfterSystem: {
+		source: '<!DOCTYPE html system"about:legacy-compat">',
+		level: 'fatalError',
+		match: (msg) => /Expected whitespace after ' \+ g\.SYSTEM/.test(msg),
+	},
+	/**
+	 * A DOCTYPE that never reaches its closing `>`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 */
+	SYNTAX_Doctype_NotTerminated: {
+		source: '<!DOCTYPE x y>',
+		level: 'fatalError',
+		match: (msg) => /doctype not terminated with > at position/.test(msg),
+	},
+	/**
+	 * An HTML document whose DOCTYPE name is not `html`. A warning only in HTML; in XML a DOCTYPE
+	 * named `foo` is well-formed and reported nothing, so a root element is added to keep the XML
+	 * sample from failing on a missing document element.
+	 *
+	 * @see https://html.spec.whatwg.org/multipage/parsing.html#the-initial-insertion-mode
+	 * @see https://html.spec.whatwg.org/multipage/syntax.html#the-doctype
+	 */
+	HTML_Doctype_UnexpectedName: {
+		source: '<!DOCTYPE foo><foo/>',
+		level: 'warning',
+		mimeTypes: [MIME_TYPE.HTML],
+		match: (msg) => /Unexpected DOCTYPE in HTML document/.test(msg),
+	},
+	/**
+	 * An HTML document with a systemId that is not the legacy `about:legacy-compat`. A warning
+	 * only in HTML; the XML sample carries a root element for the same reason as above.
+	 *
+	 * @see https://html.spec.whatwg.org/multipage/parsing.html#the-initial-insertion-mode
+	 * @see https://html.spec.whatwg.org/multipage/syntax.html#the-doctype
+	 */
+	HTML_Doctype_UnexpectedSystemId: {
+		source: '<!DOCTYPE html SYSTEM "http://x"><html/>',
+		level: 'warning',
+		mimeTypes: [MIME_TYPE.HTML],
+		match: (msg) => /Unexpected doctype.systemId in HTML document/.test(msg),
+	},
+	/**
+	 * A PI inside the (XML-only) doctype internal subset that does not follow the PI grammar.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-PI
+	 */
+	SYNTAX_Doctype_InternalSubset_PINotWellFormed: {
+		source: '<!DOCTYPE x [<? ]>',
+		level: 'fatalError',
+		mimeTypes: [MIME_TYPE.XML_TEXT],
+		match: (msg) => /processing instruction is not well-formed at position/.test(msg),
+	},
+	/**
+	 * A markup declaration inside the internal subset that starts with none of `<!`, `<?`, `%`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-intSubset
+	 * @see https://www.w3.org/TR/xml/#NT-markupdecl
+	 */
+	SYNTAX_Doctype_InternalSubset_MarkupDeclaration: {
+		source: '<!DOCTYPE x [z]>',
+		level: 'fatalError',
+		mimeTypes: [MIME_TYPE.XML_TEXT],
+		match: (msg) => /Error detected in Markup declaration/.test(msg),
+	},
+	/**
+	 * A `<!…` markup declaration inside the internal subset that matches no known decl.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-markupdecl
+	 */
+	SYNTAX_Doctype_InternalSubset_Error: {
+		source: '<!DOCTYPE x [<!Z>]>',
+		level: 'fatalError',
+		mimeTypes: [MIME_TYPE.XML_TEXT],
+		match: (msg) => /Error in internal subset at position/.test(msg),
+	},
+	/**
+	 * An internal subset opened with `[` that never reaches its closing `]`.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-doctypedecl
+	 * @see https://www.w3.org/TR/xml/#NT-intSubset
+	 */
+	SYNTAX_Doctype_InternalSubset_MissingClosingBracket: {
+		source: '<!DOCTYPE x [',
+		level: 'fatalError',
+		mimeTypes: [MIME_TYPE.XML_TEXT],
+		match: (msg) => /doctype internal subset is not well-formed, missing \]/.test(msg),
+	},
+	/**
+	 * `<!…` (not a comment, CDATA or DOCTYPE) — the default of the `<!` dispatch.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-Comment
+	 */
+	SYNTAX_NotWellFormedExclamation: {
+		source: '<!X>',
+		level: 'fatalError',
+		match: (msg) => /Not well-formed XML starting with/.test(msg),
+	},
+	/**
+	 * `<?…` that does not follow the PI grammar.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-PI
+	 */
+	SYNTAX_InvalidProcessingInstruction: {
+		source: '<??>',
+		level: 'fatalError',
+		match: (msg) => /Invalid processing instruction starting at position/.test(msg),
+	},
+	/**
+	 * `<?xml …?>` at the start of the document that does not follow the XMLDecl grammar.
+	 *
+	 * @see https://www.w3.org/TR/xml/#NT-XMLDecl
+	 */
+	SYNTAX_XmlDeclarationNotWellFormed: {
+		source: '<?xml version?>',
+		level: 'fatalError',
+		match: (msg) => /xml declaration is not well-formed/.test(msg),
+	},
+	/**
+	 * A DOMException raised while building the DOM during parsing, here from an unbound
+	 * namespace prefix. The parser reports it as a fatalError and rethrows it as a ParseError
+	 * with the DOMException as its cause. The common `Error constructing the DOM:` prefix
+	 * identifies the whole class.
+	 */
+	WF_DOMException: {
+		source: '<a:b>',
+		level: 'fatalError',
+		cause: DOMException,
+		match: (msg) => /Error constructing the DOM:/.test(msg),
 	},
 };
 
 const LINE_TO_ERROR_INDEX = {
 	'': `This file is gitignored and is generated by ${__filename} every time the tests run.`,
 };
+
+/**
+ * Classify a `lib/sax.js` reporting line (or an extracted errorType token) into the single
+ * level it triggers, by its mechanism. A plain substring test for the level would misfire,
+ * because the word "error" is contained in both `errorHandler.warning` and
+ * `errorHandler.fatalError`.
+ *
+ * - `errorHandler.fatalError(…)` and `throw new ParseError(…)` abort parsing → 'fatalError'
+ * - `errorHandler.warning(…)` → 'warning'
+ * - `errorHandler.error(…)` and `throw new Error(…)` (caught and downgraded to
+ * `errorHandler.error`) → 'error'
+ *
+ * @param {string} lineOrErrorType
+ * @returns {'error' | 'warning' | 'fatalError'}
+ */
+function classifyLevel(lineOrErrorType) {
+	if (/fatalError|ParseError/.test(lineOrErrorType)) return 'fatalError';
+	if (/warning/i.test(lineOrErrorType)) return 'warning';
+	return 'error';
+}
 
 /**
  * To avoid to have exact lines in snapshots, but still being able to verify,
@@ -436,7 +815,7 @@ function parseErrorLines(fileNameInKey) {
 	});
 	Object.entries(REPORTED).forEach(([key, value]) => {
 		const matches = source.reduce((lines, currentLine, i) => {
-			if (new RegExp(value.level, 'i').test(currentLine) && value.match(currentLine)) {
+			if (classifyLevel(currentLine) === value.level && value.match(currentLine)) {
 				// the first line is line 1, not line 0!
 				lines.push(i + 1);
 			}
@@ -462,6 +841,7 @@ function parseErrorLines(fileNameInKey) {
 parseErrorLines(path.join('lib', 'sax.js'));
 
 module.exports = {
+	classifyLevel,
 	LINE_TO_ERROR_INDEX,
 	REPORTED,
 };

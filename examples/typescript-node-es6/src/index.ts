@@ -164,6 +164,18 @@ const doc = new DOMParser({
 	onError: onWarningStopParsing,
 }).parseFromString(source, MIME_TYPE.XML_TEXT);
 assert(new XMLSerializer().serializeToString(doc), source);
+// `true` is shorthand for `{ requireWellFormed: true }`; the source is well-formed so it serializes unchanged
+assert(new XMLSerializer().serializeToString(doc, true), source);
+assert(doc.childNodes.toString(true), doc.childNodes.toString());
+// the maximum options object, exercising every supported property
+assert(
+	new XMLSerializer().serializeToString(doc, {
+		requireWellFormed: true,
+		splitCDATASections: true,
+		nodeFilter: (node) => node,
+	}),
+	source
+);
 new DOMParser({
 	onError: (level, msg) => {
 		switch (level) {

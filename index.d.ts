@@ -321,12 +321,16 @@ declare module '@xmldom/xmldom' {
 
 		readonly message: string;
 		readonly locator?: any;
+		readonly cause?: Error;
 	}
 
 	// END ./lib/errors.js
 
 	// START ./lib/dom.js
 
+	/**
+	 * Exported for `instanceof` checks only — these types cannot be constructed directly.
+	 */
 	type InstanceOf<T> = {
 		// instanceof pre ts 5.3
 		(val: unknown): val is T;
@@ -791,7 +795,7 @@ declare module '@xmldom/xmldom' {
 		 * Accepts the same options as `XMLSerializer.prototype.serializeToString`.
 		 */
 		toString(
-			options?: XMLSerializerOptions | ((node: T) => T | undefined)
+			options?: XMLSerializerOptions | ((node: T) => T | undefined) | true
 		): string;
 		/**
 		 * Filters the NodeList based on a predicate.
@@ -1060,6 +1064,9 @@ declare module '@xmldom/xmldom' {
 	 * a single child implementing Text that contains the element's text. However, if the element
 	 * contains markup, it is parsed into information items and Text nodes that form its children.
 	 *
+	 * __This implementation differs from the specification:__ not constructable,
+	 * use `document.createTextNode(data)` instead.
+	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Text)
 	 */
 	var Text: InstanceOf<Text>;
@@ -1081,6 +1088,9 @@ declare module '@xmldom/xmldom' {
 	 * visually shown, such comments are available to be read in the source view. Comments are
 	 * represented in HTML and XML as content between '<!--' and '-->'. In XML, like inside SVG or
 	 * MathML markup, the character sequence '--' cannot be used within a comment.
+	 *
+	 * __This implementation differs from the specification:__ not constructable,
+	 * use `document.createComment(data)` instead.
 	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Comment)
 	 */
@@ -1126,6 +1136,10 @@ declare module '@xmldom/xmldom' {
 
 		getElementById(elementId: string): Element | null;
 	}
+	/**
+	 * __This implementation differs from the specification:__ not constructable,
+	 * use `document.createDocumentFragment()` instead.
+	 */
 	var DocumentFragment: InstanceOf<DocumentFragment>;
 
 	interface Entity extends Node {
@@ -1133,6 +1147,17 @@ declare module '@xmldom/xmldom' {
 	}
 	var Entity: InstanceOf<Entity>;
 
+	/**
+	 * Represents an EntityReference node, serialized as `&nodeName;`.
+	 *
+	 * `nodeName` is the referenced entity's name, stored verbatim. When serialized with
+	 * `requireWellFormed: true`, the serializer validates `nodeName` against the XML `Name`
+	 * production and throws `InvalidStateError` if it does not match; without that option the name
+	 * is emitted verbatim between `&` and `;`.
+	 *
+	 * xmldom does not expand entities — the parser resolves entity references inline and never
+	 * constructs `EntityReference` nodes, so the only producer is `Document.createEntityReference`.
+	 */
 	interface EntityReference extends Node {
 		nodeType: typeof Node.ENTITY_REFERENCE_NODE;
 	}
@@ -1272,11 +1297,21 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * The name of the entity to reference. No namespace well-formedness checks are performed.
 		 *
+		 * The `name` is validated against the XML `Name` production at creation time; an invalid
+		 * name throws `InvalidCharacterError`. When the resulting node is serialized with
+		 * `requireWellFormed: true`, the serializer re-validates `nodeName` against the XML `Name`
+		 * production and throws `InvalidStateError` if a later `nodeName` mutation made it invalid;
+		 * without that option the name is emitted verbatim.
+		 *
+		 * __This implementation differs from the specification:__ xmldom does not expand entities —
+		 * the parser resolves entity references inline and never constructs `EntityReference` nodes,
+		 * so this method is the only producer.
+		 *
 		 * @deprecated
 		 * In DOM Level 4.
 		 * @returns {EntityReference}
 		 * @throws {DOMException}
-		 * With code `INVALID_CHARACTER_ERR` when `name` is not valid.
+		 * With code `INVALID_CHARACTER_ERR` when `name` is not a valid XML `Name`.
 		 * @throws {DOMException}
 		 * with code `NOT_SUPPORTED_ERR` when the document is of type `html`
 		 * @see https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-392B75AE
@@ -1291,10 +1326,10 @@ declare module '@xmldom/xmldom' {
 		 * "InvalidCharacterError".
 		 *
 		 * Note: When the resulting document is serialized with `requireWellFormed: true`, the
-		 * serializer throws `InvalidStateError` if `.target` contains `:` or is an ASCII
-		 * case-insensitive match for `"xml"`, or if `.data` contains `?>` or characters outside the
-		 * XML Char production (W3C DOM Parsing §3.2.1.7). Without that option the data is emitted
-		 * verbatim.
+		 * serializer throws `InvalidStateError` if `.target` is not a valid XML `NCName` (a `Name`
+		 * with no colon) or is an ASCII case-insensitive match for `"xml"`, or if `.data` contains
+		 * `?>` or characters outside the XML Char production (W3C DOM Parsing §3.2.1.7). Without
+		 * that option the target and data are emitted verbatim.
 		 *
 		 * @see https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction
 		 * @see https://dom.spec.whatwg.org/#dom-document-createprocessinginstruction
@@ -1394,7 +1429,14 @@ declare module '@xmldom/xmldom' {
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType)
 	 */
 	interface DocumentType extends Node {
-		/** [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/name) */
+		/**
+		 * The doctype name, stored verbatim.
+		 * Declared `readonly` by the WHATWG DOM spec; xmldom does not enforce this — direct
+		 * property writes succeed and the written value is serialized verbatim.
+		 * When serialized with `requireWellFormed: true`, throws `InvalidStateError` if the value
+		 * is not a valid XML `Name` production (XML 1.0 [5]).
+		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/DocumentType/name)
+		 */
 		readonly name: string;
 		/**
 		 * The internal subset string (the raw content between `[` and `]`), or an empty string.
@@ -1563,8 +1605,9 @@ declare module '@xmldom/xmldom' {
 		 *
 		 * When `options.requireWellFormed` is `true`, throws `InvalidStateError` for content that
 		 * would produce ill-formed XML. When `options.splitCDATASections` is `false`,
-		 * CDATASection data is emitted verbatim. Passing a function as `options` is treated as a
-		 * legacy `nodeFilter` for backward compatibility.
+		 * CDATASection data is emitted verbatim. Passing `true` as `options` is shorthand for `{
+		 * requireWellFormed: true }`. Passing a function as `options` is treated as a legacy
+		 * `nodeFilter` for backward compatibility.
 		 *
 		 * __This implementation differs from the specification:__ - CDATASection serialization is
 		 * not specified by W3C DOM Parsing or WHATWG DOM Parsing (see
@@ -1573,23 +1616,32 @@ declare module '@xmldom/xmldom' {
 		 * concatenated CDATA sections — **deprecated**, will be removed in the next breaking
 		 * release.
 		 * - W3C DOM Parsing §3.2.1.1 requires well-formedness checks on Element `localName`s,
-		 * prefixes, and attribute serialization when `requireWellFormed` is `true`. These checks are
-		 * **not implemented** in this release — see the tracking issue filed against the next
-		 * breaking milestone.
+		 * prefixes, and attribute serialization when `requireWellFormed` is `true`. Element and
+		 * attribute qualified names (which cover the namespace prefix) are validated against the XML
+		 * `QName` production; the remaining §3.2.1.1 checks (duplicate attributes,
+		 * namespace-declaration consistency) and creation-time name validation are **not
+		 * implemented** in this release — see the tracking issue filed against the next breaking
+		 * milestone.
 		 *
 		 * @throws {DOMException}
 		 * `InvalidStateError` when `requireWellFormed` is `true` and any of the following conditions
 		 * hold:
+		 * - an Element's qualified name (including any namespace prefix) is not a valid XML QName
+		 * - an attribute's qualified name (including a synthesized `xmlns:` namespace declaration) is
+		 * not a valid XML QName
 		 * - CDATASection data contains `"]]>"`
 		 * - Text data contains characters outside the XML Char production
 		 * - a Comment node's data contains `--` anywhere or ends with `-`
-		 * - a ProcessingInstruction's target contains `:` or is an ASCII case-insensitive match for
-		 * `"xml"`, or its data contains `?>` or characters outside the XML Char production
+		 * - a ProcessingInstruction's target is not a valid XML `NCName` (a `Name` with no colon) or
+		 * is an ASCII case-insensitive match for `"xml"`, or its data contains `?>` or characters
+		 * outside the XML Char production
+		 * - a DocumentType's `name` is not a valid XML `Name` (XML 1.0 production [5])
 		 * - a DocumentType's `publicId` is non-empty and does not match the XML `PubidLiteral`
 		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [12])
 		 * - a DocumentType's `systemId` is non-empty and does not match the XML `SystemLiteral`
 		 * production (W3C DOM Parsing §3.2.1.3; XML 1.0 production [11])
 		 * - a DocumentType's `internalSubset` contains `"]>"`
+		 * - an EntityReference's `nodeName` is not a valid XML `Name` (XML 1.0 production [5])
 		 * - the Document has no `documentElement`
 		 * @see https://developer.mozilla.org/docs/Web/API/XMLSerializer/serializeToString
 		 * @see https://html.spec.whatwg.org/#dom-xmlserializer-serializetostring
@@ -1598,7 +1650,10 @@ declare module '@xmldom/xmldom' {
 		 */
 		serializeToString(
 			node: Node,
-			options?: XMLSerializerOptions | ((node: Node) => Node | null | undefined)
+			options?:
+				| XMLSerializerOptions
+				| ((node: Node) => Node | null | undefined)
+				| true
 		): string;
 	}
 	// END ./lib/dom.js
@@ -1642,6 +1697,9 @@ declare module '@xmldom/xmldom' {
 		 * - Any `fatalError` throws a `ParseError` which prevents further processing.
 		 * - Any error thrown by `onError` is converted to a `ParseError` which prevents further
 		 * processing - If no `Document` was created during parsing it is reported as a `fatalError`.
+		 * - A `DOMException` raised while building the DOM (e.g. an unbound namespace prefix) is
+		 * reported as a `fatalError` and rethrown as a `ParseError` with the `DOMException` as its
+		 * `cause`.
 		 *
 		 * @returns
 		 * The `Document` node.

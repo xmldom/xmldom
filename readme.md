@@ -11,7 +11,6 @@
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/7879/badge)](https://www.bestpractices.dev/projects/7879)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/xmldom/xmldom/badge)](https://securityscorecards.dev/viewer/?uri=github.com/xmldom/xmldom)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/@xmldom/xmldom)](https://socket.dev/npm/package/@xmldom/xmldom)
-[![snyk.io package health](https://snyk.io/advisor/npm-package/@xmldom/xmldom/badge.svg)](https://snyk.io/advisor/npm-package/@xmldom/xmldom)
 
 [![npm:latest](https://img.shields.io/npm/v/@xmldom/xmldom/latest?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom)
 [![npm:next](https://img.shields.io/npm/v/@xmldom/xmldom/next?style=flat-square)](https://www.npmjs.com/package/@xmldom/xmldom?activeTab=versions)
@@ -93,6 +92,9 @@ import { DOMParser } from '@xmldom/xmldom'
 	serializeToString(node)
 	```
 ### DOM level2 method and attribute:
+
+All DOM node types listed below are exported for use with `instanceof` (e.g. `node instanceof Text`).
+They cannot be constructed directly — use the `Document` factory methods (`createTextNode`, `createComment`, `createDocumentFragment`, …) instead.
 
 * [Node](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1950641247)
 

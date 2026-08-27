@@ -1,6 +1,8 @@
 'use strict';
 const { describe, it, expect } = require('@jest/globals');
 const { DOMImplementation, NamedNodeMap } = require('../../lib/dom');
+const { DOMParser } = require('../../lib/dom-parser');
+const { XMLSerializer } = require('../../lib');
 const { DOMException } = require('../../lib/errors');
 
 const doc = new DOMImplementation().createDocument(null, 'xml');
@@ -287,6 +289,80 @@ describe('NamedNodeMap', () => {
 			it.length = 2;
 			const localName = second.localName.toUpperCase();
 			expect(() => it.removeNamedItemNS(null, localName)).toThrow(new DOMException(DOMException.NOT_FOUND_ERR, localName));
+		});
+	});
+
+	// Characterization of the parse/DOM attribute de-duplication behaviour that the
+	// O(M^2)->O(M) index refactor must preserve byte-for-byte (GHSA parse-dedup).
+	// These assert current behaviour and stay green across the refactor.
+	describe('de-duplication behaviour (characterization)', () => {
+		const xmlDoc = new DOMImplementation().createDocument(null, 'root');
+
+		test('a duplicate (namespace, localName) keeps the first position and takes the last value', () => {
+			const el = xmlDoc.createElement('e');
+			const x1 = xmlDoc.createAttribute('x');
+			x1.value = '1';
+			el.setAttributeNode(x1);
+			const y = xmlDoc.createAttribute('y');
+			y.value = '9';
+			el.setAttributeNode(y);
+			const x2 = xmlDoc.createAttribute('x');
+			x2.value = '2';
+			const returned = el.setAttributeNode(x2);
+
+			expect(returned).toBe(x1); // the replaced attribute is returned
+			expect(el.attributes.length).toBe(2);
+			// last value wins, first occurrence's position kept (x before y)
+			expect(new XMLSerializer().serializeToString(el)).toStrictEqual('<e x="2" y="9"/>');
+		});
+
+		test('duplicate qualified names in different namespaces are kept distinct', () => {
+			const el = xmlDoc.createElement('e2');
+			const p = xmlDoc.createAttributeNS('P', 'p:x');
+			p.value = '1';
+			el.setAttributeNode(p);
+			const q = xmlDoc.createAttributeNS('Q', 'q:x');
+			q.value = '2';
+			el.setAttributeNode(q);
+
+			expect(el.attributes.length).toBe(2);
+			expect(el.attributes.getNamedItemNS('P', 'x')).toBe(p);
+			expect(el.attributes.getNamedItemNS('Q', 'x')).toBe(q);
+			expect(new XMLSerializer().serializeToString(el)).toStrictEqual('<e2 xmlns:p="P" p:x="1" xmlns:q="Q" q:x="2"/>');
+		});
+
+		test('a null namespace and an empty-string namespace address the same attribute', () => {
+			const el = xmlDoc.createElement('e3');
+			const z = xmlDoc.createAttribute('z');
+			z.value = '1';
+			el.setAttributeNode(z);
+
+			expect(el.attributes.getNamedItemNS(null, 'z')).toBe(z);
+			expect(el.attributes.getNamedItemNS('', 'z')).toBe(z);
+		});
+
+		test('a real namespace equal to the string "null" does not collide with the null namespace', () => {
+			const el = xmlDoc.createElement('e4');
+			const noNs = xmlDoc.createAttribute('x');
+			noNs.value = '1';
+			el.setAttributeNode(noNs);
+			const strNull = xmlDoc.createAttributeNS('null', 'p:x');
+			strNull.value = '2';
+			el.setAttributeNode(strNull);
+
+			// distinct attributes: null namespace vs the literal namespace URI "null"
+			expect(el.attributes.length).toBe(2);
+			expect(el.attributes.getNamedItemNS(null, 'x')).toBe(noNs);
+			expect(el.attributes.getNamedItemNS('null', 'x')).toBe(strNull);
+		});
+
+		test('many distinct attributes parse and serialize in source order', () => {
+			const names = Array.from({ length: 50 }, (_, i) => 'a' + i);
+			const source = '<r ' + names.map((n) => n + '="x"').join(' ') + '/>';
+			const el = new DOMParser().parseFromString(source, 'text/xml').documentElement;
+
+			expect(el.attributes.length).toBe(names.length);
+			expect(new XMLSerializer().serializeToString(el)).toStrictEqual(source);
 		});
 	});
 });

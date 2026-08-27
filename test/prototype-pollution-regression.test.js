@@ -1,5 +1,19 @@
 'use strict';
 
+/**
+ * Scope: prototype-chain safety of the entity lookup tables — the
+ * prototype-pollution weakness family, CWE-1321.
+ *
+ *   {@link https://cwe.mitre.org/data/definitions/1321.html CWE-1321 Prototype Pollution}
+ *
+ * The XML/HTML entity maps must expose no `prototype`/`__proto__`, and entity
+ * resolution must never resolve names inherited from `Object.prototype`
+ * (e.g. `&hasOwnProperty;`, `&__proto__;`, `&constructor;`). Added with the
+ * prototype-clash fix (#554).
+ *
+ * See test/README.md for the weakness-scope comment convention.
+ */
+
 const { describe, expect, test } = require('@jest/globals');
 const { getTestParser } = require('./get-test-parser');
 const { MIME_TYPE } = require('../lib/conventions');

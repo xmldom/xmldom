@@ -340,6 +340,62 @@ describe('Document.prototype', () => {
 
 			expectDOMException(() => doc.createEntityReference('123'), DOMExceptionName.InvalidCharacterError, 'name "123"');
 		});
+		test('should throw InvalidCharacter DOMException for a name with a valid prefix but ill-formed remainder', () => {
+			const doc = new DOMImplementation().createDocument(null, '');
+
+			expectDOMException(
+				() => doc.createEntityReference('safe; <injected/> &x'),
+				DOMExceptionName.InvalidCharacterError,
+				'name "safe; <injected/> &x"'
+			);
+		});
+	});
+	/**
+	 * A name carrying an ECMAScript LineTerminator (U+000A, U+000D, U+2028, U+2029) used to pass
+	 * the anchored creation-time Name/QName validators, because the shared regexp builder compiled
+	 * `^…$` with the `m` flag and a valid first line satisfied the anchors. Creation must now reject
+	 * every LineTerminator with `InvalidCharacterError`, on the default path (no `requireWellFormed`).
+	 */
+	describe('multiline-anchor line-terminator bypass (creation-time)', () => {
+		const NS = 'http://example.com/ns';
+		const LINE_TERMINATORS = [
+			['LF', '\n'],
+			['CR', '\r'],
+			['LS', '\u2028'],
+			['PS', '\u2029'],
+		];
+
+		describe.each(LINE_TERMINATORS)('with a %s line terminator', (_label, lt) => {
+			test('createElementNS throws InvalidCharacterError', () => {
+				const doc = new DOMImplementation().createDocument(NS, 'root');
+				expectDOMException(() => doc.createElementNS(NS, 'valid' + lt + '/><injected'), DOMExceptionName.InvalidCharacterError);
+			});
+
+			test('createAttributeNS throws InvalidCharacterError', () => {
+				const doc = new DOMImplementation().createDocument(NS, 'root');
+				expectDOMException(() => doc.createAttributeNS(NS, 'valid' + lt + 'injected'), DOMExceptionName.InvalidCharacterError);
+			});
+
+			test('createAttribute throws InvalidCharacterError', () => {
+				const doc = new DOMImplementation().createDocument(null, '');
+				expectDOMException(() => doc.createAttribute('valid' + lt + 'injected'), DOMExceptionName.InvalidCharacterError);
+			});
+
+			test('createDocumentType throws InvalidCharacterError', () => {
+				expectDOMException(
+					() => new DOMImplementation().createDocumentType('valid' + lt + 'injected', '', ''),
+					DOMExceptionName.InvalidCharacterError
+				);
+			});
+		});
+
+		test('a valid name is still accepted by all four create* APIs', () => {
+			const doc = new DOMImplementation().createDocument(NS, 'root');
+			expect(() => doc.createElementNS(NS, 'child')).not.toThrow();
+			expect(() => doc.createAttributeNS(NS, 'attr')).not.toThrow();
+			expect(() => doc.createAttribute('attr')).not.toThrow();
+			expect(() => new DOMImplementation().createDocumentType('name', '', '')).not.toThrow();
+		});
 	});
 	describe('insertBefore', () => {
 		test('should insert the first element and set `documentElement`', () => {
