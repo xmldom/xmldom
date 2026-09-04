@@ -185,6 +185,38 @@ describe('XMLSerializer.serializeToString', () => {
 				expect(new XMLSerializer().serializeToString(dom)).toEqual(svg);
 			});
 		});
+
+		describe('prefix collision between attributes', () => {
+			test('should generate a fresh prefix when one prefix maps to two namespaces', () => {
+				const dom = new DOMParser().parseFromString('<root/>', MIME_TYPE.XML_TEXT);
+				dom.documentElement.setAttributeNS('urn:a', 'x:foo', '1');
+				dom.documentElement.setAttributeNS('urn:b', 'x:bar', '2');
+
+				const serialized = new XMLSerializer().serializeToString(dom);
+
+				expect(serialized).toBe('<root xmlns:x="urn:a" x:foo="1" xmlns:ns1="urn:b" ns1:bar="2"/>');
+				// the same prefix must not be declared twice on one element (XML 1.0 5th ed. 3.1 Unique Att Spec)
+				expect(serialized.match(/xmlns:x=/g)).toHaveLength(1);
+			});
+			test('should produce output that can be re-parsed without redefining a prefix', () => {
+				const dom = new DOMParser().parseFromString('<root/>', MIME_TYPE.XML_TEXT);
+				dom.documentElement.setAttributeNS('urn:a', 'x:foo', '1');
+				dom.documentElement.setAttributeNS('urn:b', 'x:bar', '2');
+
+				const serialized = new XMLSerializer().serializeToString(dom);
+
+				const errors = [];
+				const reparsed = new DOMParser({
+					onError: function (level, message) {
+						errors.push(level + ': ' + message);
+					},
+				}).parseFromString(serialized, MIME_TYPE.XML_TEXT);
+
+				expect(errors).toEqual([]);
+				expect(reparsed.documentElement.getAttributeNS('urn:a', 'foo')).toBe('1');
+				expect(reparsed.documentElement.getAttributeNS('urn:b', 'bar')).toBe('2');
+			});
+		});
 	});
 
 	describe('attribute escaping', () => {
