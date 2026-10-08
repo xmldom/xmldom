@@ -16,6 +16,27 @@ You can still report issues regarding `xmldom` as described below.
 
 If you need help with migrating from `xmldom` to `@xmldom/xmldom`, file a GitHub issue or PR in the affected repository and mention @karfau.
 
+## What we consider a vulnerability
+
+We assume an attacker controls the document content xmldom processes: the XML or HTML passed to `DOMParser.parseFromString`, and the data values and names passed to the DOM API.
+Names are a less likely vector than data values; the likelihood affects the severity, not whether an issue counts.
+
+On that basis, these count as vulnerabilities:
+
+- **Denial of service:** input that makes parsing or serialization take time or memory growing faster than the input size, or that crashes the process.
+- **Broken round trip:** serialized output that fails to parse, or parses into a different tree than the one serialized, when parsed again as the same document type (XML or HTML) with the same options.
+  The typical case is injection, where data values or names turn into markup.
+- **Bypassing a documented guarantee:** a way around an option documented to guarantee a safety property, such as `requireWellFormed`.
+- **Accepting not-well-formed input:** xmldom is not a validating parser, and becoming one is not a goal.
+  Reporting not-well-formed input is a long-term goal; xmldom does not yet report it reliably.
+  Silently accepting such input counts if the report shows a plausible way to exploit it, or a DOM tree the attacker could not get by sending well-formed XML.
+
+xmldom does not aim to support the full HTML spec (see the readme).
+The rules above apply to HTML input too, but a difference from how browsers parse HTML is not a vulnerability by itself.
+
+If your report does not meet these criteria and you still consider it a vulnerability, we invite you to argue why.
+If you can't find an argument, say so and we will check and decide ourselves.
+
 ## Reporting vulnerabilities
 
 Please email reports about any security related issues you find to `security@xmldom.org`, which will forward it to the list of maintainers. 
@@ -39,6 +60,7 @@ Once an issue is reported, the maintainers use the following disclosure process:
 - A [GitHub security advisory](https://docs.github.com/en/code-security/security-advisories/about-github-security-advisories) is [created](https://docs.github.com/en/code-security/security-advisories/creating-a-security-advisory) (but not published) which details the problem and steps for mitigation.
 - If the reporter provides a GitHub account and agrees to it, we [add that GitHub account as a collaborator on the advisory](https://docs.github.com/en/code-security/security-advisories/adding-a-collaborator-to-a-security-advisory).
 - The vulnerability is fixed in a [private fork](https://docs.github.com/en/code-security/security-advisories/collaborating-in-a-temporary-private-fork-to-resolve-a-security-vulnerability) and potential workarounds are identified.
+- If a fix would require a breaking change, it can be made opt-in through an option, so that it ships in a patch release. Later fixes that make the option reject more input or output within its documented purpose are not considered breaking changes.
 - The maintainers audit the existing code to find any potential similar problems.
 - The release for the current minor version and the [security advisory are published](https://docs.github.com/en/code-security/security-advisories/publishing-a-security-advisory).
 - The release(s) for previous minor version(s) are published.
