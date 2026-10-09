@@ -23,7 +23,7 @@ Names are a less likely vector than data values; the likelihood affects the seve
 
 On that basis, these count as vulnerabilities:
 
-- **Denial of service:** input that makes parsing or serialization take time or memory growing faster than the input size, or that crashes the process.
+- **Denial of service:** any operation whose time or memory grows faster than the size of its input, or that crashes the process.
 - **Broken round trip:** serialized output that fails to parse, or parses into a different tree than the one serialized, when parsed again as the same document type (XML or HTML) with the same options.
   The typical case is injection, where data values or names turn into markup.
 - **Bypassing a documented guarantee:** a way around an option documented to guarantee a safety property, such as `requireWellFormed`.
