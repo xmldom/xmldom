@@ -395,6 +395,112 @@ describe('Element', () => {
 			);
 		});
 	});
+	describe('getAttributeNames', () => {
+		test('should return empty array for element with no attributes', () => {
+			const doc = new DOMImplementation().createDocument(null, 'xml');
+			expect(doc.documentElement.getAttributeNames()).toEqual([]);
+		});
+
+		test('should return array with single attribute name', () => {
+			const doc = new DOMImplementation().createDocument(null, 'xml');
+			doc.documentElement.setAttribute('test', 'value');
+			expect(doc.documentElement.getAttributeNames()).toEqual(['test']);
+		});
+
+		test('should handle prefixed and unprefixed attributes', () => {
+			const doc = new DOMParser().parseFromString(
+				'<test xmlns:ns="http://example.com" ns:attr="value" regular="value2"/>',
+				MIME_TYPE.XML_TEXT
+			);
+			const names = doc.documentElement.getAttributeNames();
+			expect(names).toEqual(['xmlns:ns', 'ns:attr', 'regular']);
+		});
+
+		test('should handle prefixed and unprefixed attributes added programmatically', () => {
+			const doc = new DOMImplementation().createDocument(null, 'xml');
+			const element = doc.documentElement;
+
+			element.setAttributeNS('http://example.com', 'ns:test', 'value');
+			element.setAttribute('regular', 'value2');
+
+			const names = element.getAttributeNames();
+			expect(names).toEqual(['ns:test', 'regular']);
+		});
+
+		test('should handle mixed attribute operations maintaining order', () => {
+			const doc = new DOMImplementation().createDocument(null, 'xml');
+			const element = doc.documentElement;
+
+			element.setAttribute('z', 'last');
+			element.setAttribute('a', 'first');
+			element.setAttribute('m', 'middle');
+
+			// Should maintain the order they were added
+			expect(element.getAttributeNames()).toEqual(['z', 'a', 'm']);
+
+			element.removeAttribute('a');
+			expect(element.getAttributeNames()).toEqual(['z', 'm']);
+
+			element.setAttribute('b', 'new');
+			expect(element.getAttributeNames()).toEqual(['z', 'm', 'b']);
+		});
+
+		test('should handle duplicate qualified names from different namespaces', () => {
+			const doc = new DOMImplementation().createDocument(null, 'xml');
+			const element = doc.documentElement;
+
+			// Create attributes with same local name but different namespaces
+			element.setAttributeNS('http://ns1.example.com', 'test', 'value1');
+			element.setAttributeNS('http://ns2.example.com', 'test', 'value2');
+
+			// Should return both attributes
+			expect(element.getAttributeNames()).toEqual(['test', 'test']);
+
+			// TODO: there seems to be a bug in the serialization of this document.
+			//       It outputs xmlns twice, the serializer should probably automatically prefix the namespaces
+		});
+
+		test('should handle prefixed attributes with same local name', () => {
+			const doc = new DOMParser().parseFromString(
+				'<test xmlns:a="http://a.example.com" xmlns:b="http://b.example.com" a:name="value1" b:name="value2" name="value3"/>',
+				MIME_TYPE.XML_TEXT
+			);
+
+			expect(doc.documentElement.getAttributeNames()).toEqual(['xmlns:a', 'xmlns:b', 'a:name', 'b:name', 'name']);
+		});
+
+		test('should handle HTML document attribute name casing', () => {
+			const doc = new DOMImplementation().createHTMLDocument();
+			doc.documentElement.setAttribute('MixedCase', 'value');
+
+			// In HTML documents, attribute names should be lowercased
+			expect(doc.documentElement.getAttributeNames()).toEqual(['mixedcase']);
+		});
+
+		test('should preserve case in XML documents', () => {
+			const doc = new DOMImplementation().createDocument(null, 'xml');
+			doc.documentElement.setAttribute('MixedCase', 'value');
+
+			// In XML documents, attribute names should preserve case
+			expect(doc.documentElement.getAttributeNames()).toEqual(['MixedCase']);
+		});
+
+		test('should return new array each time (not reference to internal structure)', () => {
+			const doc = new DOMParser().parseFromString('<test a1="v1" a2="v2"/>', MIME_TYPE.XML_TEXT);
+			const element = doc.documentElement;
+
+			const names1 = element.getAttributeNames();
+			const names2 = element.getAttributeNames();
+
+			expect(names1).toEqual(names2);
+			expect(names1).not.toBe(names2); // Different array instances
+
+			// Modifying returned array should not affect the element
+			names1.push('modified');
+			expect(element.getAttributeNames()).toEqual(['a1', 'a2']);
+		});
+	});
+
 	describe('hasAttributes', () => {
 		test('empty document', () => {
 			const doc = new DOMImplementation().createDocument(null, 'xml');
