@@ -60,7 +60,7 @@ Once an issue is reported, the maintainers use the following disclosure process:
 - A [GitHub security advisory](https://docs.github.com/en/code-security/security-advisories/about-github-security-advisories) is [created](https://docs.github.com/en/code-security/security-advisories/creating-a-security-advisory) (but not published) which details the problem and steps for mitigation.
 - If the reporter provides a GitHub account and agrees to it, we [add that GitHub account as a collaborator on the advisory](https://docs.github.com/en/code-security/security-advisories/adding-a-collaborator-to-a-security-advisory).
 - The vulnerability is fixed in a [private fork](https://docs.github.com/en/code-security/security-advisories/collaborating-in-a-temporary-private-fork-to-resolve-a-security-vulnerability) and potential workarounds are identified.
-- If a fix would require a breaking change, it can be made opt-in through an option, so that it ships in a patch release. Later fixes that make the option reject more input or output within its documented purpose are not considered breaking changes.
+- If a fix would require a [breaking change](docs/BREAKING_CHANGES.md), it can be made opt-in through an option, so that it ships in a patch release. Later fixes that make the option reject more input or output within its documented purpose are not considered breaking changes.
 - The maintainers audit the existing code to find any potential similar problems.
 - The release for the current minor version and the [security advisory are published](https://docs.github.com/en/code-security/security-advisories/publishing-a-security-advisory).
 - The release(s) for previous minor version(s) are published.
