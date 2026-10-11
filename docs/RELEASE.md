@@ -6,13 +6,14 @@ We always have the following [open milestones](https://github.com/xmldom/xmldom/
 transparency regarding priority
 
 - **0.M.0**\
-  the upcoming/planned minor bump release for new features or breaking changes
+  the upcoming/planned minor bump release for new features or [breaking changes](BREAKING_CHANGES.md)
 - **0.M.x**\
   This milestone might not exist if no patch release is planned yet.\
   If `0.M.0` was released: the upcoming/planned patch bump(s) release(s) for bug fixes.\
   If `0.M.0` was not released: the things to work on right after the next planned minor bump
 - **[next breaking/minor release](https://github.com/xmldom/xmldom/milestone/12)** \
-  The topics that will be picked up once the milestones with specified versions have been released
+  The topics listed here will be picked up once the milestones with specific versions have been released.\
+  As long as the major version is 0, [semver](https://semver.org/spec/v2.0.0.html#spec-item-4) allows anything to change at any time; xmldom ships [breaking changes](BREAKING_CHANGES.md) only in minor releases, which npm's `^0.M.p` ranges don't pick up automatically.
 - **[before 1.0.0](https://github.com/xmldom/xmldom/milestone/5)** \
   The issues in this milestone are going to be worked on.\
   After each minor or patch release we pick topics from this milestone and put them into the "next
@@ -50,7 +51,7 @@ Currently, the release process is not fully automated, so here is how we do it.
 - determine the upcoming `$NEXT_VERSION` number according
   to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
     - it should already be reflected in the current milestone
-    - if there are any breaking changes or new features: `$bump` is `minor`
+    - if there are any [breaking changes](BREAKING_CHANGES.md) or new features: `$bump` is `minor`
     - otherwise `$bump` is `patch`
     - keep in mind we are not doing any `major` bumps so far!
     - keep in mind we are not using a `v` prefix anywhere!
