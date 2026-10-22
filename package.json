@@ -73,5 +73,5 @@
 		"tagPrefix": "",
 		"template": "./auto-changelog.hbs"
 	},
-	"packageManager": "npm@11.19.0+sha512.48377f8478372aa1c4e47b763475b135836da82436a5700f2e5e8eb5084fc840f93c7b117eb3ad3b5f7d3194c81b6710a10d59448f6ddbcb21ac3fb672bdc003"
+	"packageManager": "npm@12.2.1+sha512.6ca0a6151553fc107e60f1186d9c10d57508dcde6de31292a54d4cc4e8e8ef3de25b3281274657442d7115d10df930bb3794ddcb0681cdfd9d317189abf7b63d"
 }
