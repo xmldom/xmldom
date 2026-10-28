@@ -84,6 +84,14 @@ describe('deep tree stack overflow guard (GHSA-2v35-w6hq-6mfw)', () => {
 	test('normalize', () => {
 		expect(() => deepRoot.normalize()).not.toThrow();
 	});
+	test('normalize removes empty text at the bottom of a deep tree', () => {
+		let leaf = deepRoot;
+		while (leaf.firstChild) leaf = leaf.firstChild;
+		leaf.appendChild(deepRoot.ownerDocument.createTextNode(''));
+
+		expect(() => deepRoot.normalize()).not.toThrow();
+		expect(leaf.childNodes.length).toBe(0);
+	});
 	test('isEqualNode', () => {
 		// cloneNode is already iterative — use it to build the matching second tree
 		const deepClone = deepRoot.cloneNode(true);

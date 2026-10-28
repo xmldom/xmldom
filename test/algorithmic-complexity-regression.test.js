@@ -220,5 +220,21 @@ describe('CWE-407 Inefficient Algorithmic Complexity', () => {
 			const t2 = fastestMs(() => normalizeK(8000), 3);
 			expect(t2 / t1).toBeLessThan(RATIO_MAX);
 		});
+
+		test.each(['adjacent', 'separated'])('%s empty text nodes normalize in near-linear time', (kind) => {
+			function normalizeEmpty(k) {
+				const doc = new DOMImplementation().createDocument(null, 'r');
+				const root = doc.documentElement;
+				for (var i = 0; i < k; i++) {
+					root.appendChild(doc.createTextNode(''));
+					if (kind === 'separated') root.appendChild(doc.createComment('boundary'));
+				}
+				root.normalize();
+				expect(root.childNodes.length).toBe(kind === 'separated' ? k : 0);
+			}
+			const t1 = fastestMs(() => normalizeEmpty(2000), 3);
+			const t2 = fastestMs(() => normalizeEmpty(8000), 3);
+			expect(t2 / t1).toBeLessThan(RATIO_MAX);
+		});
 	});
 });
