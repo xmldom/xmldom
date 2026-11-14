@@ -1,0 +1,5 @@
+{
+	"tasks": {
+		"test": "deno check main.ts && deno run main.ts"
+	}
+}
