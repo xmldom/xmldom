@@ -71,6 +71,8 @@ Note: in Typescript ~~and ES6~~ (see [#316](https://github.com/xmldom/xmldom/iss
 import { DOMParser } from '@xmldom/xmldom'
 ```
 
+For Deno, see the [runnable TypeScript example](examples/deno/README.md), which imports the package directly using an `npm:` specifier.
+
 ## API Reference
 
 * [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser):
