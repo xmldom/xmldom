@@ -1238,9 +1238,8 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Returns a new CDATASection node whose data is `data`.
 		 *
-		 * __This implementation differs from the specification:__ - calling this method on an HTML
-		 * document does not throw `NotSupportedError`.
-		 *
+		 * @throws {DOMException}
+		 * With code `NOT_SUPPORTED_ERR` if this is an HTML document.
 		 * @throws {DOMException}
 		 * With code `INVALID_CHARACTER_ERR` if `data` contains `"]]>"`.
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/createCDATASection
@@ -1321,9 +1320,8 @@ declare module '@xmldom/xmldom' {
 		/**
 		 * Returns a ProcessingInstruction node whose target is target and data is data.
 		 *
-		 * __This behavior is slightly different from the in the specs__:
-		 * - it does not do any input validation on the arguments and doesn't throw
-		 * "InvalidCharacterError".
+		 * __This implementation differs from the specification:__ the target is not validated
+		 * against the XML `Name` production at creation time.
 		 *
 		 * Note: When the resulting document is serialized with `requireWellFormed: true`, the
 		 * serializer throws `InvalidStateError` if `.target` is not a valid XML `NCName` (a `Name`
@@ -1331,6 +1329,8 @@ declare module '@xmldom/xmldom' {
 		 * `?>` or characters outside the XML Char production (W3C DOM Parsing §3.2.1.7). Without
 		 * that option the target and data are emitted verbatim.
 		 *
+		 * @throws {DOMException}
+		 * With code `INVALID_CHARACTER_ERR` if `data` contains `"?>"`.
 		 * @see https://developer.mozilla.org/docs/Web/API/Document/createProcessingInstruction
 		 * @see https://dom.spec.whatwg.org/#dom-document-createprocessinginstruction
 		 * @see https://www.w3.org/TR/DOM-Parsing/#dfn-concept-serialize-xml §3.2.1.7

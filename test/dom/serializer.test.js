@@ -403,7 +403,8 @@ describe('XMLSerializer.serializeToString', () => {
 			});
 
 			test('default: PI with "?>" in data emits verbatim — no throw', () => {
-				const pi = doc.createProcessingInstruction('foo', 'inject?>evil');
+				const pi = doc.createProcessingInstruction('foo', 'safe');
+				pi.data = 'inject?>evil';
 				doc.documentElement.appendChild(pi);
 				expect(new XMLSerializer().serializeToString(doc)).toBe('<root><?foo inject?>evil?></root>');
 			});
@@ -463,7 +464,8 @@ describe('XMLSerializer.serializeToString', () => {
 			});
 
 			test('requireWellFormed: true on PI with "?>" in data throws InvalidStateError', () => {
-				const pi = doc.createProcessingInstruction('foo', 'inject?>evil');
+				const pi = doc.createProcessingInstruction('foo', 'safe');
+				pi.data = 'inject?>evil';
 				doc.documentElement.appendChild(pi);
 				expectDOMException(() => new XMLSerializer().serializeToString(doc, { requireWellFormed: true }), 'InvalidStateError');
 			});

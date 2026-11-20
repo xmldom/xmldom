@@ -3,6 +3,7 @@
 const { DOMParser, XMLSerializer } = require('../../lib');
 const { MIME_TYPE } = require('../../lib/conventions');
 const { Node, ProcessingInstruction } = require('../../lib/dom');
+const { expectDOMException } = require('../errors/expectDOMException');
 
 describe('ProcessingInstruction', () => {
 	describe('constructor', () => {
@@ -52,10 +53,25 @@ describe('ProcessingInstruction', () => {
 		expect(pi.data).toBe('href="newcss.css" type="text/css"');
 	});
 
-	test('createProcessingInstruction accepts any target or data without throwing', () => {
+	test.each(['?>', 'inject?>evil', '?>at the start', 'at the end?>', 'href="?>"'])(
+		'createProcessingInstruction rejects data containing ?>: %p',
+		(data) => {
+			const doc = new DOMParser().parseFromString('<xml></xml>', MIME_TYPE.XML_TEXT);
+			expectDOMException(() => doc.createProcessingInstruction('target', data), 'InvalidCharacterError');
+		}
+	);
+
+	test.each(['', 'safe', '? >', '> ?'])('createProcessingInstruction preserves valid data: %p', (data) => {
+		const doc = new DOMParser().parseFromString('<xml></xml>', MIME_TYPE.XML_TEXT);
+		const pi = doc.createProcessingInstruction('target', data);
+		expect(pi.data).toBe(data);
+		expect(pi.nodeValue).toBe(data);
+		expect(pi.ownerDocument).toBe(doc);
+	});
+
+	test('createProcessingInstruction preserves accepted targets', () => {
 		const doc = new DOMParser().parseFromString('<xml></xml>', MIME_TYPE.XML_TEXT);
 		expect(() => doc.createProcessingInstruction('ns:bad', 'data')).not.toThrow();
-		expect(() => doc.createProcessingInstruction('xml', '?>')).not.toThrow();
-		expect(() => doc.createProcessingInstruction('foo', 'inject?>evil')).not.toThrow();
+		expect(() => doc.createProcessingInstruction('xml', 'version="1.0"')).not.toThrow();
 	});
 });
