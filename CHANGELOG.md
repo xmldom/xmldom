@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Entries that are [breaking changes](docs/BREAKING_CHANGES.md) are marked as such.
 
+## Unreleased
+
+### Breaking changes
+
+- `Document.createCDATASection()` now throws `NotSupportedError` on HTML documents, before checking the data, as required by the DOM specification. XML and XHTML documents continue to support CDATA sections. [#971](https://github.com/xmldom/xmldom/issues/971)
+- `Document.createProcessingInstruction()` now throws `InvalidCharacterError` when the data contains `?>`, including inside quoted text. This validation applies at creation time independently of the serializer's `requireWellFormed` option. [#997](https://github.com/xmldom/xmldom/issues/997)
+
 ## [0.9.12](https://github.com/xmldom/xmldom/compare/0.9.11...0.9.12)
 
 ### Fixed

@@ -35,6 +35,25 @@ describe('Document.prototype.createCDATASection', () => {
 		});
 	});
 
+	describe('HTML documents', () => {
+		test.each(['', 'safe', ']]>', 'before]]>after'])('throws NotSupportedError for %p', (data) => {
+			const htmlDoc = new DOMImplementation().createHTMLDocument('title');
+			expectDOMException(() => htmlDoc.createCDATASection(data), 'NotSupportedError');
+		});
+
+		test('also rejects creation on a parsed HTML document', () => {
+			const htmlDoc = new DOMParser().parseFromString('<html></html>', MIME_TYPE.HTML);
+			expectDOMException(() => htmlDoc.createCDATASection('safe'), 'NotSupportedError');
+		});
+
+		test('allows creation on an XHTML document', () => {
+			const xhtmlDoc = new DOMParser().parseFromString('<html></html>', MIME_TYPE.XML_XHTML_APPLICATION);
+			const cdata = xhtmlDoc.createCDATASection('safe');
+			expect(cdata.data).toBe('safe');
+			expect(cdata.ownerDocument).toBe(xhtmlDoc);
+		});
+	});
+
 	describe('does not throw', () => {
 		test('when data is safe', () => {
 			expect(() => doc.createCDATASection('safe')).not.toThrow();
