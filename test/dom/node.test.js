@@ -455,6 +455,107 @@ describe('Node.prototype', () => {
 		const impl = new DOMImplementation();
 		const doc = impl.createDocument(null, '');
 
+		describe('assignment', () => {
+			describe.each([
+				['Element', () => doc.createElement('root')],
+				['DocumentFragment', () => doc.createDocumentFragment()],
+			])('on %s', (_name, createNode) => {
+				test.each([null, undefined, ''])('%p removes all children without adding text', (value) => {
+					const node = createNode();
+					const text = doc.createTextNode('old');
+					const child = doc.createElement('child');
+					node.appendChild(text);
+					node.appendChild(child);
+					const children = node.childNodes;
+
+					node.textContent = value;
+
+					expect(node.textContent).toBe('');
+					expect(children).toHaveLength(0);
+					expect(node.firstChild).toBeNull();
+					expect(node.lastChild).toBeNull();
+					expect(text.parentNode).toBeNull();
+					expect(child.parentNode).toBeNull();
+				});
+
+				test.each([
+					[0, '0'],
+					[false, 'false'],
+					['new text', 'new text'],
+				])('%p creates one text node', (value, expected) => {
+					const node = createNode();
+					node.appendChild(doc.createElement('old'));
+
+					node.textContent = value;
+
+					expect(node.textContent).toBe(expected);
+					expect(node.childNodes).toHaveLength(1);
+					expect(node.firstChild.nodeType).toBe(Node.TEXT_NODE);
+					expect(node.firstChild.data).toBe(expected);
+				});
+			});
+
+			describe.each([
+				['Text', () => doc.createTextNode('old')],
+				['CDATASection', () => doc.createCDATASection('old')],
+				['Comment', () => doc.createComment('old')],
+				['ProcessingInstruction', () => doc.createProcessingInstruction('target', 'old')],
+			])('on %s', (_name, createNode) => {
+				test.each([
+					[null, ''],
+					[undefined, ''],
+					[0, '0'],
+					[false, 'false'],
+					['new text', 'new text'],
+				])('%p keeps string data and length consistent', (value, expected) => {
+					const node = createNode();
+
+					node.textContent = value;
+
+					expect(node.textContent).toBe(expected);
+					expect(node.nodeValue).toBe(expected);
+					expect(node.data).toBe(expected);
+					expect(node.length).toBe(expected.length);
+				});
+			});
+
+			test.each([
+				[null, ''],
+				[undefined, ''],
+				[0, '0'],
+				['new text', 'new text'],
+			])('%p updates an attached Attr value', (value, expected) => {
+				const element = doc.createElement('root');
+				element.setAttribute('name', 'old');
+				const attr = element.getAttributeNode('name');
+
+				attr.textContent = value;
+
+				expect(attr.textContent).toBe(expected);
+				expect(attr.value).toBe(expected);
+				expect(attr.nodeValue).toBe(expected);
+				expect(element.getAttribute('name')).toBe(expected);
+				expect(attr.ownerElement).toBe(element);
+			});
+
+			test.each([null, 'ignored'])('%p has no effect on Document or DocumentType', (value) => {
+				const doctype = impl.createDocumentType('root', '', '');
+				const document = impl.createDocument(null, 'root', doctype);
+				const root = document.documentElement;
+
+				document.textContent = value;
+				doctype.textContent = value;
+
+				expect(document.textContent).toBeNull();
+				expect(doctype.textContent).toBeNull();
+				expect(document.nodeValue).toBeNull();
+				expect(doctype.nodeValue).toBeNull();
+				expect(document.documentElement).toBe(root);
+				expect(document.doctype).toBe(doctype);
+				expect(document.childNodes).toHaveLength(2);
+			});
+		});
+
 		describe('on Element', () => {
 			test('returns empty string when element has no children', () => {
 				const el = doc.createElement('root');
