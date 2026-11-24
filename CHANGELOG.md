@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Entries that are [breaking changes](docs/BREAKING_CHANGES.md) are marked as such.
 
+## Unreleased
+
+### Fixed
+
+- BREAKING: `getElementById()` no longer matches empty IDs or uses loose equality. It converts the query to a string once and matches exactly. Empty documents return `null` instead of throwing.
+
 ## [0.9.12](https://github.com/xmldom/xmldom/compare/0.9.11...0.9.12)
 
 ### Fixed
