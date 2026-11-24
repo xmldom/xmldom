@@ -5,13 +5,142 @@ const { DOMImplementation, Node } = require('../../lib/dom');
 const { DOMParser } = require('../../lib/dom-parser');
 const { DOMExceptionName } = require('../../lib/errors');
 const { expectDOMException } = require('../errors/expectDOMException');
-const { MIME_TYPE } = require('../../lib/conventions');
+const { MIME_TYPE, NAMESPACE } = require('../../lib/conventions');
 const { performance } = require('perf_hooks');
 
 describe('Node.prototype', () => {
 	describe('constructor', () => {
 		test('should throw Illegal constructor TypeError when trying to access constructor directly', () => {
 			expect(() => new Node()).toThrow(TypeError);
+		});
+	});
+	describe('namespace lookup', () => {
+		const impl = new DOMImplementation();
+
+		test('uses the namespace and prefix of elements created without declarations', () => {
+			const doc = impl.createDocument('urn:root', 'p:root', null);
+			const root = doc.documentElement;
+			const child = root.appendChild(doc.createElement('child'));
+			const text = child.appendChild(doc.createTextNode('text'));
+			const comment = child.appendChild(doc.createComment('comment'));
+			const pi = child.appendChild(doc.createProcessingInstruction('target', 'data'));
+			for (const node of [doc, root, child, text, comment, pi]) {
+				expect(node.lookupPrefix('urn:root')).toBe('p');
+				expect(node.lookupNamespaceURI('p')).toBe('urn:root');
+			}
+		});
+
+		test('uses an attribute owner element, including its local namespace declarations', () => {
+			const doc = impl.createDocument(null, 'root', null);
+			const child = doc.documentElement.appendChild(doc.createElement('child'));
+			child.setAttributeNS(NAMESPACE.XMLNS, 'xmlns:p', 'urn:child');
+			child.setAttributeNS(NAMESPACE.XMLNS, 'xmlns', 'urn:default');
+			child.setAttribute('attr', 'value');
+			const attr = child.getAttributeNode('attr');
+			expect(attr.lookupPrefix('urn:child')).toBe('p');
+			expect(attr.lookupNamespaceURI('p')).toBe('urn:child');
+			expect(attr.isDefaultNamespace('urn:default')).toBe(true);
+			expect(doc.lookupPrefix('urn:child')).toBeNull();
+			expect(doc.lookupNamespaceURI('p')).toBeNull();
+		});
+
+		test('does not use an owner document for nodes without an element context', () => {
+			const doctype = impl.createDocumentType('root');
+			const doc = impl.createDocument('urn:root', 'p:root', doctype);
+			const comment = doc.appendChild(doc.createComment('outside root'));
+			const fragment = doc.createDocumentFragment();
+			fragment.appendChild(doc.createElementNS('urn:root', 'p:child'));
+			const attr = doc.createAttributeNS('urn:root', 'p:attr');
+			for (const node of [doctype, fragment, attr, comment, impl.createDocument(null, '', null)]) {
+				expect(node.lookupPrefix('urn:root')).toBeNull();
+				expect(node.lookupNamespaceURI('p')).toBeNull();
+				expect(node.lookupNamespaceURI('xml')).toBeNull();
+				expect(node.isDefaultNamespace('urn:root')).toBe(false);
+				expect(node.isDefaultNamespace(null)).toBe(true);
+			}
+		});
+
+		test('ignores default declarations when looking up a prefix', () => {
+			const doc = new DOMParser().parseFromString('<root xmlns="urn:default"><child/></root>', MIME_TYPE.XML_TEXT);
+			for (const node of [doc, doc.documentElement, doc.documentElement.firstChild]) {
+				expect(node.lookupPrefix('urn:default')).toBeNull();
+				expect(node.lookupNamespaceURI(null)).toBe('urn:default');
+				expect(node.lookupNamespaceURI('')).toBe('urn:default');
+				expect(node.isDefaultNamespace('urn:default')).toBe(true);
+				expect(node.isDefaultNamespace('urn:missing')).toBe(false);
+				expect(node.isDefaultNamespace(null)).toBe(false);
+				expect(node.isDefaultNamespace('')).toBe(false);
+			}
+		});
+
+		test('resolves a programmatically created default namespace without an xmlns attribute', () => {
+			const root = impl.createDocument('urn:default', 'root', null).documentElement;
+			expect(root.lookupNamespaceURI(null)).toBe('urn:default');
+			expect(root.lookupNamespaceURI('')).toBe('urn:default');
+			expect(root.isDefaultNamespace('urn:default')).toBe(true);
+		});
+
+		test('stops at an empty default namespace declaration', () => {
+			const doc = new DOMParser().parseFromString(
+				'<root xmlns="urn:default"><child xmlns=""><leaf/></child></root>',
+				MIME_TYPE.XML_TEXT
+			);
+			const child = doc.documentElement.firstChild;
+			for (const node of [child, child.firstChild]) {
+				expect(node.lookupNamespaceURI(null)).toBeNull();
+				expect(node.lookupNamespaceURI('')).toBeNull();
+				expect(node.isDefaultNamespace('urn:default')).toBe(false);
+				expect(node.isDefaultNamespace(null)).toBe(true);
+				expect(node.isDefaultNamespace('')).toBe(true);
+			}
+		});
+
+		test('prefers an element namespace and prefix over conflicting declarations', () => {
+			const root = impl.createDocument('urn:own', 'p:root', null).documentElement;
+			root.setAttributeNS(NAMESPACE.XMLNS, 'xmlns:p', 'urn:other');
+			root.setAttributeNS(NAMESPACE.XMLNS, 'xmlns:q', 'urn:own');
+			expect(root.lookupPrefix('urn:own')).toBe('p');
+			expect(root.lookupNamespaceURI('p')).toBe('urn:own');
+		});
+
+		test('uses the first matching declaration and observes attribute value changes and removal', () => {
+			const root = impl.createDocument(null, 'root', null).documentElement;
+			root.setAttributeNS(NAMESPACE.XMLNS, 'xmlns:p', 'urn:shared');
+			root.setAttributeNS(NAMESPACE.XMLNS, 'xmlns:q', 'urn:shared');
+			expect(root.lookupPrefix('urn:shared')).toBe('p');
+			root.getAttributeNodeNS(NAMESPACE.XMLNS, 'p').value = 'urn:changed';
+			expect(root.lookupPrefix('urn:shared')).toBe('q');
+			expect(root.lookupPrefix('urn:changed')).toBe('p');
+			expect(root.lookupNamespaceURI('p')).toBe('urn:changed');
+			root.removeAttributeNS(NAMESPACE.XMLNS, 'p');
+			expect(root.lookupPrefix('urn:changed')).toBeNull();
+			expect(root.lookupNamespaceURI('p')).toBeNull();
+		});
+
+		test('normalizes an empty namespace and does not treat a missing prefix as a default namespace', () => {
+			const root = impl.createDocument(null, 'root', null).documentElement;
+			root.setAttributeNS(NAMESPACE.XMLNS, 'xmlns:p', '');
+			expect(root.lookupPrefix('')).toBeNull();
+			expect(root.lookupPrefix(null)).toBeNull();
+			expect(root.lookupNamespaceURI('p')).toBeNull();
+			expect(root.isDefaultNamespace('urn:missing')).toBe(false);
+		});
+
+		test('recognizes reserved prefixes without explicit declarations', () => {
+			const doc = impl.createDocument(null, 'root', null);
+			for (const node of [doc, doc.documentElement]) {
+				expect(node.lookupNamespaceURI('xml')).toBe(NAMESPACE.XML);
+				expect(node.lookupNamespaceURI('xmlns')).toBe(NAMESPACE.XMLNS);
+			}
+		});
+
+		test('does not use ordinary attributes as namespace declarations', () => {
+			const root = impl.createDocument(null, 'root', null).documentElement;
+			root.setAttribute('xmlns:p', 'urn:lookalike');
+			root.setAttribute('xmlns', 'urn:lookalike');
+			expect(root.lookupPrefix('urn:lookalike')).toBeNull();
+			expect(root.lookupNamespaceURI('p')).toBeNull();
+			expect(root.lookupNamespaceURI(null)).toBeNull();
 		});
 	});
 	describe('appendChild', () => {
