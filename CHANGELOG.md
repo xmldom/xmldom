@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Entries that are [breaking changes](docs/BREAKING_CHANGES.md) are marked as such.
 
+## Unreleased
+
+### Fixed
+
+- BREAKING: `appendChild()`, `insertBefore()` and `replaceChild()` reject inserting an ancestor or the parent itself with `HierarchyRequestError`, before modifying either tree.
+
 ## [0.9.12](https://github.com/xmldom/xmldom/compare/0.9.11...0.9.12)
 
 ### Fixed
