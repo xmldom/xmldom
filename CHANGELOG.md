@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Entries that are [breaking changes](docs/BREAKING_CHANGES.md) are marked as such.
 
+## Unreleased
+
+### Fixed
+
+- BREAKING: `Document.importNode()` throws `NotSupportedError` when passed a Document, as required by DOM. Import the source's `documentElement` to copy its element subtree.
+
 ## [0.9.12](https://github.com/xmldom/xmldom/compare/0.9.11...0.9.12)
 
 ### Fixed
