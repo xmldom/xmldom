@@ -14,6 +14,28 @@ describe('Node.prototype', () => {
 			expect(() => new Node()).toThrow(TypeError);
 		});
 	});
+	describe('isSupported (deprecated)', () => {
+		test.each([
+			['XML', '2.0'],
+			['', ''],
+			['unknown-feature', '99'],
+		])('returns true for a detached doctype with feature %j and version %j', (feature, version) => {
+			const doctype = new DOMImplementation().createDocumentType('root');
+			expect(doctype.ownerDocument).toBeNull();
+			expect(doctype.isSupported(feature, version)).toBe(true);
+		});
+
+		test('returns true for nodes belonging to a document', () => {
+			const impl = new DOMImplementation();
+			const doctype = impl.createDocumentType('root');
+			const doc = impl.createDocument(null, 'root', doctype);
+			const nodes = [doc, doctype, doc.documentElement, doc.createAttribute('attr')];
+			for (const node of nodes) {
+				expect(node.isSupported('XML', '2.0')).toBe(true);
+				expect(node.isSupported('unknown-feature', '99')).toBe(true);
+			}
+		});
+	});
 	describe('appendChild', () => {
 		const impl = new DOMImplementation();
 		const doc = impl.createDocument(null, '');
