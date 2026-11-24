@@ -459,8 +459,10 @@ declare module '@xmldom/xmldom' {
 		 * `nodeValue` of every descendant text node, excluding processing instruction and comment
 		 * nodes. For all other node types, returns `nodeValue`.
 		 *
-		 * Setting `textContent` on an element or document fragment replaces all child nodes with a
-		 * single text node; on other nodes it sets `data`, `value`, and `nodeValue` directly.
+		 * Setting `textContent` treats null as an empty string. On an element or document fragment
+		 * it replaces all children with the given text, or removes them for an empty string. On an
+		 * attribute it sets the value, and on CharacterData it sets the data. Other nodes are
+		 * unchanged.
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Node/textContent)
 		 *
 		 * @see {@link https://dom.spec.whatwg.org/#dom-node-textcontent}
