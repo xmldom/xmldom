@@ -1417,6 +1417,7 @@ declare module '@xmldom/xmldom' {
 		 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/importNode)
 		 *
 		 * @see {@link https://dom.spec.whatwg.org/#dom-document-importnode}
+		 * @throws {DOMException} With name `NotSupportedError` if `node` is a Document.
 		 */
 		importNode<T extends Node>(node: T, deep?: boolean): T;
 	}
