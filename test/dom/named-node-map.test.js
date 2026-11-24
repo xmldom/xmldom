@@ -10,6 +10,52 @@ const doc = new DOMImplementation().createDocument(null, 'xml');
 const HTML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => true };
 const XML_OWNER_ELEMENT = { _isInHTMLDocumentAndNamespace: () => false };
 
+describe('replacing an attribute node', () => {
+	const setters = [
+		['setAttributeNode', (el, attr) => el.setAttributeNode(attr)],
+		['setAttributeNodeNS', (el, attr) => el.setAttributeNodeNS(attr)],
+		['setNamedItem', (el, attr) => el.attributes.setNamedItem(attr)],
+		['setNamedItemNS', (el, attr) => el.attributes.setNamedItemNS(attr)],
+	];
+
+	describe.each(setters)('%s', (_name, setAttribute) => {
+		test.each([null, 'urn:attributes'])('detaches the replaced node in namespace %s', (namespace) => {
+			const document = new DOMImplementation().createDocument(null, 'root');
+			const first = document.documentElement;
+			const second = document.createElement('second');
+			const original = document.createAttributeNS(namespace, 'value');
+			original.value = 'old';
+			first.setAttributeNode(original);
+			first.setAttribute('untouched', 'keep');
+			const replacement = document.createAttributeNS(namespace, 'value');
+			replacement.value = 'new';
+
+			expect(setAttribute(first, replacement)).toBe(original);
+			expect(original.ownerElement).toBeNull();
+			expect(replacement.ownerElement).toBe(first);
+			expect(first.attributes.item(0)).toBe(replacement);
+			expect(first.attributes).toHaveLength(2);
+			expect(first.getAttribute('untouched')).toBe('keep');
+
+			expect(second.setAttributeNode(original)).toBeNull();
+			expect(original.ownerElement).toBe(second);
+			expect(second.getAttributeNS(namespace, 'value')).toBe('old');
+			expect(first.getAttributeNS(namespace, 'value')).toBe('new');
+		});
+
+		test('setting the same node again keeps its owner', () => {
+			const document = new DOMImplementation().createDocument(null, 'root');
+			const element = document.documentElement;
+			const attr = document.createAttribute('value');
+			element.setAttributeNode(attr);
+
+			expect(setAttribute(element, attr)).toBe(attr);
+			expect(attr.ownerElement).toBe(element);
+			expect(element.attributes).toHaveLength(1);
+		});
+	});
+});
+
 describe('NamedNodeMap', () => {
 	describe('Iterator', () => {
 		test('should iterate over 3/3 items when using a for...of loop without interruption', () => {
