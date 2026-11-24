@@ -8,6 +8,65 @@ const { Element, Node } = require('../../lib/dom');
 const { DOMException, DOMExceptionName } = require('../../lib/errors');
 const { expectDOMException } = require('../errors/expectDOMException');
 
+describe('removeAttributeNode identity', () => {
+	test.each(['detached', 'another element', 'replaced'])('rejects a node from %s with the same name', (origin) => {
+		const doc = new DOMImplementation().createDocument(null, 'root');
+		const element = doc.documentElement;
+		const other = doc.createElement('other');
+		const attr = doc.createAttribute('value');
+		attr.value = 'not this one';
+		if (origin === 'another element') other.setAttributeNode(attr);
+		if (origin === 'replaced') element.setAttributeNode(attr);
+		const current = doc.createAttribute('value');
+		current.value = 'keep';
+		element.setAttributeNode(current);
+
+		expectDOMException(() => element.removeAttributeNode(attr), DOMExceptionName.NotFoundError);
+		expect(element.getAttributeNode('value')).toBe(current);
+		expect(element.getAttribute('value')).toBe('keep');
+		expect(element.attributes).toHaveLength(1);
+		expect(current.ownerElement).toBe(element);
+		if (origin === 'another element') {
+			expect(other.getAttributeNode('value')).toBe(attr);
+			expect(attr.ownerElement).toBe(other);
+		}
+	});
+
+	test.each(['removeAttributeNode', 'removeAttributeNS'])('%s preserves a same-name attribute in another namespace', (method) => {
+		const doc = new DOMImplementation().createDocument(null, 'root');
+		const element = doc.documentElement;
+		const first = doc.createAttributeNS('urn:first', 'p:value');
+		const second = doc.createAttributeNS('urn:second', 'p:value');
+		element.setAttributeNodeNS(first);
+		element.setAttributeNodeNS(second);
+
+		if (method === 'removeAttributeNode') {
+			expect(element.removeAttributeNode(second)).toBe(second);
+		} else {
+			element.removeAttributeNS('urn:second', 'value');
+		}
+		expect(first.ownerElement).toBe(element);
+		expect(second.ownerElement).toBeNull();
+		expect(element.attributes).toHaveLength(1);
+		expect(element.getAttributeNodeNS('urn:first', 'value')).toBe(first);
+		expect(element.getAttributeNodeNS('urn:second', 'value')).toBeNull();
+		// Removal must update the namespace membership index as well as the list.
+		expect(element.setAttributeNodeNS(second)).toBeNull();
+		expect(element.attributes).toHaveLength(2);
+	});
+
+	test('removes an uppercase attribute from an HTML element without name folding', () => {
+		const doc = new DOMImplementation().createHTMLDocument('test');
+		const element = doc.documentElement;
+		const attr = doc.createAttributeNS(null, 'DATA-VALUE');
+		element.setAttributeNode(attr);
+
+		expect(element.removeAttributeNode(attr)).toBe(attr);
+		expect(attr.ownerElement).toBeNull();
+		expect(element.attributes).toHaveLength(0);
+	});
+});
+
 describe('documentElement', () => {
 	test('can properly append exist child', () => {
 		const doc = new DOMParser().parseFromString(
